@@ -1,0 +1,36 @@
+version: '3'
+
+services:
+  mint:
+    image: settlemint/mint-dapi:latest
+    ports:
+      - "3333:3333"
+      # Port for remote debugging, IF enabled via REMOTE_DEBUG_MODE
+      - "9230:9230"
+    volumes:
+     - .:/srv/src/contracts
+    environment:
+      ETHEREUM_NODE: http://testrpc:8545
+      MONGODB_URI: mongodb://mongo:27017/mint
+      REMOTE_DEBUG_MODE: debug
+    links:
+      - mongo
+      - testrpc
+
+  mongo:
+    image: mongo
+    ports:
+      - "27017:27017"
+
+  mongo-express:
+    image: mongo-express
+    ports:
+      - "8082:8081"
+    links:
+      - mongo
+
+  testrpc:
+    image: settlemint/testrpc:stable
+    ports:
+      - "8545:8545"
+    command: ["node", "./build/cli.node.js", "-l", "0xfffffffffff", "-h", "0.0.0.0", "-i", "1337", "-m", 'robot robot robot robot robot robot robot robot robot robot robot robot']

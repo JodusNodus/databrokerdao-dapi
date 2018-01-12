@@ -1,0 +1,107 @@
+{
+  "name": "@settlemint/socialcurrency-dapi",
+  "version": "0.0.0-development",
+  "description": "The smart contracts and dAPI of the IsDB Social Currency project",
+  "main": "truffle.js",
+  "directories": {
+    "test": "test"
+  },
+  "engines": {
+    "node": ">=8.7.0"
+  },
+  "scripts": {
+    "test": "solidity-coverage || exit 0",
+    "lint": "npm run solium -- --dir contracts --fix",
+    "watch": "nodemon --watch . --exec npm run test",
+    "semantic-release": "semantic-release pre && npm publish && semantic-release post",
+    "solium": "solium"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/settlemint/socialcurrency-dapi.git"
+  },
+  "keywords": [
+    "mint",
+    "boilerplate"
+  ],
+  "author": "Roderik van der Veer <roderik@settlemint.com>",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/settlemint/socialcurrency-dapi/issues"
+  },
+  "homepage": "https://github.com/settlemint/socialcurrency-dapi#readme",
+  "devDependencies": {
+    "ethereumjs-testrpc-sc": "^6.0.7",
+    "nodemon": "^1.12.1",
+    "solidity-coverage": "^0.4.2",
+    "solium": "^1.0.5",
+    "truffle-hdwallet-provider": "0.0.3",
+    "semantic-release": "^8.2.0",
+    "eslint": "^4.11.0",
+    "eslint-config-prettier": "^2.8.0",
+    "eslint-config-standard": "^10.2.1",
+    "eslint-plugin-import": "^2.8.0",
+    "eslint-plugin-node": "^5.2.1",
+    "eslint-plugin-prettier": "^2.3.1",
+    "eslint-plugin-promise": "^3.6.0",
+    "eslint-plugin-standard": "^3.0.1",
+    "husky": "^0.14.3",
+    "lint-staged": "^5.0.0",
+    "prettier": "^1.8.2"
+  },
+  "dependencies": {
+    "@settlemint/lib-crypto": "^4.4.1",
+    "@settlemint/solidity-mint": "^1.2.1",
+    "bip39": "^2.4.0",
+    "debug": "^3.1.0",
+    "ethereumjs-wallet": "^0.6.0",
+    "i": "^0.3.6",
+    "node-fetch": "^1.7.3",
+    "zeppelin-solidity": "^1.3.0"
+  },
+  "publishConfig": {
+    "access": "restricted"
+  },
+  "lint-staged": {
+    "*.{js,json,css}": [
+      "prettier --write",
+      "git add"
+    ]
+  },
+  "eslintConfig": {
+    "extends": [
+      "standard",
+      "prettier",
+      "plugin:node/recommended",
+      "plugin:promise/recommended",
+      "eslint:recommended"
+    ],
+    "plugins": [
+      "prettier",
+      "node",
+      "promise"
+    ],
+    "rules": {
+      "prettier/prettier": "warn",
+      "no-console": 0,
+      "node/exports-style": [
+        "error",
+        "module.exports"
+      ]
+    },
+    "globals": {
+      "artifacts": true,
+      "web3": true,
+      "assert": true,
+      "contract": true
+    },
+    "parserOptions": {
+      "ecmaFeatures": {
+        "jsx": true
+      }
+    },
+    "env": {
+      "jest": true
+    }
+  }
+}
