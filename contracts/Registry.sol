@@ -20,7 +20,7 @@ contract Registry {
     address owner;          // Owner of Listing
     uint stake;             // Number of unlocked tokens with potential risk if challenged
     string target;          // Identifier of the data
-    mapping(uint => Challenge) challenges; // Array of challengeIDs to this listing
+    uint[] challenges;      // Array of challengeIDs to this listing
   }
 
   struct Challenge {
@@ -31,6 +31,9 @@ contract Registry {
 
   // Maps listingHashes to associated listing data
   mapping(bytes32 => Listing) public listings;
+
+  // Maps challenges to associated challenge data
+  mapping(uint => Challenge) public challenges;
 
   // Global Variables
   EIP20 token;
@@ -64,15 +67,39 @@ contract Registry {
     require(token.transferFrom(msg.sender, this, _stakeAmount));
 
     // Add listing to listings
+    uint[] emptyArray;
     listings[_listing] = Listing({
       whitelisted: true,
       owner: msg.sender,
       stake: _stakeAmount,
-      target: _target
+      target: _target,
+      challenges: emptyArray
     });
 
     // Event
     Enlisted(_listing, _stakeAmount, _target);
+  }
+
+  /**
+  @notice             Allows the owner of a listing to remove the listing from the whitelist
+  @notice             Returns all tokens to the owner of the listing
+  @param _listing     The listing of a user's listing
+  */
+  function unlist(bytes32 _listing) external {
+    Listing storage listing = listings[_listing];
+
+    require(msg.sender == listing.owner);
+    require(isWhitelisted(_listing));
+
+    // Cannot exit during ongoing challenge
+    require(listing.challenges.length == 0);
+
+    // Transfers any remaining balance back to the owner
+    if (listing.stake > 0)
+      require(token.transfer(listing.owner, listing.stake));
+
+    delete listings[_listing]; // delete changes the whitelisted prop from true to false
+    Unlisted(_listing);
   }
 
   /**
@@ -112,27 +139,6 @@ contract Registry {
   // }
 
   /**
-  @notice             Allows the owner of a listing to remove the listing from the whitelist
-  @notice             Returns all tokens to the owner of the listing
-  @param _listing     The listing of a user's listing
-  */
-  function unlist(bytes32 _listing) external {
-    Listing storage listing = listings[_listing];
-
-    require(msg.sender == listing.owner);
-
-    // Cannot exit during ongoing challenge
-    // require(listing.challenges[challengeID] == 0 || challenges[listing.challengeID].resolved);
-
-    // Transfers any remaining balance back to the owner
-    if (listing.stake > 0)
-      require(token.transfer(listing.owner, listing.stake));
-
-    delete listings[_listing];
-    Unlisted(_listing);
-  }
-
-  /**
   @notice             Starts a challenge for a listing.
   @dev                Tokens are taken from the challenger and the data seller's deposit is locked.
   @param _listing     The listing of data.
@@ -160,12 +166,15 @@ contract Registry {
     challengeID = currentChallengeID + 1;
     currentChallengeID = challengeID; 
 
-    // Add challenge to the listing challenge mapping
-    listings[_listing].challenges[challengeID] = Challenge({
+    // Add challenge to the challenges mapping
+    challenges[challengeID] = Challenge({
       challenger: msg.sender,
       stake: _stakeAmount,
       resolved: false
     });
+
+    // Add challenge id to the right listing
+    listings[_listing].challenges.push(challengeID); 
 
     // Locks tokens for listing during challenge
     listings[listingHash].stake -= _stakeAmount;
