@@ -14,6 +14,8 @@ contract Registry {
   event Unlisted(bytes32 listing);
   event ChallengeApproved(uint challengeID);
   event ChallengeDenied(uint challengeID);
+  event Increased(bytes32 listing, uint increasedBy, uint newDeposit);
+  event Decreased(bytes32 listing, uint decreasedBy, uint newDeposit);
 
   struct Listing {
     bool whitelisted;       // Should the data appear on the listing or not
@@ -37,7 +39,9 @@ contract Registry {
 
   // Global Variables
   EIP20 token;
-  uint currentChallengeID;
+  uint currentChallengeID = 0;
+  uint minEnlistStakeAmount = 10;
+  uint minChallengeStakeAmount = 5;
 
   /**
   @dev Contructor
@@ -61,7 +65,7 @@ contract Registry {
   function enlist(bytes32 _listing, uint _stakeAmount, string _target) external {
     // Stake must be above a certain amount
     // TODO: make minStakeAmount a config var
-    require(_stakeAmount >= 10);
+    require(_stakeAmount >= minEnlistStakeAmount);
 
     // Transfers tokens from user to Registry contract
     require(token.transferFrom(msg.sender, this, _stakeAmount));
@@ -107,16 +111,16 @@ contract Registry {
   @param _listing     The listing of a user's application/listing
   @param _stakeAmount The number of ERC20 tokens to increase a user's unstaked deposit
   */
-  // function increase(bytes32 _listing, uint _stakeAmount) external {
-  //   Listing storage listing = listings[_listing];
+  function increase(bytes32 _listing, uint _stakeAmount) external {
+    Listing storage listing = listings[_listing];
 
-  //   require(listing.owner == msg.sender);
-  //   require(token.transferFrom(msg.sender, this, _stakeAmount));
+    require(listing.owner == msg.sender);
+    require(token.transferFrom(msg.sender, this, _stakeAmount));
 
-  //   listing.stake += _stakeAmount;
+    listing.stake += _stakeAmount;
 
-  //   _Deposited(_listing, _stakeAmount, listing.stake);
-  // }
+    Increased(_listing, _stakeAmount, listing.stake);
+  }
 
   /**
   @notice             Allows the owner of a listing to decrease their unstaked deposit.
@@ -124,19 +128,19 @@ contract Registry {
   @param _listing     The listing of a user's application/listing
   @param _stakeAmount The number of ERC20 tokens to decrease a user's unstaked deposit
   */
-  // function decrease(bytes32 _listing, uint _stakeAmount) external {
-  //   Listing storage listing = listings[_listing];
+  function decrease(bytes32 _listing, uint _stakeAmount) external {
+    Listing storage listing = listings[_listing];
 
-  //   require(listing.owner == msg.sender);
-  //   require(_stakeAmount <= listing.stake);
-  //   require(listing.stake - _stakeAmount >= 10);
+    require(listing.owner == msg.sender);
+    require(_stakeAmount <= listing.stake);
+    require(listing.stake - _stakeAmount >= minEnlistStakeAmount);
 
-  //   require(token.transfer(msg.sender, _stakeAmount));
+    require(token.transfer(msg.sender, _stakeAmount));
 
-  //   listing.stake -= _stakeAmount;
+    listing.stake -= _stakeAmount;
 
-  //   _Withdrawn(_listing, _stakeAmount, listing.stake);
-  // }
+    Decreased(_listing, _stakeAmount, listing.stake);
+  }
 
   /**
   @notice             Starts a challenge for a listing.
@@ -145,19 +149,9 @@ contract Registry {
   @param _stakeAmount The amount the challenger wants to stake.
   */
   function challenge(bytes32 _listing, uint _stakeAmount) external returns (uint challengeID) {
-    require(_stakeAmount >= 5);
+    require(_stakeAmount >= minChallengeStakeAmount);
 
-    bytes32 listingHash = _listing;
-    // Listing storage listing = listings[listingHash];
-
-    // Prevent multiple challenges
-    // require(listing.challengeID == 0 || challenges[listing.challengeID].resolved);
-
-    // if (listing.stake < _stakeAmount) {
-    //   // Not enough tokens, listing auto-delisted
-    //   resetListing(_listing);
-    //   return 0;
-    // }
+    Listing storage listing = listings[_listing];
 
     // Takes tokens from challenger
     require(token.transferFrom(msg.sender, this, _stakeAmount));
@@ -174,10 +168,7 @@ contract Registry {
     });
 
     // Add challenge id to the right listing
-    listings[_listing].challenges.push(challengeID); 
-
-    // Locks tokens for listing during challenge
-    listings[listingHash].stake -= _stakeAmount;
+    listing.challenges.push(challengeID); 
 
     Challenged(_listing, _stakeAmount, challengeID);
     return challengeID;

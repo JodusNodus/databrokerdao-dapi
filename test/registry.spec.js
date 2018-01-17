@@ -73,4 +73,91 @@ contract('Registry', accounts => {
       assert.isFalse(listing[0])
     })
   })
+
+  describe('Function: increase', async () => {
+    const [seller] = accounts
+
+    it('should increase the stake for the listing', async () => {
+      const registry = await Registry.deployed()
+
+      // Enlist before we can unlist
+      await registry.enlist('3', '10', 'blablabla')
+
+      const tx = await registry.increase('3', '10')
+
+      // Check if event was emitted
+      testEvent(tx, 'Increased', {
+        listing:
+          '0x3000000000000000000000000000000000000000000000000000000000000000',
+        increasedBy: '10',
+        newDeposit: '20',
+      })
+    })
+  })
+
+  describe('Function: decrease', async () => {
+    const [seller] = accounts
+
+    it('should decrease the stake for the listing as when stake is still the minimum stake', async () => {
+      const registry = await Registry.deployed()
+
+      // Enlist before we can unlist
+      await registry.enlist('4', '20', 'blablabla')
+
+      const tx = await registry.decrease('4', '10')
+
+      // Check if event was emitted
+      testEvent(tx, 'Decreased', {
+        listing:
+          '0x4000000000000000000000000000000000000000000000000000000000000000',
+        decreasedBy: '10',
+        newDeposit: '10',
+      })
+    })
+
+    it('should not decrease when stake amount would go beneath minimum stake', async () => {
+      const registry = await Registry.deployed()
+
+      // Enlist before we can unlist
+      await registry.enlist('5', '10', 'blablabla')
+
+      try {
+        assert.throws(await registry.decrease('5', '5'), 'invalid opcode')
+      } catch (e) {
+        console.log(e)
+      }
+    })
+  })
+
+  describe('Function: challenge', async () => {
+    const [seller] = accounts
+
+    it('should add a new challenge', async () => {
+      const registry = await Registry.deployed()
+
+      // Enlist before we can unlist
+      await registry.enlist('6', '10', 'blablabla')
+
+      const tx = await registry.challenge('6', '5')
+
+      // Check if event was emitted
+      testEvent(tx, 'Challenged', {
+        listing:
+          '0x6000000000000000000000000000000000000000000000000000000000000000',
+        deposit: '5',
+        challengeID: '1',
+      })
+
+      // Check if listing is updated
+      const listing = await registry.listings.call(
+        '0x6000000000000000000000000000000000000000000000000000000000000000'
+      )
+
+      // Check if challenge is updated
+      const challenge = await registry.challenges.call('1')
+
+      console.log(listing)
+      console.log(challenge)
+    })
+  })
 })
