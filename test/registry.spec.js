@@ -119,10 +119,10 @@ contract('Registry', accounts => {
       const registry = await Registry.deployed()
 
       // Enlist before we can unlist
-      await registry.enlist('5', '10', 'blablabla')
+      await registry.enlist('4', '10', 'blablabla')
 
       try {
-        assert.throws(await registry.decrease('5', '5'), 'invalid opcode')
+        assert.throws(await registry.decrease('4', '5'), 'invalid opcode')
       } catch (e) {
         console.log(e)
       }
@@ -132,32 +132,49 @@ contract('Registry', accounts => {
   describe('Function: challenge', async () => {
     const [seller] = accounts
 
-    it('should add a new challenge', async () => {
+    it('should add a new challenge when minimum challenge stake amount is exceeded', async () => {
       const registry = await Registry.deployed()
 
       // Enlist before we can unlist
-      await registry.enlist('6', '10', 'blablabla')
+      await registry.enlist('5', '10', 'blablabla')
 
-      const tx = await registry.challenge('6', '5')
+      const tx = await registry.challenge('5', '5')
 
       // Check if event was emitted
       testEvent(tx, 'Challenged', {
         listing:
-          '0x6000000000000000000000000000000000000000000000000000000000000000',
+          '0x5000000000000000000000000000000000000000000000000000000000000000',
         deposit: '5',
         challengeID: '1',
       })
 
       // Check if listing is updated
       const listing = await registry.listings.call(
-        '0x6000000000000000000000000000000000000000000000000000000000000000'
+        '0x5000000000000000000000000000000000000000000000000000000000000000'
       )
+      assert.equal(listing[4].c[0], 1)
 
       // Check if challenge is updated
       const challenge = await registry.challenges.call('1')
+      assert.equal(challenge[0].seller)
+      assert.isFalse(challenge[1])
+      assert.equal(
+        challenge[3],
+        '0x5000000000000000000000000000000000000000000000000000000000000000'
+      )
+    })
 
-      console.log(listing)
-      console.log(challenge)
+    it('should not add a new challenge when minimum challenge stake amount is not reached', async () => {
+      const registry = await Registry.deployed()
+
+      // Enlist before we can unlist
+      await registry.enlist('6', '10', 'blablabla')
+
+      try {
+        assert.throws(await registry.challenge('6', '2'), 'invalid opcode')
+      } catch (e) {
+        console.log(e)
+      }
     })
   })
 })

@@ -22,13 +22,14 @@ contract Registry {
     address owner;          // Owner of Listing
     uint stake;             // Number of unlocked tokens with potential risk if challenged
     string target;          // Identifier of the data
-    uint[] challenges;      // Array of challengeIDs to this listing
+    uint challenges;        // Number of unresolved challenges on the listing
   }
 
   struct Challenge {
     address challenger;     // Owner of Challenge
     bool resolved;          // Indication of if challenge is resolved
     uint stake;             // Number of tokens at risk for either party during challenge
+    bytes32 listing;        // Listing this challenge was added to
   }
 
   // Maps listingHashes to associated listing data
@@ -71,13 +72,12 @@ contract Registry {
     require(token.transferFrom(msg.sender, this, _stakeAmount));
 
     // Add listing to listings
-    uint[] emptyArray;
     listings[_listing] = Listing({
       whitelisted: true,
       owner: msg.sender,
       stake: _stakeAmount,
       target: _target,
-      challenges: emptyArray
+      challenges: 0
     });
 
     // Event
@@ -96,7 +96,7 @@ contract Registry {
     require(isWhitelisted(_listing));
 
     // Cannot exit during ongoing challenge
-    require(listing.challenges.length == 0);
+    require(listing.challenges == 0);
 
     // Transfers any remaining balance back to the owner
     if (listing.stake > 0)
@@ -164,11 +164,12 @@ contract Registry {
     challenges[challengeID] = Challenge({
       challenger: msg.sender,
       stake: _stakeAmount,
-      resolved: false
+      resolved: false,
+      listing: _listing
     });
 
-    // Add challenge id to the right listing
-    listing.challenges.push(challengeID); 
+    // Increase the number of challenges on the right listing
+    listing.challenges = listing.challenges + 1;
 
     Challenged(_listing, _stakeAmount, challengeID);
     return challengeID;
