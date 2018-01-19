@@ -12,8 +12,8 @@ contract Registry {
   event Enlisted(bytes32 listing, uint deposit, string target);
   event Challenged(bytes32 listing, uint deposit, uint challengeID);
   event Unlisted(bytes32 listing);
-  event ChallengeApproved(uint challengeID);
-  event ChallengeDenied(uint challengeID);
+  event ChallengeApproved(bytes32 listing);
+  event ChallengeDenied(bytes32 listing);
   event Increased(bytes32 listing, uint increasedBy, uint newDeposit);
   event Decreased(bytes32 listing, uint decreasedBy, uint newDeposit);
 
@@ -23,6 +23,7 @@ contract Registry {
     uint stake;             // Number of unlocked tokens with potential risk if challenged
     string target;          // Identifier of the data
     uint challenges;        // Number of unresolved challenges on the listing
+    uint[] challengeIDs;    // Array of the differnt challenge IDs
   }
 
   struct Challenge {
@@ -72,12 +73,14 @@ contract Registry {
     require(token.transferFrom(msg.sender, this, _stakeAmount));
 
     // Add listing to listings
+    uint[] memory empty;
     listings[_listing] = Listing({
       whitelisted: true,
       owner: msg.sender,
       stake: _stakeAmount,
       target: _target,
-      challenges: 0
+      challenges: 0,
+      challengeIDs: empty
     });
 
     // Event
@@ -161,16 +164,19 @@ contract Registry {
     currentChallengeID = challengeID; 
 
     // Add challenge to the challenges mapping
-    challenges[challengeID] = Challenge({
+    Challenge memory challenge = Challenge({
       challenger: msg.sender,
       stake: _stakeAmount,
       resolved: false,
       listing: _listing
     });
+    challenges[challengeID] = challenge;
 
     // Increase the number of challenges on the right listing
     listing.challenges = listing.challenges + 1;
-
+    // Add challengeID to listing
+    listing.challengeIDs.push(challengeID);
+    
     Challenged(_listing, _stakeAmount, challengeID);
     return challengeID;
   }
@@ -178,45 +184,24 @@ contract Registry {
    /**
   @notice             Marks a challenge as resolved.
   @notice             Rewards the winner tokens and either whitelists or de-whitelists the listing.
-  @param _listing     A listing with a challenge that is to be resolved
+  @param _listing   A listing with a challenge that is to be resolved
   */
-  function approveChallenge(bytes32 _listing) external {
-    // bytes32 listingHash = _listing;
-    // uint challengeID = listings[listingHash].challengeID;
+  function approveChallenge(bytes32 _listing) external returns (uint total) {
+    Listing storage listing = listings[_listing];
 
-    // // Calculates the winner's reward,
-    // // which is: (winner's full stake) + (dispensationPct * loser's stake)
-    // uint reward = determineReward(challengeID);
+    // Get all challenges that are unresolved and are linked to this listing
+    for (uint i = 0; i < listing.challengeIDs.length; i + 1) {
+      Challenge memory challenge = challenges[listing.challengeIDs[i]];
+      total = total + challenge.stake;
+    }
 
-    // // Records whether the listing is a listing or an application
-    // bool wasWhitelisted = isWhitelisted(_listing);
+    // Admin should get 10% of the total sum of all challenge stakes + lising stake
+    // Challengers should get a percentage of the total sum of all challenge stakes + lising stake
+    // equal to their share of the total challenge stake
 
-    // // Case: challenge failed
-    // if (voting.isPassed(challengeID)) {
-    //   whitelistApplication(_listing);
-    //   // Unlock stake so that it can be retrieved by the applicant
-    //   listings[listingHash].unstakedDeposit += reward;
-
-    //   _ChallengedFailed(challengeID);
-    //   if (!wasWhitelisted) { _NewListingWhitelisted(_listing); }
-    // } else {
-    //   resetListing(_listing);
-    //   // Transfer the reward to the challenger
-    //   require(token.transfer(challenges[challengeID].challenger, reward));
-
-    //   _ChallengedSucceeded(challengeID);
-    //   if (wasWhitelisted) { _ListingRemoved(_listing); }
-    //   else {
-    //     _ListingAddedRemoved(_listing); 
-    //   }
-    // }
-
-    // // Sets flag on challenge being processed
-    // challenges[challengeID].resolved = true;
-
-    // // Stores the total tokens used for voting by the winning side for reward purposes
-    // challenges[challengeID].totalTokens =
-    //   voting.getTotalNumberOfTokensForWinningOption(challengeID);
+    // Event
+    ChallengeApproved(_listing);
+    return total;
   }
 
    /**
@@ -225,42 +210,24 @@ contract Registry {
   @param _listing     A listing with a challenge that is to be resolved
   */
   function denyChallenge(bytes32 _listing) external {
-    // bytes32 listingHash = _listing;
-    // uint challengeID = listings[listingHash].challengeID;
+    Listing storage listing = listings[_listing];
 
-    // // Calculates the winner's reward,
-    // // which is: (winner's full stake) + (dispensationPct * loser's stake)
-    // uint reward = determineReward(challengeID);
+    // Get all challenges that are unresolved and are linked to this listing
+    
+    // Sum up all stakes for the challenges
+    // Admin should get 10% of the total challenge stake
+    // The remaining 90% should go to the data seller
+  }
 
-    // // Records whether the listing is a listing or an application
-    // bool wasWhitelisted = isWhitelisted(_listing);
-
-    // // Case: challenge failed
-    // if (voting.isPassed(challengeID)) {
-    //   whitelistApplication(_listing);
-    //   // Unlock stake so that it can be retrieved by the applicant
-    //   listings[listingHash].unstakedDeposit += reward;
-
-    //   _ChallengedFailed(challengeID);
-    //   if (!wasWhitelisted) { _NewListingWhitelisted(_listing); }
-    // } else {
-    //   resetListing(_listing);
-    //   // Transfer the reward to the challenger
-    //   require(token.transfer(challenges[challengeID].challenger, reward));
-
-    //   _ChallengedSucceeded(challengeID);
-    //   if (wasWhitelisted) { _ListingRemoved(_listing); }
-    //   else {
-    //     _ListingAddedRemoved(_listing); 
-    //   }
-    // }
-
-    // // Sets flag on challenge being processed
-    // challenges[challengeID].resolved = true;
-
-    // // Stores the total tokens used for voting by the winning side for reward purposes
-    // challenges[challengeID].totalTokens =
-    //   voting.getTotalNumberOfTokensForWinningOption(challengeID);
+  /**
+  @dev      Withdraw all the fund from this contract
+  */
+  function withdraw() public {
+    // uint amount = pendingWithdrawals[msg.sender];
+    // // Remember to zero the pending refund before
+    // // sending to prevent re-entrancy attacks
+    // pendingWithdrawals[msg.sender] = 0;
+    // msg.sender.transfer(amount);
   }
 
 /**
@@ -275,12 +242,8 @@ contract Registry {
   @notice            Returns true if the application/listing has an unresolved challenge
   @param _listing     The listing of a user's listing
   */ 
-  function challengeExists(bytes32 _listing) view public returns (bool) {
-    // bytes32 listingHash = _listing;
-    // uint challengeID = listings[listingHash].challenges[0];
-
-    // return (listings[listingHash].challengeID > 0 && !challenges[challengeID].resolved);
-    return true;
+  function challengeExists(bytes32 _listing) view public returns (bool exists) {
+    return (listings[_listing].challenges > 0);
   }
 
   /**
@@ -289,8 +252,6 @@ contract Registry {
   @param _listing      The listing of an application/listing to be whitelisted
   */
   function whitelistApplication(bytes32 _listing) internal {
-    bytes32 listingHash = _listing;
-
-    listings[listingHash].whitelisted = true;
+    listings[_listing].whitelisted = true;
   }
 }

@@ -177,4 +177,46 @@ contract('Registry', accounts => {
       }
     })
   })
+
+  describe('Function: approveChallenge', async () => {
+    const [seller] = accounts
+
+    it('should approve the challenge and refund the stakes to the right addresses', async () => {
+      const registry = await Registry.deployed()
+
+      // Enlist before we can unlist
+      await registry.enlist('6', '10', 'blablabla')
+      // Add some challenges
+      await registry.challenge('6', '5')
+      await registry.challenge('6', '7')
+
+      const tx = await registry.approveChallenge('6')
+      console.log(tx)
+
+      // Check if event was emitted
+      testEvent(tx, 'ChallengeApproved', {
+        listing:
+          '0x6000000000000000000000000000000000000000000000000000000000000000',
+      })
+
+      // Check if listing is updated
+      const listing = await registry.listings.call(
+        '0x6000000000000000000000000000000000000000000000000000000000000000'
+      )
+      console.log(listing)
+    })
+
+    it('should not add a new challenge when minimum challenge stake amount is not reached', async () => {
+      const registry = await Registry.deployed()
+
+      // Enlist before we can unlist
+      await registry.enlist('6', '10', 'blablabla')
+
+      try {
+        assert.throws(await registry.challenge('6', '2'), 'invalid opcode')
+      } catch (e) {
+        console.log(e)
+      }
+    })
+  })
 })
