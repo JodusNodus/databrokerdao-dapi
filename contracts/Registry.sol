@@ -23,7 +23,8 @@ contract Registry {
     uint stake;             // Number of unlocked tokens with potential risk if challenged
     string target;          // Identifier of the data
     uint challenges;        // Number of unresolved challenges on the listing
-    uint[] challengeIDs;    // Array of the differnt challenge IDs
+    uint[] challengeIDs;    // Array of the different challenge IDs
+    uint totalStake;        // Stake with challenged stake added
   }
 
   struct Challenge {
@@ -42,8 +43,9 @@ contract Registry {
   // Global Variables
   EIP20 token;
   uint currentChallengeID = 0;
-  uint minEnlistStakeAmount = 10;
-  uint minChallengeStakeAmount = 5;
+  uint MIN_ENLIST_AMOUNT = 10;
+  uint MIN_CHALLENGE_AMOUNT = 5;
+  uint ADMIN_PERCENTAGE = 10;
 
   /**
   @dev Contructor
@@ -67,7 +69,7 @@ contract Registry {
   function enlist(bytes32 _listing, uint _stakeAmount, string _target) external {
     // Stake must be above a certain amount
     // TODO: make minStakeAmount a config var
-    require(_stakeAmount >= minEnlistStakeAmount);
+    require(_stakeAmount >= MIN_ENLIST_AMOUNT);
 
     // Transfers tokens from user to Registry contract
     require(token.transferFrom(msg.sender, this, _stakeAmount));
@@ -80,7 +82,8 @@ contract Registry {
       stake: _stakeAmount,
       target: _target,
       challenges: 0,
-      challengeIDs: empty
+      challengeIDs: empty,
+      totalStake: _stakeAmount
     });
 
     // Event
@@ -121,6 +124,7 @@ contract Registry {
     require(token.transferFrom(msg.sender, this, _stakeAmount));
 
     listing.stake += _stakeAmount;
+    listing.totalStake += _stakeAmount;
 
     Increased(_listing, _stakeAmount, listing.stake);
   }
@@ -136,11 +140,13 @@ contract Registry {
 
     require(listing.owner == msg.sender);
     require(_stakeAmount <= listing.stake);
-    require(listing.stake - _stakeAmount >= minEnlistStakeAmount);
+    require(listing.stake - _stakeAmount >= MIN_ENLIST_AMOUNT);
+    require(listing.totalStake - _stakeAmount >= MIN_ENLIST_AMOUNT);
 
     require(token.transfer(msg.sender, _stakeAmount));
 
     listing.stake -= _stakeAmount;
+    listing.totalStake -= _stakeAmount;
 
     Decreased(_listing, _stakeAmount, listing.stake);
   }
@@ -152,7 +158,7 @@ contract Registry {
   @param _stakeAmount The amount the challenger wants to stake.
   */
   function challenge(bytes32 _listing, uint _stakeAmount) external returns (uint challengeID) {
-    require(_stakeAmount >= minChallengeStakeAmount);
+    require(_stakeAmount >= MIN_CHALLENGE_AMOUNT);
 
     Listing storage listing = listings[_listing];
 
@@ -176,6 +182,8 @@ contract Registry {
     listing.challenges = listing.challenges + 1;
     // Add challengeID to listing
     listing.challengeIDs.push(challengeID);
+    // Add to the totalStake on a listing
+    listing.totalStake = listing.totalStake + _stakeAmount;
     
     Challenged(_listing, _stakeAmount, challengeID);
     return challengeID;
@@ -186,22 +194,38 @@ contract Registry {
   @notice             Rewards the winner tokens and either whitelists or de-whitelists the listing.
   @param _listing   A listing with a challenge that is to be resolved
   */
-  function approveChallenge(bytes32 _listing) external returns (uint total) {
+  function approveChallenge(bytes32 _listing) external {
     Listing storage listing = listings[_listing];
 
-    // Get all challenges that are unresolved and are linked to this listing
-    for (uint i = 0; i < listing.challengeIDs.length; i + 1) {
-      Challenge memory challenge = challenges[listing.challengeIDs[i]];
-      total = total + challenge.stake;
-    }
+    uint totalStake = listing.totalStake;
+    uint totalChallengesStake = totalStake - listing.stake;
 
-    // Admin should get 10% of the total sum of all challenge stakes + lising stake
+    // Admin (msg.sender) should get 10% of the total sum of all challenge stakes + lising stake
+    uint adminShare = totalStake * (ADMIN_PERCENTAGE / 100);
+    msg.sender.transfer(adminShare);
+
     // Challengers should get a percentage of the total sum of all challenge stakes + lising stake
     // equal to their share of the total challenge stake
+    // Get all challenges that are unresolved and are linked to this listing, 
+    for (uint i = 0; i < listing.challengeIDs.length; i ++) {
+      Challenge memory challenge = challenges[listing.challengeIDs[i]];
+
+      // Calculate what's left to divide between the challengers
+      uint challengerShare = totalStake - adminShare;
+      // Transfer percentage of challenge
+      challenge.challenger.transfer(challengerShare * (challenge.stake / totalChallengesStake));
+      // Set challenge as resolved
+      challenges[listing.challengeIDs[i]].resolved = true;
+    }
+
+    // Take stake from listing
+    listing.stake = 0;
+    listing.totalStake = 0;
+    // Blacklist listing
+    listing.whitelisted = false;
 
     // Event
     ChallengeApproved(_listing);
-    return total;
   }
 
    /**

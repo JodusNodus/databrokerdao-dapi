@@ -1,7 +1,5 @@
 const Registry = artifacts.require('Registry.sol')
 const Token = artifacts.require('EIP20.sol')
-const DLL = artifacts.require('dll/DLL.sol')
-const AttributeStore = artifacts.require('attrstore/AttributeStore.sol')
 
 const fs = require('fs')
 
@@ -17,8 +15,8 @@ module.exports = (deployer, network, accounts) => {
     return approveRegistryFor(addresses.slice(1))
   }
 
-  deployer.link(DLL, Registry)
-  deployer.link(AttributeStore, Registry)
+  // deployer.link(DLL, Registry)
+  // deployer.link(AttributeStore, Registry)
 
   return deployer
     .then(async () => {

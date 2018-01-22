@@ -28,6 +28,7 @@ contract('Registry', accounts => {
       )
       assert.isTrue(listing[0])
       assert.equal(listing[1], seller)
+      assert.equal(listing[5].c[0], 10)
     })
 
     it('should not allow a seller to enlist sensor data when stake is not high enough', async () => {
@@ -152,7 +153,8 @@ contract('Registry', accounts => {
       const listing = await registry.listings.call(
         '0x5000000000000000000000000000000000000000000000000000000000000000'
       )
-      assert.equal(listing[4].c[0], 1)
+      assert.equal(listing[4].c[0], 1) // number of unresolved challenges
+      assert.equal(listing[5].c[0], 15) // total stake, both initial and challenges
 
       // Check if challenge is updated
       const challenge = await registry.challenges.call('1')
@@ -188,10 +190,9 @@ contract('Registry', accounts => {
       await registry.enlist('6', '10', 'blablabla')
       // Add some challenges
       await registry.challenge('6', '5')
-      await registry.challenge('6', '7')
+      await registry.challenge('6', '10')
 
       const tx = await registry.approveChallenge('6')
-      console.log(tx)
 
       // Check if event was emitted
       testEvent(tx, 'ChallengeApproved', {
@@ -203,20 +204,13 @@ contract('Registry', accounts => {
       const listing = await registry.listings.call(
         '0x6000000000000000000000000000000000000000000000000000000000000000'
       )
-      console.log(listing)
-    })
+      assert.isFalse(listing[0])
+      assert.equal(listing[2].c[0], 0)
+      assert.equal(listing[5].c[0], 0)
 
-    it('should not add a new challenge when minimum challenge stake amount is not reached', async () => {
-      const registry = await Registry.deployed()
-
-      // Enlist before we can unlist
-      await registry.enlist('6', '10', 'blablabla')
-
-      try {
-        assert.throws(await registry.challenge('6', '2'), 'invalid opcode')
-      } catch (e) {
-        console.log(e)
-      }
+      // Check if challenge is updated
+      const challenge = await registry.challenges.call('3')
+      assert.isTrue(challenge[1])
     })
   })
 })
