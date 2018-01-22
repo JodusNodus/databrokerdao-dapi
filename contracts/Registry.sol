@@ -236,22 +236,34 @@ contract Registry {
   function denyChallenge(bytes32 _listing) external {
     Listing storage listing = listings[_listing];
 
-    // Get all challenges that are unresolved and are linked to this listing
-    
-    // Sum up all stakes for the challenges
-    // Admin should get 10% of the total challenge stake
-    // The remaining 90% should go to the data seller
+    uint totalStake = listing.totalStake;
+
+    // Admin (msg.sender) should get 10% of the total sum of all challenge stakes + lising stake
+    uint adminShare = totalStake * (ADMIN_PERCENTAGE / 100);
+    msg.sender.transfer(adminShare);
+
+    // Transfer the rest of the stake to the data owner
+    // listing.owner.transfer(totalStake - adminShare);
+
+    // Get all challenges that are unresolved and are linked to this listing, 
+    for (uint i = 0; i < listing.challengeIDs.length; i ++) {
+      // Set challenge as resolved
+      challenges[listing.challengeIDs[i]].resolved = true;
+    }
+
+    // Remove challenges on the listing
+    listing.challenges = 0;    
+
+    // Event
+    ChallengeDenied(_listing);
   }
 
   /**
   @dev      Withdraw all the fund from this contract
   */
-  function withdraw() public {
-    // uint amount = pendingWithdrawals[msg.sender];
-    // // Remember to zero the pending refund before
-    // // sending to prevent re-entrancy attacks
-    // pendingWithdrawals[msg.sender] = 0;
-    // msg.sender.transfer(amount);
+  function withdraw() external {
+    // TODO: only certain role can do this!
+    msg.sender.transfer(this.balance);
   }
 
 /**

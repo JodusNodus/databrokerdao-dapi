@@ -213,4 +213,38 @@ contract('Registry', accounts => {
       assert.isTrue(challenge[1])
     })
   })
+
+  describe('Function: denyChallenge', async () => {
+    const [seller] = accounts
+
+    it('should deny the challenge and refund the stakes to the right addresses', async () => {
+      const registry = await Registry.deployed()
+
+      // Enlist before we can unlist
+      await registry.enlist('7', '10', 'blablabla')
+      // Add some challenges
+      await registry.challenge('7', '5')
+      await registry.challenge('7', '10')
+
+      const tx = await registry.denyChallenge('7')
+
+      // Check if event was emitted
+      testEvent(tx, 'ChallengeDenied', {
+        listing:
+          '0x7000000000000000000000000000000000000000000000000000000000000000',
+      })
+
+      // Check if listing is updated
+      const listing = await registry.listings.call(
+        '0x7000000000000000000000000000000000000000000000000000000000000000'
+      )
+      console.log(listing)
+      // assert.isTrue(listing[0])
+      // assert.equal(listing[4].c[0], 0)
+
+      // Check if challenge is updated
+      const challenge = await registry.challenges.call('4')
+      // assert.isTrue(challenge[1])
+    })
+  })
 })
