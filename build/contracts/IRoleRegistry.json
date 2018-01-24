@@ -1,0 +1,507 @@
+{
+  "contractName": "IRoleRegistry",
+  "abi": [
+    {
+      "constant": false,
+      "inputs": [
+        {
+          "name": "_address",
+          "type": "address"
+        }
+      ],
+      "name": "discharge",
+      "outputs": [],
+      "payable": false,
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "constant": false,
+      "inputs": [
+        {
+          "name": "_address",
+          "type": "address"
+        }
+      ],
+      "name": "designate",
+      "outputs": [],
+      "payable": false,
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "constant": true,
+      "inputs": [
+        {
+          "name": "_address",
+          "type": "address"
+        }
+      ],
+      "name": "hasRole",
+      "outputs": [
+        {
+          "name": "hasTheRole",
+          "type": "bool"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": false,
+          "name": "_address",
+          "type": "address"
+        }
+      ],
+      "name": "Designated",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": false,
+          "name": "_address",
+          "type": "address"
+        }
+      ],
+      "name": "Discharged",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": false,
+          "name": "_address",
+          "type": "address"
+        }
+      ],
+      "name": "RoleRegistryCreated",
+      "type": "event"
+    }
+  ],
+  "bytecode": "0x",
+  "deployedBytecode": "0x",
+  "sourceMap": "",
+  "deployedSourceMap": "",
+  "source": "pragma solidity ^0.4.17;\n\n\n/**\n * @title RoleRegistry\n * @dev The RoleRegistry contract defines the methods and data structures to\n * record if addresses have certain roles or not.\n */\ncontract IRoleRegistry {\n\n  event Designated(address _address);\n  event Discharged(address _address);\n  event RoleRegistryCreated(address _address);\n\n\n  /**\n   * @dev Checks if an address has a certain role\n   * @param _address The address to check for the role.\n   * @return A boolean that is True if the address has the role.\n   */\n  function hasRole(address _address) public view returns (bool hasTheRole);\n\n  /**\n   * @dev Gives the role to an address\n   * @param _address The address to designate the role to.\n   */\n  function designate(address _address) public;\n\n  /**\n   * @dev Removes the role from an address\n   * @param _address The address to discharge fromn the role.\n   */\n  function discharge(address _address) public;\n\n}\n",
+  "sourcePath": "@settlemint/solidity-mint/contracts/authentication/interfaces/IRoleRegistry.sol",
+  "ast": {
+    "attributes": {
+      "absolutePath": "@settlemint/solidity-mint/contracts/authentication/interfaces/IRoleRegistry.sol",
+      "exportedSymbols": {
+        "IRoleRegistry": [
+          1562
+        ]
+      }
+    },
+    "children": [
+      {
+        "attributes": {
+          "literals": [
+            "solidity",
+            "^",
+            "0.4",
+            ".17"
+          ]
+        },
+        "id": 1532,
+        "name": "PragmaDirective",
+        "src": "0:24:7"
+      },
+      {
+        "attributes": {
+          "baseContracts": [
+            null
+          ],
+          "contractDependencies": [
+            null
+          ],
+          "contractKind": "contract",
+          "documentation": "@title RoleRegistry\n@dev The RoleRegistry contract defines the methods and data structures to\nrecord if addresses have certain roles or not.",
+          "fullyImplemented": false,
+          "linearizedBaseContracts": [
+            1562
+          ],
+          "name": "IRoleRegistry",
+          "scope": 1563
+        },
+        "children": [
+          {
+            "attributes": {
+              "anonymous": false,
+              "name": "Designated"
+            },
+            "children": [
+              {
+                "children": [
+                  {
+                    "attributes": {
+                      "constant": false,
+                      "indexed": false,
+                      "name": "_address",
+                      "scope": 1536,
+                      "stateVariable": false,
+                      "storageLocation": "default",
+                      "type": "address",
+                      "value": null,
+                      "visibility": "internal"
+                    },
+                    "children": [
+                      {
+                        "attributes": {
+                          "name": "address",
+                          "type": "address"
+                        },
+                        "id": 1533,
+                        "name": "ElementaryTypeName",
+                        "src": "230:7:7"
+                      }
+                    ],
+                    "id": 1534,
+                    "name": "VariableDeclaration",
+                    "src": "230:16:7"
+                  }
+                ],
+                "id": 1535,
+                "name": "ParameterList",
+                "src": "229:18:7"
+              }
+            ],
+            "id": 1536,
+            "name": "EventDefinition",
+            "src": "213:35:7"
+          },
+          {
+            "attributes": {
+              "anonymous": false,
+              "name": "Discharged"
+            },
+            "children": [
+              {
+                "children": [
+                  {
+                    "attributes": {
+                      "constant": false,
+                      "indexed": false,
+                      "name": "_address",
+                      "scope": 1540,
+                      "stateVariable": false,
+                      "storageLocation": "default",
+                      "type": "address",
+                      "value": null,
+                      "visibility": "internal"
+                    },
+                    "children": [
+                      {
+                        "attributes": {
+                          "name": "address",
+                          "type": "address"
+                        },
+                        "id": 1537,
+                        "name": "ElementaryTypeName",
+                        "src": "268:7:7"
+                      }
+                    ],
+                    "id": 1538,
+                    "name": "VariableDeclaration",
+                    "src": "268:16:7"
+                  }
+                ],
+                "id": 1539,
+                "name": "ParameterList",
+                "src": "267:18:7"
+              }
+            ],
+            "id": 1540,
+            "name": "EventDefinition",
+            "src": "251:35:7"
+          },
+          {
+            "attributes": {
+              "anonymous": false,
+              "name": "RoleRegistryCreated"
+            },
+            "children": [
+              {
+                "children": [
+                  {
+                    "attributes": {
+                      "constant": false,
+                      "indexed": false,
+                      "name": "_address",
+                      "scope": 1544,
+                      "stateVariable": false,
+                      "storageLocation": "default",
+                      "type": "address",
+                      "value": null,
+                      "visibility": "internal"
+                    },
+                    "children": [
+                      {
+                        "attributes": {
+                          "name": "address",
+                          "type": "address"
+                        },
+                        "id": 1541,
+                        "name": "ElementaryTypeName",
+                        "src": "315:7:7"
+                      }
+                    ],
+                    "id": 1542,
+                    "name": "VariableDeclaration",
+                    "src": "315:16:7"
+                  }
+                ],
+                "id": 1543,
+                "name": "ParameterList",
+                "src": "314:18:7"
+              }
+            ],
+            "id": 1544,
+            "name": "EventDefinition",
+            "src": "289:44:7"
+          },
+          {
+            "attributes": {
+              "body": null,
+              "constant": true,
+              "implemented": false,
+              "isConstructor": false,
+              "modifiers": [
+                null
+              ],
+              "name": "hasRole",
+              "payable": false,
+              "scope": 1562,
+              "stateMutability": "view",
+              "superFunction": null,
+              "visibility": "public"
+            },
+            "children": [
+              {
+                "children": [
+                  {
+                    "attributes": {
+                      "constant": false,
+                      "name": "_address",
+                      "scope": 1551,
+                      "stateVariable": false,
+                      "storageLocation": "default",
+                      "type": "address",
+                      "value": null,
+                      "visibility": "internal"
+                    },
+                    "children": [
+                      {
+                        "attributes": {
+                          "name": "address",
+                          "type": "address"
+                        },
+                        "id": 1545,
+                        "name": "ElementaryTypeName",
+                        "src": "538:7:7"
+                      }
+                    ],
+                    "id": 1546,
+                    "name": "VariableDeclaration",
+                    "src": "538:16:7"
+                  }
+                ],
+                "id": 1547,
+                "name": "ParameterList",
+                "src": "537:18:7"
+              },
+              {
+                "children": [
+                  {
+                    "attributes": {
+                      "constant": false,
+                      "name": "hasTheRole",
+                      "scope": 1551,
+                      "stateVariable": false,
+                      "storageLocation": "default",
+                      "type": "bool",
+                      "value": null,
+                      "visibility": "internal"
+                    },
+                    "children": [
+                      {
+                        "attributes": {
+                          "name": "bool",
+                          "type": "bool"
+                        },
+                        "id": 1548,
+                        "name": "ElementaryTypeName",
+                        "src": "577:4:7"
+                      }
+                    ],
+                    "id": 1549,
+                    "name": "VariableDeclaration",
+                    "src": "577:15:7"
+                  }
+                ],
+                "id": 1550,
+                "name": "ParameterList",
+                "src": "576:17:7"
+              }
+            ],
+            "id": 1551,
+            "name": "FunctionDefinition",
+            "src": "521:73:7"
+          },
+          {
+            "attributes": {
+              "body": null,
+              "constant": false,
+              "implemented": false,
+              "isConstructor": false,
+              "modifiers": [
+                null
+              ],
+              "name": "designate",
+              "payable": false,
+              "scope": 1562,
+              "stateMutability": "nonpayable",
+              "superFunction": null,
+              "visibility": "public"
+            },
+            "children": [
+              {
+                "children": [
+                  {
+                    "attributes": {
+                      "constant": false,
+                      "name": "_address",
+                      "scope": 1556,
+                      "stateVariable": false,
+                      "storageLocation": "default",
+                      "type": "address",
+                      "value": null,
+                      "visibility": "internal"
+                    },
+                    "children": [
+                      {
+                        "attributes": {
+                          "name": "address",
+                          "type": "address"
+                        },
+                        "id": 1552,
+                        "name": "ElementaryTypeName",
+                        "src": "727:7:7"
+                      }
+                    ],
+                    "id": 1553,
+                    "name": "VariableDeclaration",
+                    "src": "727:16:7"
+                  }
+                ],
+                "id": 1554,
+                "name": "ParameterList",
+                "src": "726:18:7"
+              },
+              {
+                "attributes": {
+                  "parameters": [
+                    null
+                  ]
+                },
+                "children": [],
+                "id": 1555,
+                "name": "ParameterList",
+                "src": "751:0:7"
+              }
+            ],
+            "id": 1556,
+            "name": "FunctionDefinition",
+            "src": "708:44:7"
+          },
+          {
+            "attributes": {
+              "body": null,
+              "constant": false,
+              "implemented": false,
+              "isConstructor": false,
+              "modifiers": [
+                null
+              ],
+              "name": "discharge",
+              "payable": false,
+              "scope": 1562,
+              "stateMutability": "nonpayable",
+              "superFunction": null,
+              "visibility": "public"
+            },
+            "children": [
+              {
+                "children": [
+                  {
+                    "attributes": {
+                      "constant": false,
+                      "name": "_address",
+                      "scope": 1561,
+                      "stateVariable": false,
+                      "storageLocation": "default",
+                      "type": "address",
+                      "value": null,
+                      "visibility": "internal"
+                    },
+                    "children": [
+                      {
+                        "attributes": {
+                          "name": "address",
+                          "type": "address"
+                        },
+                        "id": 1557,
+                        "name": "ElementaryTypeName",
+                        "src": "892:7:7"
+                      }
+                    ],
+                    "id": 1558,
+                    "name": "VariableDeclaration",
+                    "src": "892:16:7"
+                  }
+                ],
+                "id": 1559,
+                "name": "ParameterList",
+                "src": "891:18:7"
+              },
+              {
+                "attributes": {
+                  "parameters": [
+                    null
+                  ]
+                },
+                "children": [],
+                "id": 1560,
+                "name": "ParameterList",
+                "src": "916:0:7"
+              }
+            ],
+            "id": 1561,
+            "name": "FunctionDefinition",
+            "src": "873:44:7"
+          }
+        ],
+        "id": 1562,
+        "name": "ContractDefinition",
+        "src": "185:735:7"
+      }
+    ],
+    "id": 1563,
+    "name": "SourceUnit",
+    "src": "0:921:7"
+  },
+  "compiler": {
+    "name": "solc",
+    "version": "0.4.18+commit.9cf6e910.Emscripten.clang"
+  },
+  "networks": {},
+  "schemaVersion": "1.0.1",
+  "updatedAt": "2018-01-24T15:50:03.038Z"
+}

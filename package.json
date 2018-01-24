@@ -10,7 +10,7 @@
     "node": ">=8.7.0"
   },
   "scripts": {
-    "test": "solidity-coverage || exit 0",
+    "test": "rm -r build/; mint compile --all; mint migrate --reset; mint test;",
     "lint": "npm run solium -- --dir contracts --fix",
     "watch": "nodemon --watch . --exec npm run test",
     "semantic-release": "semantic-release pre && npm publish && semantic-release post",
@@ -52,7 +52,7 @@
   },
   "dependencies": {
     "@settlemint/lib-crypto": "^4.5.0",
-    "@settlemint/solidity-mint": "^1.6.10",
+    "@settlemint/solidity-mint": "^1.6.11",
     "bignumber.js": "5.0.0",
     "bn.js": "4.11.8",
     "ethereumjs-abi": "0.6.5",

@@ -1,0 +1,384 @@
+{
+  "contractName": "MetaDataContainer",
+  "abi": [
+    {
+      "constant": true,
+      "inputs": [],
+      "name": "metadata",
+      "outputs": [
+        {
+          "name": "",
+          "type": "string"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "constant": true,
+      "inputs": [],
+      "name": "gateKeeper",
+      "outputs": [
+        {
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "constant": false,
+      "inputs": [
+        {
+          "name": "ipfsHash",
+          "type": "string"
+        }
+      ],
+      "name": "updateMetaData",
+      "outputs": [],
+      "payable": false,
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "constant": true,
+      "inputs": [],
+      "name": "UPDATE_METADATA_ROLE",
+      "outputs": [
+        {
+          "name": "",
+          "type": "bytes32"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "view",
+      "type": "function"
+    }
+  ],
+  "bytecode": "0x",
+  "deployedBytecode": "0x",
+  "sourceMap": "",
+  "deployedSourceMap": "",
+  "source": "pragma solidity ^0.4.17;\n\nimport \"../../authentication/Secured.sol\";\n\n\ncontract MetaDataContainer is Secured {\n\n  bytes32 constant public UPDATE_METADATA_ROLE = \"UPDATE_METADATA_ROLE\";\n\n  string public metadata;\n\n  function updateMetaData(string ipfsHash) public auth(UPDATE_METADATA_ROLE) {\n    metadata = ipfsHash;\n  }\n\n}\n",
+  "sourcePath": "@settlemint/solidity-mint/contracts/utility/metadata/MetaDataContainer.sol",
+  "ast": {
+    "attributes": {
+      "absolutePath": "@settlemint/solidity-mint/contracts/utility/metadata/MetaDataContainer.sol",
+      "exportedSymbols": {
+        "MetaDataContainer": [
+          2845
+        ]
+      }
+    },
+    "children": [
+      {
+        "attributes": {
+          "literals": [
+            "solidity",
+            "^",
+            "0.4",
+            ".17"
+          ]
+        },
+        "id": 2823,
+        "name": "PragmaDirective",
+        "src": "0:24:15"
+      },
+      {
+        "attributes": {
+          "SourceUnit": 1531,
+          "absolutePath": "@settlemint/solidity-mint/contracts/authentication/Secured.sol",
+          "file": "../../authentication/Secured.sol",
+          "scope": 2846,
+          "symbolAliases": [
+            null
+          ],
+          "unitAlias": ""
+        },
+        "id": 2824,
+        "name": "ImportDirective",
+        "src": "26:42:15"
+      },
+      {
+        "attributes": {
+          "contractDependencies": [
+            1530
+          ],
+          "contractKind": "contract",
+          "documentation": null,
+          "fullyImplemented": false,
+          "linearizedBaseContracts": [
+            2845,
+            1530
+          ],
+          "name": "MetaDataContainer",
+          "scope": 2846
+        },
+        "children": [
+          {
+            "attributes": {
+              "arguments": [
+                null
+              ]
+            },
+            "children": [
+              {
+                "attributes": {
+                  "contractScope": null,
+                  "name": "Secured",
+                  "referencedDeclaration": 1530,
+                  "type": "contract Secured"
+                },
+                "id": 2825,
+                "name": "UserDefinedTypeName",
+                "src": "101:7:15"
+              }
+            ],
+            "id": 2826,
+            "name": "InheritanceSpecifier",
+            "src": "101:7:15"
+          },
+          {
+            "attributes": {
+              "constant": true,
+              "name": "UPDATE_METADATA_ROLE",
+              "scope": 2845,
+              "stateVariable": true,
+              "storageLocation": "default",
+              "type": "bytes32",
+              "visibility": "public"
+            },
+            "children": [
+              {
+                "attributes": {
+                  "name": "bytes32",
+                  "type": "bytes32"
+                },
+                "id": 2827,
+                "name": "ElementaryTypeName",
+                "src": "114:7:15"
+              },
+              {
+                "attributes": {
+                  "argumentTypes": null,
+                  "hexvalue": "5550444154455f4d455441444154415f524f4c45",
+                  "isConstant": false,
+                  "isLValue": false,
+                  "isPure": true,
+                  "lValueRequested": false,
+                  "subdenomination": null,
+                  "token": "string",
+                  "type": "literal_string \"UPDATE_METADATA_ROLE\"",
+                  "value": "UPDATE_METADATA_ROLE"
+                },
+                "id": 2828,
+                "name": "Literal",
+                "src": "161:22:15"
+              }
+            ],
+            "id": 2829,
+            "name": "VariableDeclaration",
+            "src": "114:69:15"
+          },
+          {
+            "attributes": {
+              "constant": false,
+              "name": "metadata",
+              "scope": 2845,
+              "stateVariable": true,
+              "storageLocation": "default",
+              "type": "string storage ref",
+              "value": null,
+              "visibility": "public"
+            },
+            "children": [
+              {
+                "attributes": {
+                  "name": "string",
+                  "type": "string storage pointer"
+                },
+                "id": 2830,
+                "name": "ElementaryTypeName",
+                "src": "188:6:15"
+              }
+            ],
+            "id": 2831,
+            "name": "VariableDeclaration",
+            "src": "188:22:15"
+          },
+          {
+            "attributes": {
+              "constant": false,
+              "implemented": true,
+              "isConstructor": false,
+              "name": "updateMetaData",
+              "payable": false,
+              "scope": 2845,
+              "stateMutability": "nonpayable",
+              "superFunction": null,
+              "visibility": "public"
+            },
+            "children": [
+              {
+                "children": [
+                  {
+                    "attributes": {
+                      "constant": false,
+                      "name": "ipfsHash",
+                      "scope": 2844,
+                      "stateVariable": false,
+                      "storageLocation": "default",
+                      "type": "string memory",
+                      "value": null,
+                      "visibility": "internal"
+                    },
+                    "children": [
+                      {
+                        "attributes": {
+                          "name": "string",
+                          "type": "string storage pointer"
+                        },
+                        "id": 2832,
+                        "name": "ElementaryTypeName",
+                        "src": "239:6:15"
+                      }
+                    ],
+                    "id": 2833,
+                    "name": "VariableDeclaration",
+                    "src": "239:15:15"
+                  }
+                ],
+                "id": 2834,
+                "name": "ParameterList",
+                "src": "238:17:15"
+              },
+              {
+                "attributes": {
+                  "parameters": [
+                    null
+                  ]
+                },
+                "children": [],
+                "id": 2838,
+                "name": "ParameterList",
+                "src": "290:0:15"
+              },
+              {
+                "children": [
+                  {
+                    "attributes": {
+                      "argumentTypes": null,
+                      "overloadedDeclarations": [
+                        null
+                      ],
+                      "referencedDeclaration": 1492,
+                      "type": "modifier (bytes32)",
+                      "value": "auth"
+                    },
+                    "id": 2835,
+                    "name": "Identifier",
+                    "src": "263:4:15"
+                  },
+                  {
+                    "attributes": {
+                      "argumentTypes": null,
+                      "overloadedDeclarations": [
+                        null
+                      ],
+                      "referencedDeclaration": 2829,
+                      "type": "bytes32",
+                      "value": "UPDATE_METADATA_ROLE"
+                    },
+                    "id": 2836,
+                    "name": "Identifier",
+                    "src": "268:20:15"
+                  }
+                ],
+                "id": 2837,
+                "name": "ModifierInvocation",
+                "src": "263:26:15"
+              },
+              {
+                "children": [
+                  {
+                    "children": [
+                      {
+                        "attributes": {
+                          "argumentTypes": null,
+                          "isConstant": false,
+                          "isLValue": false,
+                          "isPure": false,
+                          "lValueRequested": false,
+                          "operator": "=",
+                          "type": "string storage ref"
+                        },
+                        "children": [
+                          {
+                            "attributes": {
+                              "argumentTypes": null,
+                              "overloadedDeclarations": [
+                                null
+                              ],
+                              "referencedDeclaration": 2831,
+                              "type": "string storage ref",
+                              "value": "metadata"
+                            },
+                            "id": 2839,
+                            "name": "Identifier",
+                            "src": "296:8:15"
+                          },
+                          {
+                            "attributes": {
+                              "argumentTypes": null,
+                              "overloadedDeclarations": [
+                                null
+                              ],
+                              "referencedDeclaration": 2833,
+                              "type": "string memory",
+                              "value": "ipfsHash"
+                            },
+                            "id": 2840,
+                            "name": "Identifier",
+                            "src": "307:8:15"
+                          }
+                        ],
+                        "id": 2841,
+                        "name": "Assignment",
+                        "src": "296:19:15"
+                      }
+                    ],
+                    "id": 2842,
+                    "name": "ExpressionStatement",
+                    "src": "296:19:15"
+                  }
+                ],
+                "id": 2843,
+                "name": "Block",
+                "src": "290:30:15"
+              }
+            ],
+            "id": 2844,
+            "name": "FunctionDefinition",
+            "src": "215:105:15"
+          }
+        ],
+        "id": 2845,
+        "name": "ContractDefinition",
+        "src": "71:252:15"
+      }
+    ],
+    "id": 2846,
+    "name": "SourceUnit",
+    "src": "0:324:15"
+  },
+  "compiler": {
+    "name": "solc",
+    "version": "0.4.18+commit.9cf6e910.Emscripten.clang"
+  },
+  "networks": {},
+  "schemaVersion": "1.0.1",
+  "updatedAt": "2018-01-24T15:50:03.043Z"
+}

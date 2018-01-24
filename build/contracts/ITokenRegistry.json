@@ -1,0 +1,769 @@
+{
+  "contractName": "ITokenRegistry",
+  "abi": [
+    {
+      "constant": true,
+      "inputs": [],
+      "name": "metadata",
+      "outputs": [
+        {
+          "name": "",
+          "type": "string"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "constant": false,
+      "inputs": [
+        {
+          "name": "_cachedAddress",
+          "type": "address"
+        },
+        {
+          "name": "_cachedBytes32",
+          "type": "bytes32"
+        },
+        {
+          "name": "_cachedUint256",
+          "type": "uint256"
+        }
+      ],
+      "name": "invalidateCache",
+      "outputs": [],
+      "payable": false,
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "constant": true,
+      "inputs": [],
+      "name": "gateKeeper",
+      "outputs": [
+        {
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "constant": false,
+      "inputs": [
+        {
+          "name": "ipfsHash",
+          "type": "string"
+        }
+      ],
+      "name": "updateMetaData",
+      "outputs": [],
+      "payable": false,
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "constant": true,
+      "inputs": [],
+      "name": "LIST_TOKEN_ROLE",
+      "outputs": [
+        {
+          "name": "",
+          "type": "bytes32"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "constant": false,
+      "inputs": [
+        {
+          "name": "_name",
+          "type": "bytes32"
+        },
+        {
+          "name": "_token",
+          "type": "address"
+        }
+      ],
+      "name": "addToken",
+      "outputs": [],
+      "payable": false,
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "constant": true,
+      "inputs": [],
+      "name": "getIndexLength",
+      "outputs": [
+        {
+          "name": "length",
+          "type": "uint256"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "constant": true,
+      "inputs": [],
+      "name": "UPDATE_METADATA_ROLE",
+      "outputs": [
+        {
+          "name": "",
+          "type": "bytes32"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "name": "_gateKeeper",
+          "type": "address"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "nonpayable",
+      "type": "constructor"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "name": "key",
+          "type": "address"
+        }
+      ],
+      "name": "AddressCacheInvalidated",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "name": "key",
+          "type": "bytes32"
+        }
+      ],
+      "name": "Bytes32CacheInvalidated",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "name": "key",
+          "type": "uint256"
+        }
+      ],
+      "name": "Uint256CacheInvalidated",
+      "type": "event"
+    }
+  ],
+  "bytecode": "0x",
+  "deployedBytecode": "0x",
+  "sourceMap": "",
+  "deployedSourceMap": "",
+  "source": "pragma solidity ^0.4.17;\n\nimport \"../../../utility/syncing/Syncable.sol\";\nimport \"../../../authentication/Secured.sol\";\nimport \"../../../utility/caching/Cacher.sol\";\nimport \"./IToken.sol\";\nimport \"../../../utility/metadata/MetaDataContainer.sol\";\n\n\ncontract ITokenRegistry is Secured, Syncable, Cacher, MetaDataContainer {\n\n  bytes32 constant public LIST_TOKEN_ROLE = \"LIST_TOKEN_ROLE\";\n\n  mapping(bytes32 => IToken) internal tokens;\n  bytes32[] internal tokenIndex;\n\n  function ITokenRegistry(address _gateKeeper) Secured(_gateKeeper) public {}\n\n  function addToken(bytes32 _name, address _token) auth(LIST_TOKEN_ROLE) public;\n}\n",
+  "sourcePath": "@settlemint/solidity-mint/contracts/marketplaces/tokensystem/interfaces/ITokenRegistry.sol",
+  "ast": {
+    "attributes": {
+      "absolutePath": "@settlemint/solidity-mint/contracts/marketplaces/tokensystem/interfaces/ITokenRegistry.sol",
+      "exportedSymbols": {
+        "ITokenRegistry": [
+          2739
+        ]
+      }
+    },
+    "children": [
+      {
+        "attributes": {
+          "literals": [
+            "solidity",
+            "^",
+            "0.4",
+            ".17"
+          ]
+        },
+        "id": 2696,
+        "name": "PragmaDirective",
+        "src": "0:24:11"
+      },
+      {
+        "attributes": {
+          "SourceUnit": 2854,
+          "absolutePath": "@settlemint/solidity-mint/contracts/utility/syncing/Syncable.sol",
+          "file": "../../../utility/syncing/Syncable.sol",
+          "scope": 2740,
+          "symbolAliases": [
+            null
+          ],
+          "unitAlias": ""
+        },
+        "id": 2697,
+        "name": "ImportDirective",
+        "src": "26:47:11"
+      },
+      {
+        "attributes": {
+          "SourceUnit": 1531,
+          "absolutePath": "@settlemint/solidity-mint/contracts/authentication/Secured.sol",
+          "file": "../../../authentication/Secured.sol",
+          "scope": 2740,
+          "symbolAliases": [
+            null
+          ],
+          "unitAlias": ""
+        },
+        "id": 2698,
+        "name": "ImportDirective",
+        "src": "74:45:11"
+      },
+      {
+        "attributes": {
+          "SourceUnit": 2822,
+          "absolutePath": "@settlemint/solidity-mint/contracts/utility/caching/Cacher.sol",
+          "file": "../../../utility/caching/Cacher.sol",
+          "scope": 2740,
+          "symbolAliases": [
+            null
+          ],
+          "unitAlias": ""
+        },
+        "id": 2699,
+        "name": "ImportDirective",
+        "src": "120:45:11"
+      },
+      {
+        "attributes": {
+          "SourceUnit": 2695,
+          "absolutePath": "@settlemint/solidity-mint/contracts/marketplaces/tokensystem/interfaces/IToken.sol",
+          "file": "./IToken.sol",
+          "scope": 2740,
+          "symbolAliases": [
+            null
+          ],
+          "unitAlias": ""
+        },
+        "id": 2700,
+        "name": "ImportDirective",
+        "src": "166:22:11"
+      },
+      {
+        "attributes": {
+          "SourceUnit": 2846,
+          "absolutePath": "@settlemint/solidity-mint/contracts/utility/metadata/MetaDataContainer.sol",
+          "file": "../../../utility/metadata/MetaDataContainer.sol",
+          "scope": 2740,
+          "symbolAliases": [
+            null
+          ],
+          "unitAlias": ""
+        },
+        "id": 2701,
+        "name": "ImportDirective",
+        "src": "189:57:11"
+      },
+      {
+        "attributes": {
+          "contractDependencies": [
+            1530,
+            2821,
+            2845,
+            2853
+          ],
+          "contractKind": "contract",
+          "documentation": null,
+          "fullyImplemented": false,
+          "linearizedBaseContracts": [
+            2739,
+            2845,
+            2821,
+            2853,
+            1530
+          ],
+          "name": "ITokenRegistry",
+          "scope": 2740
+        },
+        "children": [
+          {
+            "attributes": {
+              "arguments": [
+                null
+              ]
+            },
+            "children": [
+              {
+                "attributes": {
+                  "contractScope": null,
+                  "name": "Secured",
+                  "referencedDeclaration": 1530,
+                  "type": "contract Secured"
+                },
+                "id": 2702,
+                "name": "UserDefinedTypeName",
+                "src": "276:7:11"
+              }
+            ],
+            "id": 2703,
+            "name": "InheritanceSpecifier",
+            "src": "276:7:11"
+          },
+          {
+            "attributes": {
+              "arguments": [
+                null
+              ]
+            },
+            "children": [
+              {
+                "attributes": {
+                  "contractScope": null,
+                  "name": "Syncable",
+                  "referencedDeclaration": 2853,
+                  "type": "contract Syncable"
+                },
+                "id": 2704,
+                "name": "UserDefinedTypeName",
+                "src": "285:8:11"
+              }
+            ],
+            "id": 2705,
+            "name": "InheritanceSpecifier",
+            "src": "285:8:11"
+          },
+          {
+            "attributes": {
+              "arguments": [
+                null
+              ]
+            },
+            "children": [
+              {
+                "attributes": {
+                  "contractScope": null,
+                  "name": "Cacher",
+                  "referencedDeclaration": 2821,
+                  "type": "contract Cacher"
+                },
+                "id": 2706,
+                "name": "UserDefinedTypeName",
+                "src": "295:6:11"
+              }
+            ],
+            "id": 2707,
+            "name": "InheritanceSpecifier",
+            "src": "295:6:11"
+          },
+          {
+            "attributes": {
+              "arguments": [
+                null
+              ]
+            },
+            "children": [
+              {
+                "attributes": {
+                  "contractScope": null,
+                  "name": "MetaDataContainer",
+                  "referencedDeclaration": 2845,
+                  "type": "contract MetaDataContainer"
+                },
+                "id": 2708,
+                "name": "UserDefinedTypeName",
+                "src": "303:17:11"
+              }
+            ],
+            "id": 2709,
+            "name": "InheritanceSpecifier",
+            "src": "303:17:11"
+          },
+          {
+            "attributes": {
+              "constant": true,
+              "name": "LIST_TOKEN_ROLE",
+              "scope": 2739,
+              "stateVariable": true,
+              "storageLocation": "default",
+              "type": "bytes32",
+              "visibility": "public"
+            },
+            "children": [
+              {
+                "attributes": {
+                  "name": "bytes32",
+                  "type": "bytes32"
+                },
+                "id": 2710,
+                "name": "ElementaryTypeName",
+                "src": "326:7:11"
+              },
+              {
+                "attributes": {
+                  "argumentTypes": null,
+                  "hexvalue": "4c4953545f544f4b454e5f524f4c45",
+                  "isConstant": false,
+                  "isLValue": false,
+                  "isPure": true,
+                  "lValueRequested": false,
+                  "subdenomination": null,
+                  "token": "string",
+                  "type": "literal_string \"LIST_TOKEN_ROLE\"",
+                  "value": "LIST_TOKEN_ROLE"
+                },
+                "id": 2711,
+                "name": "Literal",
+                "src": "368:17:11"
+              }
+            ],
+            "id": 2712,
+            "name": "VariableDeclaration",
+            "src": "326:59:11"
+          },
+          {
+            "attributes": {
+              "constant": false,
+              "name": "tokens",
+              "scope": 2739,
+              "stateVariable": true,
+              "storageLocation": "default",
+              "type": "mapping(bytes32 => contract IToken)",
+              "value": null,
+              "visibility": "internal"
+            },
+            "children": [
+              {
+                "attributes": {
+                  "type": "mapping(bytes32 => contract IToken)"
+                },
+                "children": [
+                  {
+                    "attributes": {
+                      "name": "bytes32",
+                      "type": "bytes32"
+                    },
+                    "id": 2713,
+                    "name": "ElementaryTypeName",
+                    "src": "398:7:11"
+                  },
+                  {
+                    "attributes": {
+                      "contractScope": null,
+                      "name": "IToken",
+                      "referencedDeclaration": 2694,
+                      "type": "contract IToken"
+                    },
+                    "id": 2714,
+                    "name": "UserDefinedTypeName",
+                    "src": "409:6:11"
+                  }
+                ],
+                "id": 2715,
+                "name": "Mapping",
+                "src": "390:26:11"
+              }
+            ],
+            "id": 2716,
+            "name": "VariableDeclaration",
+            "src": "390:42:11"
+          },
+          {
+            "attributes": {
+              "constant": false,
+              "name": "tokenIndex",
+              "scope": 2739,
+              "stateVariable": true,
+              "storageLocation": "default",
+              "type": "bytes32[] storage ref",
+              "value": null,
+              "visibility": "internal"
+            },
+            "children": [
+              {
+                "attributes": {
+                  "length": null,
+                  "type": "bytes32[] storage pointer"
+                },
+                "children": [
+                  {
+                    "attributes": {
+                      "name": "bytes32",
+                      "type": "bytes32"
+                    },
+                    "id": 2717,
+                    "name": "ElementaryTypeName",
+                    "src": "436:7:11"
+                  }
+                ],
+                "id": 2718,
+                "name": "ArrayTypeName",
+                "src": "436:9:11"
+              }
+            ],
+            "id": 2719,
+            "name": "VariableDeclaration",
+            "src": "436:29:11"
+          },
+          {
+            "attributes": {
+              "constant": false,
+              "implemented": true,
+              "isConstructor": true,
+              "name": "ITokenRegistry",
+              "payable": false,
+              "scope": 2739,
+              "stateMutability": "nonpayable",
+              "superFunction": null,
+              "visibility": "public"
+            },
+            "children": [
+              {
+                "children": [
+                  {
+                    "attributes": {
+                      "constant": false,
+                      "name": "_gateKeeper",
+                      "scope": 2728,
+                      "stateVariable": false,
+                      "storageLocation": "default",
+                      "type": "address",
+                      "value": null,
+                      "visibility": "internal"
+                    },
+                    "children": [
+                      {
+                        "attributes": {
+                          "name": "address",
+                          "type": "address"
+                        },
+                        "id": 2720,
+                        "name": "ElementaryTypeName",
+                        "src": "494:7:11"
+                      }
+                    ],
+                    "id": 2721,
+                    "name": "VariableDeclaration",
+                    "src": "494:19:11"
+                  }
+                ],
+                "id": 2722,
+                "name": "ParameterList",
+                "src": "493:21:11"
+              },
+              {
+                "attributes": {
+                  "parameters": [
+                    null
+                  ]
+                },
+                "children": [],
+                "id": 2726,
+                "name": "ParameterList",
+                "src": "543:0:11"
+              },
+              {
+                "children": [
+                  {
+                    "attributes": {
+                      "argumentTypes": null,
+                      "overloadedDeclarations": [
+                        null
+                      ],
+                      "referencedDeclaration": 1530,
+                      "type": "type(contract Secured)",
+                      "value": "Secured"
+                    },
+                    "id": 2723,
+                    "name": "Identifier",
+                    "src": "515:7:11"
+                  },
+                  {
+                    "attributes": {
+                      "argumentTypes": null,
+                      "overloadedDeclarations": [
+                        null
+                      ],
+                      "referencedDeclaration": 2721,
+                      "type": "address",
+                      "value": "_gateKeeper"
+                    },
+                    "id": 2724,
+                    "name": "Identifier",
+                    "src": "523:11:11"
+                  }
+                ],
+                "id": 2725,
+                "name": "ModifierInvocation",
+                "src": "515:20:11"
+              },
+              {
+                "attributes": {
+                  "statements": [
+                    null
+                  ]
+                },
+                "children": [],
+                "id": 2727,
+                "name": "Block",
+                "src": "543:2:11"
+              }
+            ],
+            "id": 2728,
+            "name": "FunctionDefinition",
+            "src": "470:75:11"
+          },
+          {
+            "attributes": {
+              "body": null,
+              "constant": false,
+              "implemented": false,
+              "isConstructor": false,
+              "name": "addToken",
+              "payable": false,
+              "scope": 2739,
+              "stateMutability": "nonpayable",
+              "superFunction": null,
+              "visibility": "public"
+            },
+            "children": [
+              {
+                "children": [
+                  {
+                    "attributes": {
+                      "constant": false,
+                      "name": "_name",
+                      "scope": 2738,
+                      "stateVariable": false,
+                      "storageLocation": "default",
+                      "type": "bytes32",
+                      "value": null,
+                      "visibility": "internal"
+                    },
+                    "children": [
+                      {
+                        "attributes": {
+                          "name": "bytes32",
+                          "type": "bytes32"
+                        },
+                        "id": 2729,
+                        "name": "ElementaryTypeName",
+                        "src": "567:7:11"
+                      }
+                    ],
+                    "id": 2730,
+                    "name": "VariableDeclaration",
+                    "src": "567:13:11"
+                  },
+                  {
+                    "attributes": {
+                      "constant": false,
+                      "name": "_token",
+                      "scope": 2738,
+                      "stateVariable": false,
+                      "storageLocation": "default",
+                      "type": "address",
+                      "value": null,
+                      "visibility": "internal"
+                    },
+                    "children": [
+                      {
+                        "attributes": {
+                          "name": "address",
+                          "type": "address"
+                        },
+                        "id": 2731,
+                        "name": "ElementaryTypeName",
+                        "src": "582:7:11"
+                      }
+                    ],
+                    "id": 2732,
+                    "name": "VariableDeclaration",
+                    "src": "582:14:11"
+                  }
+                ],
+                "id": 2733,
+                "name": "ParameterList",
+                "src": "566:31:11"
+              },
+              {
+                "attributes": {
+                  "parameters": [
+                    null
+                  ]
+                },
+                "children": [],
+                "id": 2737,
+                "name": "ParameterList",
+                "src": "626:0:11"
+              },
+              {
+                "children": [
+                  {
+                    "attributes": {
+                      "argumentTypes": null,
+                      "overloadedDeclarations": [
+                        null
+                      ],
+                      "referencedDeclaration": 1492,
+                      "type": "modifier (bytes32)",
+                      "value": "auth"
+                    },
+                    "id": 2734,
+                    "name": "Identifier",
+                    "src": "598:4:11"
+                  },
+                  {
+                    "attributes": {
+                      "argumentTypes": null,
+                      "overloadedDeclarations": [
+                        null
+                      ],
+                      "referencedDeclaration": 2712,
+                      "type": "bytes32",
+                      "value": "LIST_TOKEN_ROLE"
+                    },
+                    "id": 2735,
+                    "name": "Identifier",
+                    "src": "603:15:11"
+                  }
+                ],
+                "id": 2736,
+                "name": "ModifierInvocation",
+                "src": "598:21:11"
+              }
+            ],
+            "id": 2738,
+            "name": "FunctionDefinition",
+            "src": "549:78:11"
+          }
+        ],
+        "id": 2739,
+        "name": "ContractDefinition",
+        "src": "249:380:11"
+      }
+    ],
+    "id": 2740,
+    "name": "SourceUnit",
+    "src": "0:630:11"
+  },
+  "compiler": {
+    "name": "solc",
+    "version": "0.4.18+commit.9cf6e910.Emscripten.clang"
+  },
+  "networks": {},
+  "schemaVersion": "1.0.1",
+  "updatedAt": "2018-01-24T15:50:03.042Z"
+}

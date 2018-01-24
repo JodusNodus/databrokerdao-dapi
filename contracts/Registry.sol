@@ -1,6 +1,6 @@
 pragma solidity ^0.4.11;
 
-import "tokens/eip20/EIP20.sol";
+import "./DtxToken/DtxToken.sol";
 
 
 contract Registry {
@@ -16,6 +16,8 @@ contract Registry {
   event ChallengeDenied(bytes32 listing);
   event Increased(bytes32 listing, uint increasedBy, uint newDeposit);
   event Decreased(bytes32 listing, uint decreasedBy, uint newDeposit);
+
+  event Debug(uint bla);
 
   struct Listing {
     bool whitelisted;       // Should the data appear on the listing or not
@@ -41,7 +43,7 @@ contract Registry {
   mapping(uint => Challenge) public challenges;
 
   // Global Variables
-  EIP20 token;
+  DtxToken public token;
   uint currentChallengeID = 0;
   uint MIN_ENLIST_AMOUNT = 10;
   uint MIN_CHALLENGE_AMOUNT = 5;
@@ -49,14 +51,21 @@ contract Registry {
 
   /**
   @dev Contructor
-  @notice                 Sets the address for token
-  @param _tokenAddr       Address of the native ERC20 token (ADT)
+  @notice                Sets the address for token
+  @param _name           Name for the token
+  @param _decimals       Number of decimals of the token
+  @param _registry       Address of the registry (will be 0x0 in this case, cause we don't need it for this implementation)
+  @param _gateKeeper     Address of the gatekeeper
   */
   function Registry(
-    address _tokenAddr
+    bytes32 _name,
+    uint8 _decimals,
+    address _registry,
+    address _gateKeeper,
+    address _token
   ) public 
   {
-    token = EIP20(_tokenAddr);
+    token = DtxToken(_token);
   }
 
   /**
@@ -68,7 +77,6 @@ contract Registry {
   */
   function enlist(bytes32 _listing, uint _stakeAmount, string _target) external {
     // Stake must be above a certain amount
-    // TODO: make minStakeAmount a config var
     require(_stakeAmount >= MIN_ENLIST_AMOUNT);
 
     // Transfers tokens from user to Registry contract
