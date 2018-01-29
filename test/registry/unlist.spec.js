@@ -18,26 +18,26 @@ contract('Registry', accounts => {
       await token.approve(seller, '10', {
         from: seller,
       })
-      await registry.enlist('2', '10', 'blablabla', {
+      await registry.enlist('1', '10', 'blablabla', {
         from: seller,
       })
 
       await token.approve(Registry.address, '10', {
         from: seller,
       })
-      const tx = await registry.unlist('2', {
+      const tx = await registry.unlist('1', {
         from: seller,
       })
 
       // Check if event was emitted
       testEvent(tx, 'Unlisted', {
         listing:
-          '0x2000000000000000000000000000000000000000000000000000000000000000',
+          '0x1000000000000000000000000000000000000000000000000000000000000000',
       })
 
       // Check if listing is actually gone
       const listing = await registry.listings.call(
-        '0x2000000000000000000000000000000000000000000000000000000000000000'
+        '0x1000000000000000000000000000000000000000000000000000000000000000'
       )
 
       assert.isFalse(listing[0])

@@ -18,17 +18,17 @@ contract('Registry', accounts => {
       await token.approve(seller, '10', {
         from: seller,
       })
-      await registry.enlist('4', '20', 'blablabla')
+      await registry.enlist('1', '20', 'blablabla')
 
       await token.approve(seller, '10', {
         from: seller,
       })
-      const tx = await registry.decrease('4', '10')
+      const tx = await registry.decrease('1', '10')
 
       // Check if event was emitted
       testEvent(tx, 'Decreased', {
         listing:
-          '0x4000000000000000000000000000000000000000000000000000000000000000',
+          '0x1000000000000000000000000000000000000000000000000000000000000000',
         decreasedBy: '10',
         newDeposit: '10',
       })
@@ -42,10 +42,10 @@ contract('Registry', accounts => {
       await token.approve(seller, '10', {
         from: seller,
       })
-      await registry.enlist('4', '10', 'blablabla')
+      await registry.enlist('1', '10', 'blablabla')
 
       try {
-        assert.throws(await registry.decrease('4', '5'), 'invalid opcode')
+        assert.throws(await registry.decrease('1', '5'), 'invalid opcode')
       } catch (e) {
         console.log(e)
       }

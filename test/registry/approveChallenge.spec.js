@@ -18,39 +18,39 @@ contract('Registry', accounts => {
       await token.approve(seller, '10', {
         from: seller,
       })
-      await registry.enlist('6', '10', 'blablabla')
+      await registry.enlist('1', '10', 'blablabla')
 
       // Add some challenges
       await token.approve(seller, '5', {
         from: seller,
       })
-      await registry.challenge('6', '5')
+      await registry.challenge('1', '5')
       await token.approve(seller, '10', {
         from: seller,
       })
-      await registry.challenge('6', '10')
+      await registry.challenge('1', '10')
 
       await token.approve(seller, '10', {
         from: seller,
       })
-      const tx = await registry.approveChallenge('6')
+      const tx = await registry.approveChallenge('1')
 
       // Check if event was emitted
       testEvent(tx, 'ChallengeApproved', {
         listing:
-          '0x6000000000000000000000000000000000000000000000000000000000000000',
+          '0x1000000000000000000000000000000000000000000000000000000000000000',
       })
 
       // Check if listing is updated
       const listing = await registry.listings.call(
-        '0x6000000000000000000000000000000000000000000000000000000000000000'
+        '0x1000000000000000000000000000000000000000000000000000000000000000'
       )
       assert.isFalse(listing[0])
       assert.equal(listing[2].c[0], 0)
       assert.equal(listing[5].c[0], 0)
 
       // Check if challenge is updated
-      const challenge = await registry.challenges.call('2')
+      const challenge = await registry.challenges.call('1')
       assert.isTrue(challenge[1])
     })
   })

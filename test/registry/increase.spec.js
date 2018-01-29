@@ -18,17 +18,17 @@ contract('Registry', accounts => {
       await token.approve(seller, '10', {
         from: seller,
       })
-      await registry.enlist('3', '10', 'blablabla')
+      await registry.enlist('1', '10', 'blablabla')
 
       await token.approve(seller, '10', {
         from: seller,
       })
-      const tx = await registry.increase('3', '10')
+      const tx = await registry.increase('1', '10')
 
       // Check if event was emitted
       testEvent(tx, 'Increased', {
         listing:
-          '0x3000000000000000000000000000000000000000000000000000000000000000',
+          '0x1000000000000000000000000000000000000000000000000000000000000000',
         increasedBy: '10',
         newDeposit: '20',
       })
