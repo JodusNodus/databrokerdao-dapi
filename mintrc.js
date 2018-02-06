@@ -2,5 +2,5 @@ module.exports = {
   tokenRegistryCombos: [],
   contractsThatGetDeployedByOtherContracts: [],
   roleRegistries: [],
-  environments: [],
+  environments: ['http://localhost:3333'],
 }

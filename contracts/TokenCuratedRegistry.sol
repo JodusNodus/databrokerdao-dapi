@@ -1,9 +1,15 @@
 pragma solidity ^0.4.11;
 
 import "./DtxToken/DtxToken.sol";
+import "@settlemint/solidity-mint/contracts/authentication/Secured.sol";
 
 
-contract Registry {
+contract TokenCuratedRegistry is Secured {
+
+  bytes32 constant public WITHDRAW_FUNDS_ROLE = "WITHDRAW_FUNDS_ROLE";
+  bytes32 constant public CHALLENGE_ROLE = "CHALLENGE_ROLE";
+  bytes32 constant public ENLIST_ROLE = "ENLIST_ROLE";
+  bytes32 constant public CURATE_CHALLENGE_ROLE = "CURATE_CHALLENGE_ROLE";
 
   // ------
   // EVENTS
@@ -16,8 +22,7 @@ contract Registry {
   event ChallengeDenied(bytes32 listing);
   event Increased(bytes32 listing, uint increasedBy, uint newDeposit);
   event Decreased(bytes32 listing, uint decreasedBy, uint newDeposit);
-
-  event Debug(uint bla);
+  event Withdrawn(address by, uint balance);
 
   struct Listing {
     bool whitelisted;       // Should the data appear on the listing or not
@@ -57,13 +62,15 @@ contract Registry {
   @param _registry       Address of the registry (will be 0x0 in this case, cause we don't need it for this implementation)
   @param _gateKeeper     Address of the gatekeeper
   */
-  function Registry(
+  function TokenCuratedRegistry(
     bytes32 _name,
     uint8 _decimals,
     address _registry,
     address _gateKeeper,
     address _token
-  ) public 
+  ) 
+    Secured(_gateKeeper)
+    public 
   {
     token = DtxToken(_token);
   }
@@ -75,7 +82,7 @@ contract Registry {
   @param _stakeAmount     The number of ERC20 tokens a user is willing to potentially stake
   @param _target          String with ipfs hash of data
   */
-  function enlist(bytes32 _listing, uint _stakeAmount, string _target) external {
+  function enlist(bytes32 _listing, uint _stakeAmount, string _target) auth(ENLIST_ROLE) external {
     // Stake must be above a certain amount
     require(_stakeAmount >= MIN_ENLIST_AMOUNT);
 
@@ -103,7 +110,7 @@ contract Registry {
   @notice             Returns all tokens to the owner of the listing
   @param _listing     The listing of a user's listing
   */
-  function unlist(bytes32 _listing) external {
+  function unlist(bytes32 _listing) auth(ENLIST_ROLE) external {
     Listing storage listing = listings[_listing];
 
     require(msg.sender == listing.owner);
@@ -125,7 +132,7 @@ contract Registry {
   @param _listing     The listing of a user's application/listing
   @param _stakeAmount The number of ERC20 tokens to increase a user's unstaked deposit
   */
-  function increase(bytes32 _listing, uint _stakeAmount) external {
+  function increase(bytes32 _listing, uint _stakeAmount) auth(ENLIST_ROLE) external {
     Listing storage listing = listings[_listing];
 
     require(listing.owner == msg.sender);
@@ -143,7 +150,7 @@ contract Registry {
   @param _listing     The listing of a user's application/listing
   @param _stakeAmount The number of ERC20 tokens to decrease a user's unstaked deposit
   */
-  function decrease(bytes32 _listing, uint _stakeAmount) external {
+  function decrease(bytes32 _listing, uint _stakeAmount) auth(ENLIST_ROLE) external {
     Listing storage listing = listings[_listing];
 
     require(listing.owner == msg.sender);
@@ -165,7 +172,7 @@ contract Registry {
   @param _listing     The listing of data.
   @param _stakeAmount The amount the challenger wants to stake.
   */
-  function challenge(bytes32 _listing, uint _stakeAmount) external returns (uint challengeID) {
+  function challenge(bytes32 _listing, uint _stakeAmount) auth(CHALLENGE_ROLE) external returns (uint challengeID) {
     require(_stakeAmount >= MIN_CHALLENGE_AMOUNT);
 
     Listing storage listing = listings[_listing];
@@ -202,7 +209,7 @@ contract Registry {
   @notice             Rewards the winner tokens and either whitelists or de-whitelists the listing.
   @param _listing   A listing with a challenge that is to be resolved
   */
-  function approveChallenge(bytes32 _listing) external {
+  function approveChallenge(bytes32 _listing) auth(CURATE_CHALLENGE_ROLE) external {
     Listing storage listing = listings[_listing];
 
     uint totalStake = listing.totalStake;
@@ -241,7 +248,7 @@ contract Registry {
   @notice             Rewards the listing seller tokens and de-whitelists the listing.
   @param _listing     A listing with a challenge that is to be resolved
   */
-  function denyChallenge(bytes32 _listing) external {
+  function denyChallenge(bytes32 _listing) auth(CURATE_CHALLENGE_ROLE) external {
     Listing storage listing = listings[_listing];
 
     uint totalStake = listing.totalStake;
@@ -267,11 +274,12 @@ contract Registry {
   }
 
   /**
-  @dev      Withdraw all the fund from this contract
+  @dev      Withdraw all the funds from this contract
   */
-  function withdraw() external {
-    // TODO: only certain role can do this!
+  function withdraw() auth(WITHDRAW_FUNDS_ROLE) external {
+    uint balance = this.balance;
     msg.sender.transfer(this.balance);
+    Withdrawn(msg.sender, balance);
   }
 
 /**

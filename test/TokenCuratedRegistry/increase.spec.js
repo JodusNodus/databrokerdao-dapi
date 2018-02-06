@@ -3,15 +3,15 @@
 
 const testEvent = require('@settlemint/solidity-mint/test/helpers/testEvent')
 
-const Registry = artifacts.require('Registry.sol')
+const TokenCuratedRegistry = artifacts.require('TokenCuratedRegistry.sol')
 const Token = artifacts.require('DtxToken.sol')
 
-contract('Registry', accounts => {
+contract('TokenCuratedRegistry', accounts => {
   describe('Function: increase', async () => {
     const [seller] = accounts
 
     it('should increase the stake for the listing', async () => {
-      const registry = await Registry.deployed()
+      const registry = await TokenCuratedRegistry.deployed()
       const token = await Token.deployed()
 
       // Enlist before we can unlist

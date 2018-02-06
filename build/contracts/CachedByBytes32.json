@@ -19,8 +19,8 @@
   ],
   "bytecode": "0x60606040523415600e57600080fd5b604051604080608f833981016040528080519190602001805160008054600160a060020a03909216600160a060020a03199092169190911790555050600155603580605a6000396000f3006060604052600080fd00a165627a7a723058208530805251240a25d59ed827317df0ff7a5e7c3eab31089099470f8f6ecbcbac0029",
   "deployedBytecode": "0x6060604052600080fd00a165627a7a723058208530805251240a25d59ed827317df0ff7a5e7c3eab31089099470f8f6ecbcbac0029",
-  "sourceMap": "51:279:13:-;;;112:115;;;;;;;;;;;;;;;;;;;;;;;;;;;;145:6:12;:24;;-1:-1:-1;;;;;145:24:12;;;-1:-1:-1;;;;;;145:24:12;;;;;;;;;-1:-1:-1;;145:24:12;202:20:13;51:279;;;;;;",
-  "deployedSourceMap": "51:279:13:-;;;;;",
+  "sourceMap": "51:279:17:-;;;112:115;;;;;;;;;;;;;;;;;;;;;;;;;;;;145:6:16;:24;;-1:-1:-1;;;;;145:24:16;;;-1:-1:-1;;;;;;145:24:16;;;;;;;;;-1:-1:-1;;145:24:16;202:20:17;51:279;;;;;;",
+  "deployedSourceMap": "51:279:17:-;;;;;",
   "source": "pragma solidity ^0.4.17;\n\nimport \"./Cached.sol\";\n\n\ncontract CachedByBytes32 is Cached {\n\n  bytes32 cacheKey;\n\n  function CachedByBytes32(bytes32 _cacheKey, address _cacher) Cached(_cacher) public {\n    cacheKey = _cacheKey;\n  }\n\n  function invalidateCache() internal {\n    cacher.invalidateCache(address(0x0), cacheKey, 0);\n  }\n\n}\n\n\n",
   "sourcePath": "@settlemint/solidity-mint/contracts/utility/caching/CachedByBytes32.sol",
   "ast": {
@@ -28,7 +28,7 @@
       "absolutePath": "@settlemint/solidity-mint/contracts/utility/caching/CachedByBytes32.sol",
       "exportedSymbols": {
         "CachedByBytes32": [
-          2797
+          2993
         ]
       }
     },
@@ -42,39 +42,39 @@
             ".17"
           ]
         },
-        "id": 2762,
+        "id": 2958,
         "name": "PragmaDirective",
-        "src": "0:24:13"
+        "src": "0:24:17"
       },
       {
         "attributes": {
-          "SourceUnit": 2761,
+          "SourceUnit": 2957,
           "absolutePath": "@settlemint/solidity-mint/contracts/utility/caching/Cached.sol",
           "file": "./Cached.sol",
-          "scope": 2798,
+          "scope": 2994,
           "symbolAliases": [
             null
           ],
           "unitAlias": ""
         },
-        "id": 2763,
+        "id": 2959,
         "name": "ImportDirective",
-        "src": "26:22:13"
+        "src": "26:22:17"
       },
       {
         "attributes": {
           "contractDependencies": [
-            2760
+            2956
           ],
           "contractKind": "contract",
           "documentation": null,
           "fullyImplemented": true,
           "linearizedBaseContracts": [
-            2797,
-            2760
+            2993,
+            2956
           ],
           "name": "CachedByBytes32",
-          "scope": 2798
+          "scope": 2994
         },
         "children": [
           {
@@ -88,23 +88,23 @@
                 "attributes": {
                   "contractScope": null,
                   "name": "Cached",
-                  "referencedDeclaration": 2760,
+                  "referencedDeclaration": 2956,
                   "type": "contract Cached"
                 },
-                "id": 2764,
+                "id": 2960,
                 "name": "UserDefinedTypeName",
-                "src": "79:6:13"
+                "src": "79:6:17"
               }
             ],
-            "id": 2765,
+            "id": 2961,
             "name": "InheritanceSpecifier",
-            "src": "79:6:13"
+            "src": "79:6:17"
           },
           {
             "attributes": {
               "constant": false,
               "name": "cacheKey",
-              "scope": 2797,
+              "scope": 2993,
               "stateVariable": true,
               "storageLocation": "default",
               "type": "bytes32",
@@ -117,14 +117,14 @@
                   "name": "bytes32",
                   "type": "bytes32"
                 },
-                "id": 2766,
+                "id": 2962,
                 "name": "ElementaryTypeName",
-                "src": "91:7:13"
+                "src": "91:7:17"
               }
             ],
-            "id": 2767,
+            "id": 2963,
             "name": "VariableDeclaration",
-            "src": "91:16:13"
+            "src": "91:16:17"
           },
           {
             "attributes": {
@@ -133,7 +133,7 @@
               "isConstructor": true,
               "name": "CachedByBytes32",
               "payable": false,
-              "scope": 2797,
+              "scope": 2993,
               "stateMutability": "nonpayable",
               "superFunction": null,
               "visibility": "public"
@@ -145,7 +145,7 @@
                     "attributes": {
                       "constant": false,
                       "name": "_cacheKey",
-                      "scope": 2782,
+                      "scope": 2978,
                       "stateVariable": false,
                       "storageLocation": "default",
                       "type": "bytes32",
@@ -158,20 +158,20 @@
                           "name": "bytes32",
                           "type": "bytes32"
                         },
-                        "id": 2768,
+                        "id": 2964,
                         "name": "ElementaryTypeName",
-                        "src": "137:7:13"
+                        "src": "137:7:17"
                       }
                     ],
-                    "id": 2769,
+                    "id": 2965,
                     "name": "VariableDeclaration",
-                    "src": "137:17:13"
+                    "src": "137:17:17"
                   },
                   {
                     "attributes": {
                       "constant": false,
                       "name": "_cacher",
-                      "scope": 2782,
+                      "scope": 2978,
                       "stateVariable": false,
                       "storageLocation": "default",
                       "type": "address",
@@ -184,19 +184,19 @@
                           "name": "address",
                           "type": "address"
                         },
-                        "id": 2770,
+                        "id": 2966,
                         "name": "ElementaryTypeName",
-                        "src": "156:7:13"
+                        "src": "156:7:17"
                       }
                     ],
-                    "id": 2771,
+                    "id": 2967,
                     "name": "VariableDeclaration",
-                    "src": "156:15:13"
+                    "src": "156:15:17"
                   }
                 ],
-                "id": 2772,
+                "id": 2968,
                 "name": "ParameterList",
-                "src": "136:36:13"
+                "src": "136:36:17"
               },
               {
                 "attributes": {
@@ -205,9 +205,9 @@
                   ]
                 },
                 "children": [],
-                "id": 2776,
+                "id": 2972,
                 "name": "ParameterList",
-                "src": "196:0:13"
+                "src": "196:0:17"
               },
               {
                 "children": [
@@ -217,13 +217,13 @@
                       "overloadedDeclarations": [
                         null
                       ],
-                      "referencedDeclaration": 2760,
+                      "referencedDeclaration": 2956,
                       "type": "type(contract Cached)",
                       "value": "Cached"
                     },
-                    "id": 2773,
+                    "id": 2969,
                     "name": "Identifier",
-                    "src": "173:6:13"
+                    "src": "173:6:17"
                   },
                   {
                     "attributes": {
@@ -231,18 +231,18 @@
                       "overloadedDeclarations": [
                         null
                       ],
-                      "referencedDeclaration": 2771,
+                      "referencedDeclaration": 2967,
                       "type": "address",
                       "value": "_cacher"
                     },
-                    "id": 2774,
+                    "id": 2970,
                     "name": "Identifier",
-                    "src": "180:7:13"
+                    "src": "180:7:17"
                   }
                 ],
-                "id": 2775,
+                "id": 2971,
                 "name": "ModifierInvocation",
-                "src": "173:15:13"
+                "src": "173:15:17"
               },
               {
                 "children": [
@@ -265,13 +265,13 @@
                               "overloadedDeclarations": [
                                 null
                               ],
-                              "referencedDeclaration": 2767,
+                              "referencedDeclaration": 2963,
                               "type": "bytes32",
                               "value": "cacheKey"
                             },
-                            "id": 2777,
+                            "id": 2973,
                             "name": "Identifier",
-                            "src": "202:8:13"
+                            "src": "202:8:17"
                           },
                           {
                             "attributes": {
@@ -279,33 +279,33 @@
                               "overloadedDeclarations": [
                                 null
                               ],
-                              "referencedDeclaration": 2769,
+                              "referencedDeclaration": 2965,
                               "type": "bytes32",
                               "value": "_cacheKey"
                             },
-                            "id": 2778,
+                            "id": 2974,
                             "name": "Identifier",
-                            "src": "213:9:13"
+                            "src": "213:9:17"
                           }
                         ],
-                        "id": 2779,
+                        "id": 2975,
                         "name": "Assignment",
-                        "src": "202:20:13"
+                        "src": "202:20:17"
                       }
                     ],
-                    "id": 2780,
+                    "id": 2976,
                     "name": "ExpressionStatement",
-                    "src": "202:20:13"
+                    "src": "202:20:17"
                   }
                 ],
-                "id": 2781,
+                "id": 2977,
                 "name": "Block",
-                "src": "196:31:13"
+                "src": "196:31:17"
               }
             ],
-            "id": 2782,
+            "id": 2978,
             "name": "FunctionDefinition",
-            "src": "112:115:13"
+            "src": "112:115:17"
           },
           {
             "attributes": {
@@ -317,9 +317,9 @@
               ],
               "name": "invalidateCache",
               "payable": false,
-              "scope": 2797,
+              "scope": 2993,
               "stateMutability": "nonpayable",
-              "superFunction": 2759,
+              "superFunction": 2955,
               "visibility": "internal"
             },
             "children": [
@@ -330,9 +330,9 @@
                   ]
                 },
                 "children": [],
-                "id": 2783,
+                "id": 2979,
                 "name": "ParameterList",
-                "src": "255:2:13"
+                "src": "255:2:17"
               },
               {
                 "attributes": {
@@ -341,9 +341,9 @@
                   ]
                 },
                 "children": [],
-                "id": 2784,
+                "id": 2980,
                 "name": "ParameterList",
-                "src": "267:0:13"
+                "src": "267:0:17"
               },
               {
                 "children": [
@@ -385,7 +385,7 @@
                               "isPure": false,
                               "lValueRequested": false,
                               "member_name": "invalidateCache",
-                              "referencedDeclaration": 2820,
+                              "referencedDeclaration": 3016,
                               "type": "function (address,bytes32,uint256) external"
                             },
                             "children": [
@@ -395,18 +395,18 @@
                                   "overloadedDeclarations": [
                                     null
                                   ],
-                                  "referencedDeclaration": 2744,
+                                  "referencedDeclaration": 2940,
                                   "type": "contract Cacher",
                                   "value": "cacher"
                                 },
-                                "id": 2785,
+                                "id": 2981,
                                 "name": "Identifier",
-                                "src": "273:6:13"
+                                "src": "273:6:17"
                               }
                             ],
-                            "id": 2787,
+                            "id": 2983,
                             "name": "MemberAccess",
-                            "src": "273:22:13"
+                            "src": "273:22:17"
                           },
                           {
                             "attributes": {
@@ -438,9 +438,9 @@
                                   "type": "type(address)",
                                   "value": "address"
                                 },
-                                "id": 2788,
+                                "id": 2984,
                                 "name": "ElementaryTypeNameExpression",
-                                "src": "296:7:13"
+                                "src": "296:7:17"
                               },
                               {
                                 "attributes": {
@@ -455,14 +455,14 @@
                                   "type": "int_const 0",
                                   "value": "0x0"
                                 },
-                                "id": 2789,
+                                "id": 2985,
                                 "name": "Literal",
-                                "src": "304:3:13"
+                                "src": "304:3:17"
                               }
                             ],
-                            "id": 2790,
+                            "id": 2986,
                             "name": "FunctionCall",
-                            "src": "296:12:13"
+                            "src": "296:12:17"
                           },
                           {
                             "attributes": {
@@ -470,13 +470,13 @@
                               "overloadedDeclarations": [
                                 null
                               ],
-                              "referencedDeclaration": 2767,
+                              "referencedDeclaration": 2963,
                               "type": "bytes32",
                               "value": "cacheKey"
                             },
-                            "id": 2791,
+                            "id": 2987,
                             "name": "Identifier",
-                            "src": "310:8:13"
+                            "src": "310:8:17"
                           },
                           {
                             "attributes": {
@@ -491,39 +491,39 @@
                               "type": "int_const 0",
                               "value": "0"
                             },
-                            "id": 2792,
+                            "id": 2988,
                             "name": "Literal",
-                            "src": "320:1:13"
+                            "src": "320:1:17"
                           }
                         ],
-                        "id": 2793,
+                        "id": 2989,
                         "name": "FunctionCall",
-                        "src": "273:49:13"
+                        "src": "273:49:17"
                       }
                     ],
-                    "id": 2794,
+                    "id": 2990,
                     "name": "ExpressionStatement",
-                    "src": "273:49:13"
+                    "src": "273:49:17"
                   }
                 ],
-                "id": 2795,
+                "id": 2991,
                 "name": "Block",
-                "src": "267:60:13"
+                "src": "267:60:17"
               }
             ],
-            "id": 2796,
+            "id": 2992,
             "name": "FunctionDefinition",
-            "src": "231:96:13"
+            "src": "231:96:17"
           }
         ],
-        "id": 2797,
+        "id": 2993,
         "name": "ContractDefinition",
-        "src": "51:279:13"
+        "src": "51:279:17"
       }
     ],
-    "id": 2798,
+    "id": 2994,
     "name": "SourceUnit",
-    "src": "0:333:13"
+    "src": "0:333:17"
   },
   "compiler": {
     "name": "solc",
@@ -531,5 +531,5 @@
   },
   "networks": {},
   "schemaVersion": "1.0.1",
-  "updatedAt": "2018-01-29T15:01:16.950Z"
+  "updatedAt": "2018-02-06T09:47:44.776Z"
 }

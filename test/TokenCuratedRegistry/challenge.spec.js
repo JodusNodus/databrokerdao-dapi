@@ -3,15 +3,15 @@
 
 const testEvent = require('@settlemint/solidity-mint/test/helpers/testEvent')
 
-const Registry = artifacts.require('Registry.sol')
+const TokenCuratedRegistry = artifacts.require('TokenCuratedRegistry.sol')
 const Token = artifacts.require('DtxToken.sol')
 
-contract('Registry', accounts => {
+contract('TokenCuratedRegistry', accounts => {
   describe('Function: challenge', async () => {
     const [seller] = accounts
 
     it('should add a new challenge when minimum challenge stake amount is exceeded', async () => {
-      const registry = await Registry.deployed()
+      const registry = await TokenCuratedRegistry.deployed()
       const token = await Token.deployed()
 
       // Enlist before we can unlist
@@ -51,7 +51,7 @@ contract('Registry', accounts => {
     })
 
     it('should not add a new challenge when minimum challenge stake amount is not reached', async () => {
-      const registry = await Registry.deployed()
+      const registry = await TokenCuratedRegistry.deployed()
       const token = await Token.deployed()
 
       // Enlist before we can unlist
