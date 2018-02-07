@@ -14,7 +14,7 @@ async function performMigration(deployer, network, accounts) {
 
   // Administrators
   // the deploying address will NOT be in this registry and is allowed to add or remove addresses in it
-  await deployRoleRegistry(deployer, Administrators, dGateKeeper, accounts)
+  await deployRoleRegistry(deployer, Administrators, dGateKeeper, accounts[0])
   const DeployedAdministrators = await Administrators.deployed()
   await createAccounts(
     1,
@@ -30,7 +30,7 @@ async function performMigration(deployer, network, accounts) {
   )
 
   // Curators: curate challenges
-  await deployRoleRegistry(deployer, Curators, dGateKeeper, accounts)
+  await deployRoleRegistry(deployer, Curators, dGateKeeper, accounts[0])
   const DeployedCurators = await Curators.deployed()
   await createAccounts(
     1,
@@ -46,7 +46,7 @@ async function performMigration(deployer, network, accounts) {
   )
 
   // Normal users: buyers and sellers
-  await deployRoleRegistry(deployer, Users, dGateKeeper, accounts)
+  await deployRoleRegistry(deployer, Users, dGateKeeper, accounts[0])
   const DeployedUsers = await Users.deployed()
   await createAccounts(
     2,
