@@ -1,5 +1,5 @@
-const DtxToken = artifacts.require('DtxToken.sol')
-const DtxTokenRegistry = artifacts.require('DtxTokenRegistry.sol')
+const Token = artifacts.require('Token.sol')
+const TokenRegistry = artifacts.require('DtxTokenRegistry.sol')
 const GateKeeper = artifacts.require('GateKeeper')
 
 async function deployTokenSystem(deployer, network, accounts) {
@@ -7,12 +7,12 @@ async function deployTokenSystem(deployer, network, accounts) {
 
   try {
     // Deploy token registry
-    await deployer.deploy(DtxTokenRegistry, dGateKeeper.address)
-    const dRegistry = await DtxTokenRegistry.deployed()
+    await deployer.deploy(TokenRegistry, dGateKeeper.address)
+    const dRegistry = await TokenRegistry.deployed()
 
     // Deploy token
     await deployer.deploy(
-      DtxToken,
+      Token,
       'DTX',
       18,
       dRegistry.address,

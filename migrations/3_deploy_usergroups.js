@@ -49,7 +49,7 @@ async function performMigration(deployer, network, accounts) {
   await deployRoleRegistry(deployer, Users, dGateKeeper, accounts)
   const DeployedUsers = await Users.deployed()
   await createAccounts(
-    10,
+    2,
     {
       prefix: 'user',
       postfix: '@settlemint.com',

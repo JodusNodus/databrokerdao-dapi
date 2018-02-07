@@ -1,14 +1,12 @@
 const { createPermission, grantPermission } = require('./helpers/permissions')
 
-const TokenCuratedRegistry = artifacts.require('TokenCuratedRegistry.sol')
-const DtxToken = artifacts.require('DtxToken.sol')
-const DtxTokenRegistry = artifacts.require('DtxTokenRegistry.sol')
+const DataRegistry = artifacts.require('DataRegistry.sol')
+const Token = artifacts.require('Token.sol')
 const GateKeeper = artifacts.require('GateKeeper')
 
 async function deployRegistry(deployer, network, accounts) {
   const dGateKeeper = await GateKeeper.deployed()
-  const dDtxToken = await DtxToken.deployed()
-  const dDtxTokenRegistry = await DtxTokenRegistry.deployed()
+  const dDtxToken = await Token.deployed()
   let dTokenCuratedRegistry
 
   let mintPermissionHolder
@@ -50,8 +48,6 @@ async function deployRegistry(deployer, network, accounts) {
       index++
       await setUserPermissions(accounts, index)
     }
-
-    return true
   }
 
   async function approveRegistryFor(addresses, index) {
@@ -77,7 +73,7 @@ async function deployRegistry(deployer, network, accounts) {
     const balanceOfUser = await dDtxToken.balanceOf(user)
 
     // Approve tokens
-    await dDtxToken.approve(TokenCuratedRegistry.address, balanceOfUser, {
+    await dDtxToken.approve(DataRegistry.address, balanceOfUser, {
       from: user,
     })
 
@@ -89,15 +85,8 @@ async function deployRegistry(deployer, network, accounts) {
     return true
   }
 
-  await deployer.deploy(
-    TokenCuratedRegistry,
-    'DTX',
-    18,
-    dDtxTokenRegistry.address,
-    dGateKeeper.address,
-    dDtxToken.address
-  )
-  dTokenCuratedRegistry = await TokenCuratedRegistry.deployed()
+  await deployer.deploy(DataRegistry, dGateKeeper.address, dDtxToken.address)
+  dTokenCuratedRegistry = await DataRegistry.deployed()
 
   await approveRegistryFor(accounts, 0)
 

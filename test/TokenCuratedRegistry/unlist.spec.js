@@ -3,15 +3,15 @@
 
 const testEvent = require('@settlemint/solidity-mint/test/helpers/testEvent')
 
-const TokenCuratedRegistry = artifacts.require('TokenCuratedRegistry.sol')
+const DataRegistry = artifacts.require('DataRegistry.sol')
 const Token = artifacts.require('DtxToken.sol')
 
-contract('TokenCuratedRegistry', accounts => {
+contract('DataRegistry', accounts => {
   describe('Function: unlist', async () => {
     const [seller] = accounts
 
     it('should remove the sensor data from the whitelist', async () => {
-      const registry = await TokenCuratedRegistry.deployed()
+      const registry = await DataRegistry.deployed()
       const token = await Token.deployed()
 
       // Enlist before we can unlist
@@ -22,7 +22,7 @@ contract('TokenCuratedRegistry', accounts => {
         from: seller,
       })
 
-      await token.approve(TokenCuratedRegistry.address, '10', {
+      await token.approve(DataRegistry.address, '10', {
         from: seller,
       })
       const tx = await registry.unlist('1', {
