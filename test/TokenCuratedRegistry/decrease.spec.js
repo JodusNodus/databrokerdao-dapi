@@ -4,7 +4,7 @@
 const testEvent = require('@settlemint/solidity-mint/test/helpers/testEvent')
 
 const DataRegistry = artifacts.require('DataRegistry.sol')
-const Token = artifacts.require('DtxToken.sol')
+const Token = artifacts.require('Token.sol')
 
 contract('DataRegistry', accounts => {
   describe('Function: decrease', async () => {
@@ -35,7 +35,7 @@ contract('DataRegistry', accounts => {
     })
 
     it('should not decrease when stake amount would go beneath minimum stake', async () => {
-      const registry = await TokenCuratedRegistry.deployed()
+      const registry = await DataRegistry.deployed()
       const token = await Token.deployed()
 
       // Enlist before we can unlist
