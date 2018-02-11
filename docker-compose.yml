@@ -13,6 +13,7 @@ services:
       ETHEREUM_NODE_URL: http://testrpc:8545
       MONGODB_URI: mongodb://mongo:27017/mint
       REMOTE_DEBUG_MODE: debug
+      DEBUG: lib-ethereum:*
     links:
       - mongo
       - testrpc
@@ -30,7 +31,7 @@ services:
       - mongo
 
   testrpc:
-    image: settlemint/testrpc:stable
+    image: trufflesuite/ganache-cli
     ports:
       - "8545:8545"
-    command: ["node", "./build/cli.node.js", "-l", "0xfffffffffff", "-h", "0.0.0.0", "-i", "1337", "-m", 'robot robot robot robot robot robot robot robot robot robot robot robot']
+    command: ["node", "./build/cli.node.js", "--secure", "-u" ,"0","--gasPrice", "0", "-l", "0xfffffffffff", "-h", "0.0.0.0", "-i", "1337", "-m", 'robot robot robot robot robot robot robot robot robot robot robot robot']

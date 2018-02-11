@@ -1,53 +1,88 @@
-const HDWalletProvider = require('truffle-hdwallet-provider');
+const HDWalletProvider = require('truffle-hdwallet-provider')
 
 module.exports = {
   solc: {
     optimizer: {
       enabled: true,
-      runs: 200
-    }
+      runs: 200,
+    },
   },
   networks: {
     development: {
-      host: 'localhost',
-      port: 8545,
-      network_id: '1337'
+      provider: () => {
+        return new HDWalletProvider(
+          process.env.ETHEREUM_DEPLOYER_SEED ||
+            'robot robot robot robot robot robot robot robot robot robot robot robot',
+          'http://localhost:8545'
+        )
+      },
+      gasPrice: 0x00,
+      network_id: '1337',
     },
     mintnet: {
-      provider: new HDWalletProvider(
-        process.env.ETHEREUM_DEPLOYER_SEED,
-        'http://165.227.153.108:8545'
-      ),
-      network_id: '8995'
+      provider: () => {
+        return new HDWalletProvider(
+          process.env.ETHEREUM_DEPLOYER_SEED,
+          'https://mintnet.settlemint.com'
+        )
+      },
+      gasPrice: 0x00,
+      network_id: '8995',
+    },
+    minttestnet: {
+      provider: () => {
+        return new HDWalletProvider(
+          process.env.ETHEREUM_DEPLOYER_SEED,
+          'https://minttestnet.settlemint.com'
+        )
+      },
+      gasPrice: 0x00,
+      network_id: '8996',
+    },
+    mintdemonet: {
+      provider: () => {
+        return new HDWalletProvider(
+          process.env.ETHEREUM_DEPLOYER_SEED,
+          'https://mintdemonet.settlemint.com'
+        )
+      },
+      gasPrice: 0x00,
+      network_id: '8997',
     },
     kovan: {
-      provider: new HDWalletProvider(
-        process.env.ETHEREUM_DEPLOYER_SEED,
-        'https://kovan.infura.io/'
-      ),
+      provider: () => {
+        return new HDWalletProvider(
+          process.env.ETHEREUM_DEPLOYER_SEED,
+          'https://kovan.infura.io/'
+        )
+      },
       network_id: '42',
-      gas: 4700000
+      gas: 4700000,
     },
     ropsten: {
-      provider: new HDWalletProvider(
-        process.env.ETHEREUM_DEPLOYER_SEED,
-        'https://ropsten.infura.io/'
-      ),
-      network_id: '3'
+      provider: () => {
+        return new HDWalletProvider(
+          process.env.ETHEREUM_DEPLOYER_SEED,
+          'https://ropsten.infura.io/'
+        )
+      },
+      network_id: '3',
     },
     rinkeby: {
-      provider: new HDWalletProvider(
-        process.env.ETHEREUM_DEPLOYER_SEED,
-        'https://rinkeby.infura.io/'
-      ),
-      network_id: '4'
+      provider: () => {
+        return new HDWalletProvider(
+          process.env.ETHEREUM_DEPLOYER_SEED,
+          'https://rinkeby.infura.io/'
+        )
+      },
+      network_id: '4',
     },
     coverage: {
       host: 'localhost',
       network_id: '*',
       port: 8555, // <-- Use port 8555
       gas: 0xfffffffffff, // <-- Use this high gas value
-      gasPrice: 0x01 // <-- Use this low gas price
-    }
-  }
-};
+      gasPrice: 0x01, // <-- Use this low gas price
+    },
+  },
+}
