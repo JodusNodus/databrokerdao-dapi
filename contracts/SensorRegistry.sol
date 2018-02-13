@@ -1,9 +1,10 @@
 pragma solidity ^0.4.11;
 
 import "@settlemint/solidity-mint/contracts/marketplaces/tokencuratedregistry/TokenCuratedRegistry.sol";
+import "@settlemint/solidity-mint/contracts/marketplaces/tokensystem/Token.sol";
 
 
-contract DataRegistry is TokenCuratedRegistry {
+contract SensorRegistry is TokenCuratedRegistry {
 
   uint MIN_ENLIST_AMOUNT = 10;
   uint MIN_CHALLENGE_AMOUNT = 5;
@@ -15,10 +16,10 @@ contract DataRegistry is TokenCuratedRegistry {
   @param _gateKeeper     Address of the gatekeeper
   @param _token          Address of the token
   */
-  function DataRegistry(
+  function SensorRegistry(
     address _gateKeeper,
     address _token
-  ) 
+  )
     TokenCuratedRegistry(
       _gateKeeper,
       _token,
@@ -26,7 +27,17 @@ contract DataRegistry is TokenCuratedRegistry {
       MIN_CHALLENGE_AMOUNT,
       ADMIN_PERCENTAGE
     )
-    public 
+    public
   {}
+
+  /**
+  @dev Contructor
+  @notice                Let's the sender buy access to the sensor
+  @param _listing        Id of the listing
+  @param _startDate      Timestamp of when the user can start receiving sensor readings
+  @param _endDate        Timestamp of when the will stop receiving sensor readings
+  */
+  function buy(bytes32 _listing, uint _startDate, uint _endDate) public {
+  }
 
 }

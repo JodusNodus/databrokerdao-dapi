@@ -1,4 +1,4 @@
-const Token = artifacts.require('Token.sol')
+const Token = artifacts.require('DtxToken.sol')
 const TokenRegistry = artifacts.require('DtxTokenRegistry.sol')
 const GateKeeper = artifacts.require('GateKeeper')
 

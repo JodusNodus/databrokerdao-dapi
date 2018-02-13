@@ -3,7 +3,7 @@ module.exports = {
     tokenRegistryCombos: [
       {
         registry: 'DtxTokenRegistry',
-        token: 'Token',
+        token: 'DtxToken',
       },
     ],
     contractsThatGetDeployedByOtherContracts: [],

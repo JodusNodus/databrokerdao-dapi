@@ -3,15 +3,15 @@
 
 const testEvent = require('@settlemint/solidity-mint/test/helpers/testEvent')
 
-const DataRegistry = artifacts.require('DataRegistry.sol')
+const SensorRegistry = artifacts.require('SensorRegistry.sol')
 const Token = artifacts.require('Token.sol')
 
-contract('DataRegistry', accounts => {
+contract('SensorRegistry', accounts => {
   describe('Function: enlist', async () => {
     const [seller] = accounts
 
     it('should allow a seller to enlist sensor data when stake is high enough', async () => {
-      const registry = await DataRegistry.deployed()
+      const registry = await SensorRegistry.deployed()
       const token = await Token.deployed()
 
       await token.approve(seller, '10', {
@@ -41,7 +41,7 @@ contract('DataRegistry', accounts => {
     })
 
     it('should not allow a seller to enlist sensor data when stake is not high enough', async () => {
-      const registry = await DataRegistry.deployed()
+      const registry = await SensorRegistry.deployed()
       const token = await Token.deployed()
 
       // Enlist before we can unlist
