@@ -21,6 +21,7 @@ contract SensorRegistry is TokenCuratedRegistry {
     address _token
   )
     TokenCuratedRegistry(
+      "SensorRegistry",
       _gateKeeper,
       _token,
       MIN_ENLIST_AMOUNT,
