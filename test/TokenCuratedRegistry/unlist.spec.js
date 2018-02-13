@@ -4,7 +4,7 @@
 const testEvent = require('@settlemint/solidity-mint/test/helpers/testEvent')
 
 const SensorRegistry = artifacts.require('SensorRegistry.sol')
-const Token = artifacts.require('Token.sol')
+const Token = artifacts.require('DtxToken.sol')
 
 contract('SensorRegistry', accounts => {
   describe('Function: unlist', async () => {
