@@ -18,7 +18,7 @@ contract('SensorRegistry', accounts => {
       await token.approve(seller, '10', {
         from: seller,
       })
-      await registry.enlist('1', '10', 'blablabla', {
+      await registry.enlist('1', '10', '10', {
         from: seller,
       })
 
@@ -40,7 +40,7 @@ contract('SensorRegistry', accounts => {
         '0x1000000000000000000000000000000000000000000000000000000000000000'
       )
 
-      assert.isFalse(listing[0])
+      assert.isFalse(listing[1])
     })
   })
 })

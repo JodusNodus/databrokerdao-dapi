@@ -18,7 +18,7 @@ contract('SensorRegistry', accounts => {
       await token.approve(seller, '10', {
         from: seller,
       })
-      await registry.enlist('1', '10', 'blablabla')
+      await registry.enlist('1', '10', '10')
 
       // Add some challenges
       await token.approve(seller, '5', {
@@ -45,7 +45,7 @@ contract('SensorRegistry', accounts => {
       const listing = await registry.listings.call(
         '0x1000000000000000000000000000000000000000000000000000000000000000'
       )
-      assert.isTrue(listing[0])
+      assert.isTrue(listing[1])
       assert.equal(listing[4].c[0], 0)
 
       // Check if challenge is updated

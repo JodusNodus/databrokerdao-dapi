@@ -18,7 +18,7 @@ contract('SensorRegistry', accounts => {
       await token.approve(seller, '10', {
         from: seller,
       })
-      await registry.enlist('1', '10', 'blablabla')
+      await registry.enlist('1', '10', '10')
 
       await token.approve(seller, '5', {
         from: seller,
@@ -58,7 +58,7 @@ contract('SensorRegistry', accounts => {
       await token.approve(seller, '10', {
         from: seller,
       })
-      await registry.enlist('1', '10', 'blablabla')
+      await registry.enlist('1', '10', '10')
 
       try {
         assert.throws(await registry.challenge('1', '2'), 'invalid opcode')

@@ -18,7 +18,7 @@ contract('SensorRegistry', accounts => {
         from: seller,
       })
 
-      const tx = await registry.enlist('1', '10', 'blablabla', {
+      const tx = await registry.enlist('1', '10', '10', {
         from: seller,
       })
 
@@ -27,7 +27,7 @@ contract('SensorRegistry', accounts => {
         listing:
           '0x1000000000000000000000000000000000000000000000000000000000000000',
         deposit: '10',
-        target: 'blablabla',
+        price: '10',
       })
 
       // Check if listing has all necessary props
@@ -35,8 +35,8 @@ contract('SensorRegistry', accounts => {
         '0x1000000000000000000000000000000000000000000000000000000000000000'
       )
 
-      assert.isTrue(listing[0])
-      assert.equal(listing[1], seller)
+      assert.isTrue(listing[1])
+      assert.equal(listing[2], seller)
       assert.equal(listing[5].c[0], 10)
     })
 

@@ -18,7 +18,7 @@ contract('SensorRegistry', accounts => {
       await token.approve(seller, '10', {
         from: seller,
       })
-      await registry.enlist('1', '10', 'blablabla')
+      await registry.enlist('1', '10', '10')
 
       const tx = await registry.withdraw({
         from: seller,
