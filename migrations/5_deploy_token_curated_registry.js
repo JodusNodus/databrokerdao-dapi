@@ -1,6 +1,6 @@
 const { createPermission } = require('./helpers/permissions')
 
-const SensorRegistry = artifacts.require('SensorRegistry.sol')
+const StreamRegistry = artifacts.require('StreamRegistry.sol')
 const Token = artifacts.require('DtxToken.sol')
 const GateKeeper = artifacts.require('GateKeeper')
 
@@ -34,7 +34,7 @@ async function deployRegistry(deployer, network, accounts) {
     const balanceOfUser = await dDtxToken.balanceOf(user)
 
     // Approve tokens
-    await dDtxToken.approve(SensorRegistry.address, balanceOfUser, {
+    await dDtxToken.approve(StreamRegistry.address, balanceOfUser, {
       from: user,
     })
 
@@ -46,8 +46,8 @@ async function deployRegistry(deployer, network, accounts) {
     return true
   }
 
-  await deployer.deploy(SensorRegistry, dGateKeeper.address, dDtxToken.address)
-  dTokenCuratedRegistry = await SensorRegistry.deployed()
+  await deployer.deploy(StreamRegistry, dGateKeeper.address, dDtxToken.address)
+  dTokenCuratedRegistry = await StreamRegistry.deployed()
 
   await approveRegistryFor(accounts, 0)
 
