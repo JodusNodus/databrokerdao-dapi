@@ -3,15 +3,15 @@
 
 const testEvent = require('@settlemint/solidity-mint/test/helpers/testEvent')
 
-const SensorRegistry = artifacts.require('SensorRegistry.sol')
+const StreamRegistry = artifacts.require('StreamRegistry.sol')
 const Token = artifacts.require('DtxToken.sol')
 
-contract('SensorRegistry', accounts => {
+contract('StreamRegistry', accounts => {
   describe('Function: decrease', async () => {
     const [seller] = accounts
 
     it('should decrease the stake for the listing as when stake is still the minimum stake', async () => {
-      const registry = await SensorRegistry.deployed()
+      const registry = await StreamRegistry.deployed()
       const token = await Token.deployed()
 
       // Enlist before we can unlist
@@ -35,7 +35,7 @@ contract('SensorRegistry', accounts => {
     })
 
     it('should not decrease when stake amount would go beneath minimum stake', async () => {
-      const registry = await SensorRegistry.deployed()
+      const registry = await StreamRegistry.deployed()
       const token = await Token.deployed()
 
       // Enlist before we can unlist

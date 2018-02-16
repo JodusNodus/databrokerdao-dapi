@@ -3,15 +3,15 @@
 
 const testEvent = require('@settlemint/solidity-mint/test/helpers/testEvent')
 
-const SensorRegistry = artifacts.require('SensorRegistry.sol')
+const StreamRegistry = artifacts.require('StreamRegistry.sol')
 const Token = artifacts.require('DtxToken.sol')
 
-contract('SensorRegistry', accounts => {
+contract('StreamRegistry', accounts => {
   describe('Function: withdraw', async () => {
     const [seller] = accounts
 
     it('should withdraw all funds on the contract', async () => {
-      const registry = await SensorRegistry.deployed()
+      const registry = await StreamRegistry.deployed()
       const token = await Token.deployed()
 
       // Enlist before we can unlist

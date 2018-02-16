@@ -3,44 +3,41 @@
 
 const testEvent = require('@settlemint/solidity-mint/test/helpers/testEvent')
 
+const StreamPurchasing = artifacts.require('StreamPurchasing.sol')
 const StreamRegistry = artifacts.require('StreamRegistry.sol')
 const Token = artifacts.require('DtxToken.sol')
 
-contract('StreamRegistry', accounts => {
-  describe('Function: unlist', async () => {
+contract('StreamPurchasing', accounts => {
+  describe('Function: purchaseAccess', async () => {
     const [seller] = accounts
 
-    it('should remove the sensor data from the whitelist', async () => {
+    it('should allow a user to buy access to sensor data', async () => {
+      const purchasing = await StreamPurchasing.deployed()
       const registry = await StreamRegistry.deployed()
       const token = await Token.deployed()
 
-      // Enlist before we can unlist
+      // Enlist first
       await token.approve(seller, '10', {
         from: seller,
       })
-      await registry.enlist('1', '10', '10', {
+      await registry.enlist('1', '10', '1', {
         from: seller,
       })
 
-      await token.approve(StreamRegistry.address, '10', {
+      // Then purchase
+      await token.approve(purchasing.address, '60', {
         from: seller,
       })
-      const tx = await registry.unlist('1', {
+      const endTime = new Date().getTime() / 1000 + 60 // one minute from now
+      const tx = await purchasing.purchaseAccess('1', endTime, {
         from: seller,
       })
 
-      // Check if event was emitted
-      testEvent(tx, 'Unlisted', {
+      // Check if events have been emitted
+      testEvent(tx, 'AccessPurchased', {
         listing:
           '0x1000000000000000000000000000000000000000000000000000000000000000',
       })
-
-      // Check if listing is actually gone
-      const listing = await registry.listings.call(
-        '0x1000000000000000000000000000000000000000000000000000000000000000'
-      )
-
-      assert.isFalse(listing[1])
     })
   })
 })
