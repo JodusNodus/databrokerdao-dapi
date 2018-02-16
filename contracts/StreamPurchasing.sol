@@ -2,14 +2,15 @@ pragma solidity ^0.4.17;
 
 import "./StreamRegistry.sol";
 import "./dtxtoken/DtxToken.sol";
-// import "@settlemint/solidity-mint/contracts/marketplaces/tokensystem/interfaces/IToken.sol";
 import "@settlemint/solidity-mint/contracts/authentication/Secured.sol";
 import "@settlemint/solidity-mint/contracts/utility/syncing/Syncable.sol";
 import "@settlemint/solidity-mint/contracts/utility/caching/Cacher.sol";
 import "@settlemint/solidity-mint/contracts/utility/caching/CachedByBytes32.sol";
+import "zeppelin-solidity/contracts/math/SafeMath.sol";
 
 
 contract StreamPurchasing is Secured, Syncable, Cacher, CachedByBytes32 {
+  using SafeMath for uint256;
 
   event AccessPurchased(bytes32 listing, address user, uint startTime, uint endTime, uint price);
 
@@ -21,11 +22,10 @@ contract StreamPurchasing is Secured, Syncable, Cacher, CachedByBytes32 {
 
   struct Purchase {
     uint endTime; // the time at which the purchaser will lose access to this Stream
-    string pubKey; // the public key to encrypt this Stream stream against
   }
 
-  mapping (bytes32 => Purchase) public purchases;
-  bytes32[] purchasesIndex;
+  mapping (bytes32 => Stream) public streams;
+  bytes32[] streamsIndex;
 
   DtxToken public token;
   StreamRegistry streamRegistry;
@@ -56,16 +56,30 @@ contract StreamPurchasing is Secured, Syncable, Cacher, CachedByBytes32 {
   @param _endTime       Timestamp of when the user will stop receiving Stream readings in seconds (not milliseconds!)
   */
   function purchaseAccess(bytes32 _stream, uint _endTime) public {
-    uint _streamPricePerSecond = streamRegistry.getStreamPrice(_stream); // Price will be used as a price per second here.
+    Stream storage stream = streams[_stream];
 
-    // TODO: Check if user doesn't have access to this stream yet
+    // Check if user doesn't have access to this stream yet
+    require(stream.purchases[msg.sender].endTime == 0);
 
-    // Calculate total price
+    // Calculate total cost for the user
+    uint _streamPricePerSecond = streamRegistry.getStreamPrice(_stream);
     uint _startTime = now;
-    uint _streamPrice = _streamPricePerSecond * (_endTime - _startTime);
+    uint _streamPrice = _streamPricePerSecond.mul(_endTime.sub(_startTime));
 
-    // Payment
-    require(token.transferFrom(msg.sender, streamRegistry.getStreamOwner(_stream), _streamPrice));
+    // Pay out:
+    uint _salePercentage = _streamPrice.mul(salePercentage.div(100));
+    // Sensor owner
+    require(token.transferFrom(msg.sender, streamRegistry.getStreamOwner(_stream), _streamPrice.sub(_salePercentage)));
+    // DBDAO
+    require(token.transferFrom(msg.sender, this, _salePercentage));
+
+    // Add purchase
+    stream.purchases[msg.sender] = Purchase({
+      endTime: _endTime
+    });
+
+    // Add sender to the purchasers array
+    stream.purchasers.push(msg.sender);
 
     AccessPurchased(_stream, msg.sender, _startTime, _endTime, _streamPrice);
   }
@@ -82,11 +96,11 @@ contract StreamPurchasing is Secured, Syncable, Cacher, CachedByBytes32 {
   * implementation of syncable methods
   */
   function getIndexLength() public view returns (uint length) {
-    length = purchasesIndex.length;
+    length = streamsIndex.length;
   }
 
   function getByIndex(uint index) public view returns (bytes32 key, address contractAddress) {
-    return getByKey(purchasesIndex[index]);
+    return getByKey(streamsIndex[index]);
   }
 
   function getByKey(bytes32 _key) public view returns (bytes32 key, address /*contractAddress*/) {

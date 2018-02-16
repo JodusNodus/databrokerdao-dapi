@@ -25,11 +25,9 @@ contract('StreamPurchasing', accounts => {
       })
 
       // Then purchase
-      const tx1 = await token.approve(purchasing.address, '60', {
+      await token.approve(purchasing.address, '60', {
         from: seller,
       })
-      testEvent(tx1, 'Approval', {})
-
       const endTime = new Date().getTime() / 1000 + 60 // one minute from now
       const tx = await purchasing.purchaseAccess('1', endTime, {
         from: seller,
@@ -40,6 +38,11 @@ contract('StreamPurchasing', accounts => {
         listing:
           '0x1000000000000000000000000000000000000000000000000000000000000000',
       })
+
+      const purchase = await purchasing.streams.call(
+        '0x1000000000000000000000000000000000000000000000000000000000000000'
+      )
+      console.log('--', purchase)
     })
   })
 })
