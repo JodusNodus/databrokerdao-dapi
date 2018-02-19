@@ -71,7 +71,7 @@ contract StreamPurchasing is Secured, Syncable, Cacher, CachedByBytes32 {
     // Sensor owner
     require(token.transferFrom(msg.sender, streamRegistry.getStreamOwner(_stream), _streamPrice.sub(_salePercentage)));
     // DBDAO
-    require(token.transferFrom(msg.sender, this, _salePercentage));
+    // require(token.transferFrom(msg.sender, this, _salePercentage));
 
     // Add purchase
     stream.purchases[msg.sender] = Purchase({

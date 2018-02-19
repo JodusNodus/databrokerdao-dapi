@@ -25,7 +25,7 @@ contract('StreamPurchasing', accounts => {
       })
 
       // Then purchase
-      await token.approve(purchasing.address, '60', {
+      await token.approve(purchasing.address, '100', {
         from: seller,
       })
       const endTime = new Date().getTime() / 1000 + 60 // one minute from now
