@@ -71,7 +71,7 @@ contract StreamPurchasing is Secured, Syncable, Cacher, CachedByBytes32 {
     // Sensor owner
     require(token.transferFrom(msg.sender, streamRegistry.getStreamOwner(_stream), _streamPrice.sub(_salePercentage)));
     // DBDAO
-    // require(token.transferFrom(msg.sender, this, _salePercentage));
+    require(token.transferFrom(msg.sender, this, _salePercentage));
 
     // Add purchase
     stream.purchases[msg.sender] = Purchase({
@@ -82,6 +82,17 @@ contract StreamPurchasing is Secured, Syncable, Cacher, CachedByBytes32 {
     stream.purchasers.push(msg.sender);
 
     AccessPurchased(_stream, msg.sender, _startTime, _endTime, _streamPrice);
+  }
+
+  /**
+  @notice               Returns whether or not the sender has access to this listing
+  @param _stream        Id of the listing
+  */
+  function hasAccess(bytes32 _stream) public returns (bool hasAccess){
+    if (streams[_stream].purchases[msg.sender].endTime == 0) {
+      return false;
+    }
+    return true;
   }
 
   /**
