@@ -2,9 +2,11 @@
 /* global assert contract artifacts */
 
 const testEvent = require('@settlemint/solidity-mint/test/helpers/testEvent')
+const getEventProperty = require('../helpers/getEventProperty')
 
 const StreamRegistry = artifacts.require('StreamRegistry.sol')
 const Token = artifacts.require('DtxToken.sol')
+const Stream = artifacts.require('Stream.sol')
 
 contract('StreamRegistry', accounts => {
   describe('Function: decrease', async () => {
@@ -14,38 +16,51 @@ contract('StreamRegistry', accounts => {
       const registry = await StreamRegistry.deployed()
       const token = await Token.deployed()
 
-      // Enlist before we can unlist
+      // Enlist before we can decrease
       await token.approve(seller, '10', {
         from: seller,
       })
-      await registry.enlist('1', '20', '10')
+      const tx = await registry.enlist('20', '10', {
+        from: seller,
+      })
+      const listingAddress = getEventProperty(tx, 'Enlisted', 'listing')
 
       await token.approve(seller, '10', {
         from: seller,
       })
-      const tx = await registry.decrease('1', '10')
+      const tx2 = await registry.decrease(listingAddress, '5')
 
       // Check if event was emitted
-      testEvent(tx, 'Decreased', {
-        listing:
-          '0x1000000000000000000000000000000000000000000000000000000000000000',
-        decreasedBy: '10',
-        newDeposit: '10',
+      testEvent(tx2, 'Decreased', {
+        listing: listingAddress,
+        decreasedBy: '5',
+        newStake: '15',
       })
+
+      const stream = await Stream.at(listingAddress)
+      const streamStake = await stream.stake.call()
+
+      assert.equal(streamStake, '15')
     })
 
     it('should not decrease when stake amount would go beneath minimum stake', async () => {
       const registry = await StreamRegistry.deployed()
       const token = await Token.deployed()
 
-      // Enlist before we can unlist
+      // Enlist before we can decrease
       await token.approve(seller, '10', {
         from: seller,
       })
-      await registry.enlist('1', '10', '10')
+      const tx = await registry.enlist('10', '10', {
+        from: seller,
+      })
+      const listingAddress = getEventProperty(tx, 'Enlisted', 'listing')
 
       try {
-        assert.throws(await registry.decrease('1', '5'), 'invalid opcode')
+        assert.throws(
+          await registry.decrease(listingAddress, '5'),
+          'invalid opcode'
+        )
       } catch (e) {
         console.log(e)
       }

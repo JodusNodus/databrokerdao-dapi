@@ -19,12 +19,14 @@ contract StreamRegistry is TokenCuratedRegistry {
   */
   function StreamRegistry(
     address _gateKeeper,
-    address _token
+    address _token,
+    address _listingFactory
   )
     TokenCuratedRegistry(
       "StreamRegistry",
       _gateKeeper,
       _token,
+      _listingFactory,
       MIN_ENLIST_AMOUNT,
       MIN_CHALLENGE_AMOUNT,
       ADMIN_PERCENTAGE
@@ -36,15 +38,15 @@ contract StreamRegistry is TokenCuratedRegistry {
   @notice                Gets the price of a stream
   @param _listing        key of the listing
   */
-  function getStreamPrice(bytes32 _listing) view public returns (uint price) {
-    return listings[_listing].price;
+  function getStreamPrice(address _listing) view public returns (uint price) {
+    return listings[_listing].price();
   }
 
   /**
   @notice                Gets the owner of a stream
   @param _listing        key of the listing
   */
-  function getStreamOwner(bytes32 _listing) view public returns (address owner) {
-    return listings[_listing].owner;
+  function getStreamOwner(address _listing) view public returns (address owner) {
+    return listings[_listing].owner();
   }
 }

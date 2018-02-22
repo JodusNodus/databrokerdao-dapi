@@ -2,9 +2,11 @@
 /* global assert contract artifacts */
 
 const testEvent = require('@settlemint/solidity-mint/test/helpers/testEvent')
+const getEventProperty = require('../helpers/getEventProperty')
 
 const StreamRegistry = artifacts.require('StreamRegistry.sol')
 const Token = artifacts.require('DtxToken.sol')
+const Stream = artifacts.require('Stream.sol')
 
 contract('StreamRegistry', accounts => {
   describe('Function: increase', async () => {
@@ -18,20 +20,27 @@ contract('StreamRegistry', accounts => {
       await token.approve(seller, '10', {
         from: seller,
       })
-      await registry.enlist('1', '10', '10')
+      const tx = await registry.enlist('10', '10', {
+        from: seller,
+      })
+      const listingAddress = getEventProperty(tx, 'Enlisted', 'listing')
 
       await token.approve(seller, '10', {
         from: seller,
       })
-      const tx = await registry.increase('1', '10')
+      const tx2 = await registry.increase(listingAddress, '10')
 
       // Check if event was emitted
-      testEvent(tx, 'Increased', {
-        listing:
-          '0x1000000000000000000000000000000000000000000000000000000000000000',
+      testEvent(tx2, 'Increased', {
+        listing: listingAddress,
         increasedBy: '10',
-        newDeposit: '20',
+        newStake: '20',
       })
+
+      const stream = await Stream.at(listingAddress)
+      const streamStake = await stream.stake.call()
+
+      assert.equal(streamStake, '20')
     })
   })
 })

@@ -1,6 +1,7 @@
 const { createPermission } = require('./helpers/permissions')
 
 const StreamRegistry = artifacts.require('StreamRegistry.sol')
+const StreamFactory = artifacts.require('StreamFactory.sol')
 const Token = artifacts.require('DtxToken.sol')
 const GateKeeper = artifacts.require('GateKeeper')
 
@@ -46,7 +47,15 @@ async function deployRegistry(deployer, network, accounts) {
     return true
   }
 
-  await deployer.deploy(StreamRegistry, dGateKeeper.address, dDtxToken.address)
+  await deployer.deploy(StreamFactory, dGateKeeper.address)
+  const dStreamFactory = await StreamFactory.deployed()
+
+  await deployer.deploy(
+    StreamRegistry,
+    dGateKeeper.address,
+    dDtxToken.address,
+    dStreamFactory.address
+  )
   dTokenCuratedRegistry = await StreamRegistry.deployed()
 
   await approveRegistryFor(accounts, 0)

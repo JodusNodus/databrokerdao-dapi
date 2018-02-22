@@ -1,0 +1,495 @@
+{
+  "contractName": "IListingFactory",
+  "abi": [
+    {
+      "constant": true,
+      "inputs": [],
+      "name": "gateKeeper",
+      "outputs": [
+        {
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "name": "_gateKeeper",
+          "type": "address"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "nonpayable",
+      "type": "constructor"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": false,
+          "name": "_address",
+          "type": "address"
+        }
+      ],
+      "name": "ListingCreated",
+      "type": "event"
+    },
+    {
+      "constant": false,
+      "inputs": [
+        {
+          "name": "_owner",
+          "type": "address"
+        },
+        {
+          "name": "_price",
+          "type": "uint256"
+        },
+        {
+          "name": "_stakeAmount",
+          "type": "uint256"
+        },
+        {
+          "name": "_gateKeeper",
+          "type": "address"
+        },
+        {
+          "name": "_tcr",
+          "type": "address"
+        }
+      ],
+      "name": "createListing",
+      "outputs": [],
+      "payable": false,
+      "stateMutability": "nonpayable",
+      "type": "function"
+    }
+  ],
+  "bytecode": "0x",
+  "deployedBytecode": "0x",
+  "sourceMap": "",
+  "deployedSourceMap": "",
+  "source": "pragma solidity ^0.4.17;\n\nimport \"../../../authentication/Secured.sol\";\n\n\ncontract IListingFactory is Secured {\n\n  event ListingCreated(address _address);\n\n  function IListingFactory(address _gateKeeper) Secured(_gateKeeper) public {}\n\n  function createListing(\n    address _owner,\n    uint _price,\n    uint _stakeAmount,\n    address _gateKeeper,\n    address _tcr) public;\n\n}\n",
+  "sourcePath": "@settlemint/solidity-mint/contracts/marketplaces/tokencuratedregistry/interfaces/IListingFactory.sol",
+  "ast": {
+    "attributes": {
+      "absolutePath": "@settlemint/solidity-mint/contracts/marketplaces/tokencuratedregistry/interfaces/IListingFactory.sol",
+      "exportedSymbols": {
+        "IListingFactory": [
+          2716
+        ]
+      }
+    },
+    "children": [
+      {
+        "attributes": {
+          "literals": [
+            "solidity",
+            "^",
+            "0.4",
+            ".17"
+          ]
+        },
+        "id": 2686,
+        "name": "PragmaDirective",
+        "src": "0:24:19"
+      },
+      {
+        "attributes": {
+          "SourceUnit": 1508,
+          "absolutePath": "@settlemint/solidity-mint/contracts/authentication/Secured.sol",
+          "file": "../../../authentication/Secured.sol",
+          "scope": 2717,
+          "symbolAliases": [
+            null
+          ],
+          "unitAlias": ""
+        },
+        "id": 2687,
+        "name": "ImportDirective",
+        "src": "26:45:19"
+      },
+      {
+        "attributes": {
+          "contractDependencies": [
+            1507
+          ],
+          "contractKind": "contract",
+          "documentation": null,
+          "fullyImplemented": false,
+          "linearizedBaseContracts": [
+            2716,
+            1507
+          ],
+          "name": "IListingFactory",
+          "scope": 2717
+        },
+        "children": [
+          {
+            "attributes": {
+              "arguments": [
+                null
+              ]
+            },
+            "children": [
+              {
+                "attributes": {
+                  "contractScope": null,
+                  "name": "Secured",
+                  "referencedDeclaration": 1507,
+                  "type": "contract Secured"
+                },
+                "id": 2688,
+                "name": "UserDefinedTypeName",
+                "src": "102:7:19"
+              }
+            ],
+            "id": 2689,
+            "name": "InheritanceSpecifier",
+            "src": "102:7:19"
+          },
+          {
+            "attributes": {
+              "anonymous": false,
+              "name": "ListingCreated"
+            },
+            "children": [
+              {
+                "children": [
+                  {
+                    "attributes": {
+                      "constant": false,
+                      "indexed": false,
+                      "name": "_address",
+                      "scope": 2693,
+                      "stateVariable": false,
+                      "storageLocation": "default",
+                      "type": "address",
+                      "value": null,
+                      "visibility": "internal"
+                    },
+                    "children": [
+                      {
+                        "attributes": {
+                          "name": "address",
+                          "type": "address"
+                        },
+                        "id": 2690,
+                        "name": "ElementaryTypeName",
+                        "src": "136:7:19"
+                      }
+                    ],
+                    "id": 2691,
+                    "name": "VariableDeclaration",
+                    "src": "136:16:19"
+                  }
+                ],
+                "id": 2692,
+                "name": "ParameterList",
+                "src": "135:18:19"
+              }
+            ],
+            "id": 2693,
+            "name": "EventDefinition",
+            "src": "115:39:19"
+          },
+          {
+            "attributes": {
+              "constant": false,
+              "implemented": true,
+              "isConstructor": true,
+              "name": "IListingFactory",
+              "payable": false,
+              "scope": 2716,
+              "stateMutability": "nonpayable",
+              "superFunction": null,
+              "visibility": "public"
+            },
+            "children": [
+              {
+                "children": [
+                  {
+                    "attributes": {
+                      "constant": false,
+                      "name": "_gateKeeper",
+                      "scope": 2702,
+                      "stateVariable": false,
+                      "storageLocation": "default",
+                      "type": "address",
+                      "value": null,
+                      "visibility": "internal"
+                    },
+                    "children": [
+                      {
+                        "attributes": {
+                          "name": "address",
+                          "type": "address"
+                        },
+                        "id": 2694,
+                        "name": "ElementaryTypeName",
+                        "src": "183:7:19"
+                      }
+                    ],
+                    "id": 2695,
+                    "name": "VariableDeclaration",
+                    "src": "183:19:19"
+                  }
+                ],
+                "id": 2696,
+                "name": "ParameterList",
+                "src": "182:21:19"
+              },
+              {
+                "attributes": {
+                  "parameters": [
+                    null
+                  ]
+                },
+                "children": [],
+                "id": 2700,
+                "name": "ParameterList",
+                "src": "232:0:19"
+              },
+              {
+                "children": [
+                  {
+                    "attributes": {
+                      "argumentTypes": null,
+                      "overloadedDeclarations": [
+                        null
+                      ],
+                      "referencedDeclaration": 1507,
+                      "type": "type(contract Secured)",
+                      "value": "Secured"
+                    },
+                    "id": 2697,
+                    "name": "Identifier",
+                    "src": "204:7:19"
+                  },
+                  {
+                    "attributes": {
+                      "argumentTypes": null,
+                      "overloadedDeclarations": [
+                        null
+                      ],
+                      "referencedDeclaration": 2695,
+                      "type": "address",
+                      "value": "_gateKeeper"
+                    },
+                    "id": 2698,
+                    "name": "Identifier",
+                    "src": "212:11:19"
+                  }
+                ],
+                "id": 2699,
+                "name": "ModifierInvocation",
+                "src": "204:20:19"
+              },
+              {
+                "attributes": {
+                  "statements": [
+                    null
+                  ]
+                },
+                "children": [],
+                "id": 2701,
+                "name": "Block",
+                "src": "232:2:19"
+              }
+            ],
+            "id": 2702,
+            "name": "FunctionDefinition",
+            "src": "158:76:19"
+          },
+          {
+            "attributes": {
+              "body": null,
+              "constant": false,
+              "implemented": false,
+              "isConstructor": false,
+              "modifiers": [
+                null
+              ],
+              "name": "createListing",
+              "payable": false,
+              "scope": 2716,
+              "stateMutability": "nonpayable",
+              "superFunction": null,
+              "visibility": "public"
+            },
+            "children": [
+              {
+                "children": [
+                  {
+                    "attributes": {
+                      "constant": false,
+                      "name": "_owner",
+                      "scope": 2715,
+                      "stateVariable": false,
+                      "storageLocation": "default",
+                      "type": "address",
+                      "value": null,
+                      "visibility": "internal"
+                    },
+                    "children": [
+                      {
+                        "attributes": {
+                          "name": "address",
+                          "type": "address"
+                        },
+                        "id": 2703,
+                        "name": "ElementaryTypeName",
+                        "src": "266:7:19"
+                      }
+                    ],
+                    "id": 2704,
+                    "name": "VariableDeclaration",
+                    "src": "266:14:19"
+                  },
+                  {
+                    "attributes": {
+                      "constant": false,
+                      "name": "_price",
+                      "scope": 2715,
+                      "stateVariable": false,
+                      "storageLocation": "default",
+                      "type": "uint256",
+                      "value": null,
+                      "visibility": "internal"
+                    },
+                    "children": [
+                      {
+                        "attributes": {
+                          "name": "uint",
+                          "type": "uint256"
+                        },
+                        "id": 2705,
+                        "name": "ElementaryTypeName",
+                        "src": "286:4:19"
+                      }
+                    ],
+                    "id": 2706,
+                    "name": "VariableDeclaration",
+                    "src": "286:11:19"
+                  },
+                  {
+                    "attributes": {
+                      "constant": false,
+                      "name": "_stakeAmount",
+                      "scope": 2715,
+                      "stateVariable": false,
+                      "storageLocation": "default",
+                      "type": "uint256",
+                      "value": null,
+                      "visibility": "internal"
+                    },
+                    "children": [
+                      {
+                        "attributes": {
+                          "name": "uint",
+                          "type": "uint256"
+                        },
+                        "id": 2707,
+                        "name": "ElementaryTypeName",
+                        "src": "303:4:19"
+                      }
+                    ],
+                    "id": 2708,
+                    "name": "VariableDeclaration",
+                    "src": "303:17:19"
+                  },
+                  {
+                    "attributes": {
+                      "constant": false,
+                      "name": "_gateKeeper",
+                      "scope": 2715,
+                      "stateVariable": false,
+                      "storageLocation": "default",
+                      "type": "address",
+                      "value": null,
+                      "visibility": "internal"
+                    },
+                    "children": [
+                      {
+                        "attributes": {
+                          "name": "address",
+                          "type": "address"
+                        },
+                        "id": 2709,
+                        "name": "ElementaryTypeName",
+                        "src": "326:7:19"
+                      }
+                    ],
+                    "id": 2710,
+                    "name": "VariableDeclaration",
+                    "src": "326:19:19"
+                  },
+                  {
+                    "attributes": {
+                      "constant": false,
+                      "name": "_tcr",
+                      "scope": 2715,
+                      "stateVariable": false,
+                      "storageLocation": "default",
+                      "type": "address",
+                      "value": null,
+                      "visibility": "internal"
+                    },
+                    "children": [
+                      {
+                        "attributes": {
+                          "name": "address",
+                          "type": "address"
+                        },
+                        "id": 2711,
+                        "name": "ElementaryTypeName",
+                        "src": "351:7:19"
+                      }
+                    ],
+                    "id": 2712,
+                    "name": "VariableDeclaration",
+                    "src": "351:12:19"
+                  }
+                ],
+                "id": 2713,
+                "name": "ParameterList",
+                "src": "260:104:19"
+              },
+              {
+                "attributes": {
+                  "parameters": [
+                    null
+                  ]
+                },
+                "children": [],
+                "id": 2714,
+                "name": "ParameterList",
+                "src": "371:0:19"
+              }
+            ],
+            "id": 2715,
+            "name": "FunctionDefinition",
+            "src": "238:134:19"
+          }
+        ],
+        "id": 2716,
+        "name": "ContractDefinition",
+        "src": "74:301:19"
+      }
+    ],
+    "id": 2717,
+    "name": "SourceUnit",
+    "src": "0:376:19"
+  },
+  "compiler": {
+    "name": "solc",
+    "version": "0.4.20+commit.3155dd80.Emscripten.clang"
+  },
+  "networks": {},
+  "schemaVersion": "1.0.1",
+  "updatedAt": "2018-02-22T16:22:08.055Z"
+}

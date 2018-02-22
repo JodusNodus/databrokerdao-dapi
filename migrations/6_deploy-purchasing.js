@@ -1,5 +1,5 @@
 const StreamRegistry = artifacts.require('StreamRegistry.sol')
-const StreamPurchasing = artifacts.require('StreamPurchasing.sol')
+const PurchaseRegistry = artifacts.require('PurchaseRegistry.sol')
 const Token = artifacts.require('DtxToken.sol')
 const GateKeeper = artifacts.require('GateKeeper')
 
@@ -9,7 +9,7 @@ async function deployPurchasing(deployer, network, accounts) {
   const dTokenCuratedRegistry = await StreamRegistry.deployed()
 
   await deployer.deploy(
-    StreamPurchasing,
+    PurchaseRegistry,
     dGateKeeper.address,
     dDtxToken.address,
     dTokenCuratedRegistry.address

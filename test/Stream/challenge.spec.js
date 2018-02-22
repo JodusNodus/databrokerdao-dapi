@@ -2,9 +2,11 @@
 /* global assert contract artifacts */
 
 const testEvent = require('@settlemint/solidity-mint/test/helpers/testEvent')
+const getEventProperty = require('../helpers/getEventProperty')
 
 const StreamRegistry = artifacts.require('StreamRegistry.sol')
 const Token = artifacts.require('DtxToken.sol')
+const Stream = artifacts.require('Stream.sol')
 
 contract('StreamRegistry', accounts => {
   describe('Function: challenge', async () => {
@@ -14,40 +16,40 @@ contract('StreamRegistry', accounts => {
       const registry = await StreamRegistry.deployed()
       const token = await Token.deployed()
 
-      // Enlist before we can unlist
+      // Enlist before we can challenge
       await token.approve(seller, '10', {
         from: seller,
       })
-      await registry.enlist('1', '10', '10')
+      const tx = await registry.enlist('10', '10', {
+        from: seller,
+      })
+      const listingAddress = getEventProperty(tx, 'Enlisted', 'listing')
 
       await token.approve(seller, '5', {
         from: seller,
       })
-      const tx = await registry.challenge('1', '5')
+      const tx2 = await registry.challenge(listingAddress, '5')
 
       // Check if event was emitted
-      testEvent(tx, 'Challenged', {
-        listing:
-          '0x1000000000000000000000000000000000000000000000000000000000000000',
-        deposit: '5',
+      testEvent(tx2, 'Challenged', {
+        listing: listingAddress,
+        stake: '5',
         challengeID: '1',
       })
 
       // Check if listing is updated
-      const listing = await registry.listings.call(
-        '0x1000000000000000000000000000000000000000000000000000000000000000'
-      )
-      assert.equal(listing[4].c[0], 1) // number of unresolved challenges
-      assert.equal(listing[5].c[0], 15) // total stake, both initial and challenges
+      const stream = await Stream.at(listingAddress)
+      const streamChallenges = await stream.challenges.call()
+      const streamChallengesStake = await stream.challengesStake.call()
+
+      assert.equal(streamChallenges, 1)
+      assert.equal(streamChallengesStake, 5)
 
       // Check if challenge is updated
       const challenge = await registry.challenges.call('1')
       assert.equal(challenge[0].seller)
       assert.isFalse(challenge[1])
-      assert.equal(
-        challenge[3],
-        '0x1000000000000000000000000000000000000000000000000000000000000000'
-      )
+      assert.equal(challenge[3], listingAddress)
     })
 
     it('should not add a new challenge when minimum challenge stake amount is not reached', async () => {
@@ -58,10 +60,16 @@ contract('StreamRegistry', accounts => {
       await token.approve(seller, '10', {
         from: seller,
       })
-      await registry.enlist('1', '10', '10')
+      const tx = await registry.enlist('10', '10', {
+        from: seller,
+      })
+      const listingAddress = getEventProperty(tx, 'Enlisted', 'listing')
 
       try {
-        assert.throws(await registry.challenge('1', '2'), 'invalid opcode')
+        assert.throws(
+          await registry.challenge(listingAddress, '2'),
+          'invalid opcode'
+        )
       } catch (e) {
         console.log(e)
       }

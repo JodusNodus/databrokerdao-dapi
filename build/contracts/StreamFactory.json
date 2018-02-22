@@ -1,0 +1,964 @@
+{
+  "contractName": "StreamFactory",
+  "abi": [
+    {
+      "constant": true,
+      "inputs": [],
+      "name": "gateKeeper",
+      "outputs": [
+        {
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "name": "_gateKeeper",
+          "type": "address"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "nonpayable",
+      "type": "constructor"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": false,
+          "name": "_address",
+          "type": "address"
+        }
+      ],
+      "name": "ListingCreated",
+      "type": "event"
+    },
+    {
+      "constant": false,
+      "inputs": [
+        {
+          "name": "_owner",
+          "type": "address"
+        },
+        {
+          "name": "_price",
+          "type": "uint256"
+        },
+        {
+          "name": "_stakeAmount",
+          "type": "uint256"
+        },
+        {
+          "name": "_gateKeeper",
+          "type": "address"
+        },
+        {
+          "name": "_tcr",
+          "type": "address"
+        }
+      ],
+      "name": "createListing",
+      "outputs": [],
+      "payable": false,
+      "stateMutability": "nonpayable",
+      "type": "function"
+    }
+  ],
+  "bytecode": "0x6060604052341561000f57600080fd5b604051602080610ce38339810160405280805160008054600160a060020a03909216600160a060020a03199092169190911790555050610c8f806100546000396000f30060606040526004361061004b5763ffffffff7c010000000000000000000000000000000000000000000000000000000060003504166345d61ded8114610050578063509bd5ae1461007f575b600080fd5b341561005b57600080fd5b6100636100b4565b604051600160a060020a03909116815260200160405180910390f35b341561008a57600080fd5b6100b2600160a060020a036004358116906024359060443590606435811690608435166100c3565b005b600054600160a060020a031681565b600080548190879087908790600160a060020a03166100e06101e4565b600160a060020a039485168152602081019390935260408084019290925290921660608201526080019051809103906000f080151561011e57600080fd5b915082905080600160a060020a03166359d5da89836040517c010000000000000000000000000000000000000000000000000000000063ffffffff8416028152600160a060020a039091166004820152602401600060405180830381600087803b151561018a57600080fd5b6102c65a03f1151561019b57600080fd5b5050507f28d9f8d9a5ede83b62d4e29f4c074bc4a0865d277cf65ffa9ec27243bbeed20082604051600160a060020a03909116815260200160405180910390a150505050505050565b604051610a6f806101f5833901905600606060405260006003819055600481905560058190556007556008805460ff19166001179055341561003057600080fd5b604051608080610a6f8339810160405280805191906020018051919060200180519190602001805160008054600160a060020a03928316600160a060020a03199182161790915560018054308416921691909117905560088054919096166101000261010060a860020a03199091161790945550600391909155600455506109b2806100bd6000396000f30060606040526004361061012f5763ffffffff60e060020a60003504166309af4fe681146101345780632d883a731461015957806331ec7fce1461019057806332fd1441146101a857806333a2cc01146101be57806335d9db53146101d1578063392f37e9146101e75780633a4b66f1146102715780633d188fab146102845780633d9287fa146102a957806345d61ded146102d057806349877038146102ff5780635cc075051461031e578063605cba821461036f5780636de149f5146103825780637b78920414610398578063842a77d3146103b05780638da5cb5b146103cf57806390a4b8d5146103e257806391b7f5ed14610407578063a035b1fe1461041d578063b4f8c54214610430578063c32e110214610446578063e1ba7d011461045c578063fff139cf1461046f575b600080fd5b341561013f57600080fd5b610147610482565b60405190815260200160405180910390f35b341561016457600080fd5b61016f600435610488565b604051918252600160a060020a031660208201526040908101905180910390f35b341561019b57600080fd5b6101a66004356104c0565b005b34156101b357600080fd5b6101a66004356104c5565b34156101c957600080fd5b6101476104e6565b34156101dc57600080fd5b6101a66004356104ed565b34156101f257600080fd5b6101fa6104f2565b60405160208082528190810183818151815260200191508051906020019080838360005b8381101561023657808201518382015260200161021e565b50505050905090810190601f1680156102635780820380516001836020036101000a031916815260200191505b509250505060405180910390f35b341561027c57600080fd5b610147610590565b341561028f57600080fd5b6101a6600160a060020a0360043516602435604435610596565b34156102b457600080fd5b6102bc6105d9565b604051901515815260200160405180910390f35b34156102db57600080fd5b6102e36105e2565b604051600160a060020a03909116815260200160405180910390f35b341561030a57600080fd5b61016f600160a060020a03600435166105f1565b341561032957600080fd5b6101a660046024813581810190830135806020601f8201819004810201604051908101604052818152929190602084018383808284375094965061061295505050505050565b341561037a57600080fd5b610147610626565b341561038d57600080fd5b6101a660043561062c565b34156103a357600080fd5b6101a66004351515610631565b34156103bb57600080fd5b6102e3600160a060020a0360043516610644565b34156103da57600080fd5b6102e361065f565b34156103ed57600080fd5b6101a6600160a060020a0360043581169060243516610673565b341561041257600080fd5b6101a66004356106fa565b341561042857600080fd5b6101476106ff565b341561043b57600080fd5b610147600435610705565b341561045157600080fd5b610147600435610724565b341561046757600080fd5b610147610748565b341561047a57600080fd5b61014761074e565b60055481565b6000806104b7600a8481548110151561049d57fe5b600091825260209091200154600160a060020a03166105f1565b91509150915091565b600555565b60068054600181016104d783826108ca565b50600091825260209091200155565b6006545b90565b600455565b60028054600181600116156101000203166002900480601f0160208091040260200160405190810160405280929190818152602001828054600181600116156101000203166002900480156105885780601f1061055d57610100808354040283529160200191610588565b820191906000526020600020905b81548152906001019060200180831161056b57829003601f168201915b505050505081565b60045481565b82600160a060020a03167f2130e02bc65616aa7f8f548960f51a08a1d0ea94efb33611412208c2d0306a2260405160405180910390a26105d4610772565b505050565b60085460ff1681565b600054600160a060020a031681565b600160a060020a039081166000908152600960205260408120549092911690565b61061b816107da565b610623610772565b50565b60075481565b600755565b6008805460ff1916911515919091179055565b600960205260009081526040902054600160a060020a031681565b6008546101009004600160a060020a031681565b600160a060020a038181166000908152600960205260409020805473ffffffffffffffffffffffffffffffffffffffff1916918416919091179055600a8054600181016106c083826108ca565b506000918252602090912001805473ffffffffffffffffffffffffffffffffffffffff1916600160a060020a039290921691909117905550565b600355565b60035481565b600680548290811061071357fe5b600091825260209091200154905081565b600060068281548110151561073557fe5b9060005260206000209001549050919050565b600a5490565b7f5550444154455f4d455441444154415f524f4c4500000000000000000000000081565b600154600160a060020a0316633d188fab30600060405160e060020a63ffffffff8516028152600160a060020a0390921660048301526044820152606401600060405180830381600087803b15156107c957600080fd5b6102c65a03f115156105d457600080fd5b7f5550444154455f4d455441444154415f524f4c450000000000000000000000006108053382610823565b151561081057600080fd5b60028280516105d49291602001906108ee565b60008054600160a060020a031615806108c3575060008054600160a060020a031690636d6712d8908590309086906040516020015260405160e060020a63ffffffff8616028152600160a060020a0393841660048201529190921660248201526044810191909152606401602060405180830381600087803b15156108a757600080fd5b6102c65a03f115156108b857600080fd5b505050604051805190505b9392505050565b8154818355818115116105d4576000838152602090206105d491810190830161096c565b828054600181600116156101000203166002900490600052602060002090601f016020900481019282601f1061092f57805160ff191683800117855561095c565b8280016001018555821561095c579182015b8281111561095c578251825591602001919060010190610941565b5061096892915061096c565b5090565b6104ea91905b8082111561096857600081556001016109725600a165627a7a7230582089fe05b679f3d71a49c87f2eea578a19911b6704ebebb2108d1a6ee6fc31b8f60029a165627a7a72305820a6a47fa6bc10d5dc239ffc2f1e2148db562afeb7757c5305b4787d695c079ffb0029",
+  "deployedBytecode": "0x60606040526004361061004b5763ffffffff7c010000000000000000000000000000000000000000000000000000000060003504166345d61ded8114610050578063509bd5ae1461007f575b600080fd5b341561005b57600080fd5b6100636100b4565b604051600160a060020a03909116815260200160405180910390f35b341561008a57600080fd5b6100b2600160a060020a036004358116906024359060443590606435811690608435166100c3565b005b600054600160a060020a031681565b600080548190879087908790600160a060020a03166100e06101e4565b600160a060020a039485168152602081019390935260408084019290925290921660608201526080019051809103906000f080151561011e57600080fd5b915082905080600160a060020a03166359d5da89836040517c010000000000000000000000000000000000000000000000000000000063ffffffff8416028152600160a060020a039091166004820152602401600060405180830381600087803b151561018a57600080fd5b6102c65a03f1151561019b57600080fd5b5050507f28d9f8d9a5ede83b62d4e29f4c074bc4a0865d277cf65ffa9ec27243bbeed20082604051600160a060020a03909116815260200160405180910390a150505050505050565b604051610a6f806101f5833901905600606060405260006003819055600481905560058190556007556008805460ff19166001179055341561003057600080fd5b604051608080610a6f8339810160405280805191906020018051919060200180519190602001805160008054600160a060020a03928316600160a060020a03199182161790915560018054308416921691909117905560088054919096166101000261010060a860020a03199091161790945550600391909155600455506109b2806100bd6000396000f30060606040526004361061012f5763ffffffff60e060020a60003504166309af4fe681146101345780632d883a731461015957806331ec7fce1461019057806332fd1441146101a857806333a2cc01146101be57806335d9db53146101d1578063392f37e9146101e75780633a4b66f1146102715780633d188fab146102845780633d9287fa146102a957806345d61ded146102d057806349877038146102ff5780635cc075051461031e578063605cba821461036f5780636de149f5146103825780637b78920414610398578063842a77d3146103b05780638da5cb5b146103cf57806390a4b8d5146103e257806391b7f5ed14610407578063a035b1fe1461041d578063b4f8c54214610430578063c32e110214610446578063e1ba7d011461045c578063fff139cf1461046f575b600080fd5b341561013f57600080fd5b610147610482565b60405190815260200160405180910390f35b341561016457600080fd5b61016f600435610488565b604051918252600160a060020a031660208201526040908101905180910390f35b341561019b57600080fd5b6101a66004356104c0565b005b34156101b357600080fd5b6101a66004356104c5565b34156101c957600080fd5b6101476104e6565b34156101dc57600080fd5b6101a66004356104ed565b34156101f257600080fd5b6101fa6104f2565b60405160208082528190810183818151815260200191508051906020019080838360005b8381101561023657808201518382015260200161021e565b50505050905090810190601f1680156102635780820380516001836020036101000a031916815260200191505b509250505060405180910390f35b341561027c57600080fd5b610147610590565b341561028f57600080fd5b6101a6600160a060020a0360043516602435604435610596565b34156102b457600080fd5b6102bc6105d9565b604051901515815260200160405180910390f35b34156102db57600080fd5b6102e36105e2565b604051600160a060020a03909116815260200160405180910390f35b341561030a57600080fd5b61016f600160a060020a03600435166105f1565b341561032957600080fd5b6101a660046024813581810190830135806020601f8201819004810201604051908101604052818152929190602084018383808284375094965061061295505050505050565b341561037a57600080fd5b610147610626565b341561038d57600080fd5b6101a660043561062c565b34156103a357600080fd5b6101a66004351515610631565b34156103bb57600080fd5b6102e3600160a060020a0360043516610644565b34156103da57600080fd5b6102e361065f565b34156103ed57600080fd5b6101a6600160a060020a0360043581169060243516610673565b341561041257600080fd5b6101a66004356106fa565b341561042857600080fd5b6101476106ff565b341561043b57600080fd5b610147600435610705565b341561045157600080fd5b610147600435610724565b341561046757600080fd5b610147610748565b341561047a57600080fd5b61014761074e565b60055481565b6000806104b7600a8481548110151561049d57fe5b600091825260209091200154600160a060020a03166105f1565b91509150915091565b600555565b60068054600181016104d783826108ca565b50600091825260209091200155565b6006545b90565b600455565b60028054600181600116156101000203166002900480601f0160208091040260200160405190810160405280929190818152602001828054600181600116156101000203166002900480156105885780601f1061055d57610100808354040283529160200191610588565b820191906000526020600020905b81548152906001019060200180831161056b57829003601f168201915b505050505081565b60045481565b82600160a060020a03167f2130e02bc65616aa7f8f548960f51a08a1d0ea94efb33611412208c2d0306a2260405160405180910390a26105d4610772565b505050565b60085460ff1681565b600054600160a060020a031681565b600160a060020a039081166000908152600960205260408120549092911690565b61061b816107da565b610623610772565b50565b60075481565b600755565b6008805460ff1916911515919091179055565b600960205260009081526040902054600160a060020a031681565b6008546101009004600160a060020a031681565b600160a060020a038181166000908152600960205260409020805473ffffffffffffffffffffffffffffffffffffffff1916918416919091179055600a8054600181016106c083826108ca565b506000918252602090912001805473ffffffffffffffffffffffffffffffffffffffff1916600160a060020a039290921691909117905550565b600355565b60035481565b600680548290811061071357fe5b600091825260209091200154905081565b600060068281548110151561073557fe5b9060005260206000209001549050919050565b600a5490565b7f5550444154455f4d455441444154415f524f4c4500000000000000000000000081565b600154600160a060020a0316633d188fab30600060405160e060020a63ffffffff8516028152600160a060020a0390921660048301526044820152606401600060405180830381600087803b15156107c957600080fd5b6102c65a03f115156105d457600080fd5b7f5550444154455f4d455441444154415f524f4c450000000000000000000000006108053382610823565b151561081057600080fd5b60028280516105d49291602001906108ee565b60008054600160a060020a031615806108c3575060008054600160a060020a031690636d6712d8908590309086906040516020015260405160e060020a63ffffffff8616028152600160a060020a0393841660048201529190921660248201526044810191909152606401602060405180830381600087803b15156108a757600080fd5b6102c65a03f115156108b857600080fd5b505050604051805190505b9392505050565b8154818355818115116105d4576000838152602090206105d491810190830161096c565b828054600181600116156101000203166002900490600052602060002090601f016020900481019282601f1061092f57805160ff191683800117855561095c565b8280016001018555821561095c579182015b8281111561095c578251825591602001919060010190610941565b5061096892915061096c565b5090565b6104ea91905b8082111561096857600081556001016109725600a165627a7a7230582089fe05b679f3d71a49c87f2eea578a19911b6704ebebb2108d1a6ee6fc31b8f60029a165627a7a72305820a6a47fa6bc10d5dc239ffc2f1e2148db562afeb7757c5305b4787d695c079ffb0029",
+  "sourceMap": "181:560:6:-;;;227:81;;;;;;;;;;;;;;;;;;;;;;250:10:13;:36;;-1:-1:-1;;;;;250:36:13;;;-1:-1:-1;;;;;;250:36:13;;;;;;;;;-1:-1:-1;;181:560:6;;;;;;",
+  "deployedSourceMap": "181:560:6:-;;;;;;;;;;;;;;;;;;;;;;;;;;;;77:28:13;;;;;;;;;;;;;;;-1:-1:-1;;;;;77:28:13;;;;;;;;;;;;;;312:427:6;;;;;;;;;;-1:-1:-1;;;;;312:427:6;;;;;;;;;;;;;;;;;;;;;;;77:28:13;;;-1:-1:-1;;;;;77:28:13;;:::o;312:427:6:-;453:17;514:10;;453:17;;484:6;;492;;500:12;;-1:-1:-1;;;;;514:10:6;473:52;;:::i;:::-;-1:-1:-1;;;;;473:52:6;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;453:72;;623:4;576:52;;634:14;-1:-1:-1;;;;;634:25:6;;668:10;634:46;;;;;;;;;-1:-1:-1;;;;;634:46:6;;;;;;;;;-1:-1:-1;634:46:6;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;699:35;722:10;699:35;;-1:-1:-1;;;;;699:35:6;;;;;;;;;;;;;;312:427;;;;;;;:::o;181:560::-;;;;;;;;;;:::o",
+  "source": "pragma solidity ^0.4.20;\n\nimport \"./Stream.sol\";\nimport \"./StreamRegistry.sol\";\nimport \"@settlemint/solidity-mint/contracts/marketplaces/tokencuratedregistry/ListingFactory.sol\";\n\n\ncontract StreamFactory is ListingFactory {\n\n  function StreamFactory(address _gateKeeper) ListingFactory(_gateKeeper) public {}\n\n  function createListing(address _owner, uint _price, uint _stakeAmount, address _gateKeeper, address _tcr) public {\n    // Create listing\n    Stream _newStream = new Stream(_owner, _price, _stakeAmount, gateKeeper);\n    // Add listing to token curated registry\n    StreamRegistry streamRegistry = StreamRegistry(_tcr);\n    streamRegistry.addListing(address(_newStream));\n    // Event\n    ListingCreated(address(_newStream));\n  }\n}\n",
+  "sourcePath": "/Users/silkevandenbroeck/databrokerDAO/databrokerdao-dapi/contracts/stream/StreamFactory.sol",
+  "ast": {
+    "attributes": {
+      "absolutePath": "/Users/silkevandenbroeck/databrokerDAO/databrokerdao-dapi/contracts/stream/StreamFactory.sol",
+      "exportedSymbols": {
+        "StreamFactory": [
+          721
+        ]
+      }
+    },
+    "children": [
+      {
+        "attributes": {
+          "literals": [
+            "solidity",
+            "^",
+            "0.4",
+            ".20"
+          ]
+        },
+        "id": 662,
+        "name": "PragmaDirective",
+        "src": "0:24:6"
+      },
+      {
+        "attributes": {
+          "SourceUnit": 661,
+          "absolutePath": "/Users/silkevandenbroeck/databrokerDAO/databrokerdao-dapi/contracts/stream/Stream.sol",
+          "file": "./Stream.sol",
+          "scope": 722,
+          "symbolAliases": [
+            null
+          ],
+          "unitAlias": ""
+        },
+        "id": 663,
+        "name": "ImportDirective",
+        "src": "26:22:6"
+      },
+      {
+        "attributes": {
+          "SourceUnit": 785,
+          "absolutePath": "/Users/silkevandenbroeck/databrokerDAO/databrokerdao-dapi/contracts/stream/StreamRegistry.sol",
+          "file": "./StreamRegistry.sol",
+          "scope": 722,
+          "symbolAliases": [
+            null
+          ],
+          "unitAlias": ""
+        },
+        "id": 664,
+        "name": "ImportDirective",
+        "src": "49:30:6"
+      },
+      {
+        "attributes": {
+          "SourceUnit": 1662,
+          "absolutePath": "@settlemint/solidity-mint/contracts/marketplaces/tokencuratedregistry/ListingFactory.sol",
+          "file": "@settlemint/solidity-mint/contracts/marketplaces/tokencuratedregistry/ListingFactory.sol",
+          "scope": 722,
+          "symbolAliases": [
+            null
+          ],
+          "unitAlias": ""
+        },
+        "id": 665,
+        "name": "ImportDirective",
+        "src": "80:98:6"
+      },
+      {
+        "attributes": {
+          "contractDependencies": [
+            660,
+            1507,
+            1661,
+            2716
+          ],
+          "contractKind": "contract",
+          "documentation": null,
+          "fullyImplemented": true,
+          "linearizedBaseContracts": [
+            721,
+            1661,
+            2716,
+            1507
+          ],
+          "name": "StreamFactory",
+          "scope": 722
+        },
+        "children": [
+          {
+            "attributes": {
+              "arguments": [
+                null
+              ]
+            },
+            "children": [
+              {
+                "attributes": {
+                  "contractScope": null,
+                  "name": "ListingFactory",
+                  "referencedDeclaration": 1661,
+                  "type": "contract ListingFactory"
+                },
+                "id": 666,
+                "name": "UserDefinedTypeName",
+                "src": "207:14:6"
+              }
+            ],
+            "id": 667,
+            "name": "InheritanceSpecifier",
+            "src": "207:14:6"
+          },
+          {
+            "attributes": {
+              "constant": false,
+              "implemented": true,
+              "isConstructor": true,
+              "name": "StreamFactory",
+              "payable": false,
+              "scope": 721,
+              "stateMutability": "nonpayable",
+              "superFunction": null,
+              "visibility": "public"
+            },
+            "children": [
+              {
+                "children": [
+                  {
+                    "attributes": {
+                      "constant": false,
+                      "name": "_gateKeeper",
+                      "scope": 676,
+                      "stateVariable": false,
+                      "storageLocation": "default",
+                      "type": "address",
+                      "value": null,
+                      "visibility": "internal"
+                    },
+                    "children": [
+                      {
+                        "attributes": {
+                          "name": "address",
+                          "type": "address"
+                        },
+                        "id": 668,
+                        "name": "ElementaryTypeName",
+                        "src": "250:7:6"
+                      }
+                    ],
+                    "id": 669,
+                    "name": "VariableDeclaration",
+                    "src": "250:19:6"
+                  }
+                ],
+                "id": 670,
+                "name": "ParameterList",
+                "src": "249:21:6"
+              },
+              {
+                "attributes": {
+                  "parameters": [
+                    null
+                  ]
+                },
+                "children": [],
+                "id": 674,
+                "name": "ParameterList",
+                "src": "306:0:6"
+              },
+              {
+                "children": [
+                  {
+                    "attributes": {
+                      "argumentTypes": null,
+                      "overloadedDeclarations": [
+                        null
+                      ],
+                      "referencedDeclaration": 1661,
+                      "type": "type(contract ListingFactory)",
+                      "value": "ListingFactory"
+                    },
+                    "id": 671,
+                    "name": "Identifier",
+                    "src": "271:14:6"
+                  },
+                  {
+                    "attributes": {
+                      "argumentTypes": null,
+                      "overloadedDeclarations": [
+                        null
+                      ],
+                      "referencedDeclaration": 669,
+                      "type": "address",
+                      "value": "_gateKeeper"
+                    },
+                    "id": 672,
+                    "name": "Identifier",
+                    "src": "286:11:6"
+                  }
+                ],
+                "id": 673,
+                "name": "ModifierInvocation",
+                "src": "271:27:6"
+              },
+              {
+                "attributes": {
+                  "statements": [
+                    null
+                  ]
+                },
+                "children": [],
+                "id": 675,
+                "name": "Block",
+                "src": "306:2:6"
+              }
+            ],
+            "id": 676,
+            "name": "FunctionDefinition",
+            "src": "227:81:6"
+          },
+          {
+            "attributes": {
+              "constant": false,
+              "implemented": true,
+              "isConstructor": false,
+              "modifiers": [
+                null
+              ],
+              "name": "createListing",
+              "payable": false,
+              "scope": 721,
+              "stateMutability": "nonpayable",
+              "superFunction": 2715,
+              "visibility": "public"
+            },
+            "children": [
+              {
+                "children": [
+                  {
+                    "attributes": {
+                      "constant": false,
+                      "name": "_owner",
+                      "scope": 720,
+                      "stateVariable": false,
+                      "storageLocation": "default",
+                      "type": "address",
+                      "value": null,
+                      "visibility": "internal"
+                    },
+                    "children": [
+                      {
+                        "attributes": {
+                          "name": "address",
+                          "type": "address"
+                        },
+                        "id": 677,
+                        "name": "ElementaryTypeName",
+                        "src": "335:7:6"
+                      }
+                    ],
+                    "id": 678,
+                    "name": "VariableDeclaration",
+                    "src": "335:14:6"
+                  },
+                  {
+                    "attributes": {
+                      "constant": false,
+                      "name": "_price",
+                      "scope": 720,
+                      "stateVariable": false,
+                      "storageLocation": "default",
+                      "type": "uint256",
+                      "value": null,
+                      "visibility": "internal"
+                    },
+                    "children": [
+                      {
+                        "attributes": {
+                          "name": "uint",
+                          "type": "uint256"
+                        },
+                        "id": 679,
+                        "name": "ElementaryTypeName",
+                        "src": "351:4:6"
+                      }
+                    ],
+                    "id": 680,
+                    "name": "VariableDeclaration",
+                    "src": "351:11:6"
+                  },
+                  {
+                    "attributes": {
+                      "constant": false,
+                      "name": "_stakeAmount",
+                      "scope": 720,
+                      "stateVariable": false,
+                      "storageLocation": "default",
+                      "type": "uint256",
+                      "value": null,
+                      "visibility": "internal"
+                    },
+                    "children": [
+                      {
+                        "attributes": {
+                          "name": "uint",
+                          "type": "uint256"
+                        },
+                        "id": 681,
+                        "name": "ElementaryTypeName",
+                        "src": "364:4:6"
+                      }
+                    ],
+                    "id": 682,
+                    "name": "VariableDeclaration",
+                    "src": "364:17:6"
+                  },
+                  {
+                    "attributes": {
+                      "constant": false,
+                      "name": "_gateKeeper",
+                      "scope": 720,
+                      "stateVariable": false,
+                      "storageLocation": "default",
+                      "type": "address",
+                      "value": null,
+                      "visibility": "internal"
+                    },
+                    "children": [
+                      {
+                        "attributes": {
+                          "name": "address",
+                          "type": "address"
+                        },
+                        "id": 683,
+                        "name": "ElementaryTypeName",
+                        "src": "383:7:6"
+                      }
+                    ],
+                    "id": 684,
+                    "name": "VariableDeclaration",
+                    "src": "383:19:6"
+                  },
+                  {
+                    "attributes": {
+                      "constant": false,
+                      "name": "_tcr",
+                      "scope": 720,
+                      "stateVariable": false,
+                      "storageLocation": "default",
+                      "type": "address",
+                      "value": null,
+                      "visibility": "internal"
+                    },
+                    "children": [
+                      {
+                        "attributes": {
+                          "name": "address",
+                          "type": "address"
+                        },
+                        "id": 685,
+                        "name": "ElementaryTypeName",
+                        "src": "404:7:6"
+                      }
+                    ],
+                    "id": 686,
+                    "name": "VariableDeclaration",
+                    "src": "404:12:6"
+                  }
+                ],
+                "id": 687,
+                "name": "ParameterList",
+                "src": "334:83:6"
+              },
+              {
+                "attributes": {
+                  "parameters": [
+                    null
+                  ]
+                },
+                "children": [],
+                "id": 688,
+                "name": "ParameterList",
+                "src": "425:0:6"
+              },
+              {
+                "children": [
+                  {
+                    "attributes": {
+                      "assignments": [
+                        690
+                      ]
+                    },
+                    "children": [
+                      {
+                        "attributes": {
+                          "constant": false,
+                          "name": "_newStream",
+                          "scope": 720,
+                          "stateVariable": false,
+                          "storageLocation": "default",
+                          "type": "contract Stream",
+                          "value": null,
+                          "visibility": "internal"
+                        },
+                        "children": [
+                          {
+                            "attributes": {
+                              "contractScope": null,
+                              "name": "Stream",
+                              "referencedDeclaration": 660,
+                              "type": "contract Stream"
+                            },
+                            "id": 689,
+                            "name": "UserDefinedTypeName",
+                            "src": "453:6:6"
+                          }
+                        ],
+                        "id": 690,
+                        "name": "VariableDeclaration",
+                        "src": "453:17:6"
+                      },
+                      {
+                        "attributes": {
+                          "argumentTypes": null,
+                          "isConstant": false,
+                          "isLValue": false,
+                          "isPure": false,
+                          "isStructConstructorCall": false,
+                          "lValueRequested": false,
+                          "names": [
+                            null
+                          ],
+                          "type": "contract Stream",
+                          "type_conversion": false
+                        },
+                        "children": [
+                          {
+                            "attributes": {
+                              "argumentTypes": [
+                                {
+                                  "typeIdentifier": "t_address",
+                                  "typeString": "address"
+                                },
+                                {
+                                  "typeIdentifier": "t_uint256",
+                                  "typeString": "uint256"
+                                },
+                                {
+                                  "typeIdentifier": "t_uint256",
+                                  "typeString": "uint256"
+                                },
+                                {
+                                  "typeIdentifier": "t_contract$_GateKeeper_$1213",
+                                  "typeString": "contract GateKeeper"
+                                }
+                              ],
+                              "isConstant": false,
+                              "isLValue": false,
+                              "isPure": false,
+                              "lValueRequested": false,
+                              "type": "function (address,uint256,uint256,address) returns (contract Stream)"
+                            },
+                            "children": [
+                              {
+                                "attributes": {
+                                  "contractScope": null,
+                                  "name": "Stream",
+                                  "referencedDeclaration": 660,
+                                  "type": "contract Stream"
+                                },
+                                "id": 691,
+                                "name": "UserDefinedTypeName",
+                                "src": "477:6:6"
+                              }
+                            ],
+                            "id": 692,
+                            "name": "NewExpression",
+                            "src": "473:10:6"
+                          },
+                          {
+                            "attributes": {
+                              "argumentTypes": null,
+                              "overloadedDeclarations": [
+                                null
+                              ],
+                              "referencedDeclaration": 678,
+                              "type": "address",
+                              "value": "_owner"
+                            },
+                            "id": 693,
+                            "name": "Identifier",
+                            "src": "484:6:6"
+                          },
+                          {
+                            "attributes": {
+                              "argumentTypes": null,
+                              "overloadedDeclarations": [
+                                null
+                              ],
+                              "referencedDeclaration": 680,
+                              "type": "uint256",
+                              "value": "_price"
+                            },
+                            "id": 694,
+                            "name": "Identifier",
+                            "src": "492:6:6"
+                          },
+                          {
+                            "attributes": {
+                              "argumentTypes": null,
+                              "overloadedDeclarations": [
+                                null
+                              ],
+                              "referencedDeclaration": 682,
+                              "type": "uint256",
+                              "value": "_stakeAmount"
+                            },
+                            "id": 695,
+                            "name": "Identifier",
+                            "src": "500:12:6"
+                          },
+                          {
+                            "attributes": {
+                              "argumentTypes": null,
+                              "overloadedDeclarations": [
+                                null
+                              ],
+                              "referencedDeclaration": 1455,
+                              "type": "contract GateKeeper",
+                              "value": "gateKeeper"
+                            },
+                            "id": 696,
+                            "name": "Identifier",
+                            "src": "514:10:6"
+                          }
+                        ],
+                        "id": 697,
+                        "name": "FunctionCall",
+                        "src": "473:52:6"
+                      }
+                    ],
+                    "id": 698,
+                    "name": "VariableDeclarationStatement",
+                    "src": "453:72:6"
+                  },
+                  {
+                    "attributes": {
+                      "assignments": [
+                        700
+                      ]
+                    },
+                    "children": [
+                      {
+                        "attributes": {
+                          "constant": false,
+                          "name": "streamRegistry",
+                          "scope": 720,
+                          "stateVariable": false,
+                          "storageLocation": "default",
+                          "type": "contract StreamRegistry",
+                          "value": null,
+                          "visibility": "internal"
+                        },
+                        "children": [
+                          {
+                            "attributes": {
+                              "contractScope": null,
+                              "name": "StreamRegistry",
+                              "referencedDeclaration": 784,
+                              "type": "contract StreamRegistry"
+                            },
+                            "id": 699,
+                            "name": "UserDefinedTypeName",
+                            "src": "576:14:6"
+                          }
+                        ],
+                        "id": 700,
+                        "name": "VariableDeclaration",
+                        "src": "576:29:6"
+                      },
+                      {
+                        "attributes": {
+                          "argumentTypes": null,
+                          "isConstant": false,
+                          "isLValue": false,
+                          "isPure": false,
+                          "isStructConstructorCall": false,
+                          "lValueRequested": false,
+                          "names": [
+                            null
+                          ],
+                          "type": "contract StreamRegistry",
+                          "type_conversion": true
+                        },
+                        "children": [
+                          {
+                            "attributes": {
+                              "argumentTypes": [
+                                {
+                                  "typeIdentifier": "t_address",
+                                  "typeString": "address"
+                                }
+                              ],
+                              "overloadedDeclarations": [
+                                null
+                              ],
+                              "referencedDeclaration": 784,
+                              "type": "type(contract StreamRegistry)",
+                              "value": "StreamRegistry"
+                            },
+                            "id": 701,
+                            "name": "Identifier",
+                            "src": "608:14:6"
+                          },
+                          {
+                            "attributes": {
+                              "argumentTypes": null,
+                              "overloadedDeclarations": [
+                                null
+                              ],
+                              "referencedDeclaration": 686,
+                              "type": "address",
+                              "value": "_tcr"
+                            },
+                            "id": 702,
+                            "name": "Identifier",
+                            "src": "623:4:6"
+                          }
+                        ],
+                        "id": 703,
+                        "name": "FunctionCall",
+                        "src": "608:20:6"
+                      }
+                    ],
+                    "id": 704,
+                    "name": "VariableDeclarationStatement",
+                    "src": "576:52:6"
+                  },
+                  {
+                    "children": [
+                      {
+                        "attributes": {
+                          "argumentTypes": null,
+                          "isConstant": false,
+                          "isLValue": false,
+                          "isPure": false,
+                          "isStructConstructorCall": false,
+                          "lValueRequested": false,
+                          "names": [
+                            null
+                          ],
+                          "type": "tuple()",
+                          "type_conversion": false
+                        },
+                        "children": [
+                          {
+                            "attributes": {
+                              "argumentTypes": [
+                                {
+                                  "typeIdentifier": "t_address",
+                                  "typeString": "address"
+                                }
+                              ],
+                              "isConstant": false,
+                              "isLValue": false,
+                              "isPure": false,
+                              "lValueRequested": false,
+                              "member_name": "addListing",
+                              "referencedDeclaration": 1893,
+                              "type": "function (address) external"
+                            },
+                            "children": [
+                              {
+                                "attributes": {
+                                  "argumentTypes": null,
+                                  "overloadedDeclarations": [
+                                    null
+                                  ],
+                                  "referencedDeclaration": 700,
+                                  "type": "contract StreamRegistry",
+                                  "value": "streamRegistry"
+                                },
+                                "id": 705,
+                                "name": "Identifier",
+                                "src": "634:14:6"
+                              }
+                            ],
+                            "id": 707,
+                            "name": "MemberAccess",
+                            "src": "634:25:6"
+                          },
+                          {
+                            "attributes": {
+                              "argumentTypes": null,
+                              "isConstant": false,
+                              "isLValue": false,
+                              "isPure": false,
+                              "isStructConstructorCall": false,
+                              "lValueRequested": false,
+                              "names": [
+                                null
+                              ],
+                              "type": "address",
+                              "type_conversion": true
+                            },
+                            "children": [
+                              {
+                                "attributes": {
+                                  "argumentTypes": [
+                                    {
+                                      "typeIdentifier": "t_contract$_Stream_$660",
+                                      "typeString": "contract Stream"
+                                    }
+                                  ],
+                                  "isConstant": false,
+                                  "isLValue": false,
+                                  "isPure": true,
+                                  "lValueRequested": false,
+                                  "type": "type(address)",
+                                  "value": "address"
+                                },
+                                "id": 708,
+                                "name": "ElementaryTypeNameExpression",
+                                "src": "660:7:6"
+                              },
+                              {
+                                "attributes": {
+                                  "argumentTypes": null,
+                                  "overloadedDeclarations": [
+                                    null
+                                  ],
+                                  "referencedDeclaration": 690,
+                                  "type": "contract Stream",
+                                  "value": "_newStream"
+                                },
+                                "id": 709,
+                                "name": "Identifier",
+                                "src": "668:10:6"
+                              }
+                            ],
+                            "id": 710,
+                            "name": "FunctionCall",
+                            "src": "660:19:6"
+                          }
+                        ],
+                        "id": 711,
+                        "name": "FunctionCall",
+                        "src": "634:46:6"
+                      }
+                    ],
+                    "id": 712,
+                    "name": "ExpressionStatement",
+                    "src": "634:46:6"
+                  },
+                  {
+                    "children": [
+                      {
+                        "attributes": {
+                          "argumentTypes": null,
+                          "isConstant": false,
+                          "isLValue": false,
+                          "isPure": false,
+                          "isStructConstructorCall": false,
+                          "lValueRequested": false,
+                          "names": [
+                            null
+                          ],
+                          "type": "tuple()",
+                          "type_conversion": false
+                        },
+                        "children": [
+                          {
+                            "attributes": {
+                              "argumentTypes": [
+                                {
+                                  "typeIdentifier": "t_address",
+                                  "typeString": "address"
+                                }
+                              ],
+                              "overloadedDeclarations": [
+                                null
+                              ],
+                              "referencedDeclaration": 2693,
+                              "type": "function (address)",
+                              "value": "ListingCreated"
+                            },
+                            "id": 713,
+                            "name": "Identifier",
+                            "src": "699:14:6"
+                          },
+                          {
+                            "attributes": {
+                              "argumentTypes": null,
+                              "isConstant": false,
+                              "isLValue": false,
+                              "isPure": false,
+                              "isStructConstructorCall": false,
+                              "lValueRequested": false,
+                              "names": [
+                                null
+                              ],
+                              "type": "address",
+                              "type_conversion": true
+                            },
+                            "children": [
+                              {
+                                "attributes": {
+                                  "argumentTypes": [
+                                    {
+                                      "typeIdentifier": "t_contract$_Stream_$660",
+                                      "typeString": "contract Stream"
+                                    }
+                                  ],
+                                  "isConstant": false,
+                                  "isLValue": false,
+                                  "isPure": true,
+                                  "lValueRequested": false,
+                                  "type": "type(address)",
+                                  "value": "address"
+                                },
+                                "id": 714,
+                                "name": "ElementaryTypeNameExpression",
+                                "src": "714:7:6"
+                              },
+                              {
+                                "attributes": {
+                                  "argumentTypes": null,
+                                  "overloadedDeclarations": [
+                                    null
+                                  ],
+                                  "referencedDeclaration": 690,
+                                  "type": "contract Stream",
+                                  "value": "_newStream"
+                                },
+                                "id": 715,
+                                "name": "Identifier",
+                                "src": "722:10:6"
+                              }
+                            ],
+                            "id": 716,
+                            "name": "FunctionCall",
+                            "src": "714:19:6"
+                          }
+                        ],
+                        "id": 717,
+                        "name": "FunctionCall",
+                        "src": "699:35:6"
+                      }
+                    ],
+                    "id": 718,
+                    "name": "ExpressionStatement",
+                    "src": "699:35:6"
+                  }
+                ],
+                "id": 719,
+                "name": "Block",
+                "src": "425:314:6"
+              }
+            ],
+            "id": 720,
+            "name": "FunctionDefinition",
+            "src": "312:427:6"
+          }
+        ],
+        "id": 721,
+        "name": "ContractDefinition",
+        "src": "181:560:6"
+      }
+    ],
+    "id": 722,
+    "name": "SourceUnit",
+    "src": "0:742:6"
+  },
+  "compiler": {
+    "name": "solc",
+    "version": "0.4.20+commit.3155dd80.Emscripten.clang"
+  },
+  "networks": {
+    "1337": {
+      "events": {},
+      "links": {},
+      "address": "0xbdbe5b5c3a5a7de0ab2178e18d164d12f99947e7"
+    }
+  },
+  "schemaVersion": "1.0.1",
+  "updatedAt": "2018-02-22T16:22:44.812Z"
+}

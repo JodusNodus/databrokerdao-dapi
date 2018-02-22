@@ -2,9 +2,11 @@
 /* global assert contract artifacts */
 
 const testEvent = require('@settlemint/solidity-mint/test/helpers/testEvent')
+const getEventProperty = require('../helpers/getEventProperty')
 
 const StreamRegistry = artifacts.require('StreamRegistry.sol')
 const Token = artifacts.require('DtxToken.sol')
+const Stream = artifacts.require('Stream.sol')
 
 contract('StreamRegistry', accounts => {
   describe('Function: approveChallenge', async () => {
@@ -14,42 +16,44 @@ contract('StreamRegistry', accounts => {
       const registry = await StreamRegistry.deployed()
       const token = await Token.deployed()
 
-      // Enlist before we can unlist
+      // Enlist before we can challenge
       await token.approve(seller, '10', {
         from: seller,
       })
-      await registry.enlist('1', '10', '10')
+      const tx = await registry.enlist('10', '10', {
+        from: seller,
+      })
+      const listingAddress = getEventProperty(tx, 'Enlisted', 'listing')
 
       // Add some challenges
       await token.approve(seller, '5', {
         from: seller,
       })
-      await registry.challenge('1', '5')
+      await registry.challenge(listingAddress, '5')
       await token.approve(seller, '10', {
         from: seller,
       })
-      await registry.challenge('1', '10')
+      await registry.challenge(listingAddress, '10')
 
       await token.approve(seller, '10', {
         from: seller,
       })
-      const tx = await registry.approveChallenge('1')
+      const tx2 = await registry.approveChallenge(listingAddress)
 
       // Check if event was emitted
-      testEvent(tx, 'ChallengeApproved', {
-        listing:
-          '0x1000000000000000000000000000000000000000000000000000000000000000',
+      testEvent(tx2, 'ChallengeApproved', {
+        listing: listingAddress,
       })
 
       // Check if listing is updated
-      const listing = await registry.listings.call(
-        '0x1000000000000000000000000000000000000000000000000000000000000000'
-      )
+      const stream = await Stream.at(listingAddress)
+      const streamChallenges = await stream.challenges.call()
+      const streamStake = await stream.stake.call()
+      const streamChallengesStake = await stream.challengesStake.call()
 
-      assert.equal(listing[0].c[0], 10)
-      assert.isFalse(listing[1])
-      assert.equal(listing[3].c[0], 0)
-      assert.equal(listing[5].c[0], 0)
+      assert.equal(streamChallenges.c[0], 0)
+      assert.equal(streamStake.c[0], 0)
+      assert.equal(streamChallengesStake.c[0], 0)
 
       // Check if challenge is updated
       const challenge = await registry.challenges.call('1')

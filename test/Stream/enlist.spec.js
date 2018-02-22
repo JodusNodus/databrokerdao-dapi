@@ -2,9 +2,11 @@
 /* global assert contract artifacts */
 
 const testEvent = require('@settlemint/solidity-mint/test/helpers/testEvent')
+const getEventProperty = require('../helpers/getEventProperty')
 
 const StreamRegistry = artifacts.require('StreamRegistry.sol')
 const Token = artifacts.require('DtxToken.sol')
+const Stream = artifacts.require('Stream.sol')
 
 contract('StreamRegistry', accounts => {
   describe('Function: enlist', async () => {
@@ -18,26 +20,29 @@ contract('StreamRegistry', accounts => {
         from: seller,
       })
 
-      const tx = await registry.enlist('1', '10', '10', {
+      const tx = await registry.enlist('10', '10', {
         from: seller,
       })
 
       // Check if events have been emitted
       testEvent(tx, 'Enlisted', {
-        listing:
-          '0x1000000000000000000000000000000000000000000000000000000000000000',
-        deposit: '10',
+        stake: '10',
         price: '10',
       })
 
-      // Check if listing has all necessary props
-      const listing = await registry.listings.call(
-        '0x1000000000000000000000000000000000000000000000000000000000000000'
-      )
+      const listingAddress = getEventProperty(tx, 'Enlisted', 'listing')
+      assert.isDefined(listingAddress)
 
-      assert.isTrue(listing[1])
-      assert.equal(listing[2], seller)
-      assert.equal(listing[5].c[0], 10)
+      const stream = await Stream.at(listingAddress)
+      const streamOwner = await stream.owner.call()
+      const streamStake = await stream.stake.call()
+      const streamChallengesStake = await stream.challengesStake.call()
+      const streamPrice = await stream.price.call()
+
+      assert.equal(streamOwner, seller)
+      assert.equal(streamStake, '10')
+      assert.equal(streamChallengesStake, '0')
+      assert.equal(streamPrice, '10')
     })
 
     it('should not allow a seller to enlist sensor data when stake is not high enough', async () => {
@@ -50,14 +55,7 @@ contract('StreamRegistry', accounts => {
       })
 
       try {
-        assert.throws(
-          await registry.enlist(
-            '0xbb9bc244d798123fde783fcc1c72d3bb8c189413',
-            '1',
-            'blablabla'
-          ),
-          'invalid opcode'
-        )
+        assert.throws(await registry.enlist('1', '1'), 'invalid opcode')
       } catch (e) {
         console.log(e)
       }

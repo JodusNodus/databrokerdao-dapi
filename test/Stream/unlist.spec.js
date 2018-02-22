@@ -2,9 +2,11 @@
 /* global assert contract artifacts */
 
 const testEvent = require('@settlemint/solidity-mint/test/helpers/testEvent')
+const getEventProperty = require('../helpers/getEventProperty')
 
 const StreamRegistry = artifacts.require('StreamRegistry.sol')
 const Token = artifacts.require('DtxToken.sol')
+const Stream = artifacts.require('Stream.sol')
 
 contract('StreamRegistry', accounts => {
   describe('Function: unlist', async () => {
@@ -18,29 +20,27 @@ contract('StreamRegistry', accounts => {
       await token.approve(seller, '10', {
         from: seller,
       })
-      await registry.enlist('1', '10', '10', {
+      const tx = await registry.enlist('10', '10', {
         from: seller,
       })
+      const listingAddress = getEventProperty(tx, 'Enlisted', 'listing')
 
       await token.approve(StreamRegistry.address, '10', {
         from: seller,
       })
-      const tx = await registry.unlist('1', {
+      const tx2 = await registry.unlist(listingAddress, {
         from: seller,
       })
 
       // Check if event was emitted
-      testEvent(tx, 'Unlisted', {
-        listing:
-          '0x1000000000000000000000000000000000000000000000000000000000000000',
+      testEvent(tx2, 'Unlisted', {
+        listing: listingAddress,
       })
 
-      // Check if listing is actually gone
-      const listing = await registry.listings.call(
-        '0x1000000000000000000000000000000000000000000000000000000000000000'
-      )
+      const stream = await Stream.at(listingAddress)
+      const streamWhitelisted = await stream.whitelisted.call()
 
-      assert.isFalse(listing[1])
+      assert.isFalse(streamWhitelisted)
     })
   })
 })

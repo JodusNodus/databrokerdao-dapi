@@ -1,7 +1,10 @@
-pragma solidity ^0.4.17;
+pragma solidity ^0.4.20;
+pragma experimental ABIEncoderV2;
 
-import "./StreamRegistry.sol";
-import "./dtxtoken/DtxToken.sol";
+import "./Purchase.sol";
+import "../stream/Stream.sol";
+import "../stream/StreamRegistry.sol";
+import "../dtxtoken/DtxToken.sol";
 import "@settlemint/solidity-mint/contracts/authentication/Secured.sol";
 import "@settlemint/solidity-mint/contracts/utility/syncing/Syncable.sol";
 import "@settlemint/solidity-mint/contracts/utility/caching/Cacher.sol";
@@ -9,26 +12,17 @@ import "@settlemint/solidity-mint/contracts/utility/caching/CachedByBytes32.sol"
 import "zeppelin-solidity/contracts/math/SafeMath.sol";
 
 
-contract StreamPurchasing is Secured, Syncable, Cacher, CachedByBytes32 {
+contract PurchaseRegistry is Secured, Syncable, Cacher, CachedByBytes32 {
   using SafeMath for uint256;
 
-  event AccessPurchased(bytes32 listing, address user, uint startTime, uint endTime, uint price);
+  event AccessPurchased(address stream, address user, uint startTime, uint endTime, uint price, address purchase);
 
-  struct Stream {
-    uint pricePerSecond;
-    mapping (address => Purchase) purchases; // the list of purchases
-    address[] purchasers; // a list of all the keys in the mapping
-  }
-
-  struct Purchase {
-    uint endTime; // the time at which the purchaser will lose access to this Stream
-  }
-
-  mapping (bytes32 => Stream) public streams;
-  bytes32[] streamsIndex;
+  mapping (address => Purchase) public purchases;
+  address[] public purchasesIndex;
 
   DtxToken public token;
   StreamRegistry streamRegistry;
+  address gateKeeper;
   uint salePercentage = 1;
 
   /**
@@ -37,17 +31,19 @@ contract StreamPurchasing is Secured, Syncable, Cacher, CachedByBytes32 {
   @param _gateKeeper     Address of the gatekeeper
   @param _token          Address of the token
   */
-  function StreamPurchasing(
+  function PurchaseRegistry(
     address _gateKeeper,
     address _token,
     address _streamRegistry
   )
     Secured(_gateKeeper)
-    CachedByBytes32("StreamPurchasing", this)
+    CachedByBytes32("PurchaseRegistry", this)
     public
   {
     token = DtxToken(_token);
     streamRegistry = StreamRegistry(_streamRegistry);
+
+    gateKeeper = _gateKeeper;
   }
 
   /**
@@ -55,12 +51,7 @@ contract StreamPurchasing is Secured, Syncable, Cacher, CachedByBytes32 {
   @param _stream        Id of the listing
   @param _endTime       Timestamp of when the user will stop receiving Stream readings in seconds (not milliseconds!)
   */
-  function purchaseAccess(bytes32 _stream, uint _endTime) public {
-    Stream storage stream = streams[_stream];
-
-    // Check if user doesn't have access to this stream yet
-    require(stream.purchases[msg.sender].endTime == 0);
-
+  function purchaseAccess(address _stream, uint _endTime) public {
     // Calculate total cost for the user
     uint _streamPricePerSecond = streamRegistry.getStreamPrice(_stream);
     uint _startTime = now;
@@ -73,27 +64,43 @@ contract StreamPurchasing is Secured, Syncable, Cacher, CachedByBytes32 {
     // DBDAO
     require(token.transferFrom(msg.sender, this, _salePercentage));
 
-    // Add purchase
-    stream.purchases[msg.sender] = Purchase({
-      endTime: _endTime
-    });
+    // Create purchase
+    Purchase purchase = new Purchase(
+      _streamPricePerSecond,
+      _startTime,
+      _endTime,
+      msg.sender,
+      _stream,
+      gateKeeper
+    );
 
-    // Add sender to the purchasers array
-    stream.purchasers.push(msg.sender);
+    // Push to mapping
+    purchases[address(purchase)] = purchase;
+    purchasesIndex.push(msg.sender);
 
-    AccessPurchased(_stream, msg.sender, _startTime, _endTime, _streamPrice);
+    // Push to mapping in the stream
+    Stream(_stream).addPurchase(address(purchase), msg.sender);
+
+    AccessPurchased(_stream, msg.sender, _startTime, _endTime, _streamPrice, address(purchase));
   }
 
   /**
   @notice               Returns whether or not the sender has access to this listing
   @param _stream        Id of the listing
   */
-  function hasAccess(bytes32 _stream) public returns (bool hasAccess){
-    if (streams[_stream].purchases[msg.sender].endTime == 0) {
-      return false;
-    }
+  function hasAccess(bytes32 _stream) public returns (bool access){
+    // if (streams[_stream].purchases[msg.sender].endTime == 0) {
+    //   return false;
+    // }
     return true;
   }
+
+  /**
+  @notice               Returns array of ids of streams the user has access to
+  */
+  // function getAllPurchases() public returns (bytes32[] purchases) {
+  //   return userPurchases[msg.sender];
+  // }
 
   /**
   @notice                Sets the sale percentage
@@ -107,15 +114,15 @@ contract StreamPurchasing is Secured, Syncable, Cacher, CachedByBytes32 {
   * implementation of syncable methods
   */
   function getIndexLength() public view returns (uint length) {
-    length = streamsIndex.length;
+    length = purchasesIndex.length;
   }
 
-  function getByIndex(uint index) public view returns (bytes32 key, address contractAddress) {
-    return getByKey(streamsIndex[index]);
+  function getByIndex(uint index) public view returns (bytes32 /*key*/, address contractAddress) {
+    return getByKey(purchasesIndex[index]);
   }
 
-  function getByKey(bytes32 _key) public view returns (bytes32 key, address /*contractAddress*/) {
-    key = _key;
+  function getByKey(address _key) public view returns (bytes32 /*key*/, address contractAddress) {
+    contractAddress = address(purchases[_key]);
   }
 
   /**
