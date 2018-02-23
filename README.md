@@ -105,7 +105,27 @@ Expects the following parameters:
 
 
 
-TODO: Add metadata in IPFS
+Enlisting a stream only creates a stream contract which is then listed in the TCR. That contract only keeps track of very basic info (like price), so we keep all other metadata describing this stream in an IPFS hash. Mint automatically downloads this IPFS into the Mongo object of the stream as plain JSON, so we can query it later.
+
+`POST streamregistry/updatestreammetadata`
+
+Expects the following parameters:
+
+* listing: address of the stream
+
+* ipfshash: ipfshash of the stream metadata in JSON
+
+  ````{
+  {
+      "name": "Air pressure sensor Abu Dhabi",
+      "geo": {
+          "lat": "0.213723045424241",
+          "lng": "1.123079883884777"
+      }
+  }
+  ````
+
+  ​
 
 
 
@@ -161,6 +181,16 @@ Expects the following query parameters:
 - dir: string, sort direction, desc or asc (useful for pagination).
 
 You can also add custom Mongo query parameters like this: `&name=test`
+
+
+
+### Get one stream
+
+Queries the MongoDB collection where streams have been saved.
+
+`GET /streamregistry/list/[stream address]`
+
+
 
 
 

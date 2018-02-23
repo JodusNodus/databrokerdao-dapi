@@ -49,4 +49,8 @@ contract StreamRegistry is TokenCuratedRegistry {
   function getStreamOwner(address _listing) view public returns (address owner) {
     return listings[_listing].owner();
   }
+
+  function updateStreamMetadata(address _listing, string _ipfsHash) {
+    listings[_listing].updateMetaData(_ipfsHash);
+  }
 }
