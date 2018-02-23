@@ -25,19 +25,16 @@ A data buyer that is unhappy with the quality of data can challenge an entry in 
 
 Data buyers are encouraged to report bad data to recoup the lost funds due to bad data, and discouraged from reporting false challenges. The seller can reduce lost funds due to unfair bad reputation. The DataBroker DAO platform and its administrators are encouraged to handle these disputes quickly and efficiently and are rewarded for their time and effort.
 
-## API
 
-*Sidenote: for now, DataBroker DAO only works with streams. In the future, datasets will be available too.*
 
-### Enlist a stream
+## Pushing sensor data to subscribers
 
-### Challenge a stream
+When a user has successfully purchased access to a certain sensor stream, the following happens.
 
-### Deny challenge 
-
-### Approve challenge
-
-### Purchase access to a stream
+1. The system monitoring the stream (outside of DataBroker DAO) receives a new sensor reading.
+2. The system calls a DataBroker DAO API endpoint which:
+   * Checks which users have a subscription for this stream at this moment.
+   * Pushes the reading to the preferred storage mechanism of the subscribers (f.e. Dropbox, AWS S3, …).
 
 
 
@@ -75,6 +72,155 @@ curl -X POST \
      -d '{ "data": ["fddb948c5b6a26015197afd1b42626c53e5cfa464bd879439030ea16aca1edd0","9ebb8a0a4d842223c9e377ccc01718d99f00b8a63f6425d21a09c15ef54f39fa"]}' \
    'http://localhost:3333/anchor'
 ```
+
+
+
+## Before transfering tokens
+
+For every method that transfers tokens (f.e. enlist, increase, challenge, …), you need to **approve** the amount of tokens first. 
+
+`POST /dtxtoken/[user address]/approve`
+
+Expects the following parameters:
+
+- spender: address of the user paying the DTX tokens
+- value: uint, number of DTX tokens that need to be transferred
+
+
+
+## Streams
+
+For now, DataBroker DAO only works with streams. In the future, datasets will be available too.
+
+
+
+### Enlist a new stream
+
+`POST /streamregistry/enlist`
+
+Expects the following parameters: 
+
+* stakeamount: uint, amount of DTX the owner of the stream want to stake. Minimum of 10 DTX for now.
+* price: uint, amount of DTX needed to purchase access to **one second** of this stream.
+
+
+
+TODO: Add metadata in IPFS
+
+
+
+### Unlist a stream
+
+Only the **owner of the stream** can unlist it. Stream can only be unlisted when it's **whitelisted** and has **no challenges** ongoing.
+
+ `POST /streamregistry/unlist`
+
+Expects the following parameters: 
+
+- stream: address of the stream contract. 
+
+
+
+### Increase stream stake
+
+Only the **owner of the stream** can increase the stake. 
+
+ `POST /streamregistry/increase`
+
+Expects the following parameters: 
+
+- stream: address of the stream contract. 
+- stakeamount: uint, amount of DTX that need to be added to the current stake.
+
+
+
+### Decrease stream stake
+
+Only the **owner of the stream** can decrease the stake. Stake can not be decreased below the minimum stake amount of 10 DTX.
+
+`POST /streamregistry/decrease`
+
+Expects the following parameters: 
+
+- stream: address of the stream contract. 
+- stakeamount: uint, amount of DTX that need to be subtracted from the current stake.
+
+
+
+### Search for streams
+
+Queries the MongoDB collection where streams have been saved.
+
+`GET /streamregistry/list`
+
+Expects the following query parameters: 
+
+- limit: uint, max number of streams to return (useful for pagination).
+- skip: uint, skip to index (useful for pagination).
+- sort: string, parameter on which to sort (useful for pagination).
+- dir: string, sort direction, desc or asc (useful for pagination).
+
+You can also add custom Mongo query parameters like this: `&name=test`
+
+
+
+## Challenges
+
+
+
+### Challenge a stream
+
+ `POST /streamregistry/challenge`
+
+Expects the following parameters: 
+
+- listing: address of the stream contract. 
+- stakeamount: uint, amount of DTX that need to staked. Minimum stake amount of 5 DTX.
+
+
+
+### Approve challenge on a stream
+
+**Only admins** can approve a challenge. When a challenge is approved, 10% of the total challenge stake goes to the admin approving it. The rest of the sum of the challenges stakes and the enlist stake of the stream is divided among the challengers, according to how much their challenge makes up of the total challenged stake.
+
+`POST /streamregistry/approvechallenge`
+
+Expects the following parameters:
+
+* listing: address of the stream contract.
+* stakeamount: uint, amount of DTX the challenger want to stake. Minimum of 5 DTX.
+
+
+
+### Deny challenge on a stream
+
+**Only admins** can deny a challenge. When a challenge is denied, 10% of the total challenge stake goes to the admin denying it. The rest of the sum of the challenges stakes and the enlist stake of the stream is transferred to the stream owner.
+
+`POST /streamregistry/denychallenge`
+
+Expects the following parameters:
+
+- listing: address of the stream contract.
+- stakeamount: uint, amount of DTX the challenger want to stake. Minimum of 5 DTX.
+
+
+
+## Purchasing
+
+
+
+### Purchasing access to a stream
+
+`POST /purchaseregistry/purchaseaccess`
+
+Expects the following parameters:
+
+- stream: address of the stream contract.
+- endtime: uint, unix timestamp (in seconds) of when the user should lose access to the stream.
+
+
+
+
 
 ## MintNet
 
