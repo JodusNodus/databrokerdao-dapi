@@ -85,29 +85,19 @@ contract PurchaseRegistry is Secured, Syncable, Cacher, CachedByBytes32 {
   }
 
   /**
-  @notice               Returns whether or not the sender has access to this listing
-  @param _stream        Id of the listing
-  */
-  function hasAccess(bytes32 _stream) public returns (bool access){
-    // if (streams[_stream].purchases[msg.sender].endTime == 0) {
-    //   return false;
-    // }
-    return true;
-  }
-
-  /**
-  @notice               Returns array of ids of streams the user has access to
-  */
-  // function getAllPurchases() public returns (bytes32[] purchases) {
-  //   return userPurchases[msg.sender];
-  // }
-
-  /**
   @notice                Sets the sale percentage
   @param _salePercentage salePercentage
   */
   function setSalePercentage(uint _salePercentage) public {
     salePercentage = _salePercentage;
+  }
+
+  /**
+  @notice             Returns wether or user has access to
+  @param _stream      Address of the stream
+  */
+  function hasAccess(address _stream) external returns (bool access) {
+    return Stream(_stream).hasAccess(msg.sender);
   }
 
   /**
@@ -117,11 +107,11 @@ contract PurchaseRegistry is Secured, Syncable, Cacher, CachedByBytes32 {
     length = purchasesIndex.length;
   }
 
-  function getByIndex(uint index) public view returns (bytes32 /*key*/, address contractAddress) {
+  function getByIndex(uint index) public view returns (address contractAddress) {
     return getByKey(purchasesIndex[index]);
   }
 
-  function getByKey(address _key) public view returns (bytes32 /*key*/, address contractAddress) {
+  function getByKey(address _key) public view returns (address contractAddress) {
     contractAddress = address(purchases[_key]);
   }
 

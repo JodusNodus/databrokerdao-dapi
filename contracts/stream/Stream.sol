@@ -39,6 +39,18 @@ contract Stream is Listing, Syncable {
   }
 
   /**
+  @notice               Checks wether or nor a person has access to this stream
+  @param _purchaser     Address of the person who purchased
+  */
+  function hasAccess(address _purchaser) external returns (bool access) {
+    if (purchases[_purchaser].endTime() == 0) {
+      return false;
+    }
+
+    return true;
+  }
+
+  /**
   * implementation of cacher methods
   */
   function invalidateCache(address _cachedAddress, bytes32 /*_cachedBytes32*/, uint256 /*_cachedUint256*/) public {
