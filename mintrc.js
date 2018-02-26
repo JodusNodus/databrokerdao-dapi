@@ -15,24 +15,12 @@ module.exports = {
       ui: {
         enabled: false,
       },
-      mywallet: {
-        enabled: false,
-      },
-      allevents: {
-        enabled: false,
-      },
-      newwallet: {
-        enabled: false,
-      },
-      roles: {
-        enabled: false,
-      },
     },
   },
   environments: [
     'http://localhost:3333',
-    'https://databroker-dapi-staging.settlemint.com',
-    'https://databroker-dapi.settlemint.com',
-    'https://databroker-dapi-demo.settlemint.com',
+    'https://dapi-staging.databrokerdao.com',
+    'https://dapi.databrokerdao.com',
+    'https://dapi-demo.databrokerdao.com',
   ],
 }
