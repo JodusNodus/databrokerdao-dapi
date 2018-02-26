@@ -32,7 +32,7 @@ Data buyers are encouraged to report bad data to recoup the lost funds due to ba
 When a user has successfully purchased access to a certain sensor stream, the following happens.
 
 1. The system monitoring the stream (outside of DataBroker DAO) receives a new sensor reading.
-2. The system calls a DataBroker DAO API endpoint which:
+2. The system calls a DataBroker DAO dAPI endpoint which:
    * Checks which users have a subscription for this stream at this moment.
    * Pushes the reading to the preferred storage mechanism of the subscribers (f.e. Dropbox, AWS S3, …).
 
@@ -141,6 +141,7 @@ Expects the following parameters:
 
 
 
+
 ### Increase stream stake
 
 Only the **owner of the stream** can increase the stake. 
@@ -154,6 +155,7 @@ Expects the following parameters:
 
 
 
+
 ### Decrease stream stake
 
 Only the **owner of the stream** can decrease the stake. Stake can not be decreased below the minimum stake amount of 10 DTX.
@@ -164,6 +166,7 @@ Expects the following parameters:
 
 - stream: address of the stream contract. 
 - stakeamount: uint, amount of DTX that need to be subtracted from the current stake.
+
 
 
 
@@ -209,6 +212,7 @@ Expects the following parameters:
 
 
 
+
 ### Approve challenge on a stream
 
 **Only admins** can approve a challenge. When a challenge is approved, 10% of the total challenge stake goes to the admin approving it. The rest of the sum of the challenges stakes and the enlist stake of the stream is divided among the challengers, according to how much their challenge makes up of the total challenged stake.
@@ -222,6 +226,7 @@ Expects the following parameters:
 
 
 
+
 ### Deny challenge on a stream
 
 **Only admins** can deny a challenge. When a challenge is denied, 10% of the total challenge stake goes to the admin denying it. The rest of the sum of the challenges stakes and the enlist stake of the stream is transferred to the stream owner.
@@ -232,6 +237,7 @@ Expects the following parameters:
 
 - listing: address of the stream contract.
 - stakeamount: uint, amount of DTX the challenger want to stake. Minimum of 5 DTX.
+
 
 
 
