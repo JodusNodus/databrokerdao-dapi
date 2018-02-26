@@ -1,5 +1,4 @@
 const Administrators = artifacts.require('Administrators')
-const Users = artifacts.require('Users')
 const Curators = artifacts.require('Curators')
 const GateKeeper = artifacts.require('GateKeeper')
 
@@ -39,22 +38,6 @@ async function performMigration(deployer, network, accounts) {
       postfix: '@settlemint.com',
     },
     DeployedCurators,
-    network === 'development'
-      ? 'human human human human human human human human human human human human'
-      : 'discover cousin hover skin skirt original crane spatial wrong barely keep jump',
-    accounts
-  )
-
-  // Normal users: buyers and sellers
-  await deployRoleRegistry(deployer, Users, dGateKeeper, accounts[0])
-  const DeployedUsers = await Users.deployed()
-  await createAccounts(
-    2,
-    {
-      prefix: 'user',
-      postfix: '@settlemint.com',
-    },
-    DeployedUsers,
     network === 'development'
       ? 'human human human human human human human human human human human human'
       : 'discover cousin hover skin skirt original crane spatial wrong barely keep jump',
