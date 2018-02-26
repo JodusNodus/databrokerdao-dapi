@@ -7,7 +7,7 @@ module.exports = {
       },
     ],
     contractsThatGetDeployedByOtherContracts: [],
-    roleRegistries: ['Administrators', 'Curators', 'Users'],
+    roleRegistries: ['Administrators', 'Curators'],
     features: {
       statistics: {
         enabled: false,
