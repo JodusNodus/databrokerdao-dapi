@@ -55,7 +55,6 @@ contract Stream is Listing, Syncable {
   */
   function invalidateCache(address _cachedAddress, bytes32 /*_cachedBytes32*/, uint256 /*_cachedUint256*/) public {
     AddressCacheInvalidated(_cachedAddress);
-    super.invalidateCache();
   }
 
    /**
