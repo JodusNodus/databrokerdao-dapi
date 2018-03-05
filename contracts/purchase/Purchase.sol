@@ -22,6 +22,7 @@ contract Purchase is Secured, Cacher, CachedByAddress {
     address _stream,
     address _gateKeeper
   )
+    public
     Secured(_gateKeeper)
     CachedByAddress(this)
   {

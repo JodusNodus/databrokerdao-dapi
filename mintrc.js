@@ -5,8 +5,12 @@ module.exports = {
         registry: 'DtxTokenRegistry',
         token: 'DtxToken',
       },
+      {
+        registry: 'StreamRegistry',
+        token: 'Stream',
+      },
     ],
-    contractsThatGetDeployedByOtherContracts: [],
+    contractsThatGetDeployedByOtherContracts: ['Purchase', 'Stream'],
     roleRegistries: ['Administrators', 'Curators'],
     features: {
       statistics: {

@@ -1,5 +1,4 @@
 pragma solidity ^0.4.20;
-pragma experimental ABIEncoderV2;
 
 import "./Purchase.sol";
 import "../stream/Stream.sol";
@@ -96,7 +95,7 @@ contract PurchaseRegistry is Secured, Syncable, Cacher, CachedByBytes32 {
   @notice             Returns wether or user has access to
   @param _stream      Address of the stream
   */
-  function hasAccess(address _stream) external returns (bool access) {
+  function hasAccess(address _stream) external view returns (bool access) {
     return Stream(_stream).hasAccess(msg.sender);
   }
 

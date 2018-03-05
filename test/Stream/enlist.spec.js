@@ -20,7 +20,7 @@ contract('StreamRegistry', accounts => {
         from: seller,
       })
 
-      const tx = await registry.enlist('10', '10', {
+      const tx = await registry.enlist('10', '1', {
         from: seller,
       })
 

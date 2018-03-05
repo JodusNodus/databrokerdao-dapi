@@ -42,7 +42,7 @@ contract Stream is Listing, Syncable {
   @notice               Checks wether or nor a person has access to this stream
   @param _purchaser     Address of the person who purchased
   */
-  function hasAccess(address _purchaser) external returns (bool access) {
+  function hasAccess(address _purchaser) public view returns (bool access) {
     if (purchases[_purchaser].endTime() == 0) {
       return false;
     }
@@ -71,14 +71,5 @@ contract Stream is Listing, Syncable {
 
   function getByKey(address _key) public view returns (bytes32 /*key*/, address contractAddress) {
     contractAddress = address(purchases[_key]);
-  }
-
-
-  /**
-  * implementation of metadata methods
-  */
-  function updateMetaData(string ipfsHash) public {
-    super.updateMetaData(ipfsHash);
-    super.invalidateCache();
   }
 }

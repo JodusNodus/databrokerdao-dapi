@@ -1,9 +1,30 @@
-const { createPermission } = require('./helpers/permissions')
+const { createPermission, grantPermission } = require('./helpers/permissions')
 
 const StreamRegistry = artifacts.require('StreamRegistry.sol')
 const StreamFactory = artifacts.require('StreamFactory.sol')
 const Token = artifacts.require('DtxToken.sol')
 const GateKeeper = artifacts.require('GateKeeper')
+
+async function enlistStreams(deployer, network, accounts) {
+  const registry = await StreamRegistry.deployed()
+  const token = await Token.deployed()
+  await token.approve(accounts[0], '10', {
+    from: accounts[0],
+  })
+
+  const metadata = {
+    name: 'Air quality sensor Leuven',
+    geo: {
+      lat: 1.922323131232321,
+      lng: 0.32423434343244,
+    },
+    category: 'Air quality',
+  }
+
+  await registry.enlist('10', '10', JSON.stringify(metadata), {
+    from: accounts[0],
+  })
+}
 
 async function deployRegistry(deployer, network, accounts) {
   const dGateKeeper = await GateKeeper.deployed()
@@ -50,6 +71,13 @@ async function deployRegistry(deployer, network, accounts) {
   await deployer.deploy(StreamFactory, dGateKeeper.address)
   const dStreamFactory = await StreamFactory.deployed()
 
+  await grantPermission(
+    dGateKeeper,
+    dGateKeeper,
+    'CREATE_PERMISSIONS_ROLE',
+    dStreamFactory.address
+  )
+
   await deployer.deploy(
     StreamRegistry,
     dGateKeeper.address,
@@ -78,6 +106,9 @@ async function deployRegistry(deployer, network, accounts) {
     'CURATE_CHALLENGE_ROLE',
     accounts[0]
   )
+
+  // Enlist a stream
+  await enlistStreams(deployer, network, accounts)
 }
 
 module.exports = async (deployer, network, accounts) => {
