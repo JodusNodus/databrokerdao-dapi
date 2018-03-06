@@ -96,37 +96,37 @@ For now, DataBroker DAO only works with streams. In the future, datasets will be
 
 ### Enlist a new stream
 
+When enlisting a stream, you want to enlist some metadata too. 
+
+`POST /ipfs/add/json` with the following body: 
+
+````
+data: {
+    name: 'Temperature outside Bar Berlin',
+    geo: {
+        lat: 50.880722,
+        lng: 4.692725,
+    },
+    type: 'temperature',
+    example: "{'value':11,'unit':'celsius'}",
+    updateinterval: 60000,
+}
+````
+
+A succesful response returns a hash property, which you can use in the enlist call.
+
+
+
 `POST /streamregistry/enlist`
 
 Expects the following parameters: 
 
 * stakeamount: uint, amount of DTX the owner of the stream want to stake. Minimum of 10 DTX for now.
 * price: uint, amount of DTX needed to purchase access to **one second** of this stream.
+* ifshash: hash property you get back from `POST /ipfs/add/json` 
 
 
-
-Enlisting a stream only creates a stream contract which is then listed in the TCR. That contract only keeps track of very basic info (like price), so we keep all other metadata describing this stream in an IPFS hash. Mint automatically downloads this IPFS into the Mongo object of the stream as plain JSON, so we can query it later.
-
-`POST streamregistry/updatestreammetadata`
-
-Expects the following parameters:
-
-* listing: address of the stream
-
-* ipfshash: ipfshash of the stream metadata in JSON
-
-  ````{
-  {
-      "name": "Air pressure sensor Abu Dhabi",
-      "geo": {
-          "lat": "0.213723045424241",
-          "lng": "1.123079883884777"
-      }
-  }
-  ````
-
-  ​
-
+​
 
 
 ### Unlist a stream
@@ -183,7 +183,56 @@ Expects the following query parameters:
 - sort: string, parameter on which to sort (useful for pagination).
 - dir: string, sort direction, desc or asc (useful for pagination).
 
-You can also add custom Mongo query parameters like this: `&name=test`
+You can also add custom Mongo query parameters like this: `&name=test`(see [https://github.com/settlemint/lib-ethereum/blob/master/src/utils/ParseMongoQueryString.js](https://github.com/settlemint/lib-ethereum/blob/master/src/utils/ParseMongoQueryString.js) for documentation)
+
+The response looks like this: 
+
+````
+{
+ “base”: {
+   “_id”: “5a9eb5b2069f7500164c2c1f”,
+   “originContractName”: “StreamRegistry”,
+   “originContractAddress”: “0x66de1793a8f30b855d4c4555fb032f12b3aa4ea3”,
+   “key”: “0x66de1793a8f30b855d4c4555fb032f12b3aa4ea3”,
+   “withdrawfundsrole”: “WITHDRAW_FUNDS_ROLE”,
+   “curatechallengerole”: “CURATE_CHALLENGE_ROLE”,
+   “gatekeeper”: “0xd8d085290d1f24bde8826dbcd62c0f79d75dc90d”,
+   “token”: “0x4a958cd3d99112f4a0a6545d52bb377bdca3b561”,
+   “listingfactory”: “0xbba3bc3d839e6bd8800930079e7482937db21bdf”
+ },
+ “synced”: true,
+ “total”: 1,
+ “items”: [
+   {
+     “_id”: “5a9eb5b3069f7500164c2c21",
+     “originContractName”: “StreamRegistry”,
+     “originContractAddress”: “0x66de1793a8f30b855d4c4555fb032f12b3aa4ea3",
+     “key”: “0x66de1793a8f30b855d4c4555fb032f12b3aa4ea3",
+     “contractaddress”: “0x134b15a44838a23011d798c477422045da46f16b”, // address of the stream contract (needed for other calls)
+     “challenges”: “0", // Number of challenges that are currently raised on this stream
+     “metadata”: “QmbtwxUSc4TMbZLWkLfPHw6QT5ZTgD9JztiGTSdk9Zkry1",
+     “name”: “Temperature outside Bar Berlin”,
+     “geo”: {
+       “lat”: 50.880722,
+       “lng”: 4.692725
+     },
+     “type”: “temperature”,
+     “example”: “{‘value’:11,‘unit’:‘celsius’}“,
+     “updateinterval”: 60000,
+     “stake”: “10”,
+     “whitelisted”: true, // whether or not the stream can be shown: if true, show
+     “gatekeeper”: “0xd8d085290d1f24bde8826dbcd62c0f79d75dc90d”,
+     “challengesstake”: “0", // total stake in DTX from challenges
+     “owner”: “0x31401412f6902e0cd41822eeced276c80134e916",
+     “price”: “10", // Price per second
+     “updatemetadatarole”: “UPDATE_METADATA_ROLE”,
+     “subContractName”: “Stream”
+   }
+ ]
+}
+````
+
+
 
 
 
