@@ -15,40 +15,43 @@ async function enlistStreams(deployer, network, accounts) {
   // Add metadata
   const metadata = {
     data: {
-      name: 'Air quality sensor Leuven',
+      name: 'Temperature outside Bar Berlin',
       geo: {
-        lat: 1.922323131232321,
-        lng: 0.32423434343244,
+        lat: 50.880722,
+        lng: 4.692725,
       },
-      category: 'Air quality',
+      type: 'temperature',
+      example: "{'value':11,'unit':'celsius'}",
+      updateinterval: 60000,
     },
   }
 
-  for (let i = 0; i < mintrc.environments.length; i++) {
-    // Authenticate
-    const authToken = await authenticate(network)
-    // Add metadata as ipfs
-    const ipfsHash = await addIpfs(metadata, authToken)
+  // for (let i = 0; i < mintrc.environments.length; i++) {
+  // Authenticate
+  const authToken = await authenticate(network)
+  // Add metadata as ipfs
+  const ipfsHash = await addIpfs(metadata, authToken)
 
-    await token.approve(accounts[0], '10', {
-      from: accounts[0],
-    })
-    await registry.enlist('10', '10', ipfsHash, {
-      from: accounts[0],
-    })
-  }
+  await token.approve(accounts[0], '10', {
+    from: accounts[0],
+  })
+  await registry.enlist('10', '10', ipfsHash, {
+    from: accounts[0],
+  })
+  // }
 }
 
 async function authenticate(network) {
   try {
-    return await fetch(`${mintrc.environments[0]}/authenticate`, {
+    return await fetch(`${mintrc.environments[1]}/authenticate`, {
       method: 'POST',
       body: JSON.stringify({
         privateKeys: {
           ethereum:
-            network === 'development'
-              ? '04e9539c81b92eaf6ccb64ba3175367c749845219c2ef3a12fb1f0a0f288b6e4fd9847604cd41a442f9614661f9f24ed30d69e19269ceeec720fe8aa7e82b0c44b000000000000000000000000000000006089ba9c6c8985591a5aff31ce9da3e1f51a97738779c4a0f347a35a26d64fd50424cc714868f83cf3a4fdec1be230b3242d84f7646af9f2b1cb15bd4291c86e'
-              : process.env.ETHEREUM_PRIVATE_KEY,
+            '04e9539c81b92eaf6ccb64ba3175367c749845219c2ef3a12fb1f0a0f288b6e4fd9847604cd41a442f9614661f9f24ed30d69e19269ceeec720fe8aa7e82b0c44b000000000000000000000000000000006089ba9c6c8985591a5aff31ce9da3e1f51a97738779c4a0f347a35a26d64fd50424cc714868f83cf3a4fdec1be230b3242d84f7646af9f2b1cb15bd4291c86e',
+          // network === 'development'
+          //   ? '04e9539c81b92eaf6ccb64ba3175367c749845219c2ef3a12fb1f0a0f288b6e4fd9847604cd41a442f9614661f9f24ed30d69e19269ceeec720fe8aa7e82b0c44b000000000000000000000000000000006089ba9c6c8985591a5aff31ce9da3e1f51a97738779c4a0f347a35a26d64fd50424cc714868f83cf3a4fdec1be230b3242d84f7646af9f2b1cb15bd4291c86e'
+          //   : process.env.ETHEREUM_PRIVATE_KEY,
         },
         encrypted: true,
       }),
