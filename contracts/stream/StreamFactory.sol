@@ -16,7 +16,7 @@ contract StreamFactory is ListingFactory {
     // Metadata role
     gateKeeper.createPermission(
       msg.sender,
-      this,
+      address(_newStream),
       bytes32("UPDATE_METADATA_ROLE"),
       msg.sender
     );
