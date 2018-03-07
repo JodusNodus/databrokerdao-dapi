@@ -41,11 +41,12 @@ async function enlistStreams(deployer, network, accounts) {
   const authToken = await authenticate(network)
   // Add metadata as ipfs
   const ipfsHash = await addIpfs(metadata, authToken, network)
-
+  console.log('approve')
   await token.approve(accounts[0], '10', {
     from: accounts[0],
   })
-  await registry.enlist('10', '10', ipfsHash, {
+  console.log('enlist')
+  await registry.enlist('10', '10', ipfsHash || '', {
     from: accounts[0],
   })
 }
@@ -146,8 +147,9 @@ async function deployRegistry(deployer, network, accounts) {
     dStreamFactory.address
   )
   dTokenCuratedRegistry = await StreamRegistry.deployed()
-
+  console.log(1)
   await approveRegistryFor(accounts, 0)
+  console.log(2)
 
   // Mint tokens for gateway operator user
   await dDtxToken.mint(
@@ -159,6 +161,7 @@ async function deployRegistry(deployer, network, accounts) {
       from: mintPermissionHolder,
     }
   )
+  console.log(3)
 
   // Set admin permissions: only on first account, since this is the admin.
   // See migrations step 3.
@@ -169,6 +172,7 @@ async function deployRegistry(deployer, network, accounts) {
     'WITHDRAW_FUNDS_ROLE',
     accounts[0]
   )
+  console.log(4)
 
   // Set curator permissions.
   await createPermission(
@@ -178,9 +182,12 @@ async function deployRegistry(deployer, network, accounts) {
     'CURATE_CHALLENGE_ROLE',
     accounts[0]
   )
+  console.log(5)
 
   // Enlist a stream
   await enlistStreams(deployer, network, accounts)
+
+  console.log(6)
 }
 
 module.exports = async (deployer, network, accounts) => {

@@ -23,7 +23,6 @@ contract StreamRegistry is TokenCuratedRegistry {
     address _listingFactory
   )
     TokenCuratedRegistry(
-      "StreamRegistry",
       _gateKeeper,
       _token,
       _listingFactory,
