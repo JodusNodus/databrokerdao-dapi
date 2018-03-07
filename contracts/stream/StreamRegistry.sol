@@ -38,7 +38,7 @@ contract StreamRegistry is TokenCuratedRegistry {
   @param _listing        key of the listing
   */
   function getStreamPrice(address _listing) view public returns (uint price) {
-    return listings[_listing].price();
+    return IListing(listings[_listing]).price();
   }
 
   /**
@@ -46,6 +46,6 @@ contract StreamRegistry is TokenCuratedRegistry {
   @param _listing        key of the listing
   */
   function getStreamOwner(address _listing) view public returns (address owner) {
-    return listings[_listing].owner();
+    return IListing(listings[_listing]).owner();
   }
 }
