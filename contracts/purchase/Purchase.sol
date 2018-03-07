@@ -4,9 +4,10 @@ import "@settlemint/solidity-mint/contracts/authentication/Secured.sol";
 import "@settlemint/solidity-mint/contracts/utility/syncing/Syncable.sol";
 import "@settlemint/solidity-mint/contracts/utility/caching/Cacher.sol";
 import "@settlemint/solidity-mint/contracts/utility/caching/CachedByAddress.sol";
+import "@settlemint/solidity-mint/contracts/utility/metadata/MetaDataContainer.sol";
 
 
-contract Purchase is Secured, Cacher, CachedByAddress {
+contract Purchase is Secured, Cacher, CachedByAddress, MetaDataContainer {
 
   uint public price; // price per second for which access was purchased
   uint public startTime; // the time at which the purchaser will gain access to this Stream
@@ -38,6 +39,13 @@ contract Purchase is Secured, Cacher, CachedByAddress {
   */
   function invalidateCache(address _cachedAddress, bytes32 /*_cachedBytes32*/, uint256 /*_cachedUint256*/) public {
     AddressCacheInvalidated(_cachedAddress);
+  }
+
+  /**
+  * implementation of metadata methods
+  */
+  function updateMetaData(string ipfsHash) public {
+    super.updateMetaData(ipfsHash);
     super.invalidateCache();
   }
 }

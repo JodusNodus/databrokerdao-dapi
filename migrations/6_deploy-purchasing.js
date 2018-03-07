@@ -1,3 +1,5 @@
+const { createPermission, grantPermission } = require('./helpers/permissions')
+
 const StreamRegistry = artifacts.require('StreamRegistry.sol')
 const PurchaseRegistry = artifacts.require('PurchaseRegistry.sol')
 const Token = artifacts.require('DtxToken.sol')
@@ -13,6 +15,15 @@ async function deployPurchasing(deployer, network, accounts) {
     dGateKeeper.address,
     dDtxToken.address,
     dTokenCuratedRegistry.address
+  )
+  const dRegistry = await PurchaseRegistry.deployed()
+
+  // Grant permission to create permissions:
+  await grantPermission(
+    dGateKeeper,
+    dGateKeeper,
+    'CREATE_PERMISSIONS_ROLE',
+    dRegistry.address
   )
 }
 

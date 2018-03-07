@@ -5,6 +5,7 @@ import "../stream/Stream.sol";
 import "../stream/StreamRegistry.sol";
 import "../dtxtoken/DtxToken.sol";
 import "@settlemint/solidity-mint/contracts/authentication/Secured.sol";
+import "@settlemint/solidity-mint/contracts/authentication/GateKeeper.sol";
 import "@settlemint/solidity-mint/contracts/utility/syncing/Syncable.sol";
 import "@settlemint/solidity-mint/contracts/utility/caching/Cacher.sol";
 import "@settlemint/solidity-mint/contracts/utility/caching/CachedByBytes32.sol";
@@ -14,6 +15,8 @@ import "zeppelin-solidity/contracts/math/SafeMath.sol";
 contract PurchaseRegistry is Secured, Syncable, Cacher, CachedByBytes32 {
   using SafeMath for uint256;
 
+  bytes32 constant public CREATE_PERMISSIONS_ROLE = "CREATE_PERMISSIONS_ROLE";
+
   event AccessPurchased(address stream, address user, uint startTime, uint endTime, uint price, address purchase);
 
   mapping (address => Purchase) public purchases;
@@ -21,7 +24,6 @@ contract PurchaseRegistry is Secured, Syncable, Cacher, CachedByBytes32 {
 
   DtxToken public token;
   StreamRegistry streamRegistry;
-  address gateKeeper;
   uint salePercentage = 1;
 
   /**
@@ -41,8 +43,6 @@ contract PurchaseRegistry is Secured, Syncable, Cacher, CachedByBytes32 {
   {
     token = DtxToken(_token);
     streamRegistry = StreamRegistry(_streamRegistry);
-
-    gateKeeper = _gateKeeper;
   }
 
   /**
@@ -50,7 +50,7 @@ contract PurchaseRegistry is Secured, Syncable, Cacher, CachedByBytes32 {
   @param _stream        Id of the listing
   @param _endTime       Timestamp of when the user will stop receiving Stream readings in seconds (not milliseconds!)
   */
-  function purchaseAccess(address _stream, uint _endTime) public {
+  function purchaseAccess(address _stream, uint _endTime, string _metadata) public {
     // Calculate total cost for the user
     uint _streamPricePerSecond = streamRegistry.getStreamPrice(_stream);
     uint _startTime = now;
@@ -70,8 +70,19 @@ contract PurchaseRegistry is Secured, Syncable, Cacher, CachedByBytes32 {
       _endTime,
       msg.sender,
       _stream,
-      gateKeeper
+      address(gateKeeper)
     );
+
+    // Metadata role
+    gateKeeper.createPermission(
+      msg.sender,
+      address(purchase),
+      bytes32("UPDATE_METADATA_ROLE"),
+      msg.sender
+    );
+
+    // Add metadata
+    purchase.updateMetaData(_metadata);
 
     // Push to mapping
     purchases[address(purchase)] = purchase;

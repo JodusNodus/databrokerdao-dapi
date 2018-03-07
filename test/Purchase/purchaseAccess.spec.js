@@ -23,7 +23,7 @@ contract('PurchaseRegistry', accounts => {
       await token.approve(seller, '10', {
         from: seller,
       })
-      const tx = await registry.enlist('10', '1', {
+      const tx = await registry.enlist('10', '1', '', {
         from: seller,
       })
       const listingAddress = getEventProperty(tx, 'Enlisted', 'listing')
@@ -33,7 +33,7 @@ contract('PurchaseRegistry', accounts => {
         from: seller,
       })
       const endTime = new Date().getTime() / 1000 + 60 // one minute from now
-      const tx2 = await purchasing.purchaseAccess(listingAddress, endTime, {
+      const tx2 = await purchasing.purchaseAccess(listingAddress, endTime, '', {
         from: seller,
       })
 

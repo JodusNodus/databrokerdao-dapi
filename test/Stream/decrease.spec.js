@@ -20,7 +20,7 @@ contract('StreamRegistry', accounts => {
       await token.approve(seller, '10', {
         from: seller,
       })
-      const tx = await registry.enlist('20', '10', {
+      const tx = await registry.enlist('20', '10', '', {
         from: seller,
       })
       const listingAddress = getEventProperty(tx, 'Enlisted', 'listing')
@@ -51,7 +51,7 @@ contract('StreamRegistry', accounts => {
       await token.approve(seller, '10', {
         from: seller,
       })
-      const tx = await registry.enlist('10', '10', {
+      const tx = await registry.enlist('10', '10', '', {
         from: seller,
       })
       const listingAddress = getEventProperty(tx, 'Enlisted', 'listing')

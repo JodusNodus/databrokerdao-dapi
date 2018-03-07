@@ -98,7 +98,7 @@ For now, DataBroker DAO only works with streams. In the future, datasets will be
 
 When enlisting a stream, you want to enlist some metadata too. 
 
-`POST /ipfs/add/json` with the following body: 
+`POST /ipfs/add/json` with the following body (JSON.stringify if necessary): 
 
 ````
 data: {
@@ -123,7 +123,7 @@ Expects the following parameters:
 
 * stakeamount: uint, amount of DTX the owner of the stream want to stake. Minimum of 10 DTX for now.
 * price: uint, amount of DTX needed to purchase access to **one second** of this stream.
-* ifshash: hash property you get back from `POST /ipfs/add/json` 
+* metadata: hash property you get back from `POST /ipfs/add/json` 
 
 
 ​

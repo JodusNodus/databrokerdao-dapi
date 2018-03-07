@@ -20,14 +20,14 @@ contract('StreamRegistry', accounts => {
         from: seller,
       })
 
-      const tx = await registry.enlist('10', '1', {
+      const tx = await registry.enlist('10', '1', '', {
         from: seller,
       })
 
       // Check if events have been emitted
       testEvent(tx, 'Enlisted', {
         stake: '10',
-        price: '10',
+        price: '1',
       })
 
       const listingAddress = getEventProperty(tx, 'Enlisted', 'listing')
@@ -42,7 +42,7 @@ contract('StreamRegistry', accounts => {
       assert.equal(streamOwner, seller)
       assert.equal(streamStake, '10')
       assert.equal(streamChallengesStake, '0')
-      assert.equal(streamPrice, '10')
+      assert.equal(streamPrice, '1')
     })
 
     it('should not allow a seller to enlist sensor data when stake is not high enough', async () => {
