@@ -149,6 +149,17 @@ async function deployRegistry(deployer, network, accounts) {
 
   await approveRegistryFor(accounts, 0)
 
+  // Mint tokens for gateway operator user
+  await dDtxToken.mint(
+    network === 'development'
+      ? 0x3df2fd51cf19c0d8d1861d6ebc6457a1b0c7496f
+      : process.env.GATEWAY_OPERATOR_ADDRESS,
+    Math.pow(10, 10),
+    {
+      from: mintPermissionHolder,
+    }
+  )
+
   // Set admin permissions: only on first account, since this is the admin.
   // See migrations step 3.
   await createPermission(
