@@ -1,14 +1,15 @@
 const fetch = require('node-fetch')
 
 const { createPermission, grantPermission } = require('./helpers/permissions')
+const getEventProperty = require('../test/helpers/getEventProperty')
 
 const StreamRegistry = artifacts.require('StreamRegistry.sol')
 const StreamFactory = artifacts.require('StreamFactory.sol')
+const PurchaseRegistry = artifacts.require('PurchaseRegistry.sol')
 const Token = artifacts.require('DtxToken.sol')
 const GateKeeper = artifacts.require('GateKeeper')
 
 function getBaseUrl(network) {
-  console.log('Deploying on network:', network)
   switch (network) {
     case 'development':
       return 'http://localhost:3333'
