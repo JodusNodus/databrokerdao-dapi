@@ -18,7 +18,7 @@ async function deployTokenSystem(deployer, network, accounts) {
       dRegistry.address,
       dGateKeeper.address
     )
-
+    console.log(Token.address)
     await dRegistry.addToken('DTX', Token.address)
   } catch (e) {
     console.log(e)
