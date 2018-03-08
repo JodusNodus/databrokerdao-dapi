@@ -77,14 +77,70 @@ curl -X POST \
 
 ## Before transfering tokens
 
-For every method that transfers tokens (f.e. enlist, increase, challenge, …), you need to **approve** the amount of tokens first. 
+Before calling a method on a contract that transfers tokens (f.e. enlist, increase, challenge, …), you need to **approve** the amount of tokens first. Basically, approving means giving another contract the right to spend your tokens.
 
-`POST /dtxtoken/[user address]/approve`
+`POST /dtxtoken/[token address]/approve`
 
 Expects the following parameters:
 
-- spender: address of the user paying the DTX tokens
+- spender: address of the contract (of which you call the method) that will be paying the DTX tokens for you
 - value: uint, number of DTX tokens that need to be transferred
+
+
+
+
+#### Example
+
+Before doing an enlist call on the streamRegistry contract, you need to approve the stakeamount you are passing in the enlist call, because that amount of tokens will be transferred from the user calling the contract (msg.sender) to the streamRegistry.
+
+````bash
+curl -X POST --header 'Content-Type: application/json' --header 'Accept: application/json' -d '{ \
+   "spender": "0x254353243235525352533", \
+   "value": "10" \
+ }' 'http://localhost:3333/dtxtoken/0x1212314414123123133/approve'
+````
+
+* address in the url is the address of the deployed token contract. You can find this by calling `GET /dtxtokenregistry/list`. You will get a response like this, the token address can be found in `items[0].contractAddress`: 
+
+  ````
+  {
+    "base": {
+      "_id": "5aa0f522ab5e7d0010c76778",
+      "originContractName": "DtxTokenRegistry",
+      "originContractAddress": "0xb75b3cf0c971abc04e00432c40b231e4328ddfe5",
+      "key": "0xb75b3cf0c971abc04e00432c40b231e4328ddfe5",
+      "metadata": "",
+      "gatekeeper": "0x114b2b7298dcf079c7a2bd9cf16fa29f3acbdfbc",
+      "listtokenrole": "LIST_TOKEN_ROLE",
+      "updatemetadatarole": "UPDATE_METADATA_ROLE"
+    },
+    "synced": true,
+    "total": 1,
+    "items": [
+      {
+        "_id": "5aa0f523ab5e7d0010c7677d",
+        "originContractName": "DtxTokenRegistry",
+        "originContractAddress": "0xb75b3cf0c971abc04e00432c40b231e4328ddfe5",
+        "key": "DTX",
+        "contractaddress": "0x469f06830d0841c82944408711b1af1b6e5fd1d0", // Token address
+        "name": "DTX",
+        "totalsupply": "10000001000",
+        "decimals": "18",
+        "metadata": "",
+        "gatekeeper": "0x114b2b7298dcf079c7a2bd9cf16fa29f3acbdfbc",
+        "burnrole": "BURN_ROLE",
+        "mintrole": "MINT_ROLE",
+        "updatemetadatarole": "UPDATE_METADATA_ROLE",
+        "subContractName": "DtxToken"
+      }
+    ]
+  }
+  ````
+
+* spender is the address of the contract that will spend the tokens in your name, in this example the streamRegistry contract. You can also find the address by calling `GET /dtxtokenregistry/list`, the streamRegistry address can be found in `base.key`.
+
+* value is the amount of DTX that will be spent, for the enlist call that is the amount that will be passed in the `stakeamount`property.
+
 
 
 
