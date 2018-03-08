@@ -13,7 +13,11 @@ module.exports = {
         token: 'Stream',
       },
     ],
-    contractsThatGetDeployedByOtherContracts: ['Purchase', 'Stream'],
+    contractsThatGetDeployedByOtherContracts: [
+      'Purchase',
+      'Stream',
+      'DtxToken',
+    ],
     roleRegistries: ['Administrators', 'Curators'],
     features: {
       statistics: {
