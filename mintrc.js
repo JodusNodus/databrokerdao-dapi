@@ -12,6 +12,10 @@ module.exports = {
         registry: 'StreamRegistry',
         token: 'Stream',
       },
+      {
+        registry: 'PurchaseRegistry',
+        token: 'Purchase',
+      },
     ],
     contractsThatGetDeployedByOtherContracts: [
       'Purchase',
