@@ -1,11 +1,9 @@
 const fetch = require('node-fetch')
 
 const { createPermission, grantPermission } = require('./helpers/permissions')
-const getEventProperty = require('../test/helpers/getEventProperty')
 
 const StreamRegistry = artifacts.require('StreamRegistry.sol')
 const StreamFactory = artifacts.require('StreamFactory.sol')
-const PurchaseRegistry = artifacts.require('PurchaseRegistry.sol')
 const Token = artifacts.require('DtxToken.sol')
 const GateKeeper = artifacts.require('GateKeeper')
 
@@ -42,11 +40,11 @@ async function enlistStreams(deployer, network, accounts) {
   const authToken = await authenticate(network)
   // Add metadata as ipfs
   const ipfsHash = await addIpfs(metadata, authToken, network)
-  console.log('approve')
-  await token.approve(accounts[0], '10', {
+
+  // First, approve!
+  await token.approve(registry.address, '10', {
     from: accounts[0],
   })
-  console.log('enlist')
   await registry.enlist('10', '10', ipfsHash || '', {
     from: accounts[0],
   })
@@ -59,9 +57,10 @@ async function authenticate(network) {
       body: JSON.stringify({
         privateKeys: {
           ethereum:
-            network === 'development'
-              ? '2865d7012de2a6b5af3efa222e8606c2086842233a69e134f392dc20820452e9'
-              : process.env.ETHEREUM_PRIVATE_KEY,
+            '2865d7012de2a6b5af3efa222e8606c2086842233a69e134f392dc20820452e9',
+          // network === 'development'
+          //   ? '2865d7012de2a6b5af3efa222e8606c2086842233a69e134f392dc20820452e9'
+          //   : process.env.ETHEREUM_PRIVATE_KEY,
         },
         encrypted: false,
       }),
@@ -148,21 +147,19 @@ async function deployRegistry(deployer, network, accounts) {
     dStreamFactory.address
   )
   dTokenCuratedRegistry = await StreamRegistry.deployed()
-  console.log(1)
   await approveRegistryFor(accounts, 0)
-  console.log(2)
 
   // Mint tokens for gateway operator user
   await dDtxToken.mint(
-    network === 'development'
-      ? 0x3df2fd51cf19c0d8d1861d6ebc6457a1b0c7496f
-      : process.env.GATEWAY_OPERATOR_ADDRESS,
+    // network === 'development'
+    0x3df2fd51cf19c0d8d1861d6ebc6457a1b0c7496f,
+    // ? 0x3df2fd51cf19c0d8d1861d6ebc6457a1b0c7496f
+    // : process.env.GATEWAY_OPERATOR_ADDRESS,
     Math.pow(10, 10),
     {
       from: mintPermissionHolder,
     }
   )
-  console.log(3)
 
   // Set admin permissions: only on first account, since this is the admin.
   // See migrations step 3.
@@ -173,7 +170,6 @@ async function deployRegistry(deployer, network, accounts) {
     'WITHDRAW_FUNDS_ROLE',
     accounts[0]
   )
-  console.log(4)
 
   // Set curator permissions.
   await createPermission(
@@ -183,12 +179,9 @@ async function deployRegistry(deployer, network, accounts) {
     'CURATE_CHALLENGE_ROLE',
     accounts[0]
   )
-  console.log(5)
 
   // Enlist a stream
   await enlistStreams(deployer, network, accounts)
-
-  console.log(6)
 }
 
 module.exports = async (deployer, network, accounts) => {

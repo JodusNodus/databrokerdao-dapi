@@ -2,6 +2,8 @@ const fetch = require('node-fetch')
 
 const getEventProperty = require('../helpers/getEventProperty')
 
+const gatewayOperator = 0x3df2fd51cf19c0d8d1861d6ebc6457a1b0c7496f
+
 contract('The enlist integration test', accounts => {
   it('works', async () => {
     // Add metadata
@@ -23,8 +25,8 @@ contract('The enlist integration test', accounts => {
     // Add metadata as ipfs
     const ipfsHash = await addIpfs(metadata, authToken)
 
-    await approve(accounts[0], accounts[0], '10')
-    await enlist('10', '10', ipfsHash)
+    const t = await approve(gatewayOperator, gatewayOperator, '10')
+    const tx = await enlist('10', '10', ipfsHash)
   })
 })
 
