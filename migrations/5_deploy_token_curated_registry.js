@@ -175,7 +175,7 @@ async function deployRegistry(deployer, network, accounts) {
     accounts[0]
   )
 
-  // Enlist a stream
+  // Enlist a stream!
   await enlistStreams(deployer, network, accounts)
 }
 
