@@ -96,38 +96,30 @@ contract('Integration test: enlisting a stream', function(accounts) {
     // console.log('--', ipfsHash)
 
     // Approve first
-    try {
-      await axios({
-        method: 'post',
-        url: `${baseURL}/dtxtoken/${tokenAddress}/approve`,
-        data: {
-          spender: registryAddress,
-          value: '10',
-        },
-        headers: {
-          Authorization: token,
-        },
-      })
-    } catch (e) {
-      console.log(e)
-    }
+    await axios({
+      method: 'post',
+      url: `${baseURL}/dtxtoken/${tokenAddress}/approve`,
+      data: {
+        spender: registryAddress,
+        value: '10',
+      },
+      headers: {
+        Authorization: token,
+      },
+    })
 
-    // // Finally, enlist
-    // try {
-    //   await axios({
-    //     method: 'post',
-    //     url: `${baseURL}/streamregistry/enlist`,
-    //     data: {
-    //       price: '10',
-    //       stakeamount: '10',
-    //       metadata: 'bla',
-    //     },
-    //     headers: {
-    //       Authorization: token,
-    //     },
-    //   })
-    // } catch (e) {
-    //   console.log(e.response.request.responseText)
-    // }
+    // Finally, enlist
+    await axios({
+      method: 'post',
+      url: `${baseURL}/streamregistry/enlist`,
+      data: {
+        price: '10',
+        stakeamount: '10',
+        metadata: 'bla',
+      },
+      headers: {
+        Authorization: token,
+      },
+    })
   })
 })
