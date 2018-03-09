@@ -1,4 +1,5 @@
-const fetch = require('node-fetch')
+const axios = require('axios')
+const Wallet = require('ethereumjs-wallet')
 
 const { createPermission, grantPermission } = require('./helpers/permissions')
 
@@ -6,6 +7,10 @@ const StreamRegistry = artifacts.require('StreamRegistry.sol')
 const StreamFactory = artifacts.require('StreamFactory.sol')
 const Token = artifacts.require('DtxToken.sol')
 const GateKeeper = artifacts.require('GateKeeper')
+
+const GATEWAY_OPERATOR_PRIVATE_KEY =
+  'ca1398820695e93cea849b841a9aae4eeae65518d14353ab73d21fa4af2d58a7'
+const GATEWAY_OPERATOR_ADDRESS = '0x3df2fd51cf19c0d8d1861d6ebc6457a1b0c7496f'
 
 function getBaseUrl(network) {
   switch (network) {
@@ -52,21 +57,18 @@ async function enlistStreams(deployer, network, accounts) {
 
 async function authenticate(network) {
   try {
-    return await fetch(`${getBaseUrl(network)}/authenticate`, {
+    const res = await axios({
+      url: `${getBaseUrl(network)}/authenticate`,
       method: 'POST',
-      body: JSON.stringify({
+      data: {
         privateKeys: {
-          ethereum:
-            '2865d7012de2a6b5af3efa222e8606c2086842233a69e134f392dc20820452e9',
-          // network === 'development'
-          //   ? '2865d7012de2a6b5af3efa222e8606c2086842233a69e134f392dc20820452e9'
-          //   : process.env.ETHEREUM_PRIVATE_KEY,
+          ethereum: GATEWAY_OPERATOR_PRIVATE_KEY,
         },
         encrypted: false,
-      }),
+      },
     })
-      .then(res => res.json())
-      .then(json => json.token)
+
+    return res.data.token
   } catch (e) {
     console.log('Authenticate failed: ', e)
   }
@@ -74,15 +76,15 @@ async function authenticate(network) {
 
 async function addIpfs(metadata, token, network) {
   try {
-    return await fetch(`${getBaseUrl(network)}/ipfs/add/json`, {
+    const res = await axios({
+      url: `${getBaseUrl(network)}/ipfs/add/json`,
       method: 'POST',
-      body: JSON.stringify(metadata),
+      data: metadata,
       headers: {
         Authorization: token,
       },
     })
-      .then(res => res.json())
-      .then(json => json[0].hash)
+    return res.data[0].hash
   } catch (e) {
     console.log('AddIpfs failed: ', e)
   }
@@ -150,16 +152,9 @@ async function deployRegistry(deployer, network, accounts) {
   await approveRegistryFor(accounts, 0)
 
   // Mint tokens for gateway operator user
-  await dDtxToken.mint(
-    // network === 'development'
-    0x3df2fd51cf19c0d8d1861d6ebc6457a1b0c7496f,
-    // ? 0x3df2fd51cf19c0d8d1861d6ebc6457a1b0c7496f
-    // : process.env.GATEWAY_OPERATOR_ADDRESS,
-    Math.pow(10, 10),
-    {
-      from: mintPermissionHolder,
-    }
-  )
+  await dDtxToken.mint(GATEWAY_OPERATOR_ADDRESS, Math.pow(10, 10), {
+    from: mintPermissionHolder,
+  })
 
   // Set admin permissions: only on first account, since this is the admin.
   // See migrations step 3.

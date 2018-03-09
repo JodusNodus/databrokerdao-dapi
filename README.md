@@ -137,7 +137,7 @@ curl -X POST --header 'Content-Type: application/json' --header 'Accept: applica
   }
   ````
 
-* spender is the address of the contract that will spend the tokens in your name, in this example the streamRegistry contract. You can also find the address by calling `GET /dtxtokenregistry/list`, the streamRegistry address can be found in `base.key`.
+* spender is the address of the contract that will spend the tokens in your name, in this example the streamRegistry contract. You can find the address by calling `GET /streamregistry/list`, the streamRegistry address can be found in `base.key`.
 
 * value is the amount of DTX that will be spent, for the enlist call that is the amount that will be passed in the `stakeamount`property.
 

@@ -17,7 +17,7 @@ contract('StreamRegistry', accounts => {
       const token = await Token.deployed()
 
       // Enlist before we can unlist
-      await token.approve(seller, '10', {
+      await token.approve(registry.address, '10', {
         from: seller,
       })
       const tx = await registry.enlist('10', '10', '', {
@@ -25,7 +25,7 @@ contract('StreamRegistry', accounts => {
       })
       const listingAddress = getEventProperty(tx, 'Enlisted', 'listing')
 
-      await token.approve(seller, '10', {
+      await token.approve(registry.address, '10', {
         from: seller,
       })
       const tx2 = await registry.increase(listingAddress, '10')

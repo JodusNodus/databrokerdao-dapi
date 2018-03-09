@@ -16,10 +16,9 @@ contract('StreamRegistry', accounts => {
       const registry = await StreamRegistry.deployed()
       const token = await Token.deployed()
 
-      await token.approve(seller, '10', {
+      await token.approve(registry.address, '10', {
         from: seller,
       })
-
       const tx = await registry.enlist('10', '1', '', {
         from: seller,
       })

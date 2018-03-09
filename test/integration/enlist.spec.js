@@ -1,99 +1,133 @@
-const fetch = require('node-fetch')
+const axios = require('axios')
+const _ = require('lodash')
 
-const getEventProperty = require('../helpers/getEventProperty')
+const baseURL = process.env.BASE_URL || 'http://localhost:3333'
+const GATEWAY_OPERATOR_PRIVATE_KEY =
+  'ca1398820695e93cea849b841a9aae4eeae65518d14353ab73d21fa4af2d58a7'
+const GATEWAY_OPERATOR_ADDRESS = '0x3df2fd51cf19c0d8d1861d6ebc6457a1b0c7496f'
 
-const gatewayOperator = 0x3df2fd51cf19c0d8d1861d6ebc6457a1b0c7496f
+const metadata = {
+  data: {
+    name: 'Temperature outside Bar Berlin',
+    geo: {
+      lat: 50.880722,
+      lng: 4.692725,
+    },
+    type: 'temperature',
+    example: "{'value':11,'unit':'celsius'}",
+    updateinterval: 60000,
+  },
+}
 
-contract('The enlist integration test', accounts => {
-  it('works', async () => {
-    // Add metadata
-    const metadata = {
-      data: {
-        name: 'Temperature outside Bar Berlin',
-        geo: {
-          lat: 50.880722,
-          lng: 4.692725,
-        },
-        type: 'temperature',
-        example: "{'value':11,'unit':'celsius'}",
-        updateinterval: 60000,
+contract('Integration test: enlisting a stream', function(accounts) {
+  let token
+
+  beforeEach(async () => {
+    const response = await axios.post(`${baseURL}/authenticate`, {
+      privateKeys: {
+        ethereum: GATEWAY_OPERATOR_PRIVATE_KEY,
       },
-    }
-
-    // Authenticate
-    const authToken = await authenticate()
-    // Add metadata as ipfs
-    const ipfsHash = await addIpfs(metadata, authToken)
-
-    const t = await approve(gatewayOperator, gatewayOperator, '10')
-    const tx = await enlist('10', '10', ipfsHash)
+      encrypted: false,
+    })
+    token = response.data.token
   })
-})
 
-async function approve(address, spender, value) {
-  try {
-    return await fetch(`http://localhost:3333/${address}/approve`, {
-      method: 'POST',
-      body: JSON.stringify({
-        spender,
-        value,
-      }),
+  it('should be able to authenticate using an authorised address', async () => {
+    const response = await axios.post(`${baseURL}/authenticate`, {
+      privateKeys: {
+        ethereum: GATEWAY_OPERATOR_PRIVATE_KEY,
+      },
+      encrypted: false,
     })
-      .then(res => res.json())
-      .then(json => json.token)
-  } catch (e) {
-    console.log('Enlist failed: ', e)
-  }
-}
+    assert.isOk(response.data.token)
+  })
 
-async function enlist(stakeamount, price, metadata) {
-  try {
-    return await fetch(`http://localhost:3333/enlist`, {
-      method: 'POST',
-      body: JSON.stringify({
-        stakeamount,
-        price,
-        metadata,
-      }),
-    })
-      .then(res => res.json())
-      .then(json => json.token)
-  } catch (e) {
-    console.log('Enlist failed: ', e)
-  }
-}
-
-async function authenticate() {
-  try {
-    return await fetch(`http://localhost:3333/authenticate`, {
-      method: 'POST',
-      body: JSON.stringify({
+  it('should not be possible to authenticate using an authorised address', async () => {
+    try {
+      await axios.post(`${baseURL}/authenticate`, {
         privateKeys: {
-          ethereum:
-            '2865d7012de2a6b5af3efa222e8606c2086842233a69e134f392dc20820452e9',
+          ethereum: GATEWAY_OPERATOR_PRIVATE_KEY,
         },
         encrypted: false,
-      }),
-    })
-      .then(res => res.json())
-      .then(json => json.token)
-  } catch (e) {
-    console.log('Authenticate failed: ', e)
-  }
-}
+      })
+    } catch (e) {
+      assert.equal(e.response.status, 402)
+    }
+  })
 
-async function addIpfs(metadata, token) {
-  try {
-    return await fetch(`http://localhost:3333/ipfs/add/json`, {
-      method: 'POST',
-      body: JSON.stringify(metadata),
+  it('should enlist a stream when all parameters are correct', async () => {
+    // Get token address
+    const tokenListRes = await axios({
+      method: 'get',
+      url: `${baseURL}/dtxtokenregistry/list`,
       headers: {
         Authorization: token,
       },
     })
-      .then(res => res.json())
-      .then(json => json[0].hash)
-  } catch (e) {
-    console.log('AddIpfs failed: ', e)
-  }
-}
+    assert.equal(tokenListRes.status, 200)
+    const tokenAddress = _.get(tokenListRes, 'data.items[0].contractaddress')
+
+    // Get streamregistry address
+    const registryListRes = await axios({
+      method: 'get',
+      url: `${baseURL}/streamregistry/list`,
+      headers: {
+        Authorization: token,
+      },
+    })
+    assert.equal(registryListRes.status, 200)
+    const registryAddress = _.get(registryListRes, 'data.base.key')
+
+    // // Create IPFS
+    // try {
+    //   const ipfsRes = await axios({
+    //     method: 'post',
+    //     url: `${baseURL}/ipfs/add/json`,
+    //     data: JSON.stringify(metadata),
+    //     headers: {
+    //       Authorization: token,
+    //     },
+    //   })
+    // } catch (e) {
+    //   console.log(e)
+    // }
+
+    // const ipfsHash = _.get(ipfsRes, 'data[0].hash')
+    // console.log('--', ipfsHash)
+
+    // Approve first
+    try {
+      await axios({
+        method: 'post',
+        url: `${baseURL}/dtxtoken/${tokenAddress}/approve`,
+        data: {
+          spender: registryAddress,
+          value: '10',
+        },
+        headers: {
+          Authorization: token,
+        },
+      })
+    } catch (e) {
+      console.log(e)
+    }
+
+    // // Finally, enlist
+    // try {
+    //   await axios({
+    //     method: 'post',
+    //     url: `${baseURL}/streamregistry/enlist`,
+    //     data: {
+    //       price: '10',
+    //       stakeamount: '10',
+    //       metadata: 'bla',
+    //     },
+    //     headers: {
+    //       Authorization: token,
+    //     },
+    //   })
+    // } catch (e) {
+    //   console.log(e.response.request.responseText)
+    // }
+  })
+})

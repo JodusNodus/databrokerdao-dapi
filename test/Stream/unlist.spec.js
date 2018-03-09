@@ -17,7 +17,7 @@ contract('StreamRegistry', accounts => {
       const token = await Token.deployed()
 
       // Enlist before we can unlist
-      await token.approve(seller, '10', {
+      await token.approve(registry.address, '10', {
         from: seller,
       })
       const tx = await registry.enlist('10', '10', '', {
