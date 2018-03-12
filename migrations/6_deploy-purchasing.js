@@ -1,4 +1,4 @@
-const { createPermission, grantPermission } = require('./helpers/permissions')
+const { grantPermission } = require('./helpers/permissions')
 
 const StreamRegistry = artifacts.require('StreamRegistry.sol')
 const PurchaseRegistry = artifacts.require('PurchaseRegistry.sol')

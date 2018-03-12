@@ -22,7 +22,7 @@ function getBaseUrl(network) {
   }
 }
 
-async function enlistStreams(deployer, network, accounts) {
+async function enlistStream(deployer, network, accounts) {
   const registry = await StreamRegistry.deployed()
   const token = await Token.deployed()
 
@@ -175,7 +175,7 @@ async function deployRegistry(deployer, network, accounts) {
   )
 
   // Enlist a stream!
-  await enlistStreams(deployer, network, accounts)
+  await enlistStream(deployer, network, accounts)
 }
 
 module.exports = async (deployer, network, accounts) => {
