@@ -17,6 +17,8 @@ function getBaseUrl(network) {
       return 'http://localhost:3333'
     case 'minttestnet':
       return 'https://dapi-staging.databrokerdao.com'
+    case 'mintnet':
+      return 'https://dapi.databrokerdao.com'
     default:
       return 'http://localhost:3333'
   }
