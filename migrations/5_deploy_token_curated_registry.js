@@ -1,5 +1,4 @@
 const axios = require('axios')
-const Wallet = require('ethereumjs-wallet')
 
 const { createPermission, grantPermission } = require('./helpers/permissions')
 
