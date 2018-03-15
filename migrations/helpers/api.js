@@ -1,4 +1,5 @@
 const axios = require('axios')
+const _ = require('lodash')
 
 const GATEWAY_OPERATOR_PRIVATE_KEY =
   'ca1398820695e93cea849b841a9aae4eeae65518d14353ab73d21fa4af2d58a7'

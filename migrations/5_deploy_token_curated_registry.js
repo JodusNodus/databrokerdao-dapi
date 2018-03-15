@@ -1,8 +1,8 @@
+const _ = require('lodash')
+
 const { createPermission, grantPermission } = require('./helpers/permissions')
 const {
   GATEWAY_OPERATOR_ADDRESS,
-  GATEWAY_OPERATOR_PRIVATE_KEY,
-  getBaseUrl,
   authenticate,
   addIpfs,
 } = require('./helpers/api')
@@ -27,21 +27,34 @@ async function enlistStream(deployer, network, accounts) {
       type: 'temperature',
       example: "{'value':11,'unit':'celsius'}",
       updateinterval: 60000,
-    },
+    }
   }
 
   // Authenticate
   const authToken = await authenticate(network)
-  // Add metadata as ipfs
-  const ipfsHash = await addIpfs(metadata, authToken, network)
 
-  // First, approve!
-  await token.approve(registry.address, '10', {
-    from: accounts[0],
-  })
-  await registry.enlist('10', '10', ipfsHash || '', {
-    from: accounts[0],
-  })
+  if (authToken) {
+    // Add metadata as ipfs
+    const ipfsHash = await addIpfs(metadata, authToken, network)
+
+
+    // First, approve!
+    await token.approve(registry.address, '10', {
+      from: accounts[0],
+    })
+
+    // Enlist
+    const tx = await registry.enlist('10', '10', ipfsHash || '', {
+      from: accounts[0],
+    })
+
+
+    const event = _.filter(tx.logs, log => log.event === 'Enlisted')[0]
+    const streamAddress = event.args.listing
+    process.env.STREAM_ADDRESS = streamAddress // Setting it in env variables to pass it to next migration
+  } else {
+    console.log('AUTH FAILED')
+  }
 }
 
 async function deployRegistry(deployer, network, accounts) {

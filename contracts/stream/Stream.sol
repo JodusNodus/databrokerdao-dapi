@@ -8,7 +8,7 @@ contract Stream is Listing, Syncable {
 
   // We store a mapping of purchases per stream
   mapping (address => Purchase) public purchases;
-  address[] purchasesIndex;
+  address[] public purchasesIndex;
 
   /**
   @dev Contructor
@@ -29,8 +29,8 @@ contract Stream is Listing, Syncable {
   {}
 
   /**
-  @notice                Adds a purchase to the purchases mapping, indexed by address of the purchaser
-  @param _purchase          Address of the purchase
+  @notice               Adds a purchase to the purchases mapping, indexed by address of the purchaser
+  @param _purchase      Address of the purchase
   @param _purchaser     Address of the person who purchased
   */
   function addPurchase(address _purchase, address _purchaser) external {
@@ -39,7 +39,7 @@ contract Stream is Listing, Syncable {
   }
 
   /**
-  @notice               Checks wether or nor a person has access to this stream
+  @notice               Checks whether or nor a person has access to this stream
   @param _purchaser     Address of the person who purchased
   */
   function hasAccess(address _purchaser) public view returns (bool access) {
@@ -60,15 +60,16 @@ contract Stream is Listing, Syncable {
    /**
   * implementation of syncable methods
   */
-  function getIndexLength() public view returns (uint length) {
+    function getIndexLength() public view returns (uint length) {
     length = purchasesIndex.length;
   }
 
-  function getByIndex(uint index) public view returns (bytes32 /*key*/, address contractAddress) {
+  function getByIndex(uint index) public view returns (address key, address contractAddress) {
     return getByKey(purchasesIndex[index]);
   }
 
-  function getByKey(address _key) public view returns (bytes32 /*key*/, address contractAddress) {
+  function getByKey(address _key) public view returns (address key, address contractAddress) {
+    key = address(purchases[_key]);
     contractAddress = address(purchases[_key]);
   }
 }
