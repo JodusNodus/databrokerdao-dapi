@@ -27,8 +27,8 @@
       "type": "constructor"
     }
   ],
-  "bytecode": "0x6060604052341561000f57600080fd5b6040516020806101178339810160405280805160008054600160a060020a03909216600160a060020a0319909216919091179055505060c4806100536000396000f300606060405260043610603e5763ffffffff7c010000000000000000000000000000000000000000000000000000000060003504166345d61ded81146043575b600080fd5b3415604d57600080fd5b6053607c565b60405173ffffffffffffffffffffffffffffffffffffffff909116815260200160405180910390f35b60005473ffffffffffffffffffffffffffffffffffffffff16815600a165627a7a72305820ec4fe153132c508f6909b07dbac2d21d110a36716610136135740d4d23cbd0970029",
-  "deployedBytecode": "0x606060405260043610603e5763ffffffff7c010000000000000000000000000000000000000000000000000000000060003504166345d61ded81146043575b600080fd5b3415604d57600080fd5b6053607c565b60405173ffffffffffffffffffffffffffffffffffffffff909116815260200160405180910390f35b60005473ffffffffffffffffffffffffffffffffffffffff16815600a165627a7a72305820ec4fe153132c508f6909b07dbac2d21d110a36716610136135740d4d23cbd0970029",
+  "bytecode": "0x6060604052341561000f57600080fd5b6040516020806101178339810160405280805160008054600160a060020a03909216600160a060020a0319909216919091179055505060c4806100536000396000f300606060405260043610603e5763ffffffff7c010000000000000000000000000000000000000000000000000000000060003504166345d61ded81146043575b600080fd5b3415604d57600080fd5b6053607c565b60405173ffffffffffffffffffffffffffffffffffffffff909116815260200160405180910390f35b60005473ffffffffffffffffffffffffffffffffffffffff16815600a165627a7a7230582080e92b428370ef73e6894928fbfd5ec00380131a97ecc444ec0ae28a0e17283b0029",
+  "deployedBytecode": "0x606060405260043610603e5763ffffffff7c010000000000000000000000000000000000000000000000000000000060003504166345d61ded81146043575b600080fd5b3415604d57600080fd5b6053607c565b60405173ffffffffffffffffffffffffffffffffffffffff909116815260200160405180910390f35b60005473ffffffffffffffffffffffffffffffffffffffff16815600a165627a7a7230582080e92b428370ef73e6894928fbfd5ec00380131a97ecc444ec0ae28a0e17283b0029",
   "sourceMap": "55:429:12:-;;;199:92;;;;;;;;;;;;;;;;;;;;;;250:10;:36;;-1:-1:-1;;;;;250:36:12;;;-1:-1:-1;;;;;;250:36:12;;;;;;;;;-1:-1:-1;;55:429:12;;;;;;",
   "deployedSourceMap": "55:429:12:-;;;;;;;;;;;;;;;;;;;;;;;77:28;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;:::o",
   "source": "pragma solidity ^0.4.17;\n\nimport \"./GateKeeper.sol\";\n\n\ncontract Secured {\n\n  GateKeeper public gateKeeper;\n\n  modifier auth(bytes32 _role) {\n    require(canPerform(msg.sender, _role));\n    _;\n  }\n\n  function Secured(address _gateKeeper) public {\n    gateKeeper = GateKeeper(_gateKeeper);\n  }\n\n  function canPerform(address _sender, bytes32 _role) internal constant returns (bool) {\n    return address(gateKeeper) == 0 || gateKeeper.hasPermission(_sender, address(this), _role);\n  }\n\n}\n",
@@ -127,7 +127,7 @@
                               "name": "msg",
                               "nodeType": "Identifier",
                               "overloadedDeclarations": [],
-                              "referencedDeclaration": 4251,
+                              "referencedDeclaration": 4252,
                               "src": "164:3:12",
                               "typeDescriptions": {
                                 "typeIdentifier": "t_magic_message",
@@ -210,7 +210,7 @@
                       "name": "require",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 4254,
+                      "referencedDeclaration": 4255,
                       "src": "145:7:12",
                       "typeDescriptions": {
                         "typeIdentifier": "t_function_require_pure$_t_bool_$returns$__$",
@@ -242,6 +242,7 @@
                 }
               ]
             },
+            "documentation": null,
             "id": 1516,
             "name": "auth",
             "nodeType": "ModifierDefinition",
@@ -371,6 +372,7 @@
                 }
               ]
             },
+            "documentation": null,
             "id": 1528,
             "implemented": true,
             "isConstructor": true,
@@ -557,7 +559,7 @@
                               "name": "this",
                               "nodeType": "Identifier",
                               "overloadedDeclarations": [],
-                              "referencedDeclaration": 4272,
+                              "referencedDeclaration": 4273,
                               "src": "463:4:12",
                               "typeDescriptions": {
                                 "typeIdentifier": "t_contract$_Secured_$1554",
@@ -682,6 +684,7 @@
                 }
               ]
             },
+            "documentation": null,
             "id": 1553,
             "implemented": true,
             "isConstructor": false,
@@ -889,7 +892,7 @@
                               "name": "msg",
                               "nodeType": "Identifier",
                               "overloadedDeclarations": [],
-                              "referencedDeclaration": 4251,
+                              "referencedDeclaration": 4252,
                               "src": "164:3:12",
                               "typeDescriptions": {
                                 "typeIdentifier": "t_magic_message",
@@ -972,7 +975,7 @@
                       "name": "require",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 4254,
+                      "referencedDeclaration": 4255,
                       "src": "145:7:12",
                       "typeDescriptions": {
                         "typeIdentifier": "t_function_require_pure$_t_bool_$returns$__$",
@@ -1004,6 +1007,7 @@
                 }
               ]
             },
+            "documentation": null,
             "id": 1516,
             "name": "auth",
             "nodeType": "ModifierDefinition",
@@ -1133,6 +1137,7 @@
                 }
               ]
             },
+            "documentation": null,
             "id": 1528,
             "implemented": true,
             "isConstructor": true,
@@ -1319,7 +1324,7 @@
                               "name": "this",
                               "nodeType": "Identifier",
                               "overloadedDeclarations": [],
-                              "referencedDeclaration": 4272,
+                              "referencedDeclaration": 4273,
                               "src": "463:4:12",
                               "typeDescriptions": {
                                 "typeIdentifier": "t_contract$_Secured_$1554",
@@ -1444,6 +1449,7 @@
                 }
               ]
             },
+            "documentation": null,
             "id": 1553,
             "implemented": true,
             "isConstructor": false,
@@ -1559,9 +1565,9 @@
   },
   "compiler": {
     "name": "solc",
-    "version": "0.4.20+commit.3155dd80.Emscripten.clang"
+    "version": "0.4.21+commit.dfe3193c.Emscripten.clang"
   },
   "networks": {},
   "schemaVersion": "2.0.0",
-  "updatedAt": "2018-03-13T09:08:23.359Z"
+  "updatedAt": "2018-03-16T10:50:57.066Z"
 }
