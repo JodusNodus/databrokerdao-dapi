@@ -33,8 +33,8 @@ async function enlistStreams(deployer, network, accounts) {
     data: {
       name: 'Temperature outside Bar Berlin',
       geo: {
-        lat: 50.880722,
-        lng: 4.692725,
+        type: 'Point',
+        coordinates: [4.692725, 50.880722],
       },
       type: 'temperature',
       example: "{'value':11,'unit':'celsius'}",
