@@ -78,22 +78,22 @@
   ],
   "bytecode": "0x6060604052341561000f57600080fd5b604051604080610285833981016040528080519190602001805160008054600160a060020a03928316600160a060020a0319918216179091556001805495909216941693909317909255505061021b8061006a6000396000f3006060604052600436106100565763ffffffff7c010000000000000000000000000000000000000000000000000000000060003504166345d61ded811461005b578063a0712d6814610097578063fc0c546a146100af575b600080fd5b341561006657600080fd5b61006e6100c2565b60405173ffffffffffffffffffffffffffffffffffffffff909116815260200160405180910390f35b34156100a257600080fd5b6100ad6004356100de565b005b34156100ba57600080fd5b61006e6101d3565b60005473ffffffffffffffffffffffffffffffffffffffff1681565b60015473ffffffffffffffffffffffffffffffffffffffff166340c10f1933836040517c010000000000000000000000000000000000000000000000000000000063ffffffff851602815273ffffffffffffffffffffffffffffffffffffffff90921660048301526024820152604401602060405180830381600087803b151561016757600080fd5b5af1151561017457600080fd5b50505060405180519050507f30385c845b448a36257a6a1716e6ad2e1bc2cbe333cde1e69fe849ad6511adfe338260405173ffffffffffffffffffffffffffffffffffffffff909216825260208201526040908101905180910390a150565b60015473ffffffffffffffffffffffffffffffffffffffff16815600a165627a7a7230582059a5b83f250d98a85abb85ea1736996ef9eba75db2af8d4d019ac602b73f88f40029",
   "deployedBytecode": "0x6060604052600436106100565763ffffffff7c010000000000000000000000000000000000000000000000000000000060003504166345d61ded811461005b578063a0712d6814610097578063fc0c546a146100af575b600080fd5b341561006657600080fd5b61006e6100c2565b60405173ffffffffffffffffffffffffffffffffffffffff909116815260200160405180910390f35b34156100a257600080fd5b6100ad6004356100de565b005b34156100ba57600080fd5b61006e6101d3565b60005473ffffffffffffffffffffffffffffffffffffffff1681565b60015473ffffffffffffffffffffffffffffffffffffffff166340c10f1933836040517c010000000000000000000000000000000000000000000000000000000063ffffffff851602815273ffffffffffffffffffffffffffffffffffffffff90921660048301526024820152604401602060405180830381600087803b151561016757600080fd5b5af1151561017457600080fd5b50505060405180519050507f30385c845b448a36257a6a1716e6ad2e1bc2cbe333cde1e69fe849ad6511adfe338260405173ffffffffffffffffffffffffffffffffffffffff909216825260208201526040908101905180910390a150565b60015473ffffffffffffffffffffffffffffffffffffffff16815600a165627a7a7230582059a5b83f250d98a85abb85ea1736996ef9eba75db2af8d4d019ac602b73f88f40029",
-  "sourceMap": "211:694:1:-;;;491:141;;;;;;;;;;;;;;;;;;;;;;;;;;;;250:10:13;:36;;-1:-1:-1;;;;;250:36:13;;;-1:-1:-1;;;;;;250:36:13;;;;;;;;603:24:1;;;;;;;;;;;;;;;-1:-1:-1;;211:694:1;;;;;;",
-  "deployedSourceMap": "211:694:1:-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;77:28:13;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;779:124:1;;;;;;;;;;;;;;;;287:21;;;;;;;;;;;;77:28:13;;;;;;:::o;779:124:1:-;820:5;;;;:10;831;843:7;820:31;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;871:27;878:10;890:7;871:27;;;;;;;;;;;;;;;;;;;;;;;779:124;:::o;287:21::-;;;;;;:::o",
+  "sourceMap": "211:694:0:-;;;491:141;;;;;;;;;;;;;;;;;;;;;;;;;;;;250:10:8;:36;;-1:-1:-1;;;;;250:36:8;;;-1:-1:-1;;;;;;250:36:8;;;;;;;;603:24:0;;;;;;;;;;;;;;;-1:-1:-1;;211:694:0;;;;;;",
+  "deployedSourceMap": "211:694:0:-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;77:28:8;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;779:124:0;;;;;;;;;;;;;;;;287:21;;;;;;;;;;;;77:28:8;;;;;;:::o;779:124:0:-;820:5;;;;:10;831;843:7;820:31;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;871:27;878:10;890:7;871:27;;;;;;;;;;;;;;;;;;;;;;;779:124;:::o;287:21::-;;;;;;:::o",
   "source": "pragma solidity ^0.4.20;\n\nimport \"../dtxtoken/DtxToken.sol\";\nimport \"@settlemint/solidity-mint/contracts/authentication/Secured.sol\";\nimport \"@settlemint/solidity-mint/contracts/authentication/GateKeeper.sol\";\n\ncontract DtxMinter is Secured {\n  event Minted(address to, uint amount);\n\n  DtxToken public token;\n\n  /**\n  @dev Contructor\n  @notice                Sets the address for token\n  @param _token          Address of the token\n  @param _gateKeeper     Address of the gatekeeper\n  */\n  function DtxMinter(\n    address _token,\n    address _gateKeeper\n  )\n    Secured(_gateKeeper)\n    public\n  {\n    token = DtxToken(_token);\n  }\n\n  /**\n  @notice               Mints demo DTX for the user calling this method.\n  @param _amount        How much DTX to mint for this user\n  */\n  function mint(uint _amount) public {\n    token.mint(msg.sender, _amount);\n\n    // Event\n    Minted(msg.sender, _amount);\n  }\n}\n",
   "sourcePath": "/Users/silkevandenbroeck/databrokerDAO/databrokerdao-dapi/contracts/dtxtoken/DtxMinter.sol",
   "ast": {
     "absolutePath": "/Users/silkevandenbroeck/databrokerDAO/databrokerdao-dapi/contracts/dtxtoken/DtxMinter.sol",
     "exportedSymbols": {
       "DtxMinter": [
-        109
+        52
       ]
     },
-    "id": 110,
+    "id": 53,
     "nodeType": "SourceUnit",
     "nodes": [
       {
-        "id": 58,
+        "id": 1,
         "literals": [
           "solidity",
           "^",
@@ -101,38 +101,38 @@
           ".20"
         ],
         "nodeType": "PragmaDirective",
-        "src": "0:24:1"
+        "src": "0:24:0"
       },
       {
         "absolutePath": "/Users/silkevandenbroeck/databrokerDAO/databrokerdao-dapi/contracts/dtxtoken/DtxToken.sol",
         "file": "../dtxtoken/DtxToken.sol",
-        "id": 59,
+        "id": 2,
         "nodeType": "ImportDirective",
-        "scope": 110,
-        "sourceUnit": 191,
-        "src": "26:34:1",
+        "scope": 53,
+        "sourceUnit": 134,
+        "src": "26:34:0",
         "symbolAliases": [],
         "unitAlias": ""
       },
       {
         "absolutePath": "@settlemint/solidity-mint/contracts/authentication/Secured.sol",
         "file": "@settlemint/solidity-mint/contracts/authentication/Secured.sol",
-        "id": 60,
+        "id": 3,
         "nodeType": "ImportDirective",
-        "scope": 110,
-        "sourceUnit": 1471,
-        "src": "61:72:1",
+        "scope": 53,
+        "sourceUnit": 891,
+        "src": "61:72:0",
         "symbolAliases": [],
         "unitAlias": ""
       },
       {
         "absolutePath": "@settlemint/solidity-mint/contracts/authentication/GateKeeper.sol",
         "file": "@settlemint/solidity-mint/contracts/authentication/GateKeeper.sol",
-        "id": 61,
+        "id": 4,
         "nodeType": "ImportDirective",
-        "scope": 110,
-        "sourceUnit": 1177,
-        "src": "134:75:1",
+        "scope": 53,
+        "sourceUnit": 597,
+        "src": "134:75:0",
         "symbolAliases": [],
         "unitAlias": ""
       },
@@ -142,31 +142,31 @@
             "arguments": [],
             "baseName": {
               "contractScope": null,
-              "id": 62,
+              "id": 5,
               "name": "Secured",
               "nodeType": "UserDefinedTypeName",
-              "referencedDeclaration": 1470,
-              "src": "233:7:1",
+              "referencedDeclaration": 890,
+              "src": "233:7:0",
               "typeDescriptions": {
-                "typeIdentifier": "t_contract$_Secured_$1470",
+                "typeIdentifier": "t_contract$_Secured_$890",
                 "typeString": "contract Secured"
               }
             },
-            "id": 63,
+            "id": 6,
             "nodeType": "InheritanceSpecifier",
-            "src": "233:7:1"
+            "src": "233:7:0"
           }
         ],
         "contractDependencies": [
-          1470
+          890
         ],
         "contractKind": "contract",
         "documentation": null,
         "fullyImplemented": true,
-        "id": 109,
+        "id": 52,
         "linearizedBaseContracts": [
-          109,
-          1470
+          52,
+          890
         ],
         "name": "DtxMinter",
         "nodeType": "ContractDefinition",
@@ -174,21 +174,21 @@
           {
             "anonymous": false,
             "documentation": null,
-            "id": 69,
+            "id": 12,
             "name": "Minted",
             "nodeType": "EventDefinition",
             "parameters": {
-              "id": 68,
+              "id": 11,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 65,
+                  "id": 8,
                   "indexed": false,
                   "name": "to",
                   "nodeType": "VariableDeclaration",
-                  "scope": 69,
-                  "src": "258:10:1",
+                  "scope": 12,
+                  "src": "258:10:0",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
@@ -196,10 +196,10 @@
                     "typeString": "address"
                   },
                   "typeName": {
-                    "id": 64,
+                    "id": 7,
                     "name": "address",
                     "nodeType": "ElementaryTypeName",
-                    "src": "258:7:1",
+                    "src": "258:7:0",
                     "typeDescriptions": {
                       "typeIdentifier": "t_address",
                       "typeString": "address"
@@ -210,12 +210,12 @@
                 },
                 {
                   "constant": false,
-                  "id": 67,
+                  "id": 10,
                   "indexed": false,
                   "name": "amount",
                   "nodeType": "VariableDeclaration",
-                  "scope": 69,
-                  "src": "270:11:1",
+                  "scope": 12,
+                  "src": "270:11:0",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
@@ -223,10 +223,10 @@
                     "typeString": "uint256"
                   },
                   "typeName": {
-                    "id": 66,
+                    "id": 9,
                     "name": "uint",
                     "nodeType": "ElementaryTypeName",
-                    "src": "270:4:1",
+                    "src": "270:4:0",
                     "typeDescriptions": {
                       "typeIdentifier": "t_uint256",
                       "typeString": "uint256"
@@ -236,32 +236,32 @@
                   "visibility": "internal"
                 }
               ],
-              "src": "257:25:1"
+              "src": "257:25:0"
             },
-            "src": "245:38:1"
+            "src": "245:38:0"
           },
           {
             "constant": false,
-            "id": 71,
+            "id": 14,
             "name": "token",
             "nodeType": "VariableDeclaration",
-            "scope": 109,
-            "src": "287:21:1",
+            "scope": 52,
+            "src": "287:21:0",
             "stateVariable": true,
             "storageLocation": "default",
             "typeDescriptions": {
-              "typeIdentifier": "t_contract$_DtxToken_$190",
+              "typeIdentifier": "t_contract$_DtxToken_$133",
               "typeString": "contract DtxToken"
             },
             "typeName": {
               "contractScope": null,
-              "id": 70,
+              "id": 13,
               "name": "DtxToken",
               "nodeType": "UserDefinedTypeName",
-              "referencedDeclaration": 190,
-              "src": "287:8:1",
+              "referencedDeclaration": 133,
+              "src": "287:8:0",
               "typeDescriptions": {
-                "typeIdentifier": "t_contract$_DtxToken_$190",
+                "typeIdentifier": "t_contract$_DtxToken_$133",
                 "typeString": "contract DtxToken"
               }
             },
@@ -270,28 +270,28 @@
           },
           {
             "body": {
-              "id": 87,
+              "id": 30,
               "nodeType": "Block",
-              "src": "597:35:1",
+              "src": "597:35:0",
               "statements": [
                 {
                   "expression": {
                     "argumentTypes": null,
-                    "id": 85,
+                    "id": 28,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
                     "lValueRequested": false,
                     "leftHandSide": {
                       "argumentTypes": null,
-                      "id": 81,
+                      "id": 24,
                       "name": "token",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 71,
-                      "src": "603:5:1",
+                      "referencedDeclaration": 14,
+                      "src": "603:5:0",
                       "typeDescriptions": {
-                        "typeIdentifier": "t_contract$_DtxToken_$190",
+                        "typeIdentifier": "t_contract$_DtxToken_$133",
                         "typeString": "contract DtxToken"
                       }
                     },
@@ -302,12 +302,12 @@
                       "arguments": [
                         {
                           "argumentTypes": null,
-                          "id": 83,
+                          "id": 26,
                           "name": "_token",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
-                          "referencedDeclaration": 73,
-                          "src": "620:6:1",
+                          "referencedDeclaration": 16,
+                          "src": "620:6:0",
                           "typeDescriptions": {
                             "typeIdentifier": "t_address",
                             "typeString": "address"
@@ -321,18 +321,18 @@
                             "typeString": "address"
                           }
                         ],
-                        "id": 82,
+                        "id": 25,
                         "name": "DtxToken",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 190,
-                        "src": "611:8:1",
+                        "referencedDeclaration": 133,
+                        "src": "611:8:0",
                         "typeDescriptions": {
-                          "typeIdentifier": "t_type$_t_contract$_DtxToken_$190_$",
+                          "typeIdentifier": "t_type$_t_contract$_DtxToken_$133_$",
                           "typeString": "type(contract DtxToken)"
                         }
                       },
-                      "id": 84,
+                      "id": 27,
                       "isConstant": false,
                       "isLValue": false,
                       "isPure": false,
@@ -340,26 +340,26 @@
                       "lValueRequested": false,
                       "names": [],
                       "nodeType": "FunctionCall",
-                      "src": "611:16:1",
+                      "src": "611:16:0",
                       "typeDescriptions": {
-                        "typeIdentifier": "t_contract$_DtxToken_$190",
+                        "typeIdentifier": "t_contract$_DtxToken_$133",
                         "typeString": "contract DtxToken"
                       }
                     },
-                    "src": "603:24:1",
+                    "src": "603:24:0",
                     "typeDescriptions": {
-                      "typeIdentifier": "t_contract$_DtxToken_$190",
+                      "typeIdentifier": "t_contract$_DtxToken_$133",
                       "typeString": "contract DtxToken"
                     }
                   },
-                  "id": 86,
+                  "id": 29,
                   "nodeType": "ExpressionStatement",
-                  "src": "603:24:1"
+                  "src": "603:24:0"
                 }
               ]
             },
             "documentation": "@dev Contructor\n@notice                Sets the address for token\n@param _token          Address of the token\n@param _gateKeeper     Address of the gatekeeper",
-            "id": 88,
+            "id": 31,
             "implemented": true,
             "isConstructor": true,
             "isDeclaredConst": false,
@@ -368,49 +368,49 @@
                 "arguments": [
                   {
                     "argumentTypes": null,
-                    "id": 78,
+                    "id": 21,
                     "name": "_gateKeeper",
                     "nodeType": "Identifier",
                     "overloadedDeclarations": [],
-                    "referencedDeclaration": 75,
-                    "src": "571:11:1",
+                    "referencedDeclaration": 18,
+                    "src": "571:11:0",
                     "typeDescriptions": {
                       "typeIdentifier": "t_address",
                       "typeString": "address"
                     }
                   }
                 ],
-                "id": 79,
+                "id": 22,
                 "modifierName": {
                   "argumentTypes": null,
-                  "id": 77,
+                  "id": 20,
                   "name": "Secured",
                   "nodeType": "Identifier",
                   "overloadedDeclarations": [],
-                  "referencedDeclaration": 1470,
-                  "src": "563:7:1",
+                  "referencedDeclaration": 890,
+                  "src": "563:7:0",
                   "typeDescriptions": {
-                    "typeIdentifier": "t_type$_t_contract$_Secured_$1470_$",
+                    "typeIdentifier": "t_type$_t_contract$_Secured_$890_$",
                     "typeString": "type(contract Secured)"
                   }
                 },
                 "nodeType": "ModifierInvocation",
-                "src": "563:20:1"
+                "src": "563:20:0"
               }
             ],
             "name": "DtxMinter",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 76,
+              "id": 19,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 73,
+                  "id": 16,
                   "name": "_token",
                   "nodeType": "VariableDeclaration",
-                  "scope": 88,
-                  "src": "515:14:1",
+                  "scope": 31,
+                  "src": "515:14:0",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
@@ -418,10 +418,10 @@
                     "typeString": "address"
                   },
                   "typeName": {
-                    "id": 72,
+                    "id": 15,
                     "name": "address",
                     "nodeType": "ElementaryTypeName",
-                    "src": "515:7:1",
+                    "src": "515:7:0",
                     "typeDescriptions": {
                       "typeIdentifier": "t_address",
                       "typeString": "address"
@@ -432,11 +432,11 @@
                 },
                 {
                   "constant": false,
-                  "id": 75,
+                  "id": 18,
                   "name": "_gateKeeper",
                   "nodeType": "VariableDeclaration",
-                  "scope": 88,
-                  "src": "535:19:1",
+                  "scope": 31,
+                  "src": "535:19:0",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
@@ -444,10 +444,10 @@
                     "typeString": "address"
                   },
                   "typeName": {
-                    "id": 74,
+                    "id": 17,
                     "name": "address",
                     "nodeType": "ElementaryTypeName",
-                    "src": "535:7:1",
+                    "src": "535:7:0",
                     "typeDescriptions": {
                       "typeIdentifier": "t_address",
                       "typeString": "address"
@@ -457,26 +457,26 @@
                   "visibility": "internal"
                 }
               ],
-              "src": "509:49:1"
+              "src": "509:49:0"
             },
             "payable": false,
             "returnParameters": {
-              "id": 80,
+              "id": 23,
               "nodeType": "ParameterList",
               "parameters": [],
-              "src": "597:0:1"
+              "src": "597:0:0"
             },
-            "scope": 109,
-            "src": "491:141:1",
+            "scope": 52,
+            "src": "491:141:0",
             "stateMutability": "nonpayable",
             "superFunction": null,
             "visibility": "public"
           },
           {
             "body": {
-              "id": 107,
+              "id": 50,
               "nodeType": "Block",
-              "src": "814:89:1",
+              "src": "814:89:0",
               "statements": [
                 {
                   "expression": {
@@ -486,18 +486,18 @@
                         "argumentTypes": null,
                         "expression": {
                           "argumentTypes": null,
-                          "id": 96,
+                          "id": 39,
                           "name": "msg",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
-                          "referencedDeclaration": 4168,
-                          "src": "831:3:1",
+                          "referencedDeclaration": 3466,
+                          "src": "831:3:0",
                           "typeDescriptions": {
                             "typeIdentifier": "t_magic_message",
                             "typeString": "msg"
                           }
                         },
-                        "id": 97,
+                        "id": 40,
                         "isConstant": false,
                         "isLValue": false,
                         "isPure": false,
@@ -505,7 +505,7 @@
                         "memberName": "sender",
                         "nodeType": "MemberAccess",
                         "referencedDeclaration": null,
-                        "src": "831:10:1",
+                        "src": "831:10:0",
                         "typeDescriptions": {
                           "typeIdentifier": "t_address",
                           "typeString": "address"
@@ -513,12 +513,12 @@
                       },
                       {
                         "argumentTypes": null,
-                        "id": 98,
+                        "id": 41,
                         "name": "_amount",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 90,
-                        "src": "843:7:1",
+                        "referencedDeclaration": 33,
+                        "src": "843:7:0",
                         "typeDescriptions": {
                           "typeIdentifier": "t_uint256",
                           "typeString": "uint256"
@@ -538,32 +538,32 @@
                       ],
                       "expression": {
                         "argumentTypes": null,
-                        "id": 93,
+                        "id": 36,
                         "name": "token",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 71,
-                        "src": "820:5:1",
+                        "referencedDeclaration": 14,
+                        "src": "820:5:0",
                         "typeDescriptions": {
-                          "typeIdentifier": "t_contract$_DtxToken_$190",
+                          "typeIdentifier": "t_contract$_DtxToken_$133",
                           "typeString": "contract DtxToken"
                         }
                       },
-                      "id": 95,
+                      "id": 38,
                       "isConstant": false,
                       "isLValue": false,
                       "isPure": false,
                       "lValueRequested": false,
                       "memberName": "mint",
                       "nodeType": "MemberAccess",
-                      "referencedDeclaration": 2861,
-                      "src": "820:10:1",
+                      "referencedDeclaration": 2159,
+                      "src": "820:10:0",
                       "typeDescriptions": {
                         "typeIdentifier": "t_function_external_nonpayable$_t_address_$_t_uint256_$returns$_t_bool_$",
                         "typeString": "function (address,uint256) external returns (bool)"
                       }
                     },
-                    "id": 99,
+                    "id": 42,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
@@ -571,15 +571,15 @@
                     "lValueRequested": false,
                     "names": [],
                     "nodeType": "FunctionCall",
-                    "src": "820:31:1",
+                    "src": "820:31:0",
                     "typeDescriptions": {
                       "typeIdentifier": "t_bool",
                       "typeString": "bool"
                     }
                   },
-                  "id": 100,
+                  "id": 43,
                   "nodeType": "ExpressionStatement",
-                  "src": "820:31:1"
+                  "src": "820:31:0"
                 },
                 {
                   "expression": {
@@ -589,18 +589,18 @@
                         "argumentTypes": null,
                         "expression": {
                           "argumentTypes": null,
-                          "id": 102,
+                          "id": 45,
                           "name": "msg",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
-                          "referencedDeclaration": 4168,
-                          "src": "878:3:1",
+                          "referencedDeclaration": 3466,
+                          "src": "878:3:0",
                           "typeDescriptions": {
                             "typeIdentifier": "t_magic_message",
                             "typeString": "msg"
                           }
                         },
-                        "id": 103,
+                        "id": 46,
                         "isConstant": false,
                         "isLValue": false,
                         "isPure": false,
@@ -608,7 +608,7 @@
                         "memberName": "sender",
                         "nodeType": "MemberAccess",
                         "referencedDeclaration": null,
-                        "src": "878:10:1",
+                        "src": "878:10:0",
                         "typeDescriptions": {
                           "typeIdentifier": "t_address",
                           "typeString": "address"
@@ -616,12 +616,12 @@
                       },
                       {
                         "argumentTypes": null,
-                        "id": 104,
+                        "id": 47,
                         "name": "_amount",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 90,
-                        "src": "890:7:1",
+                        "referencedDeclaration": 33,
+                        "src": "890:7:0",
                         "typeDescriptions": {
                           "typeIdentifier": "t_uint256",
                           "typeString": "uint256"
@@ -639,18 +639,18 @@
                           "typeString": "uint256"
                         }
                       ],
-                      "id": 101,
+                      "id": 44,
                       "name": "Minted",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 69,
-                      "src": "871:6:1",
+                      "referencedDeclaration": 12,
+                      "src": "871:6:0",
                       "typeDescriptions": {
                         "typeIdentifier": "t_function_event_nonpayable$_t_address_$_t_uint256_$returns$__$",
                         "typeString": "function (address,uint256)"
                       }
                     },
-                    "id": 105,
+                    "id": 48,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
@@ -658,20 +658,20 @@
                     "lValueRequested": false,
                     "names": [],
                     "nodeType": "FunctionCall",
-                    "src": "871:27:1",
+                    "src": "871:27:0",
                     "typeDescriptions": {
                       "typeIdentifier": "t_tuple$__$",
                       "typeString": "tuple()"
                     }
                   },
-                  "id": 106,
+                  "id": 49,
                   "nodeType": "ExpressionStatement",
-                  "src": "871:27:1"
+                  "src": "871:27:0"
                 }
               ]
             },
             "documentation": "@notice               Mints demo DTX for the user calling this method.\n@param _amount        How much DTX to mint for this user",
-            "id": 108,
+            "id": 51,
             "implemented": true,
             "isConstructor": false,
             "isDeclaredConst": false,
@@ -679,16 +679,16 @@
             "name": "mint",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 91,
+              "id": 34,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 90,
+                  "id": 33,
                   "name": "_amount",
                   "nodeType": "VariableDeclaration",
-                  "scope": 108,
-                  "src": "793:12:1",
+                  "scope": 51,
+                  "src": "793:12:0",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
@@ -696,10 +696,10 @@
                     "typeString": "uint256"
                   },
                   "typeName": {
-                    "id": 89,
+                    "id": 32,
                     "name": "uint",
                     "nodeType": "ElementaryTypeName",
-                    "src": "793:4:1",
+                    "src": "793:4:0",
                     "typeDescriptions": {
                       "typeIdentifier": "t_uint256",
                       "typeString": "uint256"
@@ -709,40 +709,40 @@
                   "visibility": "internal"
                 }
               ],
-              "src": "792:14:1"
+              "src": "792:14:0"
             },
             "payable": false,
             "returnParameters": {
-              "id": 92,
+              "id": 35,
               "nodeType": "ParameterList",
               "parameters": [],
-              "src": "814:0:1"
+              "src": "814:0:0"
             },
-            "scope": 109,
-            "src": "779:124:1",
+            "scope": 52,
+            "src": "779:124:0",
             "stateMutability": "nonpayable",
             "superFunction": null,
             "visibility": "public"
           }
         ],
-        "scope": 110,
-        "src": "211:694:1"
+        "scope": 53,
+        "src": "211:694:0"
       }
     ],
-    "src": "0:906:1"
+    "src": "0:906:0"
   },
   "legacyAST": {
     "absolutePath": "/Users/silkevandenbroeck/databrokerDAO/databrokerdao-dapi/contracts/dtxtoken/DtxMinter.sol",
     "exportedSymbols": {
       "DtxMinter": [
-        109
+        52
       ]
     },
-    "id": 110,
+    "id": 53,
     "nodeType": "SourceUnit",
     "nodes": [
       {
-        "id": 58,
+        "id": 1,
         "literals": [
           "solidity",
           "^",
@@ -750,38 +750,38 @@
           ".20"
         ],
         "nodeType": "PragmaDirective",
-        "src": "0:24:1"
+        "src": "0:24:0"
       },
       {
         "absolutePath": "/Users/silkevandenbroeck/databrokerDAO/databrokerdao-dapi/contracts/dtxtoken/DtxToken.sol",
         "file": "../dtxtoken/DtxToken.sol",
-        "id": 59,
+        "id": 2,
         "nodeType": "ImportDirective",
-        "scope": 110,
-        "sourceUnit": 191,
-        "src": "26:34:1",
+        "scope": 53,
+        "sourceUnit": 134,
+        "src": "26:34:0",
         "symbolAliases": [],
         "unitAlias": ""
       },
       {
         "absolutePath": "@settlemint/solidity-mint/contracts/authentication/Secured.sol",
         "file": "@settlemint/solidity-mint/contracts/authentication/Secured.sol",
-        "id": 60,
+        "id": 3,
         "nodeType": "ImportDirective",
-        "scope": 110,
-        "sourceUnit": 1471,
-        "src": "61:72:1",
+        "scope": 53,
+        "sourceUnit": 891,
+        "src": "61:72:0",
         "symbolAliases": [],
         "unitAlias": ""
       },
       {
         "absolutePath": "@settlemint/solidity-mint/contracts/authentication/GateKeeper.sol",
         "file": "@settlemint/solidity-mint/contracts/authentication/GateKeeper.sol",
-        "id": 61,
+        "id": 4,
         "nodeType": "ImportDirective",
-        "scope": 110,
-        "sourceUnit": 1177,
-        "src": "134:75:1",
+        "scope": 53,
+        "sourceUnit": 597,
+        "src": "134:75:0",
         "symbolAliases": [],
         "unitAlias": ""
       },
@@ -791,31 +791,31 @@
             "arguments": [],
             "baseName": {
               "contractScope": null,
-              "id": 62,
+              "id": 5,
               "name": "Secured",
               "nodeType": "UserDefinedTypeName",
-              "referencedDeclaration": 1470,
-              "src": "233:7:1",
+              "referencedDeclaration": 890,
+              "src": "233:7:0",
               "typeDescriptions": {
-                "typeIdentifier": "t_contract$_Secured_$1470",
+                "typeIdentifier": "t_contract$_Secured_$890",
                 "typeString": "contract Secured"
               }
             },
-            "id": 63,
+            "id": 6,
             "nodeType": "InheritanceSpecifier",
-            "src": "233:7:1"
+            "src": "233:7:0"
           }
         ],
         "contractDependencies": [
-          1470
+          890
         ],
         "contractKind": "contract",
         "documentation": null,
         "fullyImplemented": true,
-        "id": 109,
+        "id": 52,
         "linearizedBaseContracts": [
-          109,
-          1470
+          52,
+          890
         ],
         "name": "DtxMinter",
         "nodeType": "ContractDefinition",
@@ -823,21 +823,21 @@
           {
             "anonymous": false,
             "documentation": null,
-            "id": 69,
+            "id": 12,
             "name": "Minted",
             "nodeType": "EventDefinition",
             "parameters": {
-              "id": 68,
+              "id": 11,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 65,
+                  "id": 8,
                   "indexed": false,
                   "name": "to",
                   "nodeType": "VariableDeclaration",
-                  "scope": 69,
-                  "src": "258:10:1",
+                  "scope": 12,
+                  "src": "258:10:0",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
@@ -845,10 +845,10 @@
                     "typeString": "address"
                   },
                   "typeName": {
-                    "id": 64,
+                    "id": 7,
                     "name": "address",
                     "nodeType": "ElementaryTypeName",
-                    "src": "258:7:1",
+                    "src": "258:7:0",
                     "typeDescriptions": {
                       "typeIdentifier": "t_address",
                       "typeString": "address"
@@ -859,12 +859,12 @@
                 },
                 {
                   "constant": false,
-                  "id": 67,
+                  "id": 10,
                   "indexed": false,
                   "name": "amount",
                   "nodeType": "VariableDeclaration",
-                  "scope": 69,
-                  "src": "270:11:1",
+                  "scope": 12,
+                  "src": "270:11:0",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
@@ -872,10 +872,10 @@
                     "typeString": "uint256"
                   },
                   "typeName": {
-                    "id": 66,
+                    "id": 9,
                     "name": "uint",
                     "nodeType": "ElementaryTypeName",
-                    "src": "270:4:1",
+                    "src": "270:4:0",
                     "typeDescriptions": {
                       "typeIdentifier": "t_uint256",
                       "typeString": "uint256"
@@ -885,32 +885,32 @@
                   "visibility": "internal"
                 }
               ],
-              "src": "257:25:1"
+              "src": "257:25:0"
             },
-            "src": "245:38:1"
+            "src": "245:38:0"
           },
           {
             "constant": false,
-            "id": 71,
+            "id": 14,
             "name": "token",
             "nodeType": "VariableDeclaration",
-            "scope": 109,
-            "src": "287:21:1",
+            "scope": 52,
+            "src": "287:21:0",
             "stateVariable": true,
             "storageLocation": "default",
             "typeDescriptions": {
-              "typeIdentifier": "t_contract$_DtxToken_$190",
+              "typeIdentifier": "t_contract$_DtxToken_$133",
               "typeString": "contract DtxToken"
             },
             "typeName": {
               "contractScope": null,
-              "id": 70,
+              "id": 13,
               "name": "DtxToken",
               "nodeType": "UserDefinedTypeName",
-              "referencedDeclaration": 190,
-              "src": "287:8:1",
+              "referencedDeclaration": 133,
+              "src": "287:8:0",
               "typeDescriptions": {
-                "typeIdentifier": "t_contract$_DtxToken_$190",
+                "typeIdentifier": "t_contract$_DtxToken_$133",
                 "typeString": "contract DtxToken"
               }
             },
@@ -919,28 +919,28 @@
           },
           {
             "body": {
-              "id": 87,
+              "id": 30,
               "nodeType": "Block",
-              "src": "597:35:1",
+              "src": "597:35:0",
               "statements": [
                 {
                   "expression": {
                     "argumentTypes": null,
-                    "id": 85,
+                    "id": 28,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
                     "lValueRequested": false,
                     "leftHandSide": {
                       "argumentTypes": null,
-                      "id": 81,
+                      "id": 24,
                       "name": "token",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 71,
-                      "src": "603:5:1",
+                      "referencedDeclaration": 14,
+                      "src": "603:5:0",
                       "typeDescriptions": {
-                        "typeIdentifier": "t_contract$_DtxToken_$190",
+                        "typeIdentifier": "t_contract$_DtxToken_$133",
                         "typeString": "contract DtxToken"
                       }
                     },
@@ -951,12 +951,12 @@
                       "arguments": [
                         {
                           "argumentTypes": null,
-                          "id": 83,
+                          "id": 26,
                           "name": "_token",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
-                          "referencedDeclaration": 73,
-                          "src": "620:6:1",
+                          "referencedDeclaration": 16,
+                          "src": "620:6:0",
                           "typeDescriptions": {
                             "typeIdentifier": "t_address",
                             "typeString": "address"
@@ -970,18 +970,18 @@
                             "typeString": "address"
                           }
                         ],
-                        "id": 82,
+                        "id": 25,
                         "name": "DtxToken",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 190,
-                        "src": "611:8:1",
+                        "referencedDeclaration": 133,
+                        "src": "611:8:0",
                         "typeDescriptions": {
-                          "typeIdentifier": "t_type$_t_contract$_DtxToken_$190_$",
+                          "typeIdentifier": "t_type$_t_contract$_DtxToken_$133_$",
                           "typeString": "type(contract DtxToken)"
                         }
                       },
-                      "id": 84,
+                      "id": 27,
                       "isConstant": false,
                       "isLValue": false,
                       "isPure": false,
@@ -989,26 +989,26 @@
                       "lValueRequested": false,
                       "names": [],
                       "nodeType": "FunctionCall",
-                      "src": "611:16:1",
+                      "src": "611:16:0",
                       "typeDescriptions": {
-                        "typeIdentifier": "t_contract$_DtxToken_$190",
+                        "typeIdentifier": "t_contract$_DtxToken_$133",
                         "typeString": "contract DtxToken"
                       }
                     },
-                    "src": "603:24:1",
+                    "src": "603:24:0",
                     "typeDescriptions": {
-                      "typeIdentifier": "t_contract$_DtxToken_$190",
+                      "typeIdentifier": "t_contract$_DtxToken_$133",
                       "typeString": "contract DtxToken"
                     }
                   },
-                  "id": 86,
+                  "id": 29,
                   "nodeType": "ExpressionStatement",
-                  "src": "603:24:1"
+                  "src": "603:24:0"
                 }
               ]
             },
             "documentation": "@dev Contructor\n@notice                Sets the address for token\n@param _token          Address of the token\n@param _gateKeeper     Address of the gatekeeper",
-            "id": 88,
+            "id": 31,
             "implemented": true,
             "isConstructor": true,
             "isDeclaredConst": false,
@@ -1017,49 +1017,49 @@
                 "arguments": [
                   {
                     "argumentTypes": null,
-                    "id": 78,
+                    "id": 21,
                     "name": "_gateKeeper",
                     "nodeType": "Identifier",
                     "overloadedDeclarations": [],
-                    "referencedDeclaration": 75,
-                    "src": "571:11:1",
+                    "referencedDeclaration": 18,
+                    "src": "571:11:0",
                     "typeDescriptions": {
                       "typeIdentifier": "t_address",
                       "typeString": "address"
                     }
                   }
                 ],
-                "id": 79,
+                "id": 22,
                 "modifierName": {
                   "argumentTypes": null,
-                  "id": 77,
+                  "id": 20,
                   "name": "Secured",
                   "nodeType": "Identifier",
                   "overloadedDeclarations": [],
-                  "referencedDeclaration": 1470,
-                  "src": "563:7:1",
+                  "referencedDeclaration": 890,
+                  "src": "563:7:0",
                   "typeDescriptions": {
-                    "typeIdentifier": "t_type$_t_contract$_Secured_$1470_$",
+                    "typeIdentifier": "t_type$_t_contract$_Secured_$890_$",
                     "typeString": "type(contract Secured)"
                   }
                 },
                 "nodeType": "ModifierInvocation",
-                "src": "563:20:1"
+                "src": "563:20:0"
               }
             ],
             "name": "DtxMinter",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 76,
+              "id": 19,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 73,
+                  "id": 16,
                   "name": "_token",
                   "nodeType": "VariableDeclaration",
-                  "scope": 88,
-                  "src": "515:14:1",
+                  "scope": 31,
+                  "src": "515:14:0",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
@@ -1067,10 +1067,10 @@
                     "typeString": "address"
                   },
                   "typeName": {
-                    "id": 72,
+                    "id": 15,
                     "name": "address",
                     "nodeType": "ElementaryTypeName",
-                    "src": "515:7:1",
+                    "src": "515:7:0",
                     "typeDescriptions": {
                       "typeIdentifier": "t_address",
                       "typeString": "address"
@@ -1081,11 +1081,11 @@
                 },
                 {
                   "constant": false,
-                  "id": 75,
+                  "id": 18,
                   "name": "_gateKeeper",
                   "nodeType": "VariableDeclaration",
-                  "scope": 88,
-                  "src": "535:19:1",
+                  "scope": 31,
+                  "src": "535:19:0",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
@@ -1093,10 +1093,10 @@
                     "typeString": "address"
                   },
                   "typeName": {
-                    "id": 74,
+                    "id": 17,
                     "name": "address",
                     "nodeType": "ElementaryTypeName",
-                    "src": "535:7:1",
+                    "src": "535:7:0",
                     "typeDescriptions": {
                       "typeIdentifier": "t_address",
                       "typeString": "address"
@@ -1106,26 +1106,26 @@
                   "visibility": "internal"
                 }
               ],
-              "src": "509:49:1"
+              "src": "509:49:0"
             },
             "payable": false,
             "returnParameters": {
-              "id": 80,
+              "id": 23,
               "nodeType": "ParameterList",
               "parameters": [],
-              "src": "597:0:1"
+              "src": "597:0:0"
             },
-            "scope": 109,
-            "src": "491:141:1",
+            "scope": 52,
+            "src": "491:141:0",
             "stateMutability": "nonpayable",
             "superFunction": null,
             "visibility": "public"
           },
           {
             "body": {
-              "id": 107,
+              "id": 50,
               "nodeType": "Block",
-              "src": "814:89:1",
+              "src": "814:89:0",
               "statements": [
                 {
                   "expression": {
@@ -1135,18 +1135,18 @@
                         "argumentTypes": null,
                         "expression": {
                           "argumentTypes": null,
-                          "id": 96,
+                          "id": 39,
                           "name": "msg",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
-                          "referencedDeclaration": 4168,
-                          "src": "831:3:1",
+                          "referencedDeclaration": 3466,
+                          "src": "831:3:0",
                           "typeDescriptions": {
                             "typeIdentifier": "t_magic_message",
                             "typeString": "msg"
                           }
                         },
-                        "id": 97,
+                        "id": 40,
                         "isConstant": false,
                         "isLValue": false,
                         "isPure": false,
@@ -1154,7 +1154,7 @@
                         "memberName": "sender",
                         "nodeType": "MemberAccess",
                         "referencedDeclaration": null,
-                        "src": "831:10:1",
+                        "src": "831:10:0",
                         "typeDescriptions": {
                           "typeIdentifier": "t_address",
                           "typeString": "address"
@@ -1162,12 +1162,12 @@
                       },
                       {
                         "argumentTypes": null,
-                        "id": 98,
+                        "id": 41,
                         "name": "_amount",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 90,
-                        "src": "843:7:1",
+                        "referencedDeclaration": 33,
+                        "src": "843:7:0",
                         "typeDescriptions": {
                           "typeIdentifier": "t_uint256",
                           "typeString": "uint256"
@@ -1187,32 +1187,32 @@
                       ],
                       "expression": {
                         "argumentTypes": null,
-                        "id": 93,
+                        "id": 36,
                         "name": "token",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 71,
-                        "src": "820:5:1",
+                        "referencedDeclaration": 14,
+                        "src": "820:5:0",
                         "typeDescriptions": {
-                          "typeIdentifier": "t_contract$_DtxToken_$190",
+                          "typeIdentifier": "t_contract$_DtxToken_$133",
                           "typeString": "contract DtxToken"
                         }
                       },
-                      "id": 95,
+                      "id": 38,
                       "isConstant": false,
                       "isLValue": false,
                       "isPure": false,
                       "lValueRequested": false,
                       "memberName": "mint",
                       "nodeType": "MemberAccess",
-                      "referencedDeclaration": 2861,
-                      "src": "820:10:1",
+                      "referencedDeclaration": 2159,
+                      "src": "820:10:0",
                       "typeDescriptions": {
                         "typeIdentifier": "t_function_external_nonpayable$_t_address_$_t_uint256_$returns$_t_bool_$",
                         "typeString": "function (address,uint256) external returns (bool)"
                       }
                     },
-                    "id": 99,
+                    "id": 42,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
@@ -1220,15 +1220,15 @@
                     "lValueRequested": false,
                     "names": [],
                     "nodeType": "FunctionCall",
-                    "src": "820:31:1",
+                    "src": "820:31:0",
                     "typeDescriptions": {
                       "typeIdentifier": "t_bool",
                       "typeString": "bool"
                     }
                   },
-                  "id": 100,
+                  "id": 43,
                   "nodeType": "ExpressionStatement",
-                  "src": "820:31:1"
+                  "src": "820:31:0"
                 },
                 {
                   "expression": {
@@ -1238,18 +1238,18 @@
                         "argumentTypes": null,
                         "expression": {
                           "argumentTypes": null,
-                          "id": 102,
+                          "id": 45,
                           "name": "msg",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
-                          "referencedDeclaration": 4168,
-                          "src": "878:3:1",
+                          "referencedDeclaration": 3466,
+                          "src": "878:3:0",
                           "typeDescriptions": {
                             "typeIdentifier": "t_magic_message",
                             "typeString": "msg"
                           }
                         },
-                        "id": 103,
+                        "id": 46,
                         "isConstant": false,
                         "isLValue": false,
                         "isPure": false,
@@ -1257,7 +1257,7 @@
                         "memberName": "sender",
                         "nodeType": "MemberAccess",
                         "referencedDeclaration": null,
-                        "src": "878:10:1",
+                        "src": "878:10:0",
                         "typeDescriptions": {
                           "typeIdentifier": "t_address",
                           "typeString": "address"
@@ -1265,12 +1265,12 @@
                       },
                       {
                         "argumentTypes": null,
-                        "id": 104,
+                        "id": 47,
                         "name": "_amount",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 90,
-                        "src": "890:7:1",
+                        "referencedDeclaration": 33,
+                        "src": "890:7:0",
                         "typeDescriptions": {
                           "typeIdentifier": "t_uint256",
                           "typeString": "uint256"
@@ -1288,18 +1288,18 @@
                           "typeString": "uint256"
                         }
                       ],
-                      "id": 101,
+                      "id": 44,
                       "name": "Minted",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 69,
-                      "src": "871:6:1",
+                      "referencedDeclaration": 12,
+                      "src": "871:6:0",
                       "typeDescriptions": {
                         "typeIdentifier": "t_function_event_nonpayable$_t_address_$_t_uint256_$returns$__$",
                         "typeString": "function (address,uint256)"
                       }
                     },
-                    "id": 105,
+                    "id": 48,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
@@ -1307,20 +1307,20 @@
                     "lValueRequested": false,
                     "names": [],
                     "nodeType": "FunctionCall",
-                    "src": "871:27:1",
+                    "src": "871:27:0",
                     "typeDescriptions": {
                       "typeIdentifier": "t_tuple$__$",
                       "typeString": "tuple()"
                     }
                   },
-                  "id": 106,
+                  "id": 49,
                   "nodeType": "ExpressionStatement",
-                  "src": "871:27:1"
+                  "src": "871:27:0"
                 }
               ]
             },
             "documentation": "@notice               Mints demo DTX for the user calling this method.\n@param _amount        How much DTX to mint for this user",
-            "id": 108,
+            "id": 51,
             "implemented": true,
             "isConstructor": false,
             "isDeclaredConst": false,
@@ -1328,16 +1328,16 @@
             "name": "mint",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 91,
+              "id": 34,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 90,
+                  "id": 33,
                   "name": "_amount",
                   "nodeType": "VariableDeclaration",
-                  "scope": 108,
-                  "src": "793:12:1",
+                  "scope": 51,
+                  "src": "793:12:0",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
@@ -1345,10 +1345,10 @@
                     "typeString": "uint256"
                   },
                   "typeName": {
-                    "id": 89,
+                    "id": 32,
                     "name": "uint",
                     "nodeType": "ElementaryTypeName",
-                    "src": "793:4:1",
+                    "src": "793:4:0",
                     "typeDescriptions": {
                       "typeIdentifier": "t_uint256",
                       "typeString": "uint256"
@@ -1358,27 +1358,27 @@
                   "visibility": "internal"
                 }
               ],
-              "src": "792:14:1"
+              "src": "792:14:0"
             },
             "payable": false,
             "returnParameters": {
-              "id": 92,
+              "id": 35,
               "nodeType": "ParameterList",
               "parameters": [],
-              "src": "814:0:1"
+              "src": "814:0:0"
             },
-            "scope": 109,
-            "src": "779:124:1",
+            "scope": 52,
+            "src": "779:124:0",
             "stateMutability": "nonpayable",
             "superFunction": null,
             "visibility": "public"
           }
         ],
-        "scope": 110,
-        "src": "211:694:1"
+        "scope": 53,
+        "src": "211:694:0"
       }
     ],
-    "src": "0:906:1"
+    "src": "0:906:0"
   },
   "compiler": {
     "name": "solc",
@@ -1390,8 +1390,14 @@
       "links": {},
       "address": "0x0a1a91a5c3be9702c225348a46fa84ff7cb0fc13",
       "transactionHash": "0xb025cd107c6175cfc96dd8b5e237fd2d9bd07a429fe20e500ca66c6a78b1c9be"
+    },
+    "8996": {
+      "events": {},
+      "links": {},
+      "address": "0x127eff88f04c0378b88e53034a2378edf6ff02b9",
+      "transactionHash": "0xf5ce882ceeb110b33c492d15f54fe3471fe482af24c4367bacd8f82daa37859d"
     }
   },
   "schemaVersion": "2.0.0",
-  "updatedAt": "2018-03-19T15:33:18.263Z"
+  "updatedAt": "2018-03-19T15:55:20.505Z"
 }
