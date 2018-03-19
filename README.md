@@ -348,16 +348,85 @@ Expects the following parameters:
 
 ## Purchasing
 
-
-
 ### Purchasing access to a stream
 
-`POST /purchaseregistry/purchaseaccess`
+- When enlisting a stream, you want to enlist some metadata too. 
 
-Expects the following parameters:
+  `POST /ipfs/add/json` with the following body (JSON.stringify if necessary): 
 
-- stream: address of the stream contract.
-- endtime: uint, unix timestamp (in seconds) of when the user should lose access to the stream.
+  ```
+  data: {
+      email: "silke@databrokerdao.com"
+  }
+  ```
+
+  A succesful response returns a hash property, which you can use in the enlist call.
+
+- Before purchasing, we need to approve the token amount (see [Before transfering tokens](?id=before-transfering-tokens))
+  Make sure the amount you approve is >= the price the buyer will have to pay: **seconds from now to endtime * stream price** 
+
+- `POST /purchaseregistry/purchaseaccess`
+
+  Expects the following parameters: 
+
+  - stream: address, 
+  - endtime: uint, unix (= in seconds) timestamp of time when the user should lose access.
+  - metadata: hash property you get back from `POST /ipfs/add/json` 
+
+
+
+### Search for purchases
+
+Queries the MongoDB collection where streams have been saved.
+
+`GET /purchaseregistry/list`
+
+Expects the following query parameters: 
+
+- limit: uint, max number of streams to return (useful for pagination).
+- skip: uint, skip to index (useful for pagination).
+- sort: string, parameter on which to sort (useful for pagination).
+- dir: string, sort direction, desc or asc (useful for pagination).
+
+You can also add custom Mongo query parameters like this: `&name=test`(see [https://github.com/settlemint/lib-ethereum/blob/master/src/utils/ParseMongoQueryString.js](https://github.com/settlemint/lib-ethereum/blob/master/src/utils/ParseMongoQueryString.js) for documentation)
+
+The response looks like this: 
+
+```
+{
+  "base": {
+    "_id": "5aaf7d1c63191900104cca1e",
+    "originContractName": "PurchaseRegistry",
+    "originContractAddress": "0xedeb346c47918a27344f6d915f7d72f16eefa120",
+    "key": "0xedeb346c47918a27344f6d915f7d72f16eefa120",
+    "createpermissionsrole": "CREATE_PERMISSIONS_ROLE",
+    "gatekeeper": "0xf56c9e5c364066d9f7412245126f299a8fcb5c41",
+    "token": "0x9ea562b898566c36dc5ff18ade4f69ae56e70dfb"
+  },
+  "synced": false,
+  "total": 1,
+  "items": [
+    {
+      "_id": "5aaf7d1d63191900104cca20",
+      "originContractName": "PurchaseRegistry",
+      "originContractAddress": "0xedeb346c47918a27344f6d915f7d72f16eefa120",
+      "key": "0xc804dd3be595816031f393f63dc49d3a698f7dab",
+      "contractaddress": "0xc804dd3be595816031f393f63dc49d3a698f7dab", // Address of the purchase
+      "endtime": "1521450312", // Timestamp (Unix, in seconds) of when the user will lose access to the stream
+      "metadata": "QmPkE6jz62JHia3YkV9vE8FTHmUSsHHJigrk5w8N4XTuGp",
+      "email": "silke@databrokerdao.com", // Email address that needs to get stream updates
+      "gatekeeper": "0xf56c9e5c364066d9f7412245126f299a8fcb5c41",
+      "purchaser": "0x1b777c767e9f787ec3575ef15261b5691b0c9ffc",
+      "stream": "0xdb4337a1530427dec7d2db5c82181a48accf1155", // Address of the purchased stream: you might need to query on this to only get the purchases for a certain stream
+      "starttime": "1521450251",
+      "price": "10", // Price per second
+      "updatemetadatarole": "UPDATE_METADATA_ROLE",
+      "subContractName": "Purchase"
+    }
+  ]
+}
+```
+
 
 
 ## Deploying
