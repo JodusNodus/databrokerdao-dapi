@@ -75,6 +75,18 @@ curl -X POST \
 
 
 
+## Minting tokens
+
+Users can (for now) mint demo DTX tokens for themselves.
+
+`POST /dtxminter/mint`
+
+Expects the following parameters:
+
+* amount: uint, amount of DTX tokens to mint
+
+
+
 ## Before transfering tokens
 
 Before calling a method on a contract that transfers tokens (f.e. enlist, increase, challenge, …), you need to **approve** the amount of tokens first. Basically, approving means giving another contract the right to spend your tokens.

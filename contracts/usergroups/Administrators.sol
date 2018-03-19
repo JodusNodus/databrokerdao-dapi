@@ -1,4 +1,4 @@
-pragma solidity ^0.4.11;
+pragma solidity ^0.4.20;
 
 import "@settlemint/solidity-mint/contracts/authentication/RoleRegistry.sol";
 

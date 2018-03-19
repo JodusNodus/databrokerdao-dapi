@@ -1,4 +1,4 @@
-pragma solidity ^0.4.17;
+pragma solidity ^0.4.20;
 
 import "@settlemint/solidity-mint/contracts/marketplaces/tokensystem/TokenRegistry.sol";
 

@@ -57,47 +57,27 @@ async function enlistStream(deployer, network, accounts) {
   }
 }
 
+async function approveRegistryFor(addresses, dDtxToken, index) {
+  const user = addresses[index]
+  // Mint tokens for user
+  await dDtxToken.mint(user, 1000, {
+    from: addresses[0],
+  })
+  const balanceOfUser = await dDtxToken.balanceOf(user)
+  // Approve tokens
+  await dDtxToken.approve(StreamRegistry.address, balanceOfUser, {
+    from: user,
+  })
+  if (index < addresses.length - 1) {
+    index++
+    return approveRegistryFor(addresses, index)
+  }
+}
+
 async function deployRegistry(deployer, network, accounts) {
   const dGateKeeper = await GateKeeper.deployed()
   const dDtxToken = await Token.deployed()
   let dTokenCuratedRegistry
-
-  let mintPermissionHolder
-
-  async function approveRegistryFor(addresses, index) {
-    const user = addresses[index]
-
-    // Create mint permission on token: only the first account will get the mint role.
-    // We will mint tokens for the other addresses with this account.
-    if (index === 0) {
-      mintPermissionHolder = user
-      await createPermission(
-        dGateKeeper,
-        mintPermissionHolder,
-        dDtxToken,
-        'MINT_ROLE',
-        mintPermissionHolder
-      )
-    }
-
-    // Mint tokens for user
-    await dDtxToken.mint(user, 1000, {
-      from: mintPermissionHolder,
-    })
-    const balanceOfUser = await dDtxToken.balanceOf(user)
-
-    // Approve tokens
-    await dDtxToken.approve(StreamRegistry.address, balanceOfUser, {
-      from: user,
-    })
-
-    if (index < addresses.length - 1) {
-      index++
-      return approveRegistryFor(addresses, index)
-    }
-
-    return true
-  }
 
   await deployer.deploy(StreamFactory, dGateKeeper.address)
   const dStreamFactory = await StreamFactory.deployed()
@@ -116,11 +96,14 @@ async function deployRegistry(deployer, network, accounts) {
     dStreamFactory.address
   )
   dTokenCuratedRegistry = await StreamRegistry.deployed()
-  await approveRegistryFor(accounts, 0)
+
+  // Grant mint permission: we will mint in approveRegistryFor
+  await grantPermission(dGateKeeper, dDtxToken, 'MINT_ROLE', accounts[0])
+  await approveRegistryFor(accounts, dDtxToken, 0)
 
   // Mint tokens for gateway operator user
   await dDtxToken.mint(GATEWAY_OPERATOR_ADDRESS, Math.pow(10, 10), {
-    from: mintPermissionHolder,
+    from: accounts[0],
   })
 
   // Set admin permissions: only on first account, since this is the admin.

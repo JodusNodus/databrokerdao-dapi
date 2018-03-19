@@ -8,15 +8,18 @@ const GATEWAY_OPERATOR_ADDRESS = '0x3df2fd51cf19c0d8d1861d6ebc6457a1b0c7496f'
 
 const metadata = {
   data: {
-    storageCredentials: {
-      type: 'DROPBOX',
-      username: 'silke@test.be',
-      password: '1313p21323012312032163120313', // This should be a hash of the password entered by the user
+    name: 'Temperature outside Bar Berlin',
+    geo: {
+      lat: 50.880722,
+      lng: 4.692725,
     },
+    type: 'temperature',
+    example: "{'value':11,'unit':'celsius'}",
+    updateinterval: 60000,
   },
 }
 
-contract('Integration test: purchasing a stream', function(accounts) {
+contract('Integration tests', function(accounts) {
   let token
 
   beforeEach(async () => {
@@ -50,6 +53,86 @@ contract('Integration test: purchasing a stream', function(accounts) {
     } catch (e) {
       assert.equal(e.response.status, 402)
     }
+  })
+
+  it('should enlist a stream when all parameters are correct', async () => {
+    // Get token address
+    const tokenListRes = await axios({
+      method: 'get',
+      url: `${baseURL}/dtxtokenregistry/list`,
+      headers: {
+        Authorization: token,
+      },
+    })
+    assert.equal(tokenListRes.status, 200)
+    const tokenAddress = _.get(tokenListRes, 'data.items[0].contractaddress')
+
+    // Get streamregistry address
+    const registryListRes = await axios({
+      method: 'get',
+      url: `${baseURL}/streamregistry/list`,
+      headers: {
+        Authorization: token,
+      },
+    })
+    assert.equal(registryListRes.status, 200)
+    const registryAddress = _.get(registryListRes, 'data.base.key')
+
+    // Create IPFS
+    const ipfsRes = await axios({
+      method: 'post',
+      url: `${baseURL}/ipfs/add/json`,
+      data: metadata,
+      headers: {
+        Authorization: token,
+      },
+    })
+    assert.equal(ipfsRes.status, 200)
+    const ipfsHash = _.get(ipfsRes, 'data[0].hash')
+
+    // Approve first
+    const approveRes = await axios({
+      method: 'post',
+      url: `${baseURL}/dtxtoken/${tokenAddress}/approve`,
+      data: {
+        spender: registryAddress,
+        value: '10',
+      },
+      headers: {
+        Authorization: token,
+      },
+    })
+    assert.equal(approveRes.status, 200)
+
+    // Finally, enlist
+    const enlistRes = await axios({
+      method: 'post',
+      url: `${baseURL}/streamregistry/enlist`,
+      data: {
+        price: '10',
+        stakeamount: '10',
+        metadata: ipfsHash,
+      },
+      headers: {
+        Authorization: token,
+      },
+    })
+    assert.equal(enlistRes.status, 200)
+  })
+
+  it('should mint DTX for the msg.sender', async () => {
+    const mintRes = await axios({
+      method: 'post',
+      url: `${baseURL}/dtxminter/mint`,
+      data: {
+        amount: '1000',
+      },
+      headers: {
+        Authorization: token,
+      },
+    })
+
+    assert.equal(mintRes.status, 200)
   })
 
   it('should purchase a stream when all parameters are correct', async () => {
