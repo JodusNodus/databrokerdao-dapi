@@ -23,11 +23,13 @@ async function enlistStream(deployer, network, accounts) {
       geo: {
         lat: 50.880722,
         lng: 4.692725,
+        // type: 'Point',
+        // coordinates: [4.692725, 50.880722],
       },
       type: 'temperature',
       example: "{'value':11,'unit':'celsius'}",
       updateinterval: 60000,
-    }
+    },
   }
 
   // Authenticate
@@ -36,7 +38,6 @@ async function enlistStream(deployer, network, accounts) {
   if (authToken) {
     // Add metadata as ipfs
     const ipfsHash = await addIpfs(metadata, authToken, network)
-
 
     // First, approve!
     await token.approve(registry.address, '10', {
@@ -47,7 +48,6 @@ async function enlistStream(deployer, network, accounts) {
     const tx = await registry.enlist('10', '10', ipfsHash || '', {
       from: accounts[0],
     })
-
 
     const event = _.filter(tx.logs, log => log.event === 'Enlisted')[0]
     const streamAddress = event.args.listing

@@ -4,11 +4,7 @@ import "../purchase/Purchase.sol";
 import "@settlemint/solidity-mint/contracts/marketplaces/tokencuratedregistry/Listing.sol";
 
 
-contract Stream is Listing, Syncable {
-
-  // We store a mapping of purchases per stream
-  mapping (address => Purchase) public purchases;
-  address[] public purchasesIndex;
+contract Stream is Listing {
 
   /**
   @dev Contructor
@@ -29,47 +25,9 @@ contract Stream is Listing, Syncable {
   {}
 
   /**
-  @notice               Adds a purchase to the purchases mapping, indexed by address of the purchaser
-  @param _purchase      Address of the purchase
-  @param _purchaser     Address of the person who purchased
-  */
-  function addPurchase(address _purchase, address _purchaser) external {
-    purchases[_purchaser] = Purchase(_purchase);
-    purchasesIndex.push(_purchaser);
-  }
-
-  /**
-  @notice               Checks whether or nor a person has access to this stream
-  @param _purchaser     Address of the person who purchased
-  */
-  function hasAccess(address _purchaser) public view returns (bool access) {
-    if (purchases[_purchaser].endTime() == 0) {
-      return false;
-    }
-
-    return true;
-  }
-
-  /**
   * implementation of cacher methods
   */
   function invalidateCache(address _cachedAddress, bytes32 /*_cachedBytes32*/, uint256 /*_cachedUint256*/) public {
     AddressCacheInvalidated(_cachedAddress);
-  }
-
-   /**
-  * implementation of syncable methods
-  */
-    function getIndexLength() public view returns (uint length) {
-    length = purchasesIndex.length;
-  }
-
-  function getByIndex(uint index) public view returns (address key, address contractAddress) {
-    return getByKey(purchasesIndex[index]);
-  }
-
-  function getByKey(address _key) public view returns (address key, address contractAddress) {
-    key = address(purchases[_key]);
-    contractAddress = address(purchases[_key]);
   }
 }

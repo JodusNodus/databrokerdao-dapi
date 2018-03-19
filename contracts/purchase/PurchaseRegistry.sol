@@ -84,9 +84,6 @@ contract PurchaseRegistry is Secured, Syncable, Cacher, CachedByBytes32 {
     // Add metadata
     _purchase.updateMetaData(_metadata);
 
-    // Push to mapping in the stream
-    Stream(_stream).addPurchase(address(_purchase), msg.sender);
-
     // Push to mapping
     purchases[address(_purchase)] = Purchase(address(_purchase));
     purchasesIndex.push(address(_purchase));
@@ -100,14 +97,6 @@ contract PurchaseRegistry is Secured, Syncable, Cacher, CachedByBytes32 {
   */
   function setSalePercentage(uint _salePercentage) public {
     salePercentage = _salePercentage;
-  }
-
-  /**
-  @notice             Returns wether or user has access to
-  @param _stream      Address of the stream
-  */
-  function hasAccess(address _stream) external view returns (bool access) {
-    return Stream(_stream).hasAccess(msg.sender);
   }
 
   /**

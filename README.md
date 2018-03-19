@@ -360,6 +360,20 @@ Expects the following parameters:
 - endtime: uint, unix timestamp (in seconds) of when the user should lose access to the stream.
 
 
+## Deploying
+
+### Staging
+
+To deploy to staging, we first need to **deploy the smart contracts**. There is a shell script that takes care of that for us called `deploy.staging.sh`:
+
+```
+sh deploy.staging.sh
+```
+
+Then, commit the changes to the json files in `build/contracts` with a commit message using either `fix:`(semantic patch release) or `feat: ` (semantic minor release), and push to **master**.
+
+Check Travis ([https://travis-ci.org/DataBrokerDAO/databrokerdao-dapi](https://travis-ci.org/DataBrokerDAO/databrokerdao-dapi)) for build progress. Once the build is ready, Travis will push to DockerHub [https://hub.docker.com/r/settlemint/databrokerdao-dapi/](https://hub.docker.com/r/settlemint/databrokerdao-dapi/), DockerHub will call a webhook on Rancher to upgrade the databrokerdao-staging/databrokerdao-dapi service.
+
 
 
 
