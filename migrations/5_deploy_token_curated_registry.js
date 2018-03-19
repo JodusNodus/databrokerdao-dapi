@@ -1,30 +1,18 @@
-const axios = require('axios')
+const _ = require('lodash')
 
 const { createPermission, grantPermission } = require('./helpers/permissions')
+const {
+  GATEWAY_OPERATOR_ADDRESS,
+  authenticate,
+  addIpfs,
+} = require('./helpers/api')
 
 const StreamRegistry = artifacts.require('StreamRegistry.sol')
 const StreamFactory = artifacts.require('StreamFactory.sol')
 const Token = artifacts.require('DtxToken.sol')
 const GateKeeper = artifacts.require('GateKeeper')
 
-const GATEWAY_OPERATOR_PRIVATE_KEY =
-  'ca1398820695e93cea849b841a9aae4eeae65518d14353ab73d21fa4af2d58a7'
-const GATEWAY_OPERATOR_ADDRESS = '0x3df2fd51cf19c0d8d1861d6ebc6457a1b0c7496f'
-
-function getBaseUrl(network) {
-  switch (network) {
-    case 'development':
-      return 'http://localhost:3333'
-    case 'minttestnet':
-      return 'https://dapi-staging.databrokerdao.com'
-    case 'mintnet':
-      return 'https://dapi.databrokerdao.com'
-    default:
-      return 'http://localhost:3333'
-  }
-}
-
-async function enlistStreams(deployer, network, accounts) {
+async function enlistStream(deployer, network, accounts) {
   const registry = await StreamRegistry.deployed()
   const token = await Token.deployed()
 
@@ -33,8 +21,10 @@ async function enlistStreams(deployer, network, accounts) {
     data: {
       name: 'Temperature outside Bar Berlin',
       geo: {
-        type: 'Point',
-        coordinates: [4.692725, 50.880722],
+        lat: 50.880722,
+        lng: 4.692725,
+        // type: 'Point',
+        // coordinates: [4.692725, 50.880722],
       },
       type: 'temperature',
       example: "{'value':11,'unit':'celsius'}",
@@ -44,50 +34,26 @@ async function enlistStreams(deployer, network, accounts) {
 
   // Authenticate
   const authToken = await authenticate(network)
-  // Add metadata as ipfs
-  const ipfsHash = await addIpfs(metadata, authToken, network)
 
-  // First, approve!
-  await token.approve(registry.address, '10', {
-    from: accounts[0],
-  })
-  await registry.enlist('10', '10', ipfsHash || '', {
-    from: accounts[0],
-  })
-}
+  if (authToken) {
+    // Add metadata as ipfs
+    const ipfsHash = await addIpfs(metadata, authToken, network)
 
-async function authenticate(network) {
-  try {
-    const res = await axios({
-      url: `${getBaseUrl(network)}/authenticate`,
-      method: 'POST',
-      data: {
-        privateKeys: {
-          ethereum: GATEWAY_OPERATOR_PRIVATE_KEY,
-        },
-        encrypted: false,
-      },
+    // First, approve!
+    await token.approve(registry.address, '10', {
+      from: accounts[0],
     })
 
-    return res.data.token
-  } catch (e) {
-    console.log('Authenticate failed: ', e)
-  }
-}
-
-async function addIpfs(metadata, token, network) {
-  try {
-    const res = await axios({
-      url: `${getBaseUrl(network)}/ipfs/add/json`,
-      method: 'POST',
-      data: metadata,
-      headers: {
-        Authorization: token,
-      },
+    // Enlist
+    const tx = await registry.enlist('10', '10', ipfsHash || '', {
+      from: accounts[0],
     })
-    return res.data[0].hash
-  } catch (e) {
-    console.log('AddIpfs failed: ', e)
+
+    const event = _.filter(tx.logs, log => log.event === 'Enlisted')[0]
+    const streamAddress = event.args.listing
+    process.env.STREAM_ADDRESS = streamAddress // Setting it in env variables to pass it to next migration
+  } else {
+    console.log('AUTH FAILED')
   }
 }
 
@@ -177,7 +143,7 @@ async function deployRegistry(deployer, network, accounts) {
   )
 
   // Enlist a stream!
-  await enlistStreams(deployer, network, accounts)
+  await enlistStream(deployer, network, accounts)
 }
 
 module.exports = async (deployer, network, accounts) => {

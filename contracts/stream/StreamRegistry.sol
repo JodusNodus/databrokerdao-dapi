@@ -32,20 +32,4 @@ contract StreamRegistry is TokenCuratedRegistry {
     )
     public
   {}
-
-  /**
-  @notice                Gets the price of a stream
-  @param _listing        key of the listing
-  */
-  function getStreamPrice(address _listing) view public returns (uint price) {
-    return IListing(listings[_listing]).price();
-  }
-
-  /**
-  @notice                Gets the owner of a stream
-  @param _listing        key of the listing
-  */
-  function getStreamOwner(address _listing) view public returns (address owner) {
-    return IListing(listings[_listing]).owner();
-  }
 }

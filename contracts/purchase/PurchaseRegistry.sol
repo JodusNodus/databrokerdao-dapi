@@ -52,19 +52,19 @@ contract PurchaseRegistry is Secured, Syncable, Cacher, CachedByBytes32 {
   */
   function purchaseAccess(address _stream, uint _endTime, string _metadata) public {
     // Calculate total cost for the user
-    uint _streamPricePerSecond = streamRegistry.getStreamPrice(_stream);
+    uint _streamPricePerSecond = Stream(_stream).price();
     uint _startTime = now;
     uint _streamPrice = _streamPricePerSecond.mul(_endTime.sub(_startTime));
 
     // Pay out:
     uint _salePercentage = _streamPrice.mul(salePercentage.div(100));
     // Sensor owner
-    require(token.transferFrom(msg.sender, streamRegistry.getStreamOwner(_stream), _streamPrice.sub(_salePercentage)));
+    require(token.transferFrom(msg.sender, Stream(_stream).owner(), _streamPrice.sub(_salePercentage)));
     // DBDAO
     require(token.transferFrom(msg.sender, this, _salePercentage));
 
     // Create purchase
-    Purchase purchase = new Purchase(
+    Purchase _purchase = new Purchase(
       _streamPricePerSecond,
       _startTime,
       _endTime,
@@ -76,22 +76,19 @@ contract PurchaseRegistry is Secured, Syncable, Cacher, CachedByBytes32 {
     // Metadata role
     gateKeeper.createPermission(
       msg.sender,
-      address(purchase),
+      address(_purchase),
       bytes32("UPDATE_METADATA_ROLE"),
       msg.sender
     );
 
     // Add metadata
-    purchase.updateMetaData(_metadata);
+    _purchase.updateMetaData(_metadata);
 
     // Push to mapping
-    purchases[address(purchase)] = purchase;
-    purchasesIndex.push(msg.sender);
+    purchases[address(_purchase)] = Purchase(address(_purchase));
+    purchasesIndex.push(address(_purchase));
 
-    // Push to mapping in the stream
-    Stream(_stream).addPurchase(address(purchase), msg.sender);
-
-    AccessPurchased(_stream, msg.sender, _startTime, _endTime, _streamPrice, address(purchase));
+    AccessPurchased(_stream, msg.sender, _startTime, _endTime, _streamPrice, address(_purchase));
   }
 
   /**
@@ -103,25 +100,18 @@ contract PurchaseRegistry is Secured, Syncable, Cacher, CachedByBytes32 {
   }
 
   /**
-  @notice             Returns wether or user has access to
-  @param _stream      Address of the stream
-  */
-  function hasAccess(address _stream) external view returns (bool access) {
-    return Stream(_stream).hasAccess(msg.sender);
-  }
-
-  /**
   * implementation of syncable methods
   */
   function getIndexLength() public view returns (uint length) {
     length = purchasesIndex.length;
   }
 
-  function getByIndex(uint index) public view returns (address contractAddress) {
+  function getByIndex(uint index) public view returns (address key, address contractAddress) {
     return getByKey(purchasesIndex[index]);
   }
 
-  function getByKey(address _key) public view returns (address contractAddress) {
+  function getByKey(address _key) public view returns (address key, address contractAddress) {
+    key = address(purchases[_key]);
     contractAddress = address(purchases[_key]);
   }
 

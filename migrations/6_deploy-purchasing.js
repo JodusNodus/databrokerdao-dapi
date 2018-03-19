@@ -1,9 +1,47 @@
-const { createPermission, grantPermission } = require('./helpers/permissions')
+const { grantPermission } = require('./helpers/permissions')
 
 const StreamRegistry = artifacts.require('StreamRegistry.sol')
 const PurchaseRegistry = artifacts.require('PurchaseRegistry.sol')
 const Token = artifacts.require('DtxToken.sol')
 const GateKeeper = artifacts.require('GateKeeper')
+
+const { authenticate, addIpfs } = require('./helpers/api')
+
+async function purchaseStream(deployer, network, accounts) {
+  const purchase = await PurchaseRegistry.deployed()
+  const token = await Token.deployed()
+
+  // Add metadata
+  const metadata = {
+    data: {
+      email: 'silke@databrokerdao.com',
+    },
+  }
+
+  // Authenticate
+  const authToken = await authenticate(network)
+
+  if (authToken) {
+    // Add metadata as ipfs
+    const ipfsHash = await addIpfs(metadata, authToken, network)
+
+    // Get stream address
+    const streamAddress = process.env.STREAM_ADDRESS
+    // Calculate endtime
+    const endtime = Math.floor(new Date().getTime() / 1000) + 60 // one minute from now
+
+    // First, approve!
+    await token.approve(purchase.address, '1000', {
+      from: accounts[0],
+    })
+
+    await purchase.purchaseAccess(streamAddress, endtime, ipfsHash, {
+      from: accounts[0],
+    })
+  } else {
+    console.log('AUTH FAILED')
+  }
+}
 
 async function deployPurchasing(deployer, network, accounts) {
   const dGateKeeper = await GateKeeper.deployed()
@@ -25,11 +63,13 @@ async function deployPurchasing(deployer, network, accounts) {
     'CREATE_PERMISSIONS_ROLE',
     dRegistry.address
   )
+
+  await purchaseStream(deployer, network, accounts)
 }
 
 module.exports = async (deployer, network, accounts) => {
   deployer
-    .then(function() {
+    .then(function(a) {
       return deployPurchasing(deployer, network, accounts)
     })
     .catch(error => {

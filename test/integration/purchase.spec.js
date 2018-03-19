@@ -8,18 +8,15 @@ const GATEWAY_OPERATOR_ADDRESS = '0x3df2fd51cf19c0d8d1861d6ebc6457a1b0c7496f'
 
 const metadata = {
   data: {
-    name: 'Temperature outside Bar Berlin',
-    geo: {
-      lat: 50.880722,
-      lng: 4.692725,
+    storageCredentials: {
+      type: 'DROPBOX',
+      username: 'silke@test.be',
+      password: '1313p21323012312032163120313', // This should be a hash of the password entered by the user
     },
-    type: 'temperature',
-    example: "{'value':11,'unit':'celsius'}",
-    updateinterval: 60000,
   },
 }
 
-contract('Integration test: enlisting a stream', function(accounts) {
+contract('Integration test: purchasing a stream', function(accounts) {
   let token
 
   beforeEach(async () => {
@@ -55,7 +52,7 @@ contract('Integration test: enlisting a stream', function(accounts) {
     }
   })
 
-  it('should enlist a stream when all parameters are correct', async () => {
+  it('should purchase a stream when all parameters are correct', async () => {
     // Get token address
     const tokenListRes = await axios({
       method: 'get',
@@ -76,7 +73,7 @@ contract('Integration test: enlisting a stream', function(accounts) {
       },
     })
     assert.equal(registryListRes.status, 200)
-    const registryAddress = _.get(registryListRes, 'data.base.key')
+    const streamRegistryAddress = _.get(registryListRes, 'data.base.key')
 
     // Create IPFS
     const ipfsRes = await axios({
@@ -95,7 +92,7 @@ contract('Integration test: enlisting a stream', function(accounts) {
       method: 'post',
       url: `${baseURL}/dtxtoken/${tokenAddress}/approve`,
       data: {
-        spender: registryAddress,
+        spender: streamRegistryAddress,
         value: '10',
       },
       headers: {
@@ -118,5 +115,69 @@ contract('Integration test: enlisting a stream', function(accounts) {
       },
     })
     assert.equal(enlistRes.status, 200)
+
+    const event = _.filter(
+      enlistRes.data.events,
+      log => log.event === 'Enlisted'
+    )[0]
+    const streamAddress = event.listing
+
+    // Calculate endtime
+    const endtime = new Date().getTime() / 1000 + 60 // one minute from now
+
+    // Create IPFS
+    const purchaseIpfsRes = await axios({
+      method: 'post',
+      url: `${baseURL}/ipfs/add/json`,
+      data: metadata,
+      headers: {
+        Authorization: token,
+      },
+    })
+    assert.equal(purchaseIpfsRes.status, 200)
+    const purchaseIpfsHash = _.get(purchaseIpfsRes, 'data[0].hash')
+
+    // Get purchaseregistry address
+    const purchaseRegistryListRes = await axios({
+      method: 'get',
+      url: `${baseURL}/purchaseregistry/list`,
+      headers: {
+        Authorization: token,
+      },
+    })
+    assert.equal(purchaseRegistryListRes.status, 200)
+    const purchaseRegistryAddress = _.get(
+      purchaseRegistryListRes,
+      'data.base.key'
+    )
+
+    // Approve first
+    const approvePurchaseRes = await axios({
+      method: 'post',
+      url: `${baseURL}/dtxtoken/${tokenAddress}/approve`,
+      data: {
+        spender: purchaseRegistryAddress,
+        value: '1000',
+      },
+      headers: {
+        Authorization: token,
+      },
+    })
+    assert.equal(approvePurchaseRes.status, 200)
+
+    // Purchase
+    const purchaseRes = await axios({
+      method: 'post',
+      url: `${baseURL}/purchaseregistry/purchaseaccess`,
+      data: {
+        stream: streamAddress,
+        endtime: endtime.toString(),
+        metadata: purchaseIpfsHash,
+      },
+      headers: {
+        Authorization: token,
+      },
+    })
+    assert.equal(purchaseRes.status, 200)
   })
 })
