@@ -68,7 +68,15 @@ async function deployPurchasing(deployer, network, accounts) {
   await createPermission(
     dGateKeeper,
     accounts[0],
-    dRegistry,
+    dRegistry, // purchase
+    'CHANGE_SETTINGS_ROLE',
+    accounts[0]
+  )
+
+  await createPermission(
+    dGateKeeper,
+    accounts[0],
+    dTokenCuratedRegistry, // stream
     'CHANGE_SETTINGS_ROLE',
     accounts[0]
   )
