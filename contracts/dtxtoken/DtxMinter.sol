@@ -33,6 +33,6 @@ contract DtxMinter is Secured {
     token.mint(msg.sender, _amount);
 
     // Event
-    Minted(msg.sender, _amount);
+    emit Minted(msg.sender, _amount);
   }
 }

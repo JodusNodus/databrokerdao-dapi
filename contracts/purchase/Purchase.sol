@@ -38,7 +38,7 @@ contract Purchase is Secured, Cacher, CachedByAddress, MetaDataContainer {
   * implementation of cacher methods
   */
   function invalidateCache(address _cachedAddress, bytes32 /*_cachedBytes32*/, uint256 /*_cachedUint256*/) public {
-    AddressCacheInvalidated(_cachedAddress);
+    emit AddressCacheInvalidated(_cachedAddress);
   }
 
   /**

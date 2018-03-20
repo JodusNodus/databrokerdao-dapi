@@ -1,4 +1,4 @@
-const { grantPermission } = require('./helpers/permissions')
+const { grantPermission, createPermission } = require('./helpers/permissions')
 
 const StreamRegistry = artifacts.require('StreamRegistry.sol')
 const PurchaseRegistry = artifacts.require('PurchaseRegistry.sol')
@@ -62,6 +62,15 @@ async function deployPurchasing(deployer, network, accounts) {
     dGateKeeper,
     'CREATE_PERMISSIONS_ROLE',
     dRegistry.address
+  )
+
+  // Give admin permission to change settings
+  await createPermission(
+    dGateKeeper,
+    accounts[0],
+    dRegistry,
+    'CHANGE_SETTINGS_ROLE',
+    accounts[0]
   )
 
   await purchaseStream(deployer, network, accounts)

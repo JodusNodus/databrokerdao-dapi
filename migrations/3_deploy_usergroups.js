@@ -9,10 +9,11 @@ const {
 } = require('@settlemint/solidity-mint')
 
 async function performMigration(deployer, network, accounts) {
+  console.log('--', accounts)
+
   const dGateKeeper = await GateKeeper.deployed()
 
-  // Administrators
-  // the deploying address will NOT be in this registry and is allowed to add or remove addresses in it
+  // Administrator
   await deployRoleRegistry(deployer, Administrators, dGateKeeper, accounts[0])
   const DeployedAdministrators = await Administrators.deployed()
   await createAccounts(
@@ -32,16 +33,16 @@ async function performMigration(deployer, network, accounts) {
   await deployRoleRegistry(deployer, Curators, dGateKeeper, accounts[0])
   const DeployedCurators = await Curators.deployed()
   await createAccounts(
-    1,
+    2,
     {
       prefix: 'curator',
       postfix: '@settlemint.com',
     },
     DeployedCurators,
     network === 'development'
-      ? 'human human human human human human human human human human human human'
+      ? 'robot robot robot robot robot robot robot robot robot robot robot robot'
       : 'discover cousin hover skin skirt original crane spatial wrong barely keep jump',
-    accounts
+    mintrc.environments
   )
 }
 
