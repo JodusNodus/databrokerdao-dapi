@@ -121,6 +121,30 @@ contract('Integration tests', function(accounts) {
   })
 
   it('should mint DTX for the msg.sender', async () => {
+    // Create new user
+    const walletRes = await axios({
+      method: 'post',
+      url: `${baseURL}/wallet`,
+      data: {
+        email: 'silke@databrokerdao.com',
+        password: 'dbdao',
+      },
+    })
+    const newPrivateKey = _.get(walletRes, 'data.privateKey')
+
+    // Authenticate
+    const authRes = await axios({
+      method: 'post',
+      url: `${baseURL}/authenticate`,
+      data: {
+        privateKeys: {
+          ethereum: newPrivateKey,
+        },
+        encrypted: false,
+      },
+    })
+    const newToken = _.get(authRes, 'data.token')
+
     const mintRes = await axios({
       method: 'post',
       url: `${baseURL}/dtxminter/mint`,
@@ -128,11 +152,15 @@ contract('Integration tests', function(accounts) {
         amount: '1000',
       },
       headers: {
-        Authorization: token,
+        Authorization: newToken,
       },
     })
 
     assert.equal(mintRes.status, 200)
+    assert.equal(
+      _.get(mintRes, 'data.debug.sender.balances.DTX.balance'),
+      '1000'
+    )
   })
 
   it('should purchase a stream when all parameters are correct', async () => {
