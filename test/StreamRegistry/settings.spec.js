@@ -8,13 +8,13 @@ const StreamRegistry = artifacts.require('StreamRegistry.sol')
 contract('StreamRegistry', accounts => {
   const [admin] = accounts
 
-  describe('Function: setAdminPercentage', async () => {
+  describe('Function: setCuratorPercentage', async () => {
     it('should not change the min enlist amount when user does not have the right role', async () => {
       const registry = await StreamRegistry.deployed()
 
       try {
         assert.throws(
-          await registry.setAdminPercentage(10, {
+          await registry.setCuratorPercentage(10, {
             from: 0x0,
           }),
           'revert'
@@ -27,12 +27,12 @@ contract('StreamRegistry', accounts => {
     it('should change the min enlist amount when user has the right role', async () => {
       const registry = await StreamRegistry.deployed()
 
-      const tx = await registry.setAdminPercentage(10, {
+      const tx = await registry.setCuratorPercentage(10, {
         from: admin,
       })
 
       // Check if events have been emitted
-      testEvent(tx, 'AdminPercentageChanged', {
+      testEvent(tx, 'CuratorPercentageChanged', {
         value: '10',
       })
     })

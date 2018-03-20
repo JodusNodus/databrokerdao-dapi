@@ -302,58 +302,40 @@ The response looks like this:
 
 
 
+### Change settings
 
+There are a few settings that can be changed on the stream registry:
 
-### Get one stream
+* **minimum enlist amount**. This is the minimum amount in DTX a sensor owner has to lock-up when enlisting.
+* **minimum challenge amount**. This is the minimum amount in DTX a sensor buyer has to locku-up when he wants to raise a challenge.
+* **curator percentage**.  This is the percentage of the sum of the challenges on a listing that goes to a DataBroker DAO curator, represented as whole number: 1% is represented by 1.
 
-Queries the MongoDB collection where streams have been saved.
+Settings can only be changed by **users with the CHANGE_SETTINGS_ROLE**. In development and staging, this is the admin0 user.
 
-`GET /streamregistry/list/[stream address]`
+#### setMinEnlistAmount
 
-
-
-
-
-## Challenges
-
-
-
-### Challenge a stream
-
- `POST /streamregistry/challenge`
-
-Expects the following parameters: 
-
-- listing: address of the stream contract. 
-- stakeamount: uint, amount of DTX that need to staked. Minimum stake amount of 5 DTX.
-
-
-
-
-### Approve challenge on a stream
-
-**Only admins** can approve a challenge. When a challenge is approved, 10% of the total challenge stake goes to the admin approving it. The rest of the sum of the challenges stakes and the enlist stake of the stream is divided among the challengers, according to how much their challenge makes up of the total challenged stake.
-
-`POST /streamregistry/approvechallenge`
+`POST /streamregistry/setminenlistamount`
 
 Expects the following parameters:
 
-* listing: address of the stream contract.
-* stakeamount: uint, amount of DTX the challenger want to stake. Minimum of 5 DTX.
+- amount: uint, the new amount in DTX
 
+#### setMinChallengeAmount
 
-
-
-### Deny challenge on a stream
-
-**Only admins** can deny a challenge. When a challenge is denied, 10% of the total challenge stake goes to the admin denying it. The rest of the sum of the challenges stakes and the enlist stake of the stream is transferred to the stream owner.
-
-`POST /streamregistry/denychallenge`
+`POST /streamregistry/setminchallengeamount`
 
 Expects the following parameters:
 
-- listing: address of the stream contract.
-- stakeamount: uint, amount of DTX the challenger want to stake. Minimum of 5 DTX.
+- amount: uint, the new amount in DTX
+
+#### setCuratorPercentage
+
+`POST /streamregistry/setcuratorpercentage`
+
+Expects the following parameters:
+
+- amount: uint, the new percentage (as a whole number)
+
 
 
 
@@ -438,6 +420,65 @@ The response looks like this:
   ]
 }
 ```
+
+
+
+### Change settings
+
+The only setting on purchasing that can be changed is **sale percentage**. This is the percentage of each sale that goes to DataBroker DAO, represented as whole number: 1% is represented by 1.
+
+Settings can only be changed by **users with the CHANGE_SETTINGS_ROLE**. In development and staging, this is the admin0 user.
+
+#### setSalePercentage
+
+`POST /purchaseregistry/setsalepercentage`
+
+Expects the following parameters:
+
+* amount: uint, the new percentage (as a whole number)
+
+#### 
+
+
+
+## Challenges
+
+
+
+### Challenge a stream
+
+ `POST /streamregistry/challenge`
+
+Expects the following parameters: 
+
+- listing: address of the stream contract. 
+- stakeamount: uint, amount of DTX that need to staked. Minimum stake amount of 5 DTX.
+
+
+
+### Approve challenge on a stream
+
+**Only admins** can approve a challenge. When a challenge is approved, 10% of the total challenge stake goes to the admin approving it. The rest of the sum of the challenges stakes and the enlist stake of the stream is divided among the challengers, according to how much their challenge makes up of the total challenged stake.
+
+`POST /streamregistry/approvechallenge`
+
+Expects the following parameters:
+
+- listing: address of the stream contract.
+- stakeamount: uint, amount of DTX the challenger want to stake. Minimum of 5 DTX.
+
+
+
+### Deny challenge on a stream
+
+**Only admins** can deny a challenge. When a challenge is denied, 10% of the total challenge stake goes to the admin denying it. The rest of the sum of the challenges stakes and the enlist stake of the stream is transferred to the stream owner.
+
+`POST /streamregistry/denychallenge`
+
+Expects the following parameters:
+
+- listing: address of the stream contract.
+- stakeamount: uint, amount of DTX the challenger want to stake. Minimum of 5 DTX.
 
 
 
