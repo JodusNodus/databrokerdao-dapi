@@ -1,7 +1,8 @@
 {
   "name": "@settlemint/databrokerdao-dapi",
   "version": "0.0.0-development",
-  "description": "The smart contracts and dAPI for a token curated marketplace project",
+  "description":
+    "The smart contracts and dAPI for a token curated marketplace project",
   "main": "truffle.js",
   "directories": {
     "test": "test"
@@ -10,7 +11,7 @@
     "node": ">=8.7.0"
   },
   "scripts": {
-    "dev-test": "mint start && mint test",
+    "dev-test": "mint compile --all && mint start && mint test",
     "dev": "mint compile --all && mint start",
     "test": "mint test",
     "lint": "npm run solium -- --dir contracts --fix",
@@ -22,11 +23,9 @@
     "type": "git",
     "url": "https://github.com/databrokerdao/databrokerdao-dapi.git"
   },
-  "keywords": [
-    "mint",
-    "boilerplate"
-  ],
-  "author": "Silke Van den Broeck <silke@settlemint.com>, Roderik van der Veer <roderik@settlemint.com>",
+  "keywords": ["mint", "boilerplate"],
+  "author":
+    "Silke Van den Broeck <silke@settlemint.com>, Roderik van der Veer <roderik@settlemint.com>",
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/databrokerdao/databrokerdao-dapi/issues"
@@ -76,10 +75,7 @@
     "access": "restricted"
   },
   "lint-staged": {
-    "*.{js,json,css}": [
-      "prettier --write",
-      "git add"
-    ]
+    "*.{js,json,css}": ["prettier --write", "git add"]
   },
   "eslintConfig": {
     "extends": [
@@ -89,18 +85,11 @@
       "plugin:promise/recommended",
       "eslint:recommended"
     ],
-    "plugins": [
-      "prettier",
-      "node",
-      "promise"
-    ],
+    "plugins": ["prettier", "node", "promise"],
     "rules": {
       "prettier/prettier": "warn",
       "no-console": 0,
-      "node/exports-style": [
-        "error",
-        "module.exports"
-      ]
+      "node/exports-style": ["error", "module.exports"]
     },
     "globals": {
       "artifacts": true,

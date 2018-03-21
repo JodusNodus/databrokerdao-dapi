@@ -9,8 +9,6 @@ const {
 } = require('@settlemint/solidity-mint')
 
 async function performMigration(deployer, network, accounts) {
-  console.log('--', accounts)
-
   const dGateKeeper = await GateKeeper.deployed()
 
   // Administrator
