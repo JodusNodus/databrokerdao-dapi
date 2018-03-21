@@ -87,6 +87,7 @@ Expects the following parameters:
 
 
 
+
 ## Before transfering tokens
 
 Before calling a method on a contract that transfers tokens (f.e. enlist, increase, challenge, …), you need to **approve** the amount of tokens first. Basically, approving means giving another contract the right to spend your tokens.
@@ -375,7 +376,7 @@ Expects the following parameters:
   A succesful response returns a hash property, which you can use in the enlist call.
 
 - Before purchasing, we need to approve the token amount (see [Before transfering tokens](?id=before-transfering-tokens))
-  Make sure the amount you approve is >= the price the buyer will have to pay: **seconds from now to endtime * stream price** 
+  Make sure the amount you approve is >= the price the buyer will have to pay: **seconds from now to endtime * stream price**. You can use something like following algorithm to predict the amount: `streamPrice * (endtime - (new Date().getTime() / 1000)) + 1000 `. The 1000 seconds added at the end are a safety measure, to make sure the approved amount is high enough.
 
 - `POST /purchaseregistry/purchaseaccess`
 

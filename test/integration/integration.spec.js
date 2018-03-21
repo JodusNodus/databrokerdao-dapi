@@ -291,4 +291,177 @@ contract('Integration tests', function(accounts) {
     })
     assert.equal(purchaseRes.status, 200)
   })
+
+  it('should go through the whole process: enlist, new user, mint tokens, purchase', async () => {
+    try {
+      // Get token address: needed for approve calls
+      const tokenListRes = await axios({
+        method: 'get',
+        url: `${baseURL}/dtxtokenregistry/list`,
+        headers: {
+          Authorization: token,
+        },
+      })
+      assert.equal(tokenListRes.status, 200)
+      const tokenAddress = _.get(tokenListRes, 'data.items[0].contractaddress')
+
+      // Get streamregistry address: needed for approve calls
+      const registryListRes = await axios({
+        method: 'get',
+        url: `${baseURL}/streamregistry/list`,
+        headers: {
+          Authorization: token,
+        },
+      })
+      assert.equal(registryListRes.status, 200)
+      const streamRegistryAddress = _.get(registryListRes, 'data.base.key')
+
+      // Create IPFS for stream enlisting
+      const streamIpfsRes = await axios({
+        method: 'post',
+        url: `${baseURL}/ipfs/add/json`,
+        data: metadata,
+        headers: {
+          Authorization: token,
+        },
+      })
+      assert.equal(streamIpfsRes.status, 200)
+      const streamIpfsHash = _.get(streamIpfsRes, 'data[0].hash')
+
+      // Approve the stake amount first, before enlisting
+      const approveRes = await axios({
+        method: 'post',
+        url: `${baseURL}/dtxtoken/${tokenAddress}/approve`,
+        data: {
+          spender: streamRegistryAddress,
+          value: '10',
+        },
+        headers: {
+          Authorization: token,
+        },
+      })
+      assert.equal(approveRes.status, 200)
+
+      // Enlist
+      const enlistRes = await axios({
+        method: 'post',
+        url: `${baseURL}/streamregistry/enlist`,
+        data: {
+          price: '1',
+          stakeamount: '10',
+          metadata: streamIpfsHash,
+        },
+        headers: {
+          Authorization: token,
+        },
+      })
+      assert.equal(enlistRes.status, 200)
+
+      // Create new user
+      const walletRes = await axios({
+        method: 'post',
+        url: `${baseURL}/wallet`,
+        data: {
+          email: 'silke@databrokerdao.com',
+          password: 'dbdao',
+        },
+      })
+      const newPrivateKey = _.get(walletRes, 'data.privateKey')
+
+      // Authenticate with this user
+      const authRes = await axios({
+        method: 'post',
+        url: `${baseURL}/authenticate`,
+        data: {
+          privateKeys: {
+            ethereum: newPrivateKey,
+          },
+          encrypted: false,
+        },
+      })
+      const newToken = _.get(authRes, 'data.token')
+
+      // Mint 1000 DTX for the new user
+      const mintRes = await axios({
+        method: 'post',
+        url: `${baseURL}/dtxminter/mint`,
+        data: {
+          amount: (1000 * Math.pow(10, 18)).toString(), // 1000 DTX, taking the 18 decimals into account
+        },
+        headers: {
+          Authorization: newToken,
+        },
+      })
+
+      assert.equal(mintRes.status, 200)
+
+      // Save stream address for purchase
+      const event = _.filter(
+        enlistRes.data.events,
+        log => log.event === 'Enlisted'
+      )[0]
+      const streamAddress = event.listing
+
+      // Calculate endtime
+      const endtime = new Date().getTime() / 1000 + 60 * 60 * 24 * 7 // one week from now
+
+      // Create purchase IPFS
+      const purchaseIpfsRes = await axios({
+        method: 'post',
+        url: `${baseURL}/ipfs/add/json`,
+        data: metadata,
+        headers: {
+          Authorization: newToken,
+        },
+      })
+      assert.equal(purchaseIpfsRes.status, 200)
+      const purchaseIpfsHash = _.get(purchaseIpfsRes, 'data[0].hash')
+
+      // Get purchaseregistry address: for approving
+      const purchaseRegistryListRes = await axios({
+        method: 'get',
+        url: `${baseURL}/purchaseregistry/list`,
+        headers: {
+          Authorization: newToken,
+        },
+      })
+      assert.equal(purchaseRegistryListRes.status, 200)
+      const purchaseRegistryAddress = _.get(
+        purchaseRegistryListRes,
+        'data.base.key'
+      )
+
+      // Approve the amount we guess the sensor will cost
+      const amount = 1 * endtime - new Date().getTime() / 1000 + 1000 // stream price times the endtime minus the start time, 1000 seconds added to be safe
+      const approvePurchaseRes = await axios({
+        method: 'post',
+        url: `${baseURL}/dtxtoken/${tokenAddress}/approve`,
+        data: {
+          spender: purchaseRegistryAddress,
+          value: amount.toString(),
+        },
+        headers: {
+          Authorization: newToken,
+        },
+      })
+      assert.equal(approvePurchaseRes.status, 200)
+
+      // Purchase
+      const purchaseRes = await axios({
+        method: 'post',
+        url: `${baseURL}/purchaseregistry/purchaseaccess`,
+        data: {
+          stream: streamAddress,
+          endtime: endtime.toString(),
+          metadata: purchaseIpfsHash,
+        },
+        headers: {
+          Authorization: newToken,
+        },
+      })
+      assert.equal(purchaseRes.status, 200)
+    } catch (e) {
+      console.log('--', e)
+    }
+  })
 })
