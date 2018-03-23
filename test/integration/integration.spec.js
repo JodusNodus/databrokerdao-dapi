@@ -461,235 +461,230 @@ contract('Integration tests', function(accounts) {
     assert.equal(purchaseRes.status, 200)
   })
 
-  // it('should give DTX to data owner when challenge is denied', async () => {
-  //   try {
-  //     /*
-  //    * ENLIST
-  //    */
+  it('should give DTX to data owner when challenge is denied', async () => {
+    try {
+      /*
+     * ENLIST
+     */
 
-  //     // Get token address: needed for approve calls
-  //     const tokenListRes = await axios({
-  //       method: 'get',
-  //       url: `${baseURL}/dtxtokenregistry/list`,
-  //       headers: {
-  //         Authorization: token,
-  //       },
-  //     })
-  //     assert.equal(tokenListRes.status, 200)
-  //     const tokenAddress = _.get(tokenListRes, 'data.items[0].contractaddress')
+      // Get token address: needed for approve calls
+      const tokenListRes = await axios({
+        method: 'get',
+        url: `${baseURL}/dtxtokenregistry/list`,
+        headers: {
+          Authorization: token,
+        },
+      })
+      assert.equal(tokenListRes.status, 200)
+      const tokenAddress = _.get(tokenListRes, 'data.items[0].contractaddress')
 
-  //     // Get streamregistry address: needed for approve calls
-  //     const registryListRes = await axios({
-  //       method: 'get',
-  //       url: `${baseURL}/streamregistry/list`,
-  //       headers: {
-  //         Authorization: token,
-  //       },
-  //     })
-  //     assert.equal(registryListRes.status, 200)
-  //     const streamRegistryAddress = _.get(registryListRes, 'data.base.key')
+      // Get streamregistry address: needed for approve calls
+      const registryListRes = await axios({
+        method: 'get',
+        url: `${baseURL}/streamregistry/list`,
+        headers: {
+          Authorization: token,
+        },
+      })
+      assert.equal(registryListRes.status, 200)
+      const streamRegistryAddress = _.get(registryListRes, 'data.base.key')
 
-  //     // Create IPFS for stream enlisting
-  //     const streamIpfsRes = await axios({
-  //       method: 'post',
-  //       url: `${baseURL}/ipfs/add/json`,
-  //       data: metadata,
-  //       headers: {
-  //         Authorization: token,
-  //       },
-  //     })
-  //     assert.equal(streamIpfsRes.status, 200)
-  //     const streamIpfsHash = _.get(streamIpfsRes, 'data[0].hash')
+      // Create IPFS for stream enlisting
+      const streamIpfsRes = await axios({
+        method: 'post',
+        url: `${baseURL}/ipfs/add/json`,
+        data: metadata,
+        headers: {
+          Authorization: token,
+        },
+      })
+      assert.equal(streamIpfsRes.status, 200)
+      const streamIpfsHash = _.get(streamIpfsRes, 'data[0].hash')
 
-  //     // Approve the stake amount first, before enlisting
-  //     const enlistApproveRes = await axios({
-  //       method: 'post',
-  //       url: `${baseURL}/dtxtoken/${tokenAddress}/approve`,
-  //       data: {
-  //         spender: streamRegistryAddress,
-  //         value: '10',
-  //       },
-  //       headers: {
-  //         Authorization: token,
-  //       },
-  //     })
-  //     assert.equal(enlistApproveRes.status, 200)
+      // Approve the stake amount first, before enlisting
+      const enlistApproveRes = await axios({
+        method: 'post',
+        url: `${baseURL}/dtxtoken/${tokenAddress}/approve`,
+        data: {
+          spender: streamRegistryAddress,
+          value: '10',
+        },
+        headers: {
+          Authorization: token,
+        },
+      })
+      assert.equal(enlistApproveRes.status, 200)
 
-  //     // Enlist
-  //     const enlistRes = await axios({
-  //       method: 'post',
-  //       url: `${baseURL}/streamregistry/enlist`,
-  //       data: {
-  //         price: '1',
-  //         stakeamount: '10',
-  //         metadata: streamIpfsHash,
-  //       },
-  //       headers: {
-  //         Authorization: token,
-  //       },
-  //     })
-  //     assert.equal(enlistRes.status, 200)
+      // Enlist
+      const enlistRes = await axios({
+        method: 'post',
+        url: `${baseURL}/streamregistry/enlist`,
+        data: {
+          price: '1',
+          stakeamount: '10',
+          metadata: streamIpfsHash,
+        },
+        headers: {
+          Authorization: token,
+        },
+      })
+      assert.equal(enlistRes.status, 200)
 
-  //     // Save stream address for challenge/denying challenge
-  //     const event = _.filter(
-  //       enlistRes.data.events,
-  //       log => log.event === 'Enlisted'
-  //     )[0]
-  //     const streamAddress = event.listing
+      // Save stream address for challenge/denying challenge
+      const event = _.filter(
+        enlistRes.data.events,
+        log => log.event === 'Enlisted'
+      )[0]
+      const streamAddress = event.listing
 
-  //     /*
-  //    * CREATE CHALLENGER USER
-  //    */
+      /*
+     * CREATE CHALLENGER USER
+     */
 
-  //     // Create new user
-  //     const challengerWalletRes = await axios({
-  //       method: 'post',
-  //       url: `${baseURL}/wallet`,
-  //       data: {
-  //         email: 'silke@databrokerdao.com',
-  //         password: 'dbdao',
-  //       },
-  //     })
-  //     const challengerPrivateKey = _.get(challengerWalletRes, 'data.privateKey')
+      // Create new user
+      const challengerWalletRes = await axios({
+        method: 'post',
+        url: `${baseURL}/wallet`,
+        data: {
+          email: 'silke@databrokerdao.com',
+          password: 'dbdao',
+        },
+      })
+      const challengerPrivateKey = _.get(challengerWalletRes, 'data.privateKey')
 
-  //     // Authenticate with this user
-  //     const challengerAuthRes = await axios({
-  //       method: 'post',
-  //       url: `${baseURL}/authenticate`,
-  //       data: {
-  //         privateKeys: {
-  //           ethereum: challengerPrivateKey,
-  //         },
-  //         encrypted: false,
-  //       },
-  //     })
-  //     const challengerToken = _.get(challengerAuthRes, 'data.token')
+      // Authenticate with this user
+      const challengerAuthRes = await axios({
+        method: 'post',
+        url: `${baseURL}/authenticate`,
+        data: {
+          privateKeys: {
+            ethereum: challengerPrivateKey,
+          },
+          encrypted: false,
+        },
+      })
+      const challengerToken = _.get(challengerAuthRes, 'data.token')
 
-  //     // Mint 1000 DTX for the new user
-  //     const mintRes = await axios({
-  //       method: 'post',
-  //       url: `${baseURL}/dtxminter/mint`,
-  //       data: {
-  //         amount: (1000 * Math.pow(10, 18)).toString(), // 1000 DTX, taking the 18 decimals into account
-  //       },
-  //       headers: {
-  //         Authorization: challengerToken,
-  //       },
-  //     })
-  //     assert.equal(mintRes.status, 200)
+      // Mint 1000 DTX for the new user
+      const mintRes = await axios({
+        method: 'post',
+        url: `${baseURL}/dtxminter/mint`,
+        data: {
+          amount: (1000 * Math.pow(10, 18)).toString(), // 1000 DTX, taking the 18 decimals into account
+        },
+        headers: {
+          Authorization: challengerToken,
+        },
+      })
+      assert.equal(mintRes.status, 200)
 
-  //     /*
-  //    * CHALLENGE
-  //    */
+      /*
+     * CHALLENGE
+     */
 
-  //     // Approve first
-  //     const challengeApproveRes = await axios({
-  //       method: 'post',
-  //       url: `${baseURL}/dtxtoken/${tokenAddress}/approve`,
-  //       data: {
-  //         spender: streamRegistryAddress,
-  //         value: '5',
-  //       },
-  //       headers: {
-  //         Authorization: challengerToken,
-  //       },
-  //     })
-  //     assert.equal(challengeApproveRes.status, 200)
+      // Approve first
+      const challengeApproveRes = await axios({
+        method: 'post',
+        url: `${baseURL}/dtxtoken/${tokenAddress}/approve`,
+        data: {
+          spender: streamRegistryAddress,
+          value: '5',
+        },
+        headers: {
+          Authorization: challengerToken,
+        },
+      })
+      assert.equal(challengeApproveRes.status, 200)
 
-  //     // Challenge
-  //     const challengeRes = await axios({
-  //       method: 'post',
-  //       url: `${baseURL}/streamregistry/challenge`,
-  //       data: {
-  //         listing: streamAddress,
-  //         stakeamount: '5',
-  //       },
-  //       headers: {
-  //         Authorization: challengerToken,
-  //       },
-  //     })
-  //     assert.equal(challengeRes.status, 200)
+      // Challenge
+      const challengeRes = await axios({
+        method: 'post',
+        url: `${baseURL}/streamregistry/challenge`,
+        data: {
+          listing: streamAddress,
+          stakeamount: '5',
+        },
+        headers: {
+          Authorization: challengerToken,
+        },
+      })
+      assert.equal(challengeRes.status, 200)
 
-  //     /*
-  //    * AUTH CURATOR USER
-  //    */
+      /*
+     * AUTH CURATOR USER
+     */
 
-  //     // // Create new user
-  //     // const curatorWalletRes = await axios({
-  //     //   method: 'post',
-  //     //   url: `${baseURL}/wallet`,
-  //     //   data: {
-  //     //     email: 'curator@databrokerdao.com',
-  //     //     password: 'dbdao',
-  //     //   },
-  //     // })
-  //     // const curatorPrivateKey = _.get(curatorWalletRes, 'data.privateKey')
+      // // Create new user
+      // const curatorWalletRes = await axios({
+      //   method: 'post',
+      //   url: `${baseURL}/wallet`,
+      //   data: {
+      //     email: 'curator@databrokerdao.com',
+      //     password: 'dbdao',
+      //   },
+      // })
+      // const curatorPrivateKey = _.get(curatorWalletRes, 'data.privateKey')
 
-  //     // Get all wallets, to filter out the new curator's address
-  //     const getWalletsRes = await axios({
-  //       method: 'get',
-  //       url: `${baseURL}/keystorage/wallets`,
-  //       headers: {
-  //         Authorization: token,
-  //       },
-  //     })
+      // Get all wallets, to filter out the new curator's address
+      const getWalletsRes = await axios({
+        method: 'get',
+        url: `${baseURL}/keystorage/wallets`,
+        headers: {
+          Authorization: token,
+        },
+      })
 
-  //     console.log('--', _.get(getWalletsRes, 'data.wallets'))
+      // Filter out one of the curators
+      const curator = _.filter(
+        _.get(getWalletsRes, 'data.wallets'),
+        wallet => wallet.email === 'curator0@settlemint.com'
+      )[0]
+      const curatorPrivateKey = _.get(curator, 'mnemonicHash')
 
-  //     const curator = _.filter(
-  //       _.get(getWalletsRes, 'data.wallets'),
-  //       wallet => wallet.email === 'curator0@settlemint.com'
-  //     )[0]
-  //     console.log('--', curator)
-  //     const curatorPrivateKey = _.get(curator, 'wallet.ethereum.mnemonichash')
+      // Authenticate with this user
+      const curatorAuthRes = await axios({
+        method: 'post',
+        url: `${baseURL}/authenticate`,
+        data: {
+          privateKeys: {
+            ethereum: curatorPrivateKey,
+          },
+          encrypted: false,
+        },
+      })
+      const curatorToken = _.get(curatorAuthRes, 'data.token')
 
-  //     console.log('--', curatorPrivateKey)
+      console.log('--', curatorToken)
 
-  //     // Authenticate with this user
-  //     const curatorAuthRes = await axios({
-  //       method: 'post',
-  //       url: `${baseURL}/authenticate`,
-  //       data: {
-  //         privateKeys: {
-  //           ethereum: curatorPrivateKey,
-  //         },
-  //         encrypted: false,
-  //       },
-  //     })
-  //     console.log('--', curatorAuthRes)
-  //     const curatorToken = _.get(curatorAuthRes, 'data.token')
+      // // Designate curator role
+      // await axios({
+      //   method: 'post',
+      //   url: `${baseURL}/curators/designate`,
+      //   data: {
+      //     address: curatorAddress,
+      //   },
+      //   headers: {
+      //     Authorization: curatorToken,
+      //   },
+      // })
 
-  //     console.log('--', curatorToken)
-
-  //     // // Designate curator role
-  //     // await axios({
-  //     //   method: 'post',
-  //     //   url: `${baseURL}/curators/designate`,
-  //     //   data: {
-  //     //     address: curatorAddress,
-  //     //   },
-  //     //   headers: {
-  //     //     Authorization: curatorToken,
-  //     //   },
-  //     // })
-
-  //     /*
-  //      * DENY CHALLENGE
-  //      */
-  //     const denyRes = await axios({
-  //       method: 'post',
-  //       url: `${baseURL}/streamregistry/challenge`,
-  //       data: {
-  //         listing: streamAddress,
-  //         stakeamount: '5',
-  //       },
-  //       headers: {
-  //         Authorization: curatorToken,
-  //       },
-  //     })
-  //     assert.equal(denyRes.status, 200)
-  //   } catch (e) {
-  //     console.log('--', e)
-  //   }
-  // })
+      /*
+       * DENY CHALLENGE
+       */
+      const denyRes = await axios({
+        method: 'post',
+        url: `${baseURL}/streamregistry/challenge`,
+        data: {
+          listing: streamAddress,
+          stakeamount: '5',
+        },
+        headers: {
+          Authorization: curatorToken,
+        },
+      })
+      assert.equal(denyRes.status, 200)
+    } catch (e) {
+      console.log('ERROR', e)
+    }
+  })
 })
