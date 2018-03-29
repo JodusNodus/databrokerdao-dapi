@@ -78,8 +78,8 @@
   ],
   "bytecode": "0x6060604052341561000f57600080fd5b604051604080610285833981016040528080519190602001805160008054600160a060020a03928316600160a060020a0319918216179091556001805495909216941693909317909255505061021b8061006a6000396000f3006060604052600436106100565763ffffffff7c010000000000000000000000000000000000000000000000000000000060003504166345d61ded811461005b578063a0712d6814610097578063fc0c546a146100af575b600080fd5b341561006657600080fd5b61006e6100c2565b60405173ffffffffffffffffffffffffffffffffffffffff909116815260200160405180910390f35b34156100a257600080fd5b6100ad6004356100de565b005b34156100ba57600080fd5b61006e6101d3565b60005473ffffffffffffffffffffffffffffffffffffffff1681565b60015473ffffffffffffffffffffffffffffffffffffffff166340c10f1933836040517c010000000000000000000000000000000000000000000000000000000063ffffffff851602815273ffffffffffffffffffffffffffffffffffffffff90921660048301526024820152604401602060405180830381600087803b151561016757600080fd5b5af1151561017457600080fd5b50505060405180519050507f30385c845b448a36257a6a1716e6ad2e1bc2cbe333cde1e69fe849ad6511adfe338260405173ffffffffffffffffffffffffffffffffffffffff909216825260208201526040908101905180910390a150565b60015473ffffffffffffffffffffffffffffffffffffffff16815600a165627a7a72305820868febd9c4a106d97971e08699da9eaba7dc9767855d2cea715b9d218ae74cb10029",
   "deployedBytecode": "0x6060604052600436106100565763ffffffff7c010000000000000000000000000000000000000000000000000000000060003504166345d61ded811461005b578063a0712d6814610097578063fc0c546a146100af575b600080fd5b341561006657600080fd5b61006e6100c2565b60405173ffffffffffffffffffffffffffffffffffffffff909116815260200160405180910390f35b34156100a257600080fd5b6100ad6004356100de565b005b34156100ba57600080fd5b61006e6101d3565b60005473ffffffffffffffffffffffffffffffffffffffff1681565b60015473ffffffffffffffffffffffffffffffffffffffff166340c10f1933836040517c010000000000000000000000000000000000000000000000000000000063ffffffff851602815273ffffffffffffffffffffffffffffffffffffffff90921660048301526024820152604401602060405180830381600087803b151561016757600080fd5b5af1151561017457600080fd5b50505060405180519050507f30385c845b448a36257a6a1716e6ad2e1bc2cbe333cde1e69fe849ad6511adfe338260405173ffffffffffffffffffffffffffffffffffffffff909216825260208201526040908101905180910390a150565b60015473ffffffffffffffffffffffffffffffffffffffff16815600a165627a7a72305820868febd9c4a106d97971e08699da9eaba7dc9767855d2cea715b9d218ae74cb10029",
-  "sourceMap": "211:694:0:-;;;491:141;;;;;;;;;;;;;;;;;;;;;;;;;;;;250:10:14;:36;;-1:-1:-1;;;;;250:36:14;;;-1:-1:-1;;;;;;250:36:14;;;;;;;;603:24:0;;;;;;;;;;;;;;;-1:-1:-1;;211:694:0;;;;;;",
-  "deployedSourceMap": "211:694:0:-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;77:28:14;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;779:124:0;;;;;;;;;;;;;;;;287:21;;;;;;;;;;;;77:28:14;;;;;;:::o;779:124:0:-;820:5;;;;:10;831;843:7;820:31;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;871:27;878:10;890:7;871:27;;;;;;;;;;;;;;;;;;;;;;;779:124;:::o;287:21::-;;;;;;:::o",
+  "sourceMap": "211:694:0:-;;;491:141;;;;;;;;;;;;;;;;;;;;;;;;;;;;250:10:12;:36;;-1:-1:-1;;;;;250:36:12;;;-1:-1:-1;;;;;;250:36:12;;;;;;;;603:24:0;;;;;;;;;;;;;;;-1:-1:-1;;211:694:0;;;;;;",
+  "deployedSourceMap": "211:694:0:-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;77:28:12;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;779:124:0;;;;;;;;;;;;;;;;287:21;;;;;;;;;;;;77:28:12;;;;;;:::o;779:124:0:-;820:5;;;;:10;831;843:7;820:31;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;871:27;878:10;890:7;871:27;;;;;;;;;;;;;;;;;;;;;;;779:124;:::o;287:21::-;;;;;;:::o",
   "source": "pragma solidity ^0.4.20;\n\nimport \"../dtxtoken/DtxToken.sol\";\nimport \"@settlemint/solidity-mint/contracts/authentication/Secured.sol\";\nimport \"@settlemint/solidity-mint/contracts/authentication/GateKeeper.sol\";\n\ncontract DtxMinter is Secured {\n  event Minted(address to, uint amount);\n\n  DtxToken public token;\n\n  /**\n  @dev Contructor\n  @notice                Sets the address for token\n  @param _token          Address of the token\n  @param _gateKeeper     Address of the gatekeeper\n  */\n  function DtxMinter(\n    address _token,\n    address _gateKeeper\n  )\n    Secured(_gateKeeper)\n    public\n  {\n    token = DtxToken(_token);\n  }\n\n  /**\n  @notice               Mints demo DTX for the user calling this method.\n  @param _amount        How much DTX to mint for this user\n  */\n  function mint(uint _amount) public {\n    token.mint(msg.sender, _amount);\n\n    // Event\n    Minted(msg.sender, _amount);\n  }\n}\n",
   "sourcePath": "/Users/peterjanbrone/databrokerdao/databrokerdao-dapi/contracts/DtxToken/DtxMinter.sol",
   "ast": {
@@ -109,7 +109,7 @@
         "id": 2,
         "nodeType": "ImportDirective",
         "scope": 53,
-        "sourceUnit": 287,
+        "sourceUnit": 230,
         "src": "26:34:0",
         "symbolAliases": [],
         "unitAlias": ""
@@ -120,7 +120,7 @@
         "id": 3,
         "nodeType": "ImportDirective",
         "scope": 53,
-        "sourceUnit": 1553,
+        "sourceUnit": 1414,
         "src": "61:72:0",
         "symbolAliases": [],
         "unitAlias": ""
@@ -131,7 +131,7 @@
         "id": 4,
         "nodeType": "ImportDirective",
         "scope": 53,
-        "sourceUnit": 1259,
+        "sourceUnit": 1120,
         "src": "134:75:0",
         "symbolAliases": [],
         "unitAlias": ""
@@ -145,10 +145,10 @@
               "id": 5,
               "name": "Secured",
               "nodeType": "UserDefinedTypeName",
-              "referencedDeclaration": 1552,
+              "referencedDeclaration": 1413,
               "src": "233:7:0",
               "typeDescriptions": {
-                "typeIdentifier": "t_contract$_Secured_$1552",
+                "typeIdentifier": "t_contract$_Secured_$1413",
                 "typeString": "contract Secured"
               }
             },
@@ -158,7 +158,7 @@
           }
         ],
         "contractDependencies": [
-          1552
+          1413
         ],
         "contractKind": "contract",
         "documentation": null,
@@ -166,7 +166,7 @@
         "id": 52,
         "linearizedBaseContracts": [
           52,
-          1552
+          1413
         ],
         "name": "DtxMinter",
         "nodeType": "ContractDefinition",
@@ -250,7 +250,7 @@
             "stateVariable": true,
             "storageLocation": "default",
             "typeDescriptions": {
-              "typeIdentifier": "t_contract$_DtxToken_$286",
+              "typeIdentifier": "t_contract$_DtxToken_$229",
               "typeString": "contract DtxToken"
             },
             "typeName": {
@@ -258,10 +258,10 @@
               "id": 13,
               "name": "DtxToken",
               "nodeType": "UserDefinedTypeName",
-              "referencedDeclaration": 286,
+              "referencedDeclaration": 229,
               "src": "287:8:0",
               "typeDescriptions": {
-                "typeIdentifier": "t_contract$_DtxToken_$286",
+                "typeIdentifier": "t_contract$_DtxToken_$229",
                 "typeString": "contract DtxToken"
               }
             },
@@ -291,7 +291,7 @@
                       "referencedDeclaration": 14,
                       "src": "603:5:0",
                       "typeDescriptions": {
-                        "typeIdentifier": "t_contract$_DtxToken_$286",
+                        "typeIdentifier": "t_contract$_DtxToken_$229",
                         "typeString": "contract DtxToken"
                       }
                     },
@@ -325,10 +325,10 @@
                         "name": "DtxToken",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 286,
+                        "referencedDeclaration": 229,
                         "src": "611:8:0",
                         "typeDescriptions": {
-                          "typeIdentifier": "t_type$_t_contract$_DtxToken_$286_$",
+                          "typeIdentifier": "t_type$_t_contract$_DtxToken_$229_$",
                           "typeString": "type(contract DtxToken)"
                         }
                       },
@@ -342,13 +342,13 @@
                       "nodeType": "FunctionCall",
                       "src": "611:16:0",
                       "typeDescriptions": {
-                        "typeIdentifier": "t_contract$_DtxToken_$286",
+                        "typeIdentifier": "t_contract$_DtxToken_$229",
                         "typeString": "contract DtxToken"
                       }
                     },
                     "src": "603:24:0",
                     "typeDescriptions": {
-                      "typeIdentifier": "t_contract$_DtxToken_$286",
+                      "typeIdentifier": "t_contract$_DtxToken_$229",
                       "typeString": "contract DtxToken"
                     }
                   },
@@ -387,10 +387,10 @@
                   "name": "Secured",
                   "nodeType": "Identifier",
                   "overloadedDeclarations": [],
-                  "referencedDeclaration": 1552,
+                  "referencedDeclaration": 1413,
                   "src": "563:7:0",
                   "typeDescriptions": {
-                    "typeIdentifier": "t_type$_t_contract$_Secured_$1552_$",
+                    "typeIdentifier": "t_type$_t_contract$_Secured_$1413_$",
                     "typeString": "type(contract Secured)"
                   }
                 },
@@ -490,7 +490,7 @@
                           "name": "msg",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
-                          "referencedDeclaration": 4250,
+                          "referencedDeclaration": 4096,
                           "src": "831:3:0",
                           "typeDescriptions": {
                             "typeIdentifier": "t_magic_message",
@@ -545,7 +545,7 @@
                         "referencedDeclaration": 14,
                         "src": "820:5:0",
                         "typeDescriptions": {
-                          "typeIdentifier": "t_contract$_DtxToken_$286",
+                          "typeIdentifier": "t_contract$_DtxToken_$229",
                           "typeString": "contract DtxToken"
                         }
                       },
@@ -556,7 +556,7 @@
                       "lValueRequested": false,
                       "memberName": "mint",
                       "nodeType": "MemberAccess",
-                      "referencedDeclaration": 2943,
+                      "referencedDeclaration": 2789,
                       "src": "820:10:0",
                       "typeDescriptions": {
                         "typeIdentifier": "t_function_external_nonpayable$_t_address_$_t_uint256_$returns$_t_bool_$",
@@ -593,7 +593,7 @@
                           "name": "msg",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
-                          "referencedDeclaration": 4250,
+                          "referencedDeclaration": 4096,
                           "src": "878:3:0",
                           "typeDescriptions": {
                             "typeIdentifier": "t_magic_message",
@@ -758,7 +758,7 @@
         "id": 2,
         "nodeType": "ImportDirective",
         "scope": 53,
-        "sourceUnit": 287,
+        "sourceUnit": 230,
         "src": "26:34:0",
         "symbolAliases": [],
         "unitAlias": ""
@@ -769,7 +769,7 @@
         "id": 3,
         "nodeType": "ImportDirective",
         "scope": 53,
-        "sourceUnit": 1553,
+        "sourceUnit": 1414,
         "src": "61:72:0",
         "symbolAliases": [],
         "unitAlias": ""
@@ -780,7 +780,7 @@
         "id": 4,
         "nodeType": "ImportDirective",
         "scope": 53,
-        "sourceUnit": 1259,
+        "sourceUnit": 1120,
         "src": "134:75:0",
         "symbolAliases": [],
         "unitAlias": ""
@@ -794,10 +794,10 @@
               "id": 5,
               "name": "Secured",
               "nodeType": "UserDefinedTypeName",
-              "referencedDeclaration": 1552,
+              "referencedDeclaration": 1413,
               "src": "233:7:0",
               "typeDescriptions": {
-                "typeIdentifier": "t_contract$_Secured_$1552",
+                "typeIdentifier": "t_contract$_Secured_$1413",
                 "typeString": "contract Secured"
               }
             },
@@ -807,7 +807,7 @@
           }
         ],
         "contractDependencies": [
-          1552
+          1413
         ],
         "contractKind": "contract",
         "documentation": null,
@@ -815,7 +815,7 @@
         "id": 52,
         "linearizedBaseContracts": [
           52,
-          1552
+          1413
         ],
         "name": "DtxMinter",
         "nodeType": "ContractDefinition",
@@ -899,7 +899,7 @@
             "stateVariable": true,
             "storageLocation": "default",
             "typeDescriptions": {
-              "typeIdentifier": "t_contract$_DtxToken_$286",
+              "typeIdentifier": "t_contract$_DtxToken_$229",
               "typeString": "contract DtxToken"
             },
             "typeName": {
@@ -907,10 +907,10 @@
               "id": 13,
               "name": "DtxToken",
               "nodeType": "UserDefinedTypeName",
-              "referencedDeclaration": 286,
+              "referencedDeclaration": 229,
               "src": "287:8:0",
               "typeDescriptions": {
-                "typeIdentifier": "t_contract$_DtxToken_$286",
+                "typeIdentifier": "t_contract$_DtxToken_$229",
                 "typeString": "contract DtxToken"
               }
             },
@@ -940,7 +940,7 @@
                       "referencedDeclaration": 14,
                       "src": "603:5:0",
                       "typeDescriptions": {
-                        "typeIdentifier": "t_contract$_DtxToken_$286",
+                        "typeIdentifier": "t_contract$_DtxToken_$229",
                         "typeString": "contract DtxToken"
                       }
                     },
@@ -974,10 +974,10 @@
                         "name": "DtxToken",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 286,
+                        "referencedDeclaration": 229,
                         "src": "611:8:0",
                         "typeDescriptions": {
-                          "typeIdentifier": "t_type$_t_contract$_DtxToken_$286_$",
+                          "typeIdentifier": "t_type$_t_contract$_DtxToken_$229_$",
                           "typeString": "type(contract DtxToken)"
                         }
                       },
@@ -991,13 +991,13 @@
                       "nodeType": "FunctionCall",
                       "src": "611:16:0",
                       "typeDescriptions": {
-                        "typeIdentifier": "t_contract$_DtxToken_$286",
+                        "typeIdentifier": "t_contract$_DtxToken_$229",
                         "typeString": "contract DtxToken"
                       }
                     },
                     "src": "603:24:0",
                     "typeDescriptions": {
-                      "typeIdentifier": "t_contract$_DtxToken_$286",
+                      "typeIdentifier": "t_contract$_DtxToken_$229",
                       "typeString": "contract DtxToken"
                     }
                   },
@@ -1036,10 +1036,10 @@
                   "name": "Secured",
                   "nodeType": "Identifier",
                   "overloadedDeclarations": [],
-                  "referencedDeclaration": 1552,
+                  "referencedDeclaration": 1413,
                   "src": "563:7:0",
                   "typeDescriptions": {
-                    "typeIdentifier": "t_type$_t_contract$_Secured_$1552_$",
+                    "typeIdentifier": "t_type$_t_contract$_Secured_$1413_$",
                     "typeString": "type(contract Secured)"
                   }
                 },
@@ -1139,7 +1139,7 @@
                           "name": "msg",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
-                          "referencedDeclaration": 4250,
+                          "referencedDeclaration": 4096,
                           "src": "831:3:0",
                           "typeDescriptions": {
                             "typeIdentifier": "t_magic_message",
@@ -1194,7 +1194,7 @@
                         "referencedDeclaration": 14,
                         "src": "820:5:0",
                         "typeDescriptions": {
-                          "typeIdentifier": "t_contract$_DtxToken_$286",
+                          "typeIdentifier": "t_contract$_DtxToken_$229",
                           "typeString": "contract DtxToken"
                         }
                       },
@@ -1205,7 +1205,7 @@
                       "lValueRequested": false,
                       "memberName": "mint",
                       "nodeType": "MemberAccess",
-                      "referencedDeclaration": 2943,
+                      "referencedDeclaration": 2789,
                       "src": "820:10:0",
                       "typeDescriptions": {
                         "typeIdentifier": "t_function_external_nonpayable$_t_address_$_t_uint256_$returns$_t_bool_$",
@@ -1242,7 +1242,7 @@
                           "name": "msg",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
-                          "referencedDeclaration": 4250,
+                          "referencedDeclaration": 4096,
                           "src": "878:3:0",
                           "typeDescriptions": {
                             "typeIdentifier": "t_magic_message",
@@ -1391,6 +1391,12 @@
       "address": "0x5bdac21b40b6d3d6862ec6605ea69a3e680c97ef",
       "transactionHash": "0x5f78dbbc514ad3a73b5f2eba26c77efb93d2bec093a378bdb9091e6893e80f44"
     },
+    "8995": {
+      "events": {},
+      "links": {},
+      "address": "0x156dd34c50beafc3d12168e9aa6da10d1ab4ed6f",
+      "transactionHash": "0xea871fb5432db1c82fd6efb4a5dc020b24685204e12faafafe042e5a22ca4b61"
+    },
     "8996": {
       "events": {},
       "links": {},
@@ -1399,5 +1405,5 @@
     }
   },
   "schemaVersion": "2.0.0",
-  "updatedAt": "2018-03-28T07:25:20.586Z"
+  "updatedAt": "2018-03-29T09:04:20.654Z"
 }
