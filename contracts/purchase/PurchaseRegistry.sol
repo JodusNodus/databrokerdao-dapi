@@ -91,6 +91,7 @@ contract PurchaseRegistry is Secured, Syncable, Cacher, CachedByBytes32 {
     purchasesIndex.push(address(_purchase));
 
     emit AccessPurchased(_stream, msg.sender, _startTime, _endTime, _streamPrice, address(_purchase));
+    invalidateCache(_purchase, "", 0);
   }
 
   /**
@@ -121,8 +122,7 @@ contract PurchaseRegistry is Secured, Syncable, Cacher, CachedByBytes32 {
   /**
   * implementation of cacher methods
   */
-  function invalidateCache(address /*_cachedAddress*/, bytes32 _cachedBytes32, uint256 /*_cachedUint256*/) public {
-    emit Bytes32CacheInvalidated(_cachedBytes32);
-    super.invalidateCache();
+  function invalidateCache(address _cachedAddress, bytes32 /*_cachedBytes32*/, uint256 /*_cachedUint256*/) public {
+    emit AddressCacheInvalidated(_cachedAddress);
   }
 }

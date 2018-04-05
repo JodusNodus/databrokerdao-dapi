@@ -466,7 +466,6 @@ Expects the following parameters:
 Expects the following parameters:
 
 - listing: address of the stream contract.
-- stakeamount: uint, amount of DTX the challenger want to stake. Minimum of 5 DTX.
 
 
 
@@ -479,7 +478,8 @@ Expects the following parameters:
 Expects the following parameters:
 
 - listing: address of the stream contract.
-- stakeamount: uint, amount of DTX the challenger want to stake. Minimum of 5 DTX.
+
+  ​
 
 
 
