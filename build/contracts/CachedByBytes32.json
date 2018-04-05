@@ -19,22 +19,22 @@
   ],
   "bytecode": "0x60606040523415600e57600080fd5b604051604080608f833981016040528080519190602001805160008054600160a060020a03909216600160a060020a03199092169190911790555050600155603580605a6000396000f3006060604052600080fd00a165627a7a72305820ddc8b4b66ecf1bc5a82b02e973b3d96e99481f245f1c0eeffb61257138a305e10029",
   "deployedBytecode": "0x6060604052600080fd00a165627a7a72305820ddc8b4b66ecf1bc5a82b02e973b3d96e99481f245f1c0eeffb61257138a305e10029",
-  "sourceMap": "51:279:26:-;;;112:115;;;;;;;;;;;;;;;;;;;;;;;;;;;;145:6:24;:24;;-1:-1:-1;;;;;145:24:24;;;-1:-1:-1;;;;;;145:24:24;;;;;;;;;-1:-1:-1;;145:24:24;202:20:26;51:279;;;;;;",
-  "deployedSourceMap": "51:279:26:-;;;;;",
+  "sourceMap": "51:279:27:-;;;112:115;;;;;;;;;;;;;;;;;;;;;;;;;;;;145:6:25;:24;;-1:-1:-1;;;;;145:24:25;;;-1:-1:-1;;;;;;145:24:25;;;;;;;;;-1:-1:-1;;145:24:25;202:20:27;51:279;;;;;;",
+  "deployedSourceMap": "51:279:27:-;;;;;",
   "source": "pragma solidity ^0.4.17;\n\nimport \"./Cached.sol\";\n\n\ncontract CachedByBytes32 is Cached {\n\n  bytes32 cacheKey;\n\n  function CachedByBytes32(bytes32 _cacheKey, address _cacher) Cached(_cacher) public {\n    cacheKey = _cacheKey;\n  }\n\n  function invalidateCache() internal {\n    cacher.invalidateCache(address(0x0), cacheKey, 0);\n  }\n\n}\n\n\n",
   "sourcePath": "@settlemint/solidity-mint/contracts/utility/caching/CachedByBytes32.sol",
   "ast": {
     "absolutePath": "@settlemint/solidity-mint/contracts/utility/caching/CachedByBytes32.sol",
     "exportedSymbols": {
       "CachedByBytes32": [
-        4005
+        4086
       ]
     },
-    "id": 4006,
+    "id": 4087,
     "nodeType": "SourceUnit",
     "nodes": [
       {
-        "id": 3970,
+        "id": 4051,
         "literals": [
           "solidity",
           "^",
@@ -42,16 +42,16 @@
           ".17"
         ],
         "nodeType": "PragmaDirective",
-        "src": "0:24:26"
+        "src": "0:24:27"
       },
       {
         "absolutePath": "@settlemint/solidity-mint/contracts/utility/caching/Cached.sol",
         "file": "./Cached.sol",
-        "id": 3971,
+        "id": 4052,
         "nodeType": "ImportDirective",
-        "scope": 4006,
-        "sourceUnit": 3940,
-        "src": "26:22:26",
+        "scope": 4087,
+        "sourceUnit": 4021,
+        "src": "26:22:27",
         "symbolAliases": [],
         "unitAlias": ""
       },
@@ -61,42 +61,42 @@
             "arguments": [],
             "baseName": {
               "contractScope": null,
-              "id": 3972,
+              "id": 4053,
               "name": "Cached",
               "nodeType": "UserDefinedTypeName",
-              "referencedDeclaration": 3939,
-              "src": "79:6:26",
+              "referencedDeclaration": 4020,
+              "src": "79:6:27",
               "typeDescriptions": {
-                "typeIdentifier": "t_contract$_Cached_$3939",
+                "typeIdentifier": "t_contract$_Cached_$4020",
                 "typeString": "contract Cached"
               }
             },
-            "id": 3973,
+            "id": 4054,
             "nodeType": "InheritanceSpecifier",
-            "src": "79:6:26"
+            "src": "79:6:27"
           }
         ],
         "contractDependencies": [
-          3939
+          4020
         ],
         "contractKind": "contract",
         "documentation": null,
         "fullyImplemented": true,
-        "id": 4005,
+        "id": 4086,
         "linearizedBaseContracts": [
-          4005,
-          3939
+          4086,
+          4020
         ],
         "name": "CachedByBytes32",
         "nodeType": "ContractDefinition",
         "nodes": [
           {
             "constant": false,
-            "id": 3975,
+            "id": 4056,
             "name": "cacheKey",
             "nodeType": "VariableDeclaration",
-            "scope": 4005,
-            "src": "91:16:26",
+            "scope": 4086,
+            "src": "91:16:27",
             "stateVariable": true,
             "storageLocation": "default",
             "typeDescriptions": {
@@ -104,10 +104,10 @@
               "typeString": "bytes32"
             },
             "typeName": {
-              "id": 3974,
+              "id": 4055,
               "name": "bytes32",
               "nodeType": "ElementaryTypeName",
-              "src": "91:7:26",
+              "src": "91:7:27",
               "typeDescriptions": {
                 "typeIdentifier": "t_bytes32",
                 "typeString": "bytes32"
@@ -118,26 +118,26 @@
           },
           {
             "body": {
-              "id": 3989,
+              "id": 4070,
               "nodeType": "Block",
-              "src": "196:31:26",
+              "src": "196:31:27",
               "statements": [
                 {
                   "expression": {
                     "argumentTypes": null,
-                    "id": 3987,
+                    "id": 4068,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
                     "lValueRequested": false,
                     "leftHandSide": {
                       "argumentTypes": null,
-                      "id": 3985,
+                      "id": 4066,
                       "name": "cacheKey",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 3975,
-                      "src": "202:8:26",
+                      "referencedDeclaration": 4056,
+                      "src": "202:8:27",
                       "typeDescriptions": {
                         "typeIdentifier": "t_bytes32",
                         "typeString": "bytes32"
@@ -147,31 +147,31 @@
                     "operator": "=",
                     "rightHandSide": {
                       "argumentTypes": null,
-                      "id": 3986,
+                      "id": 4067,
                       "name": "_cacheKey",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 3977,
-                      "src": "213:9:26",
+                      "referencedDeclaration": 4058,
+                      "src": "213:9:27",
                       "typeDescriptions": {
                         "typeIdentifier": "t_bytes32",
                         "typeString": "bytes32"
                       }
                     },
-                    "src": "202:20:26",
+                    "src": "202:20:27",
                     "typeDescriptions": {
                       "typeIdentifier": "t_bytes32",
                       "typeString": "bytes32"
                     }
                   },
-                  "id": 3988,
+                  "id": 4069,
                   "nodeType": "ExpressionStatement",
-                  "src": "202:20:26"
+                  "src": "202:20:27"
                 }
               ]
             },
             "documentation": null,
-            "id": 3990,
+            "id": 4071,
             "implemented": true,
             "isConstructor": true,
             "isDeclaredConst": false,
@@ -180,49 +180,49 @@
                 "arguments": [
                   {
                     "argumentTypes": null,
-                    "id": 3982,
+                    "id": 4063,
                     "name": "_cacher",
                     "nodeType": "Identifier",
                     "overloadedDeclarations": [],
-                    "referencedDeclaration": 3979,
-                    "src": "180:7:26",
+                    "referencedDeclaration": 4060,
+                    "src": "180:7:27",
                     "typeDescriptions": {
                       "typeIdentifier": "t_address",
                       "typeString": "address"
                     }
                   }
                 ],
-                "id": 3983,
+                "id": 4064,
                 "modifierName": {
                   "argumentTypes": null,
-                  "id": 3981,
+                  "id": 4062,
                   "name": "Cached",
                   "nodeType": "Identifier",
                   "overloadedDeclarations": [],
-                  "referencedDeclaration": 3939,
-                  "src": "173:6:26",
+                  "referencedDeclaration": 4020,
+                  "src": "173:6:27",
                   "typeDescriptions": {
-                    "typeIdentifier": "t_type$_t_contract$_Cached_$3939_$",
+                    "typeIdentifier": "t_type$_t_contract$_Cached_$4020_$",
                     "typeString": "type(contract Cached)"
                   }
                 },
                 "nodeType": "ModifierInvocation",
-                "src": "173:15:26"
+                "src": "173:15:27"
               }
             ],
             "name": "CachedByBytes32",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 3980,
+              "id": 4061,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 3977,
+                  "id": 4058,
                   "name": "_cacheKey",
                   "nodeType": "VariableDeclaration",
-                  "scope": 3990,
-                  "src": "137:17:26",
+                  "scope": 4071,
+                  "src": "137:17:27",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
@@ -230,10 +230,10 @@
                     "typeString": "bytes32"
                   },
                   "typeName": {
-                    "id": 3976,
+                    "id": 4057,
                     "name": "bytes32",
                     "nodeType": "ElementaryTypeName",
-                    "src": "137:7:26",
+                    "src": "137:7:27",
                     "typeDescriptions": {
                       "typeIdentifier": "t_bytes32",
                       "typeString": "bytes32"
@@ -244,11 +244,11 @@
                 },
                 {
                   "constant": false,
-                  "id": 3979,
+                  "id": 4060,
                   "name": "_cacher",
                   "nodeType": "VariableDeclaration",
-                  "scope": 3990,
-                  "src": "156:15:26",
+                  "scope": 4071,
+                  "src": "156:15:27",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
@@ -256,10 +256,10 @@
                     "typeString": "address"
                   },
                   "typeName": {
-                    "id": 3978,
+                    "id": 4059,
                     "name": "address",
                     "nodeType": "ElementaryTypeName",
-                    "src": "156:7:26",
+                    "src": "156:7:27",
                     "typeDescriptions": {
                       "typeIdentifier": "t_address",
                       "typeString": "address"
@@ -269,26 +269,26 @@
                   "visibility": "internal"
                 }
               ],
-              "src": "136:36:26"
+              "src": "136:36:27"
             },
             "payable": false,
             "returnParameters": {
-              "id": 3984,
+              "id": 4065,
               "nodeType": "ParameterList",
               "parameters": [],
-              "src": "196:0:26"
+              "src": "196:0:27"
             },
-            "scope": 4005,
-            "src": "112:115:26",
+            "scope": 4086,
+            "src": "112:115:27",
             "stateMutability": "nonpayable",
             "superFunction": null,
             "visibility": "public"
           },
           {
             "body": {
-              "id": 4003,
+              "id": 4084,
               "nodeType": "Block",
-              "src": "267:60:26",
+              "src": "267:60:27",
               "statements": [
                 {
                   "expression": {
@@ -300,14 +300,14 @@
                           {
                             "argumentTypes": null,
                             "hexValue": "307830",
-                            "id": 3997,
+                            "id": 4078,
                             "isConstant": false,
                             "isLValue": false,
                             "isPure": true,
                             "kind": "number",
                             "lValueRequested": false,
                             "nodeType": "Literal",
-                            "src": "304:3:26",
+                            "src": "304:3:27",
                             "subdenomination": null,
                             "typeDescriptions": {
                               "typeIdentifier": "t_rational_0_by_1",
@@ -323,20 +323,20 @@
                               "typeString": "int_const 0"
                             }
                           ],
-                          "id": 3996,
+                          "id": 4077,
                           "isConstant": false,
                           "isLValue": false,
                           "isPure": true,
                           "lValueRequested": false,
                           "nodeType": "ElementaryTypeNameExpression",
-                          "src": "296:7:26",
+                          "src": "296:7:27",
                           "typeDescriptions": {
                             "typeIdentifier": "t_type$_t_address_$",
                             "typeString": "type(address)"
                           },
                           "typeName": "address"
                         },
-                        "id": 3998,
+                        "id": 4079,
                         "isConstant": false,
                         "isLValue": false,
                         "isPure": true,
@@ -344,7 +344,7 @@
                         "lValueRequested": false,
                         "names": [],
                         "nodeType": "FunctionCall",
-                        "src": "296:12:26",
+                        "src": "296:12:27",
                         "typeDescriptions": {
                           "typeIdentifier": "t_address",
                           "typeString": "address"
@@ -352,12 +352,12 @@
                       },
                       {
                         "argumentTypes": null,
-                        "id": 3999,
+                        "id": 4080,
                         "name": "cacheKey",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 3975,
-                        "src": "310:8:26",
+                        "referencedDeclaration": 4056,
+                        "src": "310:8:27",
                         "typeDescriptions": {
                           "typeIdentifier": "t_bytes32",
                           "typeString": "bytes32"
@@ -366,14 +366,14 @@
                       {
                         "argumentTypes": null,
                         "hexValue": "30",
-                        "id": 4000,
+                        "id": 4081,
                         "isConstant": false,
                         "isLValue": false,
                         "isPure": true,
                         "kind": "number",
                         "lValueRequested": false,
                         "nodeType": "Literal",
-                        "src": "320:1:26",
+                        "src": "320:1:27",
                         "subdenomination": null,
                         "typeDescriptions": {
                           "typeIdentifier": "t_rational_0_by_1",
@@ -399,32 +399,32 @@
                       ],
                       "expression": {
                         "argumentTypes": null,
-                        "id": 3993,
+                        "id": 4074,
                         "name": "cacher",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 3923,
-                        "src": "273:6:26",
+                        "referencedDeclaration": 4004,
+                        "src": "273:6:27",
                         "typeDescriptions": {
-                          "typeIdentifier": "t_contract$_Cacher_$4029",
+                          "typeIdentifier": "t_contract$_Cacher_$4110",
                           "typeString": "contract Cacher"
                         }
                       },
-                      "id": 3995,
+                      "id": 4076,
                       "isConstant": false,
                       "isLValue": false,
                       "isPure": false,
                       "lValueRequested": false,
                       "memberName": "invalidateCache",
                       "nodeType": "MemberAccess",
-                      "referencedDeclaration": 4028,
-                      "src": "273:22:26",
+                      "referencedDeclaration": 4109,
+                      "src": "273:22:27",
                       "typeDescriptions": {
                         "typeIdentifier": "t_function_external_nonpayable$_t_address_$_t_bytes32_$_t_uint256_$returns$__$",
                         "typeString": "function (address,bytes32,uint256) external"
                       }
                     },
-                    "id": 4001,
+                    "id": 4082,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
@@ -432,20 +432,20 @@
                     "lValueRequested": false,
                     "names": [],
                     "nodeType": "FunctionCall",
-                    "src": "273:49:26",
+                    "src": "273:49:27",
                     "typeDescriptions": {
                       "typeIdentifier": "t_tuple$__$",
                       "typeString": "tuple()"
                     }
                   },
-                  "id": 4002,
+                  "id": 4083,
                   "nodeType": "ExpressionStatement",
-                  "src": "273:49:26"
+                  "src": "273:49:27"
                 }
               ]
             },
             "documentation": null,
-            "id": 4004,
+            "id": 4085,
             "implemented": true,
             "isConstructor": false,
             "isDeclaredConst": false,
@@ -453,43 +453,43 @@
             "name": "invalidateCache",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 3991,
+              "id": 4072,
               "nodeType": "ParameterList",
               "parameters": [],
-              "src": "255:2:26"
+              "src": "255:2:27"
             },
             "payable": false,
             "returnParameters": {
-              "id": 3992,
+              "id": 4073,
               "nodeType": "ParameterList",
               "parameters": [],
-              "src": "267:0:26"
+              "src": "267:0:27"
             },
-            "scope": 4005,
-            "src": "231:96:26",
+            "scope": 4086,
+            "src": "231:96:27",
             "stateMutability": "nonpayable",
-            "superFunction": 3938,
+            "superFunction": 4019,
             "visibility": "internal"
           }
         ],
-        "scope": 4006,
-        "src": "51:279:26"
+        "scope": 4087,
+        "src": "51:279:27"
       }
     ],
-    "src": "0:333:26"
+    "src": "0:333:27"
   },
   "legacyAST": {
     "absolutePath": "@settlemint/solidity-mint/contracts/utility/caching/CachedByBytes32.sol",
     "exportedSymbols": {
       "CachedByBytes32": [
-        4005
+        4086
       ]
     },
-    "id": 4006,
+    "id": 4087,
     "nodeType": "SourceUnit",
     "nodes": [
       {
-        "id": 3970,
+        "id": 4051,
         "literals": [
           "solidity",
           "^",
@@ -497,16 +497,16 @@
           ".17"
         ],
         "nodeType": "PragmaDirective",
-        "src": "0:24:26"
+        "src": "0:24:27"
       },
       {
         "absolutePath": "@settlemint/solidity-mint/contracts/utility/caching/Cached.sol",
         "file": "./Cached.sol",
-        "id": 3971,
+        "id": 4052,
         "nodeType": "ImportDirective",
-        "scope": 4006,
-        "sourceUnit": 3940,
-        "src": "26:22:26",
+        "scope": 4087,
+        "sourceUnit": 4021,
+        "src": "26:22:27",
         "symbolAliases": [],
         "unitAlias": ""
       },
@@ -516,42 +516,42 @@
             "arguments": [],
             "baseName": {
               "contractScope": null,
-              "id": 3972,
+              "id": 4053,
               "name": "Cached",
               "nodeType": "UserDefinedTypeName",
-              "referencedDeclaration": 3939,
-              "src": "79:6:26",
+              "referencedDeclaration": 4020,
+              "src": "79:6:27",
               "typeDescriptions": {
-                "typeIdentifier": "t_contract$_Cached_$3939",
+                "typeIdentifier": "t_contract$_Cached_$4020",
                 "typeString": "contract Cached"
               }
             },
-            "id": 3973,
+            "id": 4054,
             "nodeType": "InheritanceSpecifier",
-            "src": "79:6:26"
+            "src": "79:6:27"
           }
         ],
         "contractDependencies": [
-          3939
+          4020
         ],
         "contractKind": "contract",
         "documentation": null,
         "fullyImplemented": true,
-        "id": 4005,
+        "id": 4086,
         "linearizedBaseContracts": [
-          4005,
-          3939
+          4086,
+          4020
         ],
         "name": "CachedByBytes32",
         "nodeType": "ContractDefinition",
         "nodes": [
           {
             "constant": false,
-            "id": 3975,
+            "id": 4056,
             "name": "cacheKey",
             "nodeType": "VariableDeclaration",
-            "scope": 4005,
-            "src": "91:16:26",
+            "scope": 4086,
+            "src": "91:16:27",
             "stateVariable": true,
             "storageLocation": "default",
             "typeDescriptions": {
@@ -559,10 +559,10 @@
               "typeString": "bytes32"
             },
             "typeName": {
-              "id": 3974,
+              "id": 4055,
               "name": "bytes32",
               "nodeType": "ElementaryTypeName",
-              "src": "91:7:26",
+              "src": "91:7:27",
               "typeDescriptions": {
                 "typeIdentifier": "t_bytes32",
                 "typeString": "bytes32"
@@ -573,26 +573,26 @@
           },
           {
             "body": {
-              "id": 3989,
+              "id": 4070,
               "nodeType": "Block",
-              "src": "196:31:26",
+              "src": "196:31:27",
               "statements": [
                 {
                   "expression": {
                     "argumentTypes": null,
-                    "id": 3987,
+                    "id": 4068,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
                     "lValueRequested": false,
                     "leftHandSide": {
                       "argumentTypes": null,
-                      "id": 3985,
+                      "id": 4066,
                       "name": "cacheKey",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 3975,
-                      "src": "202:8:26",
+                      "referencedDeclaration": 4056,
+                      "src": "202:8:27",
                       "typeDescriptions": {
                         "typeIdentifier": "t_bytes32",
                         "typeString": "bytes32"
@@ -602,31 +602,31 @@
                     "operator": "=",
                     "rightHandSide": {
                       "argumentTypes": null,
-                      "id": 3986,
+                      "id": 4067,
                       "name": "_cacheKey",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 3977,
-                      "src": "213:9:26",
+                      "referencedDeclaration": 4058,
+                      "src": "213:9:27",
                       "typeDescriptions": {
                         "typeIdentifier": "t_bytes32",
                         "typeString": "bytes32"
                       }
                     },
-                    "src": "202:20:26",
+                    "src": "202:20:27",
                     "typeDescriptions": {
                       "typeIdentifier": "t_bytes32",
                       "typeString": "bytes32"
                     }
                   },
-                  "id": 3988,
+                  "id": 4069,
                   "nodeType": "ExpressionStatement",
-                  "src": "202:20:26"
+                  "src": "202:20:27"
                 }
               ]
             },
             "documentation": null,
-            "id": 3990,
+            "id": 4071,
             "implemented": true,
             "isConstructor": true,
             "isDeclaredConst": false,
@@ -635,49 +635,49 @@
                 "arguments": [
                   {
                     "argumentTypes": null,
-                    "id": 3982,
+                    "id": 4063,
                     "name": "_cacher",
                     "nodeType": "Identifier",
                     "overloadedDeclarations": [],
-                    "referencedDeclaration": 3979,
-                    "src": "180:7:26",
+                    "referencedDeclaration": 4060,
+                    "src": "180:7:27",
                     "typeDescriptions": {
                       "typeIdentifier": "t_address",
                       "typeString": "address"
                     }
                   }
                 ],
-                "id": 3983,
+                "id": 4064,
                 "modifierName": {
                   "argumentTypes": null,
-                  "id": 3981,
+                  "id": 4062,
                   "name": "Cached",
                   "nodeType": "Identifier",
                   "overloadedDeclarations": [],
-                  "referencedDeclaration": 3939,
-                  "src": "173:6:26",
+                  "referencedDeclaration": 4020,
+                  "src": "173:6:27",
                   "typeDescriptions": {
-                    "typeIdentifier": "t_type$_t_contract$_Cached_$3939_$",
+                    "typeIdentifier": "t_type$_t_contract$_Cached_$4020_$",
                     "typeString": "type(contract Cached)"
                   }
                 },
                 "nodeType": "ModifierInvocation",
-                "src": "173:15:26"
+                "src": "173:15:27"
               }
             ],
             "name": "CachedByBytes32",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 3980,
+              "id": 4061,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 3977,
+                  "id": 4058,
                   "name": "_cacheKey",
                   "nodeType": "VariableDeclaration",
-                  "scope": 3990,
-                  "src": "137:17:26",
+                  "scope": 4071,
+                  "src": "137:17:27",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
@@ -685,10 +685,10 @@
                     "typeString": "bytes32"
                   },
                   "typeName": {
-                    "id": 3976,
+                    "id": 4057,
                     "name": "bytes32",
                     "nodeType": "ElementaryTypeName",
-                    "src": "137:7:26",
+                    "src": "137:7:27",
                     "typeDescriptions": {
                       "typeIdentifier": "t_bytes32",
                       "typeString": "bytes32"
@@ -699,11 +699,11 @@
                 },
                 {
                   "constant": false,
-                  "id": 3979,
+                  "id": 4060,
                   "name": "_cacher",
                   "nodeType": "VariableDeclaration",
-                  "scope": 3990,
-                  "src": "156:15:26",
+                  "scope": 4071,
+                  "src": "156:15:27",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
@@ -711,10 +711,10 @@
                     "typeString": "address"
                   },
                   "typeName": {
-                    "id": 3978,
+                    "id": 4059,
                     "name": "address",
                     "nodeType": "ElementaryTypeName",
-                    "src": "156:7:26",
+                    "src": "156:7:27",
                     "typeDescriptions": {
                       "typeIdentifier": "t_address",
                       "typeString": "address"
@@ -724,26 +724,26 @@
                   "visibility": "internal"
                 }
               ],
-              "src": "136:36:26"
+              "src": "136:36:27"
             },
             "payable": false,
             "returnParameters": {
-              "id": 3984,
+              "id": 4065,
               "nodeType": "ParameterList",
               "parameters": [],
-              "src": "196:0:26"
+              "src": "196:0:27"
             },
-            "scope": 4005,
-            "src": "112:115:26",
+            "scope": 4086,
+            "src": "112:115:27",
             "stateMutability": "nonpayable",
             "superFunction": null,
             "visibility": "public"
           },
           {
             "body": {
-              "id": 4003,
+              "id": 4084,
               "nodeType": "Block",
-              "src": "267:60:26",
+              "src": "267:60:27",
               "statements": [
                 {
                   "expression": {
@@ -755,14 +755,14 @@
                           {
                             "argumentTypes": null,
                             "hexValue": "307830",
-                            "id": 3997,
+                            "id": 4078,
                             "isConstant": false,
                             "isLValue": false,
                             "isPure": true,
                             "kind": "number",
                             "lValueRequested": false,
                             "nodeType": "Literal",
-                            "src": "304:3:26",
+                            "src": "304:3:27",
                             "subdenomination": null,
                             "typeDescriptions": {
                               "typeIdentifier": "t_rational_0_by_1",
@@ -778,20 +778,20 @@
                               "typeString": "int_const 0"
                             }
                           ],
-                          "id": 3996,
+                          "id": 4077,
                           "isConstant": false,
                           "isLValue": false,
                           "isPure": true,
                           "lValueRequested": false,
                           "nodeType": "ElementaryTypeNameExpression",
-                          "src": "296:7:26",
+                          "src": "296:7:27",
                           "typeDescriptions": {
                             "typeIdentifier": "t_type$_t_address_$",
                             "typeString": "type(address)"
                           },
                           "typeName": "address"
                         },
-                        "id": 3998,
+                        "id": 4079,
                         "isConstant": false,
                         "isLValue": false,
                         "isPure": true,
@@ -799,7 +799,7 @@
                         "lValueRequested": false,
                         "names": [],
                         "nodeType": "FunctionCall",
-                        "src": "296:12:26",
+                        "src": "296:12:27",
                         "typeDescriptions": {
                           "typeIdentifier": "t_address",
                           "typeString": "address"
@@ -807,12 +807,12 @@
                       },
                       {
                         "argumentTypes": null,
-                        "id": 3999,
+                        "id": 4080,
                         "name": "cacheKey",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 3975,
-                        "src": "310:8:26",
+                        "referencedDeclaration": 4056,
+                        "src": "310:8:27",
                         "typeDescriptions": {
                           "typeIdentifier": "t_bytes32",
                           "typeString": "bytes32"
@@ -821,14 +821,14 @@
                       {
                         "argumentTypes": null,
                         "hexValue": "30",
-                        "id": 4000,
+                        "id": 4081,
                         "isConstant": false,
                         "isLValue": false,
                         "isPure": true,
                         "kind": "number",
                         "lValueRequested": false,
                         "nodeType": "Literal",
-                        "src": "320:1:26",
+                        "src": "320:1:27",
                         "subdenomination": null,
                         "typeDescriptions": {
                           "typeIdentifier": "t_rational_0_by_1",
@@ -854,32 +854,32 @@
                       ],
                       "expression": {
                         "argumentTypes": null,
-                        "id": 3993,
+                        "id": 4074,
                         "name": "cacher",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 3923,
-                        "src": "273:6:26",
+                        "referencedDeclaration": 4004,
+                        "src": "273:6:27",
                         "typeDescriptions": {
-                          "typeIdentifier": "t_contract$_Cacher_$4029",
+                          "typeIdentifier": "t_contract$_Cacher_$4110",
                           "typeString": "contract Cacher"
                         }
                       },
-                      "id": 3995,
+                      "id": 4076,
                       "isConstant": false,
                       "isLValue": false,
                       "isPure": false,
                       "lValueRequested": false,
                       "memberName": "invalidateCache",
                       "nodeType": "MemberAccess",
-                      "referencedDeclaration": 4028,
-                      "src": "273:22:26",
+                      "referencedDeclaration": 4109,
+                      "src": "273:22:27",
                       "typeDescriptions": {
                         "typeIdentifier": "t_function_external_nonpayable$_t_address_$_t_bytes32_$_t_uint256_$returns$__$",
                         "typeString": "function (address,bytes32,uint256) external"
                       }
                     },
-                    "id": 4001,
+                    "id": 4082,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
@@ -887,20 +887,20 @@
                     "lValueRequested": false,
                     "names": [],
                     "nodeType": "FunctionCall",
-                    "src": "273:49:26",
+                    "src": "273:49:27",
                     "typeDescriptions": {
                       "typeIdentifier": "t_tuple$__$",
                       "typeString": "tuple()"
                     }
                   },
-                  "id": 4002,
+                  "id": 4083,
                   "nodeType": "ExpressionStatement",
-                  "src": "273:49:26"
+                  "src": "273:49:27"
                 }
               ]
             },
             "documentation": null,
-            "id": 4004,
+            "id": 4085,
             "implemented": true,
             "isConstructor": false,
             "isDeclaredConst": false,
@@ -908,30 +908,30 @@
             "name": "invalidateCache",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 3991,
+              "id": 4072,
               "nodeType": "ParameterList",
               "parameters": [],
-              "src": "255:2:26"
+              "src": "255:2:27"
             },
             "payable": false,
             "returnParameters": {
-              "id": 3992,
+              "id": 4073,
               "nodeType": "ParameterList",
               "parameters": [],
-              "src": "267:0:26"
+              "src": "267:0:27"
             },
-            "scope": 4005,
-            "src": "231:96:26",
+            "scope": 4086,
+            "src": "231:96:27",
             "stateMutability": "nonpayable",
-            "superFunction": 3938,
+            "superFunction": 4019,
             "visibility": "internal"
           }
         ],
-        "scope": 4006,
-        "src": "51:279:26"
+        "scope": 4087,
+        "src": "51:279:27"
       }
     ],
-    "src": "0:333:26"
+    "src": "0:333:27"
   },
   "compiler": {
     "name": "solc",
@@ -939,5 +939,5 @@
   },
   "networks": {},
   "schemaVersion": "2.0.0",
-  "updatedAt": "2018-04-05T11:13:45.101Z"
+  "updatedAt": "2018-04-05T11:49:59.882Z"
 }
