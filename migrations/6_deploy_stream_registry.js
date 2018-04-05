@@ -102,7 +102,7 @@ async function deployRegistry(deployer, network, accounts) {
   await approveRegistryFor(accounts, dDtxToken, 0)
 
   // Mint tokens for gateway operator user
-  await dDtxToken.mint(GATEWAY_OPERATOR_ADDRESS, Math.pow(10, 10), {
+  await dDtxToken.mint(GATEWAY_OPERATOR_ADDRESS, Math.pow(1000000, 10), {
     from: accounts[0],
   })
 
