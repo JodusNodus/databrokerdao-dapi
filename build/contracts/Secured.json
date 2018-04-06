@@ -29,22 +29,22 @@
   ],
   "bytecode": "0x6060604052341561000f57600080fd5b6040516020806101178339810160405280805160008054600160a060020a03909216600160a060020a0319909216919091179055505060c4806100536000396000f300606060405260043610603e5763ffffffff7c010000000000000000000000000000000000000000000000000000000060003504166345d61ded81146043575b600080fd5b3415604d57600080fd5b6053607c565b60405173ffffffffffffffffffffffffffffffffffffffff909116815260200160405180910390f35b60005473ffffffffffffffffffffffffffffffffffffffff16815600a165627a7a7230582080e92b428370ef73e6894928fbfd5ec00380131a97ecc444ec0ae28a0e17283b0029",
   "deployedBytecode": "0x606060405260043610603e5763ffffffff7c010000000000000000000000000000000000000000000000000000000060003504166345d61ded81146043575b600080fd5b3415604d57600080fd5b6053607c565b60405173ffffffffffffffffffffffffffffffffffffffff909116815260200160405180910390f35b60005473ffffffffffffffffffffffffffffffffffffffff16815600a165627a7a7230582080e92b428370ef73e6894928fbfd5ec00380131a97ecc444ec0ae28a0e17283b0029",
-  "sourceMap": "55:429:13:-;;;199:92;;;;;;;;;;;;;;;;;;;;;;250:10;:36;;-1:-1:-1;;;;;250:36:13;;;-1:-1:-1;;;;;;250:36:13;;;;;;;;;-1:-1:-1;;55:429:13;;;;;;",
-  "deployedSourceMap": "55:429:13:-;;;;;;;;;;;;;;;;;;;;;;;77:28;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;:::o",
+  "sourceMap": "55:429:9:-;;;199:92;;;;;;;;;;;;;;;;;;;;;;250:10;:36;;-1:-1:-1;;;;;250:36:9;;;-1:-1:-1;;;;;;250:36:9;;;;;;;;;-1:-1:-1;;55:429:9;;;;;;",
+  "deployedSourceMap": "55:429:9:-;;;;;;;;;;;;;;;;;;;;;;;77:28;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;:::o",
   "source": "pragma solidity ^0.4.17;\n\nimport \"./GateKeeper.sol\";\n\n\ncontract Secured {\n\n  GateKeeper public gateKeeper;\n\n  modifier auth(bytes32 _role) {\n    require(canPerform(msg.sender, _role));\n    _;\n  }\n\n  function Secured(address _gateKeeper) public {\n    gateKeeper = GateKeeper(_gateKeeper);\n  }\n\n  function canPerform(address _sender, bytes32 _role) internal constant returns (bool) {\n    return address(gateKeeper) == 0 || gateKeeper.hasPermission(_sender, address(this), _role);\n  }\n\n}\n",
   "sourcePath": "@settlemint/solidity-mint/contracts/authentication/Secured.sol",
   "ast": {
     "absolutePath": "@settlemint/solidity-mint/contracts/authentication/Secured.sol",
     "exportedSymbols": {
       "Secured": [
-        1471
+        1369
       ]
     },
-    "id": 1472,
+    "id": 1370,
     "nodeType": "SourceUnit",
     "nodes": [
       {
-        "id": 1416,
+        "id": 1314,
         "literals": [
           "solidity",
           "^",
@@ -52,16 +52,16 @@
           ".17"
         ],
         "nodeType": "PragmaDirective",
-        "src": "0:24:13"
+        "src": "0:24:9"
       },
       {
         "absolutePath": "@settlemint/solidity-mint/contracts/authentication/GateKeeper.sol",
         "file": "./GateKeeper.sol",
-        "id": 1417,
+        "id": 1315,
         "nodeType": "ImportDirective",
-        "scope": 1472,
-        "sourceUnit": 1178,
-        "src": "26:26:13",
+        "scope": 1370,
+        "sourceUnit": 1076,
+        "src": "26:26:9",
         "symbolAliases": [],
         "unitAlias": ""
       },
@@ -71,35 +71,35 @@
         "contractKind": "contract",
         "documentation": null,
         "fullyImplemented": true,
-        "id": 1471,
+        "id": 1369,
         "linearizedBaseContracts": [
-          1471
+          1369
         ],
         "name": "Secured",
         "nodeType": "ContractDefinition",
         "nodes": [
           {
             "constant": false,
-            "id": 1419,
+            "id": 1317,
             "name": "gateKeeper",
             "nodeType": "VariableDeclaration",
-            "scope": 1471,
-            "src": "77:28:13",
+            "scope": 1369,
+            "src": "77:28:9",
             "stateVariable": true,
             "storageLocation": "default",
             "typeDescriptions": {
-              "typeIdentifier": "t_contract$_GateKeeper_$1177",
+              "typeIdentifier": "t_contract$_GateKeeper_$1075",
               "typeString": "contract GateKeeper"
             },
             "typeName": {
               "contractScope": null,
-              "id": 1418,
+              "id": 1316,
               "name": "GateKeeper",
               "nodeType": "UserDefinedTypeName",
-              "referencedDeclaration": 1177,
-              "src": "77:10:13",
+              "referencedDeclaration": 1075,
+              "src": "77:10:9",
               "typeDescriptions": {
-                "typeIdentifier": "t_contract$_GateKeeper_$1177",
+                "typeIdentifier": "t_contract$_GateKeeper_$1075",
                 "typeString": "contract GateKeeper"
               }
             },
@@ -108,9 +108,9 @@
           },
           {
             "body": {
-              "id": 1432,
+              "id": 1330,
               "nodeType": "Block",
-              "src": "139:56:13",
+              "src": "139:56:9",
               "statements": [
                 {
                   "expression": {
@@ -123,18 +123,18 @@
                             "argumentTypes": null,
                             "expression": {
                               "argumentTypes": null,
-                              "id": 1425,
+                              "id": 1323,
                               "name": "msg",
                               "nodeType": "Identifier",
                               "overloadedDeclarations": [],
-                              "referencedDeclaration": 4169,
-                              "src": "164:3:13",
+                              "referencedDeclaration": 3907,
+                              "src": "164:3:9",
                               "typeDescriptions": {
                                 "typeIdentifier": "t_magic_message",
                                 "typeString": "msg"
                               }
                             },
-                            "id": 1426,
+                            "id": 1324,
                             "isConstant": false,
                             "isLValue": false,
                             "isPure": false,
@@ -142,7 +142,7 @@
                             "memberName": "sender",
                             "nodeType": "MemberAccess",
                             "referencedDeclaration": null,
-                            "src": "164:10:13",
+                            "src": "164:10:9",
                             "typeDescriptions": {
                               "typeIdentifier": "t_address",
                               "typeString": "address"
@@ -150,12 +150,12 @@
                           },
                           {
                             "argumentTypes": null,
-                            "id": 1427,
+                            "id": 1325,
                             "name": "_role",
                             "nodeType": "Identifier",
                             "overloadedDeclarations": [],
-                            "referencedDeclaration": 1421,
-                            "src": "176:5:13",
+                            "referencedDeclaration": 1319,
+                            "src": "176:5:9",
                             "typeDescriptions": {
                               "typeIdentifier": "t_bytes32",
                               "typeString": "bytes32"
@@ -173,18 +173,18 @@
                               "typeString": "bytes32"
                             }
                           ],
-                          "id": 1424,
+                          "id": 1322,
                           "name": "canPerform",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
-                          "referencedDeclaration": 1470,
-                          "src": "153:10:13",
+                          "referencedDeclaration": 1368,
+                          "src": "153:10:9",
                           "typeDescriptions": {
                             "typeIdentifier": "t_function_internal_view$_t_address_$_t_bytes32_$returns$_t_bool_$",
                             "typeString": "function (address,bytes32) view returns (bool)"
                           }
                         },
-                        "id": 1428,
+                        "id": 1326,
                         "isConstant": false,
                         "isLValue": false,
                         "isPure": false,
@@ -192,7 +192,7 @@
                         "lValueRequested": false,
                         "names": [],
                         "nodeType": "FunctionCall",
-                        "src": "153:29:13",
+                        "src": "153:29:9",
                         "typeDescriptions": {
                           "typeIdentifier": "t_bool",
                           "typeString": "bool"
@@ -206,18 +206,18 @@
                           "typeString": "bool"
                         }
                       ],
-                      "id": 1423,
+                      "id": 1321,
                       "name": "require",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 4172,
-                      "src": "145:7:13",
+                      "referencedDeclaration": 3910,
+                      "src": "145:7:9",
                       "typeDescriptions": {
                         "typeIdentifier": "t_function_require_pure$_t_bool_$returns$__$",
                         "typeString": "function (bool) pure"
                       }
                     },
-                    "id": 1429,
+                    "id": 1327,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
@@ -225,38 +225,38 @@
                     "lValueRequested": false,
                     "names": [],
                     "nodeType": "FunctionCall",
-                    "src": "145:38:13",
+                    "src": "145:38:9",
                     "typeDescriptions": {
                       "typeIdentifier": "t_tuple$__$",
                       "typeString": "tuple()"
                     }
                   },
-                  "id": 1430,
+                  "id": 1328,
                   "nodeType": "ExpressionStatement",
-                  "src": "145:38:13"
+                  "src": "145:38:9"
                 },
                 {
-                  "id": 1431,
+                  "id": 1329,
                   "nodeType": "PlaceholderStatement",
-                  "src": "189:1:13"
+                  "src": "189:1:9"
                 }
               ]
             },
             "documentation": null,
-            "id": 1433,
+            "id": 1331,
             "name": "auth",
             "nodeType": "ModifierDefinition",
             "parameters": {
-              "id": 1422,
+              "id": 1320,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 1421,
+                  "id": 1319,
                   "name": "_role",
                   "nodeType": "VariableDeclaration",
-                  "scope": 1433,
-                  "src": "124:13:13",
+                  "scope": 1331,
+                  "src": "124:13:9",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
@@ -264,10 +264,10 @@
                     "typeString": "bytes32"
                   },
                   "typeName": {
-                    "id": 1420,
+                    "id": 1318,
                     "name": "bytes32",
                     "nodeType": "ElementaryTypeName",
-                    "src": "124:7:13",
+                    "src": "124:7:9",
                     "typeDescriptions": {
                       "typeIdentifier": "t_bytes32",
                       "typeString": "bytes32"
@@ -277,35 +277,35 @@
                   "visibility": "internal"
                 }
               ],
-              "src": "123:15:13"
+              "src": "123:15:9"
             },
-            "src": "110:85:13",
+            "src": "110:85:9",
             "visibility": "internal"
           },
           {
             "body": {
-              "id": 1444,
+              "id": 1342,
               "nodeType": "Block",
-              "src": "244:47:13",
+              "src": "244:47:9",
               "statements": [
                 {
                   "expression": {
                     "argumentTypes": null,
-                    "id": 1442,
+                    "id": 1340,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
                     "lValueRequested": false,
                     "leftHandSide": {
                       "argumentTypes": null,
-                      "id": 1438,
+                      "id": 1336,
                       "name": "gateKeeper",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 1419,
-                      "src": "250:10:13",
+                      "referencedDeclaration": 1317,
+                      "src": "250:10:9",
                       "typeDescriptions": {
-                        "typeIdentifier": "t_contract$_GateKeeper_$1177",
+                        "typeIdentifier": "t_contract$_GateKeeper_$1075",
                         "typeString": "contract GateKeeper"
                       }
                     },
@@ -316,12 +316,12 @@
                       "arguments": [
                         {
                           "argumentTypes": null,
-                          "id": 1440,
+                          "id": 1338,
                           "name": "_gateKeeper",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
-                          "referencedDeclaration": 1435,
-                          "src": "274:11:13",
+                          "referencedDeclaration": 1333,
+                          "src": "274:11:9",
                           "typeDescriptions": {
                             "typeIdentifier": "t_address",
                             "typeString": "address"
@@ -335,18 +335,18 @@
                             "typeString": "address"
                           }
                         ],
-                        "id": 1439,
+                        "id": 1337,
                         "name": "GateKeeper",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 1177,
-                        "src": "263:10:13",
+                        "referencedDeclaration": 1075,
+                        "src": "263:10:9",
                         "typeDescriptions": {
-                          "typeIdentifier": "t_type$_t_contract$_GateKeeper_$1177_$",
+                          "typeIdentifier": "t_type$_t_contract$_GateKeeper_$1075_$",
                           "typeString": "type(contract GateKeeper)"
                         }
                       },
-                      "id": 1441,
+                      "id": 1339,
                       "isConstant": false,
                       "isLValue": false,
                       "isPure": false,
@@ -354,26 +354,26 @@
                       "lValueRequested": false,
                       "names": [],
                       "nodeType": "FunctionCall",
-                      "src": "263:23:13",
+                      "src": "263:23:9",
                       "typeDescriptions": {
-                        "typeIdentifier": "t_contract$_GateKeeper_$1177",
+                        "typeIdentifier": "t_contract$_GateKeeper_$1075",
                         "typeString": "contract GateKeeper"
                       }
                     },
-                    "src": "250:36:13",
+                    "src": "250:36:9",
                     "typeDescriptions": {
-                      "typeIdentifier": "t_contract$_GateKeeper_$1177",
+                      "typeIdentifier": "t_contract$_GateKeeper_$1075",
                       "typeString": "contract GateKeeper"
                     }
                   },
-                  "id": 1443,
+                  "id": 1341,
                   "nodeType": "ExpressionStatement",
-                  "src": "250:36:13"
+                  "src": "250:36:9"
                 }
               ]
             },
             "documentation": null,
-            "id": 1445,
+            "id": 1343,
             "implemented": true,
             "isConstructor": true,
             "isDeclaredConst": false,
@@ -381,16 +381,16 @@
             "name": "Secured",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 1436,
+              "id": 1334,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 1435,
+                  "id": 1333,
                   "name": "_gateKeeper",
                   "nodeType": "VariableDeclaration",
-                  "scope": 1445,
-                  "src": "216:19:13",
+                  "scope": 1343,
+                  "src": "216:19:9",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
@@ -398,10 +398,10 @@
                     "typeString": "address"
                   },
                   "typeName": {
-                    "id": 1434,
+                    "id": 1332,
                     "name": "address",
                     "nodeType": "ElementaryTypeName",
-                    "src": "216:7:13",
+                    "src": "216:7:9",
                     "typeDescriptions": {
                       "typeIdentifier": "t_address",
                       "typeString": "address"
@@ -411,26 +411,26 @@
                   "visibility": "internal"
                 }
               ],
-              "src": "215:21:13"
+              "src": "215:21:9"
             },
             "payable": false,
             "returnParameters": {
-              "id": 1437,
+              "id": 1335,
               "nodeType": "ParameterList",
               "parameters": [],
-              "src": "244:0:13"
+              "src": "244:0:9"
             },
-            "scope": 1471,
-            "src": "199:92:13",
+            "scope": 1369,
+            "src": "199:92:9",
             "stateMutability": "nonpayable",
             "superFunction": null,
             "visibility": "public"
           },
           {
             "body": {
-              "id": 1469,
+              "id": 1367,
               "nodeType": "Block",
-              "src": "380:101:13",
+              "src": "380:101:9",
               "statements": [
                 {
                   "expression": {
@@ -439,7 +439,7 @@
                       "typeIdentifier": "t_bool",
                       "typeString": "bool"
                     },
-                    "id": 1467,
+                    "id": 1365,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
@@ -450,7 +450,7 @@
                         "typeIdentifier": "t_address",
                         "typeString": "address"
                       },
-                      "id": 1458,
+                      "id": 1356,
                       "isConstant": false,
                       "isLValue": false,
                       "isPure": false,
@@ -460,14 +460,14 @@
                         "arguments": [
                           {
                             "argumentTypes": null,
-                            "id": 1455,
+                            "id": 1353,
                             "name": "gateKeeper",
                             "nodeType": "Identifier",
                             "overloadedDeclarations": [],
-                            "referencedDeclaration": 1419,
-                            "src": "401:10:13",
+                            "referencedDeclaration": 1317,
+                            "src": "401:10:9",
                             "typeDescriptions": {
-                              "typeIdentifier": "t_contract$_GateKeeper_$1177",
+                              "typeIdentifier": "t_contract$_GateKeeper_$1075",
                               "typeString": "contract GateKeeper"
                             }
                           }
@@ -475,24 +475,24 @@
                         "expression": {
                           "argumentTypes": [
                             {
-                              "typeIdentifier": "t_contract$_GateKeeper_$1177",
+                              "typeIdentifier": "t_contract$_GateKeeper_$1075",
                               "typeString": "contract GateKeeper"
                             }
                           ],
-                          "id": 1454,
+                          "id": 1352,
                           "isConstant": false,
                           "isLValue": false,
                           "isPure": true,
                           "lValueRequested": false,
                           "nodeType": "ElementaryTypeNameExpression",
-                          "src": "393:7:13",
+                          "src": "393:7:9",
                           "typeDescriptions": {
                             "typeIdentifier": "t_type$_t_address_$",
                             "typeString": "type(address)"
                           },
                           "typeName": "address"
                         },
-                        "id": 1456,
+                        "id": 1354,
                         "isConstant": false,
                         "isLValue": false,
                         "isPure": false,
@@ -500,7 +500,7 @@
                         "lValueRequested": false,
                         "names": [],
                         "nodeType": "FunctionCall",
-                        "src": "393:19:13",
+                        "src": "393:19:9",
                         "typeDescriptions": {
                           "typeIdentifier": "t_address",
                           "typeString": "address"
@@ -511,14 +511,14 @@
                       "rightExpression": {
                         "argumentTypes": null,
                         "hexValue": "30",
-                        "id": 1457,
+                        "id": 1355,
                         "isConstant": false,
                         "isLValue": false,
                         "isPure": true,
                         "kind": "number",
                         "lValueRequested": false,
                         "nodeType": "Literal",
-                        "src": "416:1:13",
+                        "src": "416:1:9",
                         "subdenomination": null,
                         "typeDescriptions": {
                           "typeIdentifier": "t_rational_0_by_1",
@@ -526,7 +526,7 @@
                         },
                         "value": "0"
                       },
-                      "src": "393:24:13",
+                      "src": "393:24:9",
                       "typeDescriptions": {
                         "typeIdentifier": "t_bool",
                         "typeString": "bool"
@@ -539,12 +539,12 @@
                       "arguments": [
                         {
                           "argumentTypes": null,
-                          "id": 1461,
+                          "id": 1359,
                           "name": "_sender",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
-                          "referencedDeclaration": 1447,
-                          "src": "446:7:13",
+                          "referencedDeclaration": 1345,
+                          "src": "446:7:9",
                           "typeDescriptions": {
                             "typeIdentifier": "t_address",
                             "typeString": "address"
@@ -555,14 +555,14 @@
                           "arguments": [
                             {
                               "argumentTypes": null,
-                              "id": 1463,
+                              "id": 1361,
                               "name": "this",
                               "nodeType": "Identifier",
                               "overloadedDeclarations": [],
-                              "referencedDeclaration": 4190,
-                              "src": "463:4:13",
+                              "referencedDeclaration": 3926,
+                              "src": "463:4:9",
                               "typeDescriptions": {
-                                "typeIdentifier": "t_contract$_Secured_$1471",
+                                "typeIdentifier": "t_contract$_Secured_$1369",
                                 "typeString": "contract Secured"
                               }
                             }
@@ -570,24 +570,24 @@
                           "expression": {
                             "argumentTypes": [
                               {
-                                "typeIdentifier": "t_contract$_Secured_$1471",
+                                "typeIdentifier": "t_contract$_Secured_$1369",
                                 "typeString": "contract Secured"
                               }
                             ],
-                            "id": 1462,
+                            "id": 1360,
                             "isConstant": false,
                             "isLValue": false,
                             "isPure": true,
                             "lValueRequested": false,
                             "nodeType": "ElementaryTypeNameExpression",
-                            "src": "455:7:13",
+                            "src": "455:7:9",
                             "typeDescriptions": {
                               "typeIdentifier": "t_type$_t_address_$",
                               "typeString": "type(address)"
                             },
                             "typeName": "address"
                           },
-                          "id": 1464,
+                          "id": 1362,
                           "isConstant": false,
                           "isLValue": false,
                           "isPure": false,
@@ -595,7 +595,7 @@
                           "lValueRequested": false,
                           "names": [],
                           "nodeType": "FunctionCall",
-                          "src": "455:13:13",
+                          "src": "455:13:9",
                           "typeDescriptions": {
                             "typeIdentifier": "t_address",
                             "typeString": "address"
@@ -603,12 +603,12 @@
                         },
                         {
                           "argumentTypes": null,
-                          "id": 1465,
+                          "id": 1363,
                           "name": "_role",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
-                          "referencedDeclaration": 1449,
-                          "src": "470:5:13",
+                          "referencedDeclaration": 1347,
+                          "src": "470:5:9",
                           "typeDescriptions": {
                             "typeIdentifier": "t_bytes32",
                             "typeString": "bytes32"
@@ -632,32 +632,32 @@
                         ],
                         "expression": {
                           "argumentTypes": null,
-                          "id": 1459,
+                          "id": 1357,
                           "name": "gateKeeper",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
-                          "referencedDeclaration": 1419,
-                          "src": "421:10:13",
+                          "referencedDeclaration": 1317,
+                          "src": "421:10:9",
                           "typeDescriptions": {
-                            "typeIdentifier": "t_contract$_GateKeeper_$1177",
+                            "typeIdentifier": "t_contract$_GateKeeper_$1075",
                             "typeString": "contract GateKeeper"
                           }
                         },
-                        "id": 1460,
+                        "id": 1358,
                         "isConstant": false,
                         "isLValue": false,
                         "isPure": false,
                         "lValueRequested": false,
                         "memberName": "hasPermission",
                         "nodeType": "MemberAccess",
-                        "referencedDeclaration": 1082,
-                        "src": "421:24:13",
+                        "referencedDeclaration": 980,
+                        "src": "421:24:9",
                         "typeDescriptions": {
                           "typeIdentifier": "t_function_external_view$_t_address_$_t_address_$_t_bytes32_$returns$_t_bool_$",
                           "typeString": "function (address,address,bytes32) view external returns (bool)"
                         }
                       },
-                      "id": 1466,
+                      "id": 1364,
                       "isConstant": false,
                       "isLValue": false,
                       "isPure": false,
@@ -665,27 +665,27 @@
                       "lValueRequested": false,
                       "names": [],
                       "nodeType": "FunctionCall",
-                      "src": "421:55:13",
+                      "src": "421:55:9",
                       "typeDescriptions": {
                         "typeIdentifier": "t_bool",
                         "typeString": "bool"
                       }
                     },
-                    "src": "393:83:13",
+                    "src": "393:83:9",
                     "typeDescriptions": {
                       "typeIdentifier": "t_bool",
                       "typeString": "bool"
                     }
                   },
-                  "functionReturnParameters": 1453,
-                  "id": 1468,
+                  "functionReturnParameters": 1351,
+                  "id": 1366,
                   "nodeType": "Return",
-                  "src": "386:90:13"
+                  "src": "386:90:9"
                 }
               ]
             },
             "documentation": null,
-            "id": 1470,
+            "id": 1368,
             "implemented": true,
             "isConstructor": false,
             "isDeclaredConst": true,
@@ -693,16 +693,16 @@
             "name": "canPerform",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 1450,
+              "id": 1348,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 1447,
+                  "id": 1345,
                   "name": "_sender",
                   "nodeType": "VariableDeclaration",
-                  "scope": 1470,
-                  "src": "315:15:13",
+                  "scope": 1368,
+                  "src": "315:15:9",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
@@ -710,10 +710,10 @@
                     "typeString": "address"
                   },
                   "typeName": {
-                    "id": 1446,
+                    "id": 1344,
                     "name": "address",
                     "nodeType": "ElementaryTypeName",
-                    "src": "315:7:13",
+                    "src": "315:7:9",
                     "typeDescriptions": {
                       "typeIdentifier": "t_address",
                       "typeString": "address"
@@ -724,11 +724,11 @@
                 },
                 {
                   "constant": false,
-                  "id": 1449,
+                  "id": 1347,
                   "name": "_role",
                   "nodeType": "VariableDeclaration",
-                  "scope": 1470,
-                  "src": "332:13:13",
+                  "scope": 1368,
+                  "src": "332:13:9",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
@@ -736,10 +736,10 @@
                     "typeString": "bytes32"
                   },
                   "typeName": {
-                    "id": 1448,
+                    "id": 1346,
                     "name": "bytes32",
                     "nodeType": "ElementaryTypeName",
-                    "src": "332:7:13",
+                    "src": "332:7:9",
                     "typeDescriptions": {
                       "typeIdentifier": "t_bytes32",
                       "typeString": "bytes32"
@@ -749,20 +749,20 @@
                   "visibility": "internal"
                 }
               ],
-              "src": "314:32:13"
+              "src": "314:32:9"
             },
             "payable": false,
             "returnParameters": {
-              "id": 1453,
+              "id": 1351,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 1452,
+                  "id": 1350,
                   "name": "",
                   "nodeType": "VariableDeclaration",
-                  "scope": 1470,
-                  "src": "374:4:13",
+                  "scope": 1368,
+                  "src": "374:4:9",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
@@ -770,10 +770,10 @@
                     "typeString": "bool"
                   },
                   "typeName": {
-                    "id": 1451,
+                    "id": 1349,
                     "name": "bool",
                     "nodeType": "ElementaryTypeName",
-                    "src": "374:4:13",
+                    "src": "374:4:9",
                     "typeDescriptions": {
                       "typeIdentifier": "t_bool",
                       "typeString": "bool"
@@ -783,33 +783,33 @@
                   "visibility": "internal"
                 }
               ],
-              "src": "373:6:13"
+              "src": "373:6:9"
             },
-            "scope": 1471,
-            "src": "295:186:13",
+            "scope": 1369,
+            "src": "295:186:9",
             "stateMutability": "view",
             "superFunction": null,
             "visibility": "internal"
           }
         ],
-        "scope": 1472,
-        "src": "55:429:13"
+        "scope": 1370,
+        "src": "55:429:9"
       }
     ],
-    "src": "0:485:13"
+    "src": "0:485:9"
   },
   "legacyAST": {
     "absolutePath": "@settlemint/solidity-mint/contracts/authentication/Secured.sol",
     "exportedSymbols": {
       "Secured": [
-        1471
+        1369
       ]
     },
-    "id": 1472,
+    "id": 1370,
     "nodeType": "SourceUnit",
     "nodes": [
       {
-        "id": 1416,
+        "id": 1314,
         "literals": [
           "solidity",
           "^",
@@ -817,16 +817,16 @@
           ".17"
         ],
         "nodeType": "PragmaDirective",
-        "src": "0:24:13"
+        "src": "0:24:9"
       },
       {
         "absolutePath": "@settlemint/solidity-mint/contracts/authentication/GateKeeper.sol",
         "file": "./GateKeeper.sol",
-        "id": 1417,
+        "id": 1315,
         "nodeType": "ImportDirective",
-        "scope": 1472,
-        "sourceUnit": 1178,
-        "src": "26:26:13",
+        "scope": 1370,
+        "sourceUnit": 1076,
+        "src": "26:26:9",
         "symbolAliases": [],
         "unitAlias": ""
       },
@@ -836,35 +836,35 @@
         "contractKind": "contract",
         "documentation": null,
         "fullyImplemented": true,
-        "id": 1471,
+        "id": 1369,
         "linearizedBaseContracts": [
-          1471
+          1369
         ],
         "name": "Secured",
         "nodeType": "ContractDefinition",
         "nodes": [
           {
             "constant": false,
-            "id": 1419,
+            "id": 1317,
             "name": "gateKeeper",
             "nodeType": "VariableDeclaration",
-            "scope": 1471,
-            "src": "77:28:13",
+            "scope": 1369,
+            "src": "77:28:9",
             "stateVariable": true,
             "storageLocation": "default",
             "typeDescriptions": {
-              "typeIdentifier": "t_contract$_GateKeeper_$1177",
+              "typeIdentifier": "t_contract$_GateKeeper_$1075",
               "typeString": "contract GateKeeper"
             },
             "typeName": {
               "contractScope": null,
-              "id": 1418,
+              "id": 1316,
               "name": "GateKeeper",
               "nodeType": "UserDefinedTypeName",
-              "referencedDeclaration": 1177,
-              "src": "77:10:13",
+              "referencedDeclaration": 1075,
+              "src": "77:10:9",
               "typeDescriptions": {
-                "typeIdentifier": "t_contract$_GateKeeper_$1177",
+                "typeIdentifier": "t_contract$_GateKeeper_$1075",
                 "typeString": "contract GateKeeper"
               }
             },
@@ -873,9 +873,9 @@
           },
           {
             "body": {
-              "id": 1432,
+              "id": 1330,
               "nodeType": "Block",
-              "src": "139:56:13",
+              "src": "139:56:9",
               "statements": [
                 {
                   "expression": {
@@ -888,18 +888,18 @@
                             "argumentTypes": null,
                             "expression": {
                               "argumentTypes": null,
-                              "id": 1425,
+                              "id": 1323,
                               "name": "msg",
                               "nodeType": "Identifier",
                               "overloadedDeclarations": [],
-                              "referencedDeclaration": 4169,
-                              "src": "164:3:13",
+                              "referencedDeclaration": 3907,
+                              "src": "164:3:9",
                               "typeDescriptions": {
                                 "typeIdentifier": "t_magic_message",
                                 "typeString": "msg"
                               }
                             },
-                            "id": 1426,
+                            "id": 1324,
                             "isConstant": false,
                             "isLValue": false,
                             "isPure": false,
@@ -907,7 +907,7 @@
                             "memberName": "sender",
                             "nodeType": "MemberAccess",
                             "referencedDeclaration": null,
-                            "src": "164:10:13",
+                            "src": "164:10:9",
                             "typeDescriptions": {
                               "typeIdentifier": "t_address",
                               "typeString": "address"
@@ -915,12 +915,12 @@
                           },
                           {
                             "argumentTypes": null,
-                            "id": 1427,
+                            "id": 1325,
                             "name": "_role",
                             "nodeType": "Identifier",
                             "overloadedDeclarations": [],
-                            "referencedDeclaration": 1421,
-                            "src": "176:5:13",
+                            "referencedDeclaration": 1319,
+                            "src": "176:5:9",
                             "typeDescriptions": {
                               "typeIdentifier": "t_bytes32",
                               "typeString": "bytes32"
@@ -938,18 +938,18 @@
                               "typeString": "bytes32"
                             }
                           ],
-                          "id": 1424,
+                          "id": 1322,
                           "name": "canPerform",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
-                          "referencedDeclaration": 1470,
-                          "src": "153:10:13",
+                          "referencedDeclaration": 1368,
+                          "src": "153:10:9",
                           "typeDescriptions": {
                             "typeIdentifier": "t_function_internal_view$_t_address_$_t_bytes32_$returns$_t_bool_$",
                             "typeString": "function (address,bytes32) view returns (bool)"
                           }
                         },
-                        "id": 1428,
+                        "id": 1326,
                         "isConstant": false,
                         "isLValue": false,
                         "isPure": false,
@@ -957,7 +957,7 @@
                         "lValueRequested": false,
                         "names": [],
                         "nodeType": "FunctionCall",
-                        "src": "153:29:13",
+                        "src": "153:29:9",
                         "typeDescriptions": {
                           "typeIdentifier": "t_bool",
                           "typeString": "bool"
@@ -971,18 +971,18 @@
                           "typeString": "bool"
                         }
                       ],
-                      "id": 1423,
+                      "id": 1321,
                       "name": "require",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 4172,
-                      "src": "145:7:13",
+                      "referencedDeclaration": 3910,
+                      "src": "145:7:9",
                       "typeDescriptions": {
                         "typeIdentifier": "t_function_require_pure$_t_bool_$returns$__$",
                         "typeString": "function (bool) pure"
                       }
                     },
-                    "id": 1429,
+                    "id": 1327,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
@@ -990,38 +990,38 @@
                     "lValueRequested": false,
                     "names": [],
                     "nodeType": "FunctionCall",
-                    "src": "145:38:13",
+                    "src": "145:38:9",
                     "typeDescriptions": {
                       "typeIdentifier": "t_tuple$__$",
                       "typeString": "tuple()"
                     }
                   },
-                  "id": 1430,
+                  "id": 1328,
                   "nodeType": "ExpressionStatement",
-                  "src": "145:38:13"
+                  "src": "145:38:9"
                 },
                 {
-                  "id": 1431,
+                  "id": 1329,
                   "nodeType": "PlaceholderStatement",
-                  "src": "189:1:13"
+                  "src": "189:1:9"
                 }
               ]
             },
             "documentation": null,
-            "id": 1433,
+            "id": 1331,
             "name": "auth",
             "nodeType": "ModifierDefinition",
             "parameters": {
-              "id": 1422,
+              "id": 1320,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 1421,
+                  "id": 1319,
                   "name": "_role",
                   "nodeType": "VariableDeclaration",
-                  "scope": 1433,
-                  "src": "124:13:13",
+                  "scope": 1331,
+                  "src": "124:13:9",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
@@ -1029,10 +1029,10 @@
                     "typeString": "bytes32"
                   },
                   "typeName": {
-                    "id": 1420,
+                    "id": 1318,
                     "name": "bytes32",
                     "nodeType": "ElementaryTypeName",
-                    "src": "124:7:13",
+                    "src": "124:7:9",
                     "typeDescriptions": {
                       "typeIdentifier": "t_bytes32",
                       "typeString": "bytes32"
@@ -1042,35 +1042,35 @@
                   "visibility": "internal"
                 }
               ],
-              "src": "123:15:13"
+              "src": "123:15:9"
             },
-            "src": "110:85:13",
+            "src": "110:85:9",
             "visibility": "internal"
           },
           {
             "body": {
-              "id": 1444,
+              "id": 1342,
               "nodeType": "Block",
-              "src": "244:47:13",
+              "src": "244:47:9",
               "statements": [
                 {
                   "expression": {
                     "argumentTypes": null,
-                    "id": 1442,
+                    "id": 1340,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
                     "lValueRequested": false,
                     "leftHandSide": {
                       "argumentTypes": null,
-                      "id": 1438,
+                      "id": 1336,
                       "name": "gateKeeper",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 1419,
-                      "src": "250:10:13",
+                      "referencedDeclaration": 1317,
+                      "src": "250:10:9",
                       "typeDescriptions": {
-                        "typeIdentifier": "t_contract$_GateKeeper_$1177",
+                        "typeIdentifier": "t_contract$_GateKeeper_$1075",
                         "typeString": "contract GateKeeper"
                       }
                     },
@@ -1081,12 +1081,12 @@
                       "arguments": [
                         {
                           "argumentTypes": null,
-                          "id": 1440,
+                          "id": 1338,
                           "name": "_gateKeeper",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
-                          "referencedDeclaration": 1435,
-                          "src": "274:11:13",
+                          "referencedDeclaration": 1333,
+                          "src": "274:11:9",
                           "typeDescriptions": {
                             "typeIdentifier": "t_address",
                             "typeString": "address"
@@ -1100,18 +1100,18 @@
                             "typeString": "address"
                           }
                         ],
-                        "id": 1439,
+                        "id": 1337,
                         "name": "GateKeeper",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 1177,
-                        "src": "263:10:13",
+                        "referencedDeclaration": 1075,
+                        "src": "263:10:9",
                         "typeDescriptions": {
-                          "typeIdentifier": "t_type$_t_contract$_GateKeeper_$1177_$",
+                          "typeIdentifier": "t_type$_t_contract$_GateKeeper_$1075_$",
                           "typeString": "type(contract GateKeeper)"
                         }
                       },
-                      "id": 1441,
+                      "id": 1339,
                       "isConstant": false,
                       "isLValue": false,
                       "isPure": false,
@@ -1119,26 +1119,26 @@
                       "lValueRequested": false,
                       "names": [],
                       "nodeType": "FunctionCall",
-                      "src": "263:23:13",
+                      "src": "263:23:9",
                       "typeDescriptions": {
-                        "typeIdentifier": "t_contract$_GateKeeper_$1177",
+                        "typeIdentifier": "t_contract$_GateKeeper_$1075",
                         "typeString": "contract GateKeeper"
                       }
                     },
-                    "src": "250:36:13",
+                    "src": "250:36:9",
                     "typeDescriptions": {
-                      "typeIdentifier": "t_contract$_GateKeeper_$1177",
+                      "typeIdentifier": "t_contract$_GateKeeper_$1075",
                       "typeString": "contract GateKeeper"
                     }
                   },
-                  "id": 1443,
+                  "id": 1341,
                   "nodeType": "ExpressionStatement",
-                  "src": "250:36:13"
+                  "src": "250:36:9"
                 }
               ]
             },
             "documentation": null,
-            "id": 1445,
+            "id": 1343,
             "implemented": true,
             "isConstructor": true,
             "isDeclaredConst": false,
@@ -1146,16 +1146,16 @@
             "name": "Secured",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 1436,
+              "id": 1334,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 1435,
+                  "id": 1333,
                   "name": "_gateKeeper",
                   "nodeType": "VariableDeclaration",
-                  "scope": 1445,
-                  "src": "216:19:13",
+                  "scope": 1343,
+                  "src": "216:19:9",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
@@ -1163,10 +1163,10 @@
                     "typeString": "address"
                   },
                   "typeName": {
-                    "id": 1434,
+                    "id": 1332,
                     "name": "address",
                     "nodeType": "ElementaryTypeName",
-                    "src": "216:7:13",
+                    "src": "216:7:9",
                     "typeDescriptions": {
                       "typeIdentifier": "t_address",
                       "typeString": "address"
@@ -1176,26 +1176,26 @@
                   "visibility": "internal"
                 }
               ],
-              "src": "215:21:13"
+              "src": "215:21:9"
             },
             "payable": false,
             "returnParameters": {
-              "id": 1437,
+              "id": 1335,
               "nodeType": "ParameterList",
               "parameters": [],
-              "src": "244:0:13"
+              "src": "244:0:9"
             },
-            "scope": 1471,
-            "src": "199:92:13",
+            "scope": 1369,
+            "src": "199:92:9",
             "stateMutability": "nonpayable",
             "superFunction": null,
             "visibility": "public"
           },
           {
             "body": {
-              "id": 1469,
+              "id": 1367,
               "nodeType": "Block",
-              "src": "380:101:13",
+              "src": "380:101:9",
               "statements": [
                 {
                   "expression": {
@@ -1204,7 +1204,7 @@
                       "typeIdentifier": "t_bool",
                       "typeString": "bool"
                     },
-                    "id": 1467,
+                    "id": 1365,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
@@ -1215,7 +1215,7 @@
                         "typeIdentifier": "t_address",
                         "typeString": "address"
                       },
-                      "id": 1458,
+                      "id": 1356,
                       "isConstant": false,
                       "isLValue": false,
                       "isPure": false,
@@ -1225,14 +1225,14 @@
                         "arguments": [
                           {
                             "argumentTypes": null,
-                            "id": 1455,
+                            "id": 1353,
                             "name": "gateKeeper",
                             "nodeType": "Identifier",
                             "overloadedDeclarations": [],
-                            "referencedDeclaration": 1419,
-                            "src": "401:10:13",
+                            "referencedDeclaration": 1317,
+                            "src": "401:10:9",
                             "typeDescriptions": {
-                              "typeIdentifier": "t_contract$_GateKeeper_$1177",
+                              "typeIdentifier": "t_contract$_GateKeeper_$1075",
                               "typeString": "contract GateKeeper"
                             }
                           }
@@ -1240,24 +1240,24 @@
                         "expression": {
                           "argumentTypes": [
                             {
-                              "typeIdentifier": "t_contract$_GateKeeper_$1177",
+                              "typeIdentifier": "t_contract$_GateKeeper_$1075",
                               "typeString": "contract GateKeeper"
                             }
                           ],
-                          "id": 1454,
+                          "id": 1352,
                           "isConstant": false,
                           "isLValue": false,
                           "isPure": true,
                           "lValueRequested": false,
                           "nodeType": "ElementaryTypeNameExpression",
-                          "src": "393:7:13",
+                          "src": "393:7:9",
                           "typeDescriptions": {
                             "typeIdentifier": "t_type$_t_address_$",
                             "typeString": "type(address)"
                           },
                           "typeName": "address"
                         },
-                        "id": 1456,
+                        "id": 1354,
                         "isConstant": false,
                         "isLValue": false,
                         "isPure": false,
@@ -1265,7 +1265,7 @@
                         "lValueRequested": false,
                         "names": [],
                         "nodeType": "FunctionCall",
-                        "src": "393:19:13",
+                        "src": "393:19:9",
                         "typeDescriptions": {
                           "typeIdentifier": "t_address",
                           "typeString": "address"
@@ -1276,14 +1276,14 @@
                       "rightExpression": {
                         "argumentTypes": null,
                         "hexValue": "30",
-                        "id": 1457,
+                        "id": 1355,
                         "isConstant": false,
                         "isLValue": false,
                         "isPure": true,
                         "kind": "number",
                         "lValueRequested": false,
                         "nodeType": "Literal",
-                        "src": "416:1:13",
+                        "src": "416:1:9",
                         "subdenomination": null,
                         "typeDescriptions": {
                           "typeIdentifier": "t_rational_0_by_1",
@@ -1291,7 +1291,7 @@
                         },
                         "value": "0"
                       },
-                      "src": "393:24:13",
+                      "src": "393:24:9",
                       "typeDescriptions": {
                         "typeIdentifier": "t_bool",
                         "typeString": "bool"
@@ -1304,12 +1304,12 @@
                       "arguments": [
                         {
                           "argumentTypes": null,
-                          "id": 1461,
+                          "id": 1359,
                           "name": "_sender",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
-                          "referencedDeclaration": 1447,
-                          "src": "446:7:13",
+                          "referencedDeclaration": 1345,
+                          "src": "446:7:9",
                           "typeDescriptions": {
                             "typeIdentifier": "t_address",
                             "typeString": "address"
@@ -1320,14 +1320,14 @@
                           "arguments": [
                             {
                               "argumentTypes": null,
-                              "id": 1463,
+                              "id": 1361,
                               "name": "this",
                               "nodeType": "Identifier",
                               "overloadedDeclarations": [],
-                              "referencedDeclaration": 4190,
-                              "src": "463:4:13",
+                              "referencedDeclaration": 3926,
+                              "src": "463:4:9",
                               "typeDescriptions": {
-                                "typeIdentifier": "t_contract$_Secured_$1471",
+                                "typeIdentifier": "t_contract$_Secured_$1369",
                                 "typeString": "contract Secured"
                               }
                             }
@@ -1335,24 +1335,24 @@
                           "expression": {
                             "argumentTypes": [
                               {
-                                "typeIdentifier": "t_contract$_Secured_$1471",
+                                "typeIdentifier": "t_contract$_Secured_$1369",
                                 "typeString": "contract Secured"
                               }
                             ],
-                            "id": 1462,
+                            "id": 1360,
                             "isConstant": false,
                             "isLValue": false,
                             "isPure": true,
                             "lValueRequested": false,
                             "nodeType": "ElementaryTypeNameExpression",
-                            "src": "455:7:13",
+                            "src": "455:7:9",
                             "typeDescriptions": {
                               "typeIdentifier": "t_type$_t_address_$",
                               "typeString": "type(address)"
                             },
                             "typeName": "address"
                           },
-                          "id": 1464,
+                          "id": 1362,
                           "isConstant": false,
                           "isLValue": false,
                           "isPure": false,
@@ -1360,7 +1360,7 @@
                           "lValueRequested": false,
                           "names": [],
                           "nodeType": "FunctionCall",
-                          "src": "455:13:13",
+                          "src": "455:13:9",
                           "typeDescriptions": {
                             "typeIdentifier": "t_address",
                             "typeString": "address"
@@ -1368,12 +1368,12 @@
                         },
                         {
                           "argumentTypes": null,
-                          "id": 1465,
+                          "id": 1363,
                           "name": "_role",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
-                          "referencedDeclaration": 1449,
-                          "src": "470:5:13",
+                          "referencedDeclaration": 1347,
+                          "src": "470:5:9",
                           "typeDescriptions": {
                             "typeIdentifier": "t_bytes32",
                             "typeString": "bytes32"
@@ -1397,32 +1397,32 @@
                         ],
                         "expression": {
                           "argumentTypes": null,
-                          "id": 1459,
+                          "id": 1357,
                           "name": "gateKeeper",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
-                          "referencedDeclaration": 1419,
-                          "src": "421:10:13",
+                          "referencedDeclaration": 1317,
+                          "src": "421:10:9",
                           "typeDescriptions": {
-                            "typeIdentifier": "t_contract$_GateKeeper_$1177",
+                            "typeIdentifier": "t_contract$_GateKeeper_$1075",
                             "typeString": "contract GateKeeper"
                           }
                         },
-                        "id": 1460,
+                        "id": 1358,
                         "isConstant": false,
                         "isLValue": false,
                         "isPure": false,
                         "lValueRequested": false,
                         "memberName": "hasPermission",
                         "nodeType": "MemberAccess",
-                        "referencedDeclaration": 1082,
-                        "src": "421:24:13",
+                        "referencedDeclaration": 980,
+                        "src": "421:24:9",
                         "typeDescriptions": {
                           "typeIdentifier": "t_function_external_view$_t_address_$_t_address_$_t_bytes32_$returns$_t_bool_$",
                           "typeString": "function (address,address,bytes32) view external returns (bool)"
                         }
                       },
-                      "id": 1466,
+                      "id": 1364,
                       "isConstant": false,
                       "isLValue": false,
                       "isPure": false,
@@ -1430,27 +1430,27 @@
                       "lValueRequested": false,
                       "names": [],
                       "nodeType": "FunctionCall",
-                      "src": "421:55:13",
+                      "src": "421:55:9",
                       "typeDescriptions": {
                         "typeIdentifier": "t_bool",
                         "typeString": "bool"
                       }
                     },
-                    "src": "393:83:13",
+                    "src": "393:83:9",
                     "typeDescriptions": {
                       "typeIdentifier": "t_bool",
                       "typeString": "bool"
                     }
                   },
-                  "functionReturnParameters": 1453,
-                  "id": 1468,
+                  "functionReturnParameters": 1351,
+                  "id": 1366,
                   "nodeType": "Return",
-                  "src": "386:90:13"
+                  "src": "386:90:9"
                 }
               ]
             },
             "documentation": null,
-            "id": 1470,
+            "id": 1368,
             "implemented": true,
             "isConstructor": false,
             "isDeclaredConst": true,
@@ -1458,16 +1458,16 @@
             "name": "canPerform",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 1450,
+              "id": 1348,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 1447,
+                  "id": 1345,
                   "name": "_sender",
                   "nodeType": "VariableDeclaration",
-                  "scope": 1470,
-                  "src": "315:15:13",
+                  "scope": 1368,
+                  "src": "315:15:9",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
@@ -1475,10 +1475,10 @@
                     "typeString": "address"
                   },
                   "typeName": {
-                    "id": 1446,
+                    "id": 1344,
                     "name": "address",
                     "nodeType": "ElementaryTypeName",
-                    "src": "315:7:13",
+                    "src": "315:7:9",
                     "typeDescriptions": {
                       "typeIdentifier": "t_address",
                       "typeString": "address"
@@ -1489,11 +1489,11 @@
                 },
                 {
                   "constant": false,
-                  "id": 1449,
+                  "id": 1347,
                   "name": "_role",
                   "nodeType": "VariableDeclaration",
-                  "scope": 1470,
-                  "src": "332:13:13",
+                  "scope": 1368,
+                  "src": "332:13:9",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
@@ -1501,10 +1501,10 @@
                     "typeString": "bytes32"
                   },
                   "typeName": {
-                    "id": 1448,
+                    "id": 1346,
                     "name": "bytes32",
                     "nodeType": "ElementaryTypeName",
-                    "src": "332:7:13",
+                    "src": "332:7:9",
                     "typeDescriptions": {
                       "typeIdentifier": "t_bytes32",
                       "typeString": "bytes32"
@@ -1514,20 +1514,20 @@
                   "visibility": "internal"
                 }
               ],
-              "src": "314:32:13"
+              "src": "314:32:9"
             },
             "payable": false,
             "returnParameters": {
-              "id": 1453,
+              "id": 1351,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 1452,
+                  "id": 1350,
                   "name": "",
                   "nodeType": "VariableDeclaration",
-                  "scope": 1470,
-                  "src": "374:4:13",
+                  "scope": 1368,
+                  "src": "374:4:9",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
@@ -1535,10 +1535,10 @@
                     "typeString": "bool"
                   },
                   "typeName": {
-                    "id": 1451,
+                    "id": 1349,
                     "name": "bool",
                     "nodeType": "ElementaryTypeName",
-                    "src": "374:4:13",
+                    "src": "374:4:9",
                     "typeDescriptions": {
                       "typeIdentifier": "t_bool",
                       "typeString": "bool"
@@ -1548,20 +1548,20 @@
                   "visibility": "internal"
                 }
               ],
-              "src": "373:6:13"
+              "src": "373:6:9"
             },
-            "scope": 1471,
-            "src": "295:186:13",
+            "scope": 1369,
+            "src": "295:186:9",
             "stateMutability": "view",
             "superFunction": null,
             "visibility": "internal"
           }
         ],
-        "scope": 1472,
-        "src": "55:429:13"
+        "scope": 1370,
+        "src": "55:429:9"
       }
     ],
-    "src": "0:485:13"
+    "src": "0:485:9"
   },
   "compiler": {
     "name": "solc",
@@ -1569,5 +1569,5 @@
   },
   "networks": {},
   "schemaVersion": "2.0.0",
-  "updatedAt": "2018-04-05T11:13:45.079Z"
+  "updatedAt": "2018-04-06T07:45:23.097Z"
 }
