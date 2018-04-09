@@ -11,13 +11,17 @@ import "@settlemint/solidity-mint/contracts/utility/caching/Cacher.sol";
 import "@settlemint/solidity-mint/contracts/utility/caching/CachedByBytes32.sol";
 import "zeppelin-solidity/contracts/math/SafeMath.sol";
 
-
+/**
+ * Contains all purchases of sensors
+ */
 contract PurchaseRegistry is Secured, Syncable, Cacher, CachedByBytes32 {
   using SafeMath for uint256;
 
   bytes32 constant public CREATE_PERMISSIONS_ROLE = "CREATE_PERMISSIONS_ROLE";
+  bytes32 constant public CHANGE_SETTINGS_ROLE = "CHANGE_SETTINGS_ROLE";
 
   event AccessPurchased(address stream, address user, uint startTime, uint endTime, uint price, address purchase);
+  event SalePercentageChanged(uint value);
 
   mapping (address => Purchase) public purchases;
   address[] public purchasesIndex;
@@ -88,7 +92,7 @@ contract PurchaseRegistry is Secured, Syncable, Cacher, CachedByBytes32 {
     purchases[address(_purchase)] = Purchase(address(_purchase));
     purchasesIndex.push(address(_purchase));
 
-    AccessPurchased(_stream, msg.sender, _startTime, _endTime, _streamPrice, address(_purchase));
+    emit AccessPurchased(_stream, msg.sender, _startTime, _endTime, _streamPrice, address(_purchase));
     invalidateCache(_purchase, "", 0);
   }
 
@@ -96,8 +100,9 @@ contract PurchaseRegistry is Secured, Syncable, Cacher, CachedByBytes32 {
   @notice                Sets the sale percentage
   @param _salePercentage salePercentage
   */
-  function setSalePercentage(uint _salePercentage) public {
+  function setSalePercentage(uint _salePercentage) auth(CHANGE_SETTINGS_ROLE) public {
     salePercentage = _salePercentage;
+    emit SalePercentageChanged(_salePercentage);
   }
 
   /**
@@ -120,6 +125,6 @@ contract PurchaseRegistry is Secured, Syncable, Cacher, CachedByBytes32 {
   * implementation of cacher methods
   */
   function invalidateCache(address _cachedAddress, bytes32 /*_cachedBytes32*/, uint256 /*_cachedUint256*/) public {
-    AddressCacheInvalidated(_cachedAddress);
+    emit AddressCacheInvalidated(_cachedAddress);
   }
 }

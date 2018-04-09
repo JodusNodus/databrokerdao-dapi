@@ -2,7 +2,9 @@ pragma solidity ^0.4.20;
 
 import "@settlemint/solidity-mint/contracts/marketplaces/tokensystem/Token.sol";
 
-
+/**
+ * Contains the DTX token
+ */
 contract DtxToken is Token {
 
   function DtxToken(

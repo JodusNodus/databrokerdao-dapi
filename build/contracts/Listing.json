@@ -18,6 +18,20 @@
     {
       "constant": true,
       "inputs": [],
+      "name": "BLACKLIST_ROLE",
+      "outputs": [
+        {
+          "name": "",
+          "type": "bytes32"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "constant": true,
+      "inputs": [],
       "name": "metadata",
       "outputs": [
         {
@@ -209,6 +223,120 @@
       "anonymous": false,
       "inputs": [
         {
+          "indexed": false,
+          "name": "listing",
+          "type": "address"
+        }
+      ],
+      "name": "Blacklisted",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": false,
+          "name": "listing",
+          "type": "address"
+        },
+        {
+          "indexed": false,
+          "name": "stake",
+          "type": "uint256"
+        }
+      ],
+      "name": "StakeSet",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": false,
+          "name": "listing",
+          "type": "address"
+        },
+        {
+          "indexed": false,
+          "name": "stake",
+          "type": "uint256"
+        }
+      ],
+      "name": "ChallengesStakeSet",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": false,
+          "name": "listing",
+          "type": "address"
+        },
+        {
+          "indexed": false,
+          "name": "challenges",
+          "type": "uint256"
+        }
+      ],
+      "name": "ChallengesSet",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": false,
+          "name": "listing",
+          "type": "address"
+        },
+        {
+          "indexed": false,
+          "name": "whitelisted",
+          "type": "bool"
+        }
+      ],
+      "name": "WhitelistedSet",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": false,
+          "name": "listing",
+          "type": "address"
+        },
+        {
+          "indexed": false,
+          "name": "price",
+          "type": "uint256"
+        }
+      ],
+      "name": "PriceSet",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": false,
+          "name": "listing",
+          "type": "address"
+        },
+        {
+          "indexed": false,
+          "name": "challengeID",
+          "type": "uint256"
+        }
+      ],
+      "name": "ChallengeIDSet",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
           "indexed": true,
           "name": "key",
           "type": "address"
@@ -240,6 +368,15 @@
       ],
       "name": "Uint256CacheInvalidated",
       "type": "event"
+    },
+    {
+      "constant": false,
+      "inputs": [],
+      "name": "blacklist",
+      "outputs": [],
+      "payable": false,
+      "stateMutability": "nonpayable",
+      "type": "function"
     },
     {
       "constant": false,
@@ -363,20 +500,20 @@
   "deployedBytecode": "0x",
   "sourceMap": "",
   "deployedSourceMap": "",
-  "source": "pragma solidity ^0.4.20;\n\nimport \"./interfaces/IListing.sol\";\n\n\ncontract Listing is IListing {\n\n  /**\n  @dev Contructor\n  @notice                Sets the address for token\n  @param _owner          Address of the owner\n  @param _price          Price for the listing\n  @param _stakeAmount    Amount staked for the listing\n  @param _gateKeeper     Address of the gatekeeper\n  */\n  function Listing(\n    address _owner,\n    uint _price,\n    uint _stakeAmount,\n    address _gateKeeper\n  )\n    IListing(_owner, _price, _stakeAmount, _gateKeeper)\n    public\n  {}\n\n  /**\n  * implementation of setters\n  */\n  function setStake(uint _stake) public {\n    stake = _stake;\n  }\n\n  function setChallengesStake(uint _challengesStake) public {\n    challengesStake = _challengesStake;\n  }\n\n  function setChallenges(uint _challenges) public {\n    challenges = _challenges;\n  }\n\n  function setWhitelisted(bool _whitelisted) public {\n    whitelisted = _whitelisted;\n  }\n\n  function setPrice(uint _price) public {\n    price = _price;\n  }\n\n  function addChallengeID(uint _challengeID) public {\n    challengeIDs.push(_challengeID);\n  }\n\n  function getChallengeIDsLength() public returns (uint length) {\n    return challengeIDs.length;\n  }\n\n  function getChallengeIDAtIndex(uint _index) public returns (uint challengeID) {\n    return challengeIDs[_index];\n  }\n}\n",
+  "source": "pragma solidity ^0.4.20;\n\nimport \"./interfaces/IListing.sol\";\n\n\ncontract Listing is IListing {\n\n  bytes32 constant public BLACKLIST_ROLE = \"BLACKLIST_ROLE\";\n\n  event Blacklisted(address listing);\n  event StakeSet(address listing, uint stake);\n  event ChallengesStakeSet(address listing, uint stake);\n  event ChallengesSet(address listing, uint challenges);\n  event WhitelistedSet(address listing, bool whitelisted);\n  event PriceSet(address listing, uint price);\n  event ChallengeIDSet(address listing, uint challengeID);\n\n  /**\n  @dev Contructor\n  @notice                Sets the address for token\n  @param _owner          Address of the owner\n  @param _price          Price for the listing\n  @param _stakeAmount    Amount staked for the listing\n  @param _gateKeeper     Address of the gatekeeper\n  */\n  function Listing(\n    address _owner,\n    uint _price,\n    uint _stakeAmount,\n    address _gateKeeper\n  )\n    IListing(_owner, _price, _stakeAmount, _gateKeeper)\n    public\n  {}\n\n  /**\n  @notice         Sets whitelisted to false: the listing should not appear anymore\n  */\n  function blacklist() auth(BLACKLIST_ROLE) public {\n    whitelisted = false;\n    Blacklisted(this);\n  }\n\n  /**\n  * implementation of setters\n  */\n\n  /**\n  @notice         Sets the stake\n  @param _stake   Stake\n  */\n  function setStake(uint _stake) public {\n    stake = _stake;\n    StakeSet(this, _stake);\n  }\n\n  /**\n  @notice                   Sets the amount staked for all challenged\n  @param _challengesStake   Amount staked for all challenges\n  */\n  function setChallengesStake(uint _challengesStake) public {\n    challengesStake = _challengesStake;\n    ChallengesStakeSet(this, _challengesStake);\n  }\n\n  /**\n  @notice              Sets the muber of challenges\n  @param _challenges   Number of challenges\n  */\n  function setChallenges(uint _challenges) public {\n    challenges = _challenges;\n    ChallengesSet(this, _challenges);\n  }\n\n  /**\n  @notice               Sets whether or not the listing is whitelisted\n  @param _whitelisted   Whitelisted\n  */\n  function setWhitelisted(bool _whitelisted) public {\n    whitelisted = _whitelisted;\n    WhitelistedSet(this, _whitelisted);\n  }\n\n  /**\n  @notice         Sets the price\n  @param _price   Price\n  */\n  function setPrice(uint _price) public {\n    price = _price;\n    PriceSet(this, _price);\n  }\n\n  /**\n  @notice               Adds a challenge ID in the array\n  @param _challengeID   Challenge ID\n  */\n  function addChallengeID(uint _challengeID) public {\n    challengeIDs.push(_challengeID);\n    ChallengeIDSet(this, _challengeID);\n  }\n\n  /**\n  * implementation of getters\n  */\n\n  /**\n  @notice         Get length of challenge ID array\n  */\n  function getChallengeIDsLength() public returns (uint length) {\n    return challengeIDs.length;\n  }\n\n  /**\n  @notice         Get challenge ID at index in array\n  @param _index   Index\n  */\n  function getChallengeIDAtIndex(uint _index) public returns (uint challengeID) {\n    return challengeIDs[_index];\n  }\n}\n",
   "sourcePath": "@settlemint/solidity-mint/contracts/marketplaces/tokencuratedregistry/Listing.sol",
   "ast": {
     "absolutePath": "@settlemint/solidity-mint/contracts/marketplaces/tokencuratedregistry/Listing.sol",
     "exportedSymbols": {
       "Listing": [
-        1610
+        1712
       ]
     },
-    "id": 1611,
+    "id": 1713,
     "nodeType": "SourceUnit",
     "nodes": [
       {
-        "id": 1505,
+        "id": 1519,
         "literals": [
           "solidity",
           "^",
@@ -389,10 +526,10 @@
       {
         "absolutePath": "@settlemint/solidity-mint/contracts/marketplaces/tokencuratedregistry/interfaces/IListing.sol",
         "file": "./interfaces/IListing.sol",
-        "id": 1506,
+        "id": 1520,
         "nodeType": "ImportDirective",
-        "scope": 1611,
-        "sourceUnit": 2710,
+        "scope": 1713,
+        "sourceUnit": 2762,
         "src": "26:35:15",
         "symbolAliases": [],
         "unitAlias": ""
@@ -403,54 +540,553 @@
             "arguments": [],
             "baseName": {
               "contractScope": null,
-              "id": 1507,
+              "id": 1521,
               "name": "IListing",
               "nodeType": "UserDefinedTypeName",
-              "referencedDeclaration": 2709,
+              "referencedDeclaration": 2761,
               "src": "84:8:15",
               "typeDescriptions": {
-                "typeIdentifier": "t_contract$_IListing_$2709",
+                "typeIdentifier": "t_contract$_IListing_$2761",
                 "typeString": "contract IListing"
               }
             },
-            "id": 1508,
+            "id": 1522,
             "nodeType": "InheritanceSpecifier",
             "src": "84:8:15"
           }
         ],
         "contractDependencies": [
-          1471,
-          2709,
-          3939,
-          3968,
-          4029,
-          4050
+          1485,
+          2761,
+          3991,
+          4020,
+          4081,
+          4102
         ],
         "contractKind": "contract",
         "documentation": null,
         "fullyImplemented": false,
-        "id": 1610,
+        "id": 1712,
         "linearizedBaseContracts": [
-          1610,
-          2709,
-          4050,
-          3968,
-          3939,
-          4029,
-          1471
+          1712,
+          2761,
+          4102,
+          4020,
+          3991,
+          4081,
+          1485
         ],
         "name": "Listing",
         "nodeType": "ContractDefinition",
         "nodes": [
           {
+            "constant": true,
+            "id": 1525,
+            "name": "BLACKLIST_ROLE",
+            "nodeType": "VariableDeclaration",
+            "scope": 1712,
+            "src": "98:57:15",
+            "stateVariable": true,
+            "storageLocation": "default",
+            "typeDescriptions": {
+              "typeIdentifier": "t_bytes32",
+              "typeString": "bytes32"
+            },
+            "typeName": {
+              "id": 1523,
+              "name": "bytes32",
+              "nodeType": "ElementaryTypeName",
+              "src": "98:7:15",
+              "typeDescriptions": {
+                "typeIdentifier": "t_bytes32",
+                "typeString": "bytes32"
+              }
+            },
+            "value": {
+              "argumentTypes": null,
+              "hexValue": "424c41434b4c4953545f524f4c45",
+              "id": 1524,
+              "isConstant": false,
+              "isLValue": false,
+              "isPure": true,
+              "kind": "string",
+              "lValueRequested": false,
+              "nodeType": "Literal",
+              "src": "139:16:15",
+              "subdenomination": null,
+              "typeDescriptions": {
+                "typeIdentifier": "t_stringliteral_22435ed027edf5f902dc0093fbc24cdb50c05b5fd5f311b78c67c1cbaff60e13",
+                "typeString": "literal_string \"BLACKLIST_ROLE\""
+              },
+              "value": "BLACKLIST_ROLE"
+            },
+            "visibility": "public"
+          },
+          {
+            "anonymous": false,
+            "documentation": null,
+            "id": 1529,
+            "name": "Blacklisted",
+            "nodeType": "EventDefinition",
+            "parameters": {
+              "id": 1528,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 1527,
+                  "indexed": false,
+                  "name": "listing",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 1529,
+                  "src": "178:15:15",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 1526,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "178:7:15",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "177:17:15"
+            },
+            "src": "160:35:15"
+          },
+          {
+            "anonymous": false,
+            "documentation": null,
+            "id": 1535,
+            "name": "StakeSet",
+            "nodeType": "EventDefinition",
+            "parameters": {
+              "id": 1534,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 1531,
+                  "indexed": false,
+                  "name": "listing",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 1535,
+                  "src": "213:15:15",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 1530,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "213:7:15",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 1533,
+                  "indexed": false,
+                  "name": "stake",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 1535,
+                  "src": "230:10:15",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 1532,
+                    "name": "uint",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "230:4:15",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "212:29:15"
+            },
+            "src": "198:44:15"
+          },
+          {
+            "anonymous": false,
+            "documentation": null,
+            "id": 1541,
+            "name": "ChallengesStakeSet",
+            "nodeType": "EventDefinition",
+            "parameters": {
+              "id": 1540,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 1537,
+                  "indexed": false,
+                  "name": "listing",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 1541,
+                  "src": "270:15:15",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 1536,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "270:7:15",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 1539,
+                  "indexed": false,
+                  "name": "stake",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 1541,
+                  "src": "287:10:15",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 1538,
+                    "name": "uint",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "287:4:15",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "269:29:15"
+            },
+            "src": "245:54:15"
+          },
+          {
+            "anonymous": false,
+            "documentation": null,
+            "id": 1547,
+            "name": "ChallengesSet",
+            "nodeType": "EventDefinition",
+            "parameters": {
+              "id": 1546,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 1543,
+                  "indexed": false,
+                  "name": "listing",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 1547,
+                  "src": "322:15:15",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 1542,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "322:7:15",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 1545,
+                  "indexed": false,
+                  "name": "challenges",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 1547,
+                  "src": "339:15:15",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 1544,
+                    "name": "uint",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "339:4:15",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "321:34:15"
+            },
+            "src": "302:54:15"
+          },
+          {
+            "anonymous": false,
+            "documentation": null,
+            "id": 1553,
+            "name": "WhitelistedSet",
+            "nodeType": "EventDefinition",
+            "parameters": {
+              "id": 1552,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 1549,
+                  "indexed": false,
+                  "name": "listing",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 1553,
+                  "src": "380:15:15",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 1548,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "380:7:15",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 1551,
+                  "indexed": false,
+                  "name": "whitelisted",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 1553,
+                  "src": "397:16:15",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_bool",
+                    "typeString": "bool"
+                  },
+                  "typeName": {
+                    "id": 1550,
+                    "name": "bool",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "397:4:15",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_bool",
+                      "typeString": "bool"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "379:35:15"
+            },
+            "src": "359:56:15"
+          },
+          {
+            "anonymous": false,
+            "documentation": null,
+            "id": 1559,
+            "name": "PriceSet",
+            "nodeType": "EventDefinition",
+            "parameters": {
+              "id": 1558,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 1555,
+                  "indexed": false,
+                  "name": "listing",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 1559,
+                  "src": "433:15:15",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 1554,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "433:7:15",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 1557,
+                  "indexed": false,
+                  "name": "price",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 1559,
+                  "src": "450:10:15",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 1556,
+                    "name": "uint",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "450:4:15",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "432:29:15"
+            },
+            "src": "418:44:15"
+          },
+          {
+            "anonymous": false,
+            "documentation": null,
+            "id": 1565,
+            "name": "ChallengeIDSet",
+            "nodeType": "EventDefinition",
+            "parameters": {
+              "id": 1564,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 1561,
+                  "indexed": false,
+                  "name": "listing",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 1565,
+                  "src": "486:15:15",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 1560,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "486:7:15",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 1563,
+                  "indexed": false,
+                  "name": "challengeID",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 1565,
+                  "src": "503:16:15",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 1562,
+                    "name": "uint",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "503:4:15",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "485:35:15"
+            },
+            "src": "465:56:15"
+          },
+          {
             "body": {
-              "id": 1525,
+              "id": 1582,
               "nodeType": "Block",
-              "src": "553:2:15",
+              "src": "980:2:15",
               "statements": []
             },
             "documentation": "@dev Contructor\n@notice                Sets the address for token\n@param _owner          Address of the owner\n@param _price          Price for the listing\n@param _stakeAmount    Amount staked for the listing\n@param _gateKeeper     Address of the gatekeeper",
-            "id": 1526,
+            "id": 1583,
             "implemented": true,
             "isConstructor": true,
             "isDeclaredConst": false,
@@ -459,12 +1095,12 @@
                 "arguments": [
                   {
                     "argumentTypes": null,
-                    "id": 1519,
+                    "id": 1576,
                     "name": "_owner",
                     "nodeType": "Identifier",
                     "overloadedDeclarations": [],
-                    "referencedDeclaration": 1510,
-                    "src": "497:6:15",
+                    "referencedDeclaration": 1567,
+                    "src": "924:6:15",
                     "typeDescriptions": {
                       "typeIdentifier": "t_address",
                       "typeString": "address"
@@ -472,12 +1108,12 @@
                   },
                   {
                     "argumentTypes": null,
-                    "id": 1520,
+                    "id": 1577,
                     "name": "_price",
                     "nodeType": "Identifier",
                     "overloadedDeclarations": [],
-                    "referencedDeclaration": 1512,
-                    "src": "505:6:15",
+                    "referencedDeclaration": 1569,
+                    "src": "932:6:15",
                     "typeDescriptions": {
                       "typeIdentifier": "t_uint256",
                       "typeString": "uint256"
@@ -485,12 +1121,12 @@
                   },
                   {
                     "argumentTypes": null,
-                    "id": 1521,
+                    "id": 1578,
                     "name": "_stakeAmount",
                     "nodeType": "Identifier",
                     "overloadedDeclarations": [],
-                    "referencedDeclaration": 1514,
-                    "src": "513:12:15",
+                    "referencedDeclaration": 1571,
+                    "src": "940:12:15",
                     "typeDescriptions": {
                       "typeIdentifier": "t_uint256",
                       "typeString": "uint256"
@@ -498,49 +1134,49 @@
                   },
                   {
                     "argumentTypes": null,
-                    "id": 1522,
+                    "id": 1579,
                     "name": "_gateKeeper",
                     "nodeType": "Identifier",
                     "overloadedDeclarations": [],
-                    "referencedDeclaration": 1516,
-                    "src": "527:11:15",
+                    "referencedDeclaration": 1573,
+                    "src": "954:11:15",
                     "typeDescriptions": {
                       "typeIdentifier": "t_address",
                       "typeString": "address"
                     }
                   }
                 ],
-                "id": 1523,
+                "id": 1580,
                 "modifierName": {
                   "argumentTypes": null,
-                  "id": 1518,
+                  "id": 1575,
                   "name": "IListing",
                   "nodeType": "Identifier",
                   "overloadedDeclarations": [],
-                  "referencedDeclaration": 2709,
-                  "src": "488:8:15",
+                  "referencedDeclaration": 2761,
+                  "src": "915:8:15",
                   "typeDescriptions": {
-                    "typeIdentifier": "t_type$_t_contract$_IListing_$2709_$",
+                    "typeIdentifier": "t_type$_t_contract$_IListing_$2761_$",
                     "typeString": "type(contract IListing)"
                   }
                 },
                 "nodeType": "ModifierInvocation",
-                "src": "488:51:15"
+                "src": "915:51:15"
               }
             ],
             "name": "Listing",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 1517,
+              "id": 1574,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 1510,
+                  "id": 1567,
                   "name": "_owner",
                   "nodeType": "VariableDeclaration",
-                  "scope": 1526,
-                  "src": "400:14:15",
+                  "scope": 1583,
+                  "src": "827:14:15",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
@@ -548,10 +1184,10 @@
                     "typeString": "address"
                   },
                   "typeName": {
-                    "id": 1509,
+                    "id": 1566,
                     "name": "address",
                     "nodeType": "ElementaryTypeName",
-                    "src": "400:7:15",
+                    "src": "827:7:15",
                     "typeDescriptions": {
                       "typeIdentifier": "t_address",
                       "typeString": "address"
@@ -562,11 +1198,11 @@
                 },
                 {
                   "constant": false,
-                  "id": 1512,
+                  "id": 1569,
                   "name": "_price",
                   "nodeType": "VariableDeclaration",
-                  "scope": 1526,
-                  "src": "420:11:15",
+                  "scope": 1583,
+                  "src": "847:11:15",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
@@ -574,10 +1210,10 @@
                     "typeString": "uint256"
                   },
                   "typeName": {
-                    "id": 1511,
+                    "id": 1568,
                     "name": "uint",
                     "nodeType": "ElementaryTypeName",
-                    "src": "420:4:15",
+                    "src": "847:4:15",
                     "typeDescriptions": {
                       "typeIdentifier": "t_uint256",
                       "typeString": "uint256"
@@ -588,11 +1224,11 @@
                 },
                 {
                   "constant": false,
-                  "id": 1514,
+                  "id": 1571,
                   "name": "_stakeAmount",
                   "nodeType": "VariableDeclaration",
-                  "scope": 1526,
-                  "src": "437:17:15",
+                  "scope": 1583,
+                  "src": "864:17:15",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
@@ -600,10 +1236,10 @@
                     "typeString": "uint256"
                   },
                   "typeName": {
-                    "id": 1513,
+                    "id": 1570,
                     "name": "uint",
                     "nodeType": "ElementaryTypeName",
-                    "src": "437:4:15",
+                    "src": "864:4:15",
                     "typeDescriptions": {
                       "typeIdentifier": "t_uint256",
                       "typeString": "uint256"
@@ -614,11 +1250,11 @@
                 },
                 {
                   "constant": false,
-                  "id": 1516,
+                  "id": 1573,
                   "name": "_gateKeeper",
                   "nodeType": "VariableDeclaration",
-                  "scope": 1526,
-                  "src": "460:19:15",
+                  "scope": 1583,
+                  "src": "887:19:15",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
@@ -626,10 +1262,10 @@
                     "typeString": "address"
                   },
                   "typeName": {
-                    "id": 1515,
+                    "id": 1572,
                     "name": "address",
                     "nodeType": "ElementaryTypeName",
-                    "src": "460:7:15",
+                    "src": "887:7:15",
                     "typeDescriptions": {
                       "typeIdentifier": "t_address",
                       "typeString": "address"
@@ -639,43 +1275,217 @@
                   "visibility": "internal"
                 }
               ],
-              "src": "394:89:15"
+              "src": "821:89:15"
             },
             "payable": false,
             "returnParameters": {
-              "id": 1524,
+              "id": 1581,
               "nodeType": "ParameterList",
               "parameters": [],
-              "src": "553:0:15"
+              "src": "980:0:15"
             },
-            "scope": 1610,
-            "src": "378:177:15",
+            "scope": 1712,
+            "src": "805:177:15",
             "stateMutability": "nonpayable",
             "superFunction": null,
             "visibility": "public"
           },
           {
             "body": {
-              "id": 1535,
+              "id": 1597,
               "nodeType": "Block",
-              "src": "638:25:15",
+              "src": "1129:53:15",
               "statements": [
                 {
                   "expression": {
                     "argumentTypes": null,
-                    "id": 1533,
+                    "id": 1591,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
                     "lValueRequested": false,
                     "leftHandSide": {
                       "argumentTypes": null,
-                      "id": 1531,
+                      "id": 1589,
+                      "name": "whitelisted",
+                      "nodeType": "Identifier",
+                      "overloadedDeclarations": [],
+                      "referencedDeclaration": 2669,
+                      "src": "1135:11:15",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_bool",
+                        "typeString": "bool"
+                      }
+                    },
+                    "nodeType": "Assignment",
+                    "operator": "=",
+                    "rightHandSide": {
+                      "argumentTypes": null,
+                      "hexValue": "66616c7365",
+                      "id": 1590,
+                      "isConstant": false,
+                      "isLValue": false,
+                      "isPure": true,
+                      "kind": "bool",
+                      "lValueRequested": false,
+                      "nodeType": "Literal",
+                      "src": "1149:5:15",
+                      "subdenomination": null,
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_bool",
+                        "typeString": "bool"
+                      },
+                      "value": "false"
+                    },
+                    "src": "1135:19:15",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_bool",
+                      "typeString": "bool"
+                    }
+                  },
+                  "id": 1592,
+                  "nodeType": "ExpressionStatement",
+                  "src": "1135:19:15"
+                },
+                {
+                  "expression": {
+                    "argumentTypes": null,
+                    "arguments": [
+                      {
+                        "argumentTypes": null,
+                        "id": 1594,
+                        "name": "this",
+                        "nodeType": "Identifier",
+                        "overloadedDeclarations": [],
+                        "referencedDeclaration": 4274,
+                        "src": "1172:4:15",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_contract$_Listing_$1712",
+                          "typeString": "contract Listing"
+                        }
+                      }
+                    ],
+                    "expression": {
+                      "argumentTypes": [
+                        {
+                          "typeIdentifier": "t_contract$_Listing_$1712",
+                          "typeString": "contract Listing"
+                        }
+                      ],
+                      "id": 1593,
+                      "name": "Blacklisted",
+                      "nodeType": "Identifier",
+                      "overloadedDeclarations": [],
+                      "referencedDeclaration": 1529,
+                      "src": "1160:11:15",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_function_event_nonpayable$_t_address_$returns$__$",
+                        "typeString": "function (address)"
+                      }
+                    },
+                    "id": 1595,
+                    "isConstant": false,
+                    "isLValue": false,
+                    "isPure": false,
+                    "kind": "functionCall",
+                    "lValueRequested": false,
+                    "names": [],
+                    "nodeType": "FunctionCall",
+                    "src": "1160:17:15",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_tuple$__$",
+                      "typeString": "tuple()"
+                    }
+                  },
+                  "id": 1596,
+                  "nodeType": "ExpressionStatement",
+                  "src": "1160:17:15"
+                }
+              ]
+            },
+            "documentation": "@notice         Sets whitelisted to false: the listing should not appear anymore",
+            "id": 1598,
+            "implemented": true,
+            "isConstructor": false,
+            "isDeclaredConst": false,
+            "modifiers": [
+              {
+                "arguments": [
+                  {
+                    "argumentTypes": null,
+                    "id": 1586,
+                    "name": "BLACKLIST_ROLE",
+                    "nodeType": "Identifier",
+                    "overloadedDeclarations": [],
+                    "referencedDeclaration": 1525,
+                    "src": "1106:14:15",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_bytes32",
+                      "typeString": "bytes32"
+                    }
+                  }
+                ],
+                "id": 1587,
+                "modifierName": {
+                  "argumentTypes": null,
+                  "id": 1585,
+                  "name": "auth",
+                  "nodeType": "Identifier",
+                  "overloadedDeclarations": [],
+                  "referencedDeclaration": 1447,
+                  "src": "1101:4:15",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_modifier$_t_bytes32_$",
+                    "typeString": "modifier (bytes32)"
+                  }
+                },
+                "nodeType": "ModifierInvocation",
+                "src": "1101:20:15"
+              }
+            ],
+            "name": "blacklist",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 1584,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "1098:2:15"
+            },
+            "payable": false,
+            "returnParameters": {
+              "id": 1588,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "1129:0:15"
+            },
+            "scope": 1712,
+            "src": "1080:102:15",
+            "stateMutability": "nonpayable",
+            "superFunction": null,
+            "visibility": "public"
+          },
+          {
+            "body": {
+              "id": 1612,
+              "nodeType": "Block",
+              "src": "1334:53:15",
+              "statements": [
+                {
+                  "expression": {
+                    "argumentTypes": null,
+                    "id": 1605,
+                    "isConstant": false,
+                    "isLValue": false,
+                    "isPure": false,
+                    "lValueRequested": false,
+                    "leftHandSide": {
+                      "argumentTypes": null,
+                      "id": 1603,
                       "name": "stake",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 2605,
-                      "src": "644:5:15",
+                      "referencedDeclaration": 2657,
+                      "src": "1340:5:15",
                       "typeDescriptions": {
                         "typeIdentifier": "t_uint256",
                         "typeString": "uint256"
@@ -685,31 +1495,102 @@
                     "operator": "=",
                     "rightHandSide": {
                       "argumentTypes": null,
-                      "id": 1532,
+                      "id": 1604,
                       "name": "_stake",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 1528,
-                      "src": "652:6:15",
+                      "referencedDeclaration": 1600,
+                      "src": "1348:6:15",
                       "typeDescriptions": {
                         "typeIdentifier": "t_uint256",
                         "typeString": "uint256"
                       }
                     },
-                    "src": "644:14:15",
+                    "src": "1340:14:15",
                     "typeDescriptions": {
                       "typeIdentifier": "t_uint256",
                       "typeString": "uint256"
                     }
                   },
-                  "id": 1534,
+                  "id": 1606,
                   "nodeType": "ExpressionStatement",
-                  "src": "644:14:15"
+                  "src": "1340:14:15"
+                },
+                {
+                  "expression": {
+                    "argumentTypes": null,
+                    "arguments": [
+                      {
+                        "argumentTypes": null,
+                        "id": 1608,
+                        "name": "this",
+                        "nodeType": "Identifier",
+                        "overloadedDeclarations": [],
+                        "referencedDeclaration": 4274,
+                        "src": "1369:4:15",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_contract$_Listing_$1712",
+                          "typeString": "contract Listing"
+                        }
+                      },
+                      {
+                        "argumentTypes": null,
+                        "id": 1609,
+                        "name": "_stake",
+                        "nodeType": "Identifier",
+                        "overloadedDeclarations": [],
+                        "referencedDeclaration": 1600,
+                        "src": "1375:6:15",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_uint256",
+                          "typeString": "uint256"
+                        }
+                      }
+                    ],
+                    "expression": {
+                      "argumentTypes": [
+                        {
+                          "typeIdentifier": "t_contract$_Listing_$1712",
+                          "typeString": "contract Listing"
+                        },
+                        {
+                          "typeIdentifier": "t_uint256",
+                          "typeString": "uint256"
+                        }
+                      ],
+                      "id": 1607,
+                      "name": "StakeSet",
+                      "nodeType": "Identifier",
+                      "overloadedDeclarations": [],
+                      "referencedDeclaration": 1535,
+                      "src": "1360:8:15",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_function_event_nonpayable$_t_address_$_t_uint256_$returns$__$",
+                        "typeString": "function (address,uint256)"
+                      }
+                    },
+                    "id": 1610,
+                    "isConstant": false,
+                    "isLValue": false,
+                    "isPure": false,
+                    "kind": "functionCall",
+                    "lValueRequested": false,
+                    "names": [],
+                    "nodeType": "FunctionCall",
+                    "src": "1360:22:15",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_tuple$__$",
+                      "typeString": "tuple()"
+                    }
+                  },
+                  "id": 1611,
+                  "nodeType": "ExpressionStatement",
+                  "src": "1360:22:15"
                 }
               ]
             },
-            "documentation": "implementation of setters",
-            "id": 1536,
+            "documentation": "@notice         Sets the stake\n@param _stake   Stake",
+            "id": 1613,
             "implemented": true,
             "isConstructor": false,
             "isDeclaredConst": false,
@@ -717,16 +1598,16 @@
             "name": "setStake",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 1529,
+              "id": 1601,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 1528,
+                  "id": 1600,
                   "name": "_stake",
                   "nodeType": "VariableDeclaration",
-                  "scope": 1536,
-                  "src": "618:11:15",
+                  "scope": 1613,
+                  "src": "1314:11:15",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
@@ -734,10 +1615,10 @@
                     "typeString": "uint256"
                   },
                   "typeName": {
-                    "id": 1527,
+                    "id": 1599,
                     "name": "uint",
                     "nodeType": "ElementaryTypeName",
-                    "src": "618:4:15",
+                    "src": "1314:4:15",
                     "typeDescriptions": {
                       "typeIdentifier": "t_uint256",
                       "typeString": "uint256"
@@ -747,43 +1628,43 @@
                   "visibility": "internal"
                 }
               ],
-              "src": "617:13:15"
+              "src": "1313:13:15"
             },
             "payable": false,
             "returnParameters": {
-              "id": 1530,
+              "id": 1602,
               "nodeType": "ParameterList",
               "parameters": [],
-              "src": "638:0:15"
+              "src": "1334:0:15"
             },
-            "scope": 1610,
-            "src": "600:63:15",
+            "scope": 1712,
+            "src": "1296:91:15",
             "stateMutability": "nonpayable",
-            "superFunction": 2654,
+            "superFunction": 2706,
             "visibility": "public"
           },
           {
             "body": {
-              "id": 1545,
+              "id": 1627,
               "nodeType": "Block",
-              "src": "725:45:15",
+              "src": "1591:93:15",
               "statements": [
                 {
                   "expression": {
                     "argumentTypes": null,
-                    "id": 1543,
+                    "id": 1620,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
                     "lValueRequested": false,
                     "leftHandSide": {
                       "argumentTypes": null,
-                      "id": 1541,
+                      "id": 1618,
                       "name": "challengesStake",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 2614,
-                      "src": "731:15:15",
+                      "referencedDeclaration": 2666,
+                      "src": "1597:15:15",
                       "typeDescriptions": {
                         "typeIdentifier": "t_uint256",
                         "typeString": "uint256"
@@ -793,31 +1674,102 @@
                     "operator": "=",
                     "rightHandSide": {
                       "argumentTypes": null,
-                      "id": 1542,
+                      "id": 1619,
                       "name": "_challengesStake",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 1538,
-                      "src": "749:16:15",
+                      "referencedDeclaration": 1615,
+                      "src": "1615:16:15",
                       "typeDescriptions": {
                         "typeIdentifier": "t_uint256",
                         "typeString": "uint256"
                       }
                     },
-                    "src": "731:34:15",
+                    "src": "1597:34:15",
                     "typeDescriptions": {
                       "typeIdentifier": "t_uint256",
                       "typeString": "uint256"
                     }
                   },
-                  "id": 1544,
+                  "id": 1621,
                   "nodeType": "ExpressionStatement",
-                  "src": "731:34:15"
+                  "src": "1597:34:15"
+                },
+                {
+                  "expression": {
+                    "argumentTypes": null,
+                    "arguments": [
+                      {
+                        "argumentTypes": null,
+                        "id": 1623,
+                        "name": "this",
+                        "nodeType": "Identifier",
+                        "overloadedDeclarations": [],
+                        "referencedDeclaration": 4274,
+                        "src": "1656:4:15",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_contract$_Listing_$1712",
+                          "typeString": "contract Listing"
+                        }
+                      },
+                      {
+                        "argumentTypes": null,
+                        "id": 1624,
+                        "name": "_challengesStake",
+                        "nodeType": "Identifier",
+                        "overloadedDeclarations": [],
+                        "referencedDeclaration": 1615,
+                        "src": "1662:16:15",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_uint256",
+                          "typeString": "uint256"
+                        }
+                      }
+                    ],
+                    "expression": {
+                      "argumentTypes": [
+                        {
+                          "typeIdentifier": "t_contract$_Listing_$1712",
+                          "typeString": "contract Listing"
+                        },
+                        {
+                          "typeIdentifier": "t_uint256",
+                          "typeString": "uint256"
+                        }
+                      ],
+                      "id": 1622,
+                      "name": "ChallengesStakeSet",
+                      "nodeType": "Identifier",
+                      "overloadedDeclarations": [],
+                      "referencedDeclaration": 1541,
+                      "src": "1637:18:15",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_function_event_nonpayable$_t_address_$_t_uint256_$returns$__$",
+                        "typeString": "function (address,uint256)"
+                      }
+                    },
+                    "id": 1625,
+                    "isConstant": false,
+                    "isLValue": false,
+                    "isPure": false,
+                    "kind": "functionCall",
+                    "lValueRequested": false,
+                    "names": [],
+                    "nodeType": "FunctionCall",
+                    "src": "1637:42:15",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_tuple$__$",
+                      "typeString": "tuple()"
+                    }
+                  },
+                  "id": 1626,
+                  "nodeType": "ExpressionStatement",
+                  "src": "1637:42:15"
                 }
               ]
             },
-            "documentation": null,
-            "id": 1546,
+            "documentation": "@notice                   Sets the amount staked for all challenged\n@param _challengesStake   Amount staked for all challenges",
+            "id": 1628,
             "implemented": true,
             "isConstructor": false,
             "isDeclaredConst": false,
@@ -825,16 +1777,16 @@
             "name": "setChallengesStake",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 1539,
+              "id": 1616,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 1538,
+                  "id": 1615,
                   "name": "_challengesStake",
                   "nodeType": "VariableDeclaration",
-                  "scope": 1546,
-                  "src": "695:21:15",
+                  "scope": 1628,
+                  "src": "1561:21:15",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
@@ -842,10 +1794,10 @@
                     "typeString": "uint256"
                   },
                   "typeName": {
-                    "id": 1537,
+                    "id": 1614,
                     "name": "uint",
                     "nodeType": "ElementaryTypeName",
-                    "src": "695:4:15",
+                    "src": "1561:4:15",
                     "typeDescriptions": {
                       "typeIdentifier": "t_uint256",
                       "typeString": "uint256"
@@ -855,43 +1807,43 @@
                   "visibility": "internal"
                 }
               ],
-              "src": "694:23:15"
+              "src": "1560:23:15"
             },
             "payable": false,
             "returnParameters": {
-              "id": 1540,
+              "id": 1617,
               "nodeType": "ParameterList",
               "parameters": [],
-              "src": "725:0:15"
+              "src": "1591:0:15"
             },
-            "scope": 1610,
-            "src": "667:103:15",
+            "scope": 1712,
+            "src": "1533:151:15",
             "stateMutability": "nonpayable",
-            "superFunction": 2659,
+            "superFunction": 2711,
             "visibility": "public"
           },
           {
             "body": {
-              "id": 1555,
+              "id": 1642,
               "nodeType": "Block",
-              "src": "822:35:15",
+              "src": "1843:73:15",
               "statements": [
                 {
                   "expression": {
                     "argumentTypes": null,
-                    "id": 1553,
+                    "id": 1635,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
                     "lValueRequested": false,
                     "leftHandSide": {
                       "argumentTypes": null,
-                      "id": 1551,
+                      "id": 1633,
                       "name": "challenges",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 2608,
-                      "src": "828:10:15",
+                      "referencedDeclaration": 2660,
+                      "src": "1849:10:15",
                       "typeDescriptions": {
                         "typeIdentifier": "t_uint256",
                         "typeString": "uint256"
@@ -901,31 +1853,102 @@
                     "operator": "=",
                     "rightHandSide": {
                       "argumentTypes": null,
-                      "id": 1552,
+                      "id": 1634,
                       "name": "_challenges",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 1548,
-                      "src": "841:11:15",
+                      "referencedDeclaration": 1630,
+                      "src": "1862:11:15",
                       "typeDescriptions": {
                         "typeIdentifier": "t_uint256",
                         "typeString": "uint256"
                       }
                     },
-                    "src": "828:24:15",
+                    "src": "1849:24:15",
                     "typeDescriptions": {
                       "typeIdentifier": "t_uint256",
                       "typeString": "uint256"
                     }
                   },
-                  "id": 1554,
+                  "id": 1636,
                   "nodeType": "ExpressionStatement",
-                  "src": "828:24:15"
+                  "src": "1849:24:15"
+                },
+                {
+                  "expression": {
+                    "argumentTypes": null,
+                    "arguments": [
+                      {
+                        "argumentTypes": null,
+                        "id": 1638,
+                        "name": "this",
+                        "nodeType": "Identifier",
+                        "overloadedDeclarations": [],
+                        "referencedDeclaration": 4274,
+                        "src": "1893:4:15",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_contract$_Listing_$1712",
+                          "typeString": "contract Listing"
+                        }
+                      },
+                      {
+                        "argumentTypes": null,
+                        "id": 1639,
+                        "name": "_challenges",
+                        "nodeType": "Identifier",
+                        "overloadedDeclarations": [],
+                        "referencedDeclaration": 1630,
+                        "src": "1899:11:15",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_uint256",
+                          "typeString": "uint256"
+                        }
+                      }
+                    ],
+                    "expression": {
+                      "argumentTypes": [
+                        {
+                          "typeIdentifier": "t_contract$_Listing_$1712",
+                          "typeString": "contract Listing"
+                        },
+                        {
+                          "typeIdentifier": "t_uint256",
+                          "typeString": "uint256"
+                        }
+                      ],
+                      "id": 1637,
+                      "name": "ChallengesSet",
+                      "nodeType": "Identifier",
+                      "overloadedDeclarations": [],
+                      "referencedDeclaration": 1547,
+                      "src": "1879:13:15",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_function_event_nonpayable$_t_address_$_t_uint256_$returns$__$",
+                        "typeString": "function (address,uint256)"
+                      }
+                    },
+                    "id": 1640,
+                    "isConstant": false,
+                    "isLValue": false,
+                    "isPure": false,
+                    "kind": "functionCall",
+                    "lValueRequested": false,
+                    "names": [],
+                    "nodeType": "FunctionCall",
+                    "src": "1879:32:15",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_tuple$__$",
+                      "typeString": "tuple()"
+                    }
+                  },
+                  "id": 1641,
+                  "nodeType": "ExpressionStatement",
+                  "src": "1879:32:15"
                 }
               ]
             },
-            "documentation": null,
-            "id": 1556,
+            "documentation": "@notice              Sets the muber of challenges\n@param _challenges   Number of challenges",
+            "id": 1643,
             "implemented": true,
             "isConstructor": false,
             "isDeclaredConst": false,
@@ -933,16 +1956,16 @@
             "name": "setChallenges",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 1549,
+              "id": 1631,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 1548,
+                  "id": 1630,
                   "name": "_challenges",
                   "nodeType": "VariableDeclaration",
-                  "scope": 1556,
-                  "src": "797:16:15",
+                  "scope": 1643,
+                  "src": "1818:16:15",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
@@ -950,10 +1973,10 @@
                     "typeString": "uint256"
                   },
                   "typeName": {
-                    "id": 1547,
+                    "id": 1629,
                     "name": "uint",
                     "nodeType": "ElementaryTypeName",
-                    "src": "797:4:15",
+                    "src": "1818:4:15",
                     "typeDescriptions": {
                       "typeIdentifier": "t_uint256",
                       "typeString": "uint256"
@@ -963,43 +1986,43 @@
                   "visibility": "internal"
                 }
               ],
-              "src": "796:18:15"
+              "src": "1817:18:15"
             },
             "payable": false,
             "returnParameters": {
-              "id": 1550,
+              "id": 1632,
               "nodeType": "ParameterList",
               "parameters": [],
-              "src": "822:0:15"
+              "src": "1843:0:15"
             },
-            "scope": 1610,
-            "src": "774:83:15",
+            "scope": 1712,
+            "src": "1795:121:15",
             "stateMutability": "nonpayable",
-            "superFunction": 2664,
+            "superFunction": 2716,
             "visibility": "public"
           },
           {
             "body": {
-              "id": 1565,
+              "id": 1657,
               "nodeType": "Block",
-              "src": "911:37:15",
+              "src": "2088:77:15",
               "statements": [
                 {
                   "expression": {
                     "argumentTypes": null,
-                    "id": 1563,
+                    "id": 1650,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
                     "lValueRequested": false,
                     "leftHandSide": {
                       "argumentTypes": null,
-                      "id": 1561,
+                      "id": 1648,
                       "name": "whitelisted",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 2617,
-                      "src": "917:11:15",
+                      "referencedDeclaration": 2669,
+                      "src": "2094:11:15",
                       "typeDescriptions": {
                         "typeIdentifier": "t_bool",
                         "typeString": "bool"
@@ -1009,31 +2032,102 @@
                     "operator": "=",
                     "rightHandSide": {
                       "argumentTypes": null,
-                      "id": 1562,
+                      "id": 1649,
                       "name": "_whitelisted",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 1558,
-                      "src": "931:12:15",
+                      "referencedDeclaration": 1645,
+                      "src": "2108:12:15",
                       "typeDescriptions": {
                         "typeIdentifier": "t_bool",
                         "typeString": "bool"
                       }
                     },
-                    "src": "917:26:15",
+                    "src": "2094:26:15",
                     "typeDescriptions": {
                       "typeIdentifier": "t_bool",
                       "typeString": "bool"
                     }
                   },
-                  "id": 1564,
+                  "id": 1651,
                   "nodeType": "ExpressionStatement",
-                  "src": "917:26:15"
+                  "src": "2094:26:15"
+                },
+                {
+                  "expression": {
+                    "argumentTypes": null,
+                    "arguments": [
+                      {
+                        "argumentTypes": null,
+                        "id": 1653,
+                        "name": "this",
+                        "nodeType": "Identifier",
+                        "overloadedDeclarations": [],
+                        "referencedDeclaration": 4274,
+                        "src": "2141:4:15",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_contract$_Listing_$1712",
+                          "typeString": "contract Listing"
+                        }
+                      },
+                      {
+                        "argumentTypes": null,
+                        "id": 1654,
+                        "name": "_whitelisted",
+                        "nodeType": "Identifier",
+                        "overloadedDeclarations": [],
+                        "referencedDeclaration": 1645,
+                        "src": "2147:12:15",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_bool",
+                          "typeString": "bool"
+                        }
+                      }
+                    ],
+                    "expression": {
+                      "argumentTypes": [
+                        {
+                          "typeIdentifier": "t_contract$_Listing_$1712",
+                          "typeString": "contract Listing"
+                        },
+                        {
+                          "typeIdentifier": "t_bool",
+                          "typeString": "bool"
+                        }
+                      ],
+                      "id": 1652,
+                      "name": "WhitelistedSet",
+                      "nodeType": "Identifier",
+                      "overloadedDeclarations": [],
+                      "referencedDeclaration": 1553,
+                      "src": "2126:14:15",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_function_event_nonpayable$_t_address_$_t_bool_$returns$__$",
+                        "typeString": "function (address,bool)"
+                      }
+                    },
+                    "id": 1655,
+                    "isConstant": false,
+                    "isLValue": false,
+                    "isPure": false,
+                    "kind": "functionCall",
+                    "lValueRequested": false,
+                    "names": [],
+                    "nodeType": "FunctionCall",
+                    "src": "2126:34:15",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_tuple$__$",
+                      "typeString": "tuple()"
+                    }
+                  },
+                  "id": 1656,
+                  "nodeType": "ExpressionStatement",
+                  "src": "2126:34:15"
                 }
               ]
             },
-            "documentation": null,
-            "id": 1566,
+            "documentation": "@notice               Sets whether or not the listing is whitelisted\n@param _whitelisted   Whitelisted",
+            "id": 1658,
             "implemented": true,
             "isConstructor": false,
             "isDeclaredConst": false,
@@ -1041,16 +2135,16 @@
             "name": "setWhitelisted",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 1559,
+              "id": 1646,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 1558,
+                  "id": 1645,
                   "name": "_whitelisted",
                   "nodeType": "VariableDeclaration",
-                  "scope": 1566,
-                  "src": "885:17:15",
+                  "scope": 1658,
+                  "src": "2062:17:15",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
@@ -1058,10 +2152,10 @@
                     "typeString": "bool"
                   },
                   "typeName": {
-                    "id": 1557,
+                    "id": 1644,
                     "name": "bool",
                     "nodeType": "ElementaryTypeName",
-                    "src": "885:4:15",
+                    "src": "2062:4:15",
                     "typeDescriptions": {
                       "typeIdentifier": "t_bool",
                       "typeString": "bool"
@@ -1071,43 +2165,43 @@
                   "visibility": "internal"
                 }
               ],
-              "src": "884:19:15"
+              "src": "2061:19:15"
             },
             "payable": false,
             "returnParameters": {
-              "id": 1560,
+              "id": 1647,
               "nodeType": "ParameterList",
               "parameters": [],
-              "src": "911:0:15"
+              "src": "2088:0:15"
             },
-            "scope": 1610,
-            "src": "861:87:15",
+            "scope": 1712,
+            "src": "2038:127:15",
             "stateMutability": "nonpayable",
-            "superFunction": 2669,
+            "superFunction": 2721,
             "visibility": "public"
           },
           {
             "body": {
-              "id": 1575,
+              "id": 1672,
               "nodeType": "Block",
-              "src": "990:25:15",
+              "src": "2275:53:15",
               "statements": [
                 {
                   "expression": {
                     "argumentTypes": null,
-                    "id": 1573,
+                    "id": 1665,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
                     "lValueRequested": false,
                     "leftHandSide": {
                       "argumentTypes": null,
-                      "id": 1571,
+                      "id": 1663,
                       "name": "price",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 2602,
-                      "src": "996:5:15",
+                      "referencedDeclaration": 2654,
+                      "src": "2281:5:15",
                       "typeDescriptions": {
                         "typeIdentifier": "t_uint256",
                         "typeString": "uint256"
@@ -1117,31 +2211,102 @@
                     "operator": "=",
                     "rightHandSide": {
                       "argumentTypes": null,
-                      "id": 1572,
+                      "id": 1664,
                       "name": "_price",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 1568,
-                      "src": "1004:6:15",
+                      "referencedDeclaration": 1660,
+                      "src": "2289:6:15",
                       "typeDescriptions": {
                         "typeIdentifier": "t_uint256",
                         "typeString": "uint256"
                       }
                     },
-                    "src": "996:14:15",
+                    "src": "2281:14:15",
                     "typeDescriptions": {
                       "typeIdentifier": "t_uint256",
                       "typeString": "uint256"
                     }
                   },
-                  "id": 1574,
+                  "id": 1666,
                   "nodeType": "ExpressionStatement",
-                  "src": "996:14:15"
+                  "src": "2281:14:15"
+                },
+                {
+                  "expression": {
+                    "argumentTypes": null,
+                    "arguments": [
+                      {
+                        "argumentTypes": null,
+                        "id": 1668,
+                        "name": "this",
+                        "nodeType": "Identifier",
+                        "overloadedDeclarations": [],
+                        "referencedDeclaration": 4274,
+                        "src": "2310:4:15",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_contract$_Listing_$1712",
+                          "typeString": "contract Listing"
+                        }
+                      },
+                      {
+                        "argumentTypes": null,
+                        "id": 1669,
+                        "name": "_price",
+                        "nodeType": "Identifier",
+                        "overloadedDeclarations": [],
+                        "referencedDeclaration": 1660,
+                        "src": "2316:6:15",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_uint256",
+                          "typeString": "uint256"
+                        }
+                      }
+                    ],
+                    "expression": {
+                      "argumentTypes": [
+                        {
+                          "typeIdentifier": "t_contract$_Listing_$1712",
+                          "typeString": "contract Listing"
+                        },
+                        {
+                          "typeIdentifier": "t_uint256",
+                          "typeString": "uint256"
+                        }
+                      ],
+                      "id": 1667,
+                      "name": "PriceSet",
+                      "nodeType": "Identifier",
+                      "overloadedDeclarations": [],
+                      "referencedDeclaration": 1559,
+                      "src": "2301:8:15",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_function_event_nonpayable$_t_address_$_t_uint256_$returns$__$",
+                        "typeString": "function (address,uint256)"
+                      }
+                    },
+                    "id": 1670,
+                    "isConstant": false,
+                    "isLValue": false,
+                    "isPure": false,
+                    "kind": "functionCall",
+                    "lValueRequested": false,
+                    "names": [],
+                    "nodeType": "FunctionCall",
+                    "src": "2301:22:15",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_tuple$__$",
+                      "typeString": "tuple()"
+                    }
+                  },
+                  "id": 1671,
+                  "nodeType": "ExpressionStatement",
+                  "src": "2301:22:15"
                 }
               ]
             },
-            "documentation": null,
-            "id": 1576,
+            "documentation": "@notice         Sets the price\n@param _price   Price",
+            "id": 1673,
             "implemented": true,
             "isConstructor": false,
             "isDeclaredConst": false,
@@ -1149,16 +2314,16 @@
             "name": "setPrice",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 1569,
+              "id": 1661,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 1568,
+                  "id": 1660,
                   "name": "_price",
                   "nodeType": "VariableDeclaration",
-                  "scope": 1576,
-                  "src": "970:11:15",
+                  "scope": 1673,
+                  "src": "2255:11:15",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
@@ -1166,10 +2331,10 @@
                     "typeString": "uint256"
                   },
                   "typeName": {
-                    "id": 1567,
+                    "id": 1659,
                     "name": "uint",
                     "nodeType": "ElementaryTypeName",
-                    "src": "970:4:15",
+                    "src": "2255:4:15",
                     "typeDescriptions": {
                       "typeIdentifier": "t_uint256",
                       "typeString": "uint256"
@@ -1179,26 +2344,26 @@
                   "visibility": "internal"
                 }
               ],
-              "src": "969:13:15"
+              "src": "2254:13:15"
             },
             "payable": false,
             "returnParameters": {
-              "id": 1570,
+              "id": 1662,
               "nodeType": "ParameterList",
               "parameters": [],
-              "src": "990:0:15"
+              "src": "2275:0:15"
             },
-            "scope": 1610,
-            "src": "952:63:15",
+            "scope": 1712,
+            "src": "2237:91:15",
             "stateMutability": "nonpayable",
-            "superFunction": 2674,
+            "superFunction": 2726,
             "visibility": "public"
           },
           {
             "body": {
-              "id": 1587,
+              "id": 1689,
               "nodeType": "Block",
-              "src": "1069:42:15",
+              "src": "2487:82:15",
               "statements": [
                 {
                   "expression": {
@@ -1206,12 +2371,12 @@
                     "arguments": [
                       {
                         "argumentTypes": null,
-                        "id": 1584,
+                        "id": 1681,
                         "name": "_challengeID",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 1578,
-                        "src": "1093:12:15",
+                        "referencedDeclaration": 1675,
+                        "src": "2511:12:15",
                         "typeDescriptions": {
                           "typeIdentifier": "t_uint256",
                           "typeString": "uint256"
@@ -1227,18 +2392,18 @@
                       ],
                       "expression": {
                         "argumentTypes": null,
-                        "id": 1581,
+                        "id": 1678,
                         "name": "challengeIDs",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 2611,
-                        "src": "1075:12:15",
+                        "referencedDeclaration": 2663,
+                        "src": "2493:12:15",
                         "typeDescriptions": {
                           "typeIdentifier": "t_array$_t_uint256_$dyn_storage",
                           "typeString": "uint256[] storage ref"
                         }
                       },
-                      "id": 1583,
+                      "id": 1680,
                       "isConstant": false,
                       "isLValue": false,
                       "isPure": false,
@@ -1246,13 +2411,13 @@
                       "memberName": "push",
                       "nodeType": "MemberAccess",
                       "referencedDeclaration": null,
-                      "src": "1075:17:15",
+                      "src": "2493:17:15",
                       "typeDescriptions": {
                         "typeIdentifier": "t_function_arraypush_nonpayable$_t_uint256_$returns$_t_uint256_$",
                         "typeString": "function (uint256) returns (uint256)"
                       }
                     },
-                    "id": 1585,
+                    "id": 1682,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
@@ -1260,20 +2425,91 @@
                     "lValueRequested": false,
                     "names": [],
                     "nodeType": "FunctionCall",
-                    "src": "1075:31:15",
+                    "src": "2493:31:15",
                     "typeDescriptions": {
                       "typeIdentifier": "t_uint256",
                       "typeString": "uint256"
                     }
                   },
-                  "id": 1586,
+                  "id": 1683,
                   "nodeType": "ExpressionStatement",
-                  "src": "1075:31:15"
+                  "src": "2493:31:15"
+                },
+                {
+                  "expression": {
+                    "argumentTypes": null,
+                    "arguments": [
+                      {
+                        "argumentTypes": null,
+                        "id": 1685,
+                        "name": "this",
+                        "nodeType": "Identifier",
+                        "overloadedDeclarations": [],
+                        "referencedDeclaration": 4274,
+                        "src": "2545:4:15",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_contract$_Listing_$1712",
+                          "typeString": "contract Listing"
+                        }
+                      },
+                      {
+                        "argumentTypes": null,
+                        "id": 1686,
+                        "name": "_challengeID",
+                        "nodeType": "Identifier",
+                        "overloadedDeclarations": [],
+                        "referencedDeclaration": 1675,
+                        "src": "2551:12:15",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_uint256",
+                          "typeString": "uint256"
+                        }
+                      }
+                    ],
+                    "expression": {
+                      "argumentTypes": [
+                        {
+                          "typeIdentifier": "t_contract$_Listing_$1712",
+                          "typeString": "contract Listing"
+                        },
+                        {
+                          "typeIdentifier": "t_uint256",
+                          "typeString": "uint256"
+                        }
+                      ],
+                      "id": 1684,
+                      "name": "ChallengeIDSet",
+                      "nodeType": "Identifier",
+                      "overloadedDeclarations": [],
+                      "referencedDeclaration": 1565,
+                      "src": "2530:14:15",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_function_event_nonpayable$_t_address_$_t_uint256_$returns$__$",
+                        "typeString": "function (address,uint256)"
+                      }
+                    },
+                    "id": 1687,
+                    "isConstant": false,
+                    "isLValue": false,
+                    "isPure": false,
+                    "kind": "functionCall",
+                    "lValueRequested": false,
+                    "names": [],
+                    "nodeType": "FunctionCall",
+                    "src": "2530:34:15",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_tuple$__$",
+                      "typeString": "tuple()"
+                    }
+                  },
+                  "id": 1688,
+                  "nodeType": "ExpressionStatement",
+                  "src": "2530:34:15"
                 }
               ]
             },
-            "documentation": null,
-            "id": 1588,
+            "documentation": "@notice               Adds a challenge ID in the array\n@param _challengeID   Challenge ID",
+            "id": 1690,
             "implemented": true,
             "isConstructor": false,
             "isDeclaredConst": false,
@@ -1281,16 +2517,16 @@
             "name": "addChallengeID",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 1579,
+              "id": 1676,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 1578,
+                  "id": 1675,
                   "name": "_challengeID",
                   "nodeType": "VariableDeclaration",
-                  "scope": 1588,
-                  "src": "1043:17:15",
+                  "scope": 1690,
+                  "src": "2461:17:15",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
@@ -1298,10 +2534,10 @@
                     "typeString": "uint256"
                   },
                   "typeName": {
-                    "id": 1577,
+                    "id": 1674,
                     "name": "uint",
                     "nodeType": "ElementaryTypeName",
-                    "src": "1043:4:15",
+                    "src": "2461:4:15",
                     "typeDescriptions": {
                       "typeIdentifier": "t_uint256",
                       "typeString": "uint256"
@@ -1311,44 +2547,44 @@
                   "visibility": "internal"
                 }
               ],
-              "src": "1042:19:15"
+              "src": "2460:19:15"
             },
             "payable": false,
             "returnParameters": {
-              "id": 1580,
+              "id": 1677,
               "nodeType": "ParameterList",
               "parameters": [],
-              "src": "1069:0:15"
+              "src": "2487:0:15"
             },
-            "scope": 1610,
-            "src": "1019:92:15",
+            "scope": 1712,
+            "src": "2437:132:15",
             "stateMutability": "nonpayable",
-            "superFunction": 2679,
+            "superFunction": 2731,
             "visibility": "public"
           },
           {
             "body": {
-              "id": 1596,
+              "id": 1698,
               "nodeType": "Block",
-              "src": "1177:37:15",
+              "src": "2739:37:15",
               "statements": [
                 {
                   "expression": {
                     "argumentTypes": null,
                     "expression": {
                       "argumentTypes": null,
-                      "id": 1593,
+                      "id": 1695,
                       "name": "challengeIDs",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 2611,
-                      "src": "1190:12:15",
+                      "referencedDeclaration": 2663,
+                      "src": "2752:12:15",
                       "typeDescriptions": {
                         "typeIdentifier": "t_array$_t_uint256_$dyn_storage",
                         "typeString": "uint256[] storage ref"
                       }
                     },
-                    "id": 1594,
+                    "id": 1696,
                     "isConstant": false,
                     "isLValue": true,
                     "isPure": false,
@@ -1356,21 +2592,21 @@
                     "memberName": "length",
                     "nodeType": "MemberAccess",
                     "referencedDeclaration": null,
-                    "src": "1190:19:15",
+                    "src": "2752:19:15",
                     "typeDescriptions": {
                       "typeIdentifier": "t_uint256",
                       "typeString": "uint256"
                     }
                   },
-                  "functionReturnParameters": 1592,
-                  "id": 1595,
+                  "functionReturnParameters": 1694,
+                  "id": 1697,
                   "nodeType": "Return",
-                  "src": "1183:26:15"
+                  "src": "2745:26:15"
                 }
               ]
             },
-            "documentation": null,
-            "id": 1597,
+            "documentation": "@notice         Get length of challenge ID array",
+            "id": 1699,
             "implemented": true,
             "isConstructor": false,
             "isDeclaredConst": false,
@@ -1378,23 +2614,23 @@
             "name": "getChallengeIDsLength",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 1589,
+              "id": 1691,
               "nodeType": "ParameterList",
               "parameters": [],
-              "src": "1145:2:15"
+              "src": "2707:2:15"
             },
             "payable": false,
             "returnParameters": {
-              "id": 1592,
+              "id": 1694,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 1591,
+                  "id": 1693,
                   "name": "length",
                   "nodeType": "VariableDeclaration",
-                  "scope": 1597,
-                  "src": "1164:11:15",
+                  "scope": 1699,
+                  "src": "2726:11:15",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
@@ -1402,10 +2638,10 @@
                     "typeString": "uint256"
                   },
                   "typeName": {
-                    "id": 1590,
+                    "id": 1692,
                     "name": "uint",
                     "nodeType": "ElementaryTypeName",
-                    "src": "1164:4:15",
+                    "src": "2726:4:15",
                     "typeDescriptions": {
                       "typeIdentifier": "t_uint256",
                       "typeString": "uint256"
@@ -1415,45 +2651,45 @@
                   "visibility": "internal"
                 }
               ],
-              "src": "1163:13:15"
+              "src": "2725:13:15"
             },
-            "scope": 1610,
-            "src": "1115:99:15",
+            "scope": 1712,
+            "src": "2677:99:15",
             "stateMutability": "nonpayable",
-            "superFunction": 2684,
+            "superFunction": 2736,
             "visibility": "public"
           },
           {
             "body": {
-              "id": 1608,
+              "id": 1710,
               "nodeType": "Block",
-              "src": "1296:38:15",
+              "src": "2946:38:15",
               "statements": [
                 {
                   "expression": {
                     "argumentTypes": null,
                     "baseExpression": {
                       "argumentTypes": null,
-                      "id": 1604,
+                      "id": 1706,
                       "name": "challengeIDs",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 2611,
-                      "src": "1309:12:15",
+                      "referencedDeclaration": 2663,
+                      "src": "2959:12:15",
                       "typeDescriptions": {
                         "typeIdentifier": "t_array$_t_uint256_$dyn_storage",
                         "typeString": "uint256[] storage ref"
                       }
                     },
-                    "id": 1606,
+                    "id": 1708,
                     "indexExpression": {
                       "argumentTypes": null,
-                      "id": 1605,
+                      "id": 1707,
                       "name": "_index",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 1599,
-                      "src": "1322:6:15",
+                      "referencedDeclaration": 1701,
+                      "src": "2972:6:15",
                       "typeDescriptions": {
                         "typeIdentifier": "t_uint256",
                         "typeString": "uint256"
@@ -1464,21 +2700,21 @@
                     "isPure": false,
                     "lValueRequested": false,
                     "nodeType": "IndexAccess",
-                    "src": "1309:20:15",
+                    "src": "2959:20:15",
                     "typeDescriptions": {
                       "typeIdentifier": "t_uint256",
                       "typeString": "uint256"
                     }
                   },
-                  "functionReturnParameters": 1603,
-                  "id": 1607,
+                  "functionReturnParameters": 1705,
+                  "id": 1709,
                   "nodeType": "Return",
-                  "src": "1302:27:15"
+                  "src": "2952:27:15"
                 }
               ]
             },
-            "documentation": null,
-            "id": 1609,
+            "documentation": "@notice         Get challenge ID at index in array\n@param _index   Index",
+            "id": 1711,
             "implemented": true,
             "isConstructor": false,
             "isDeclaredConst": false,
@@ -1486,16 +2722,16 @@
             "name": "getChallengeIDAtIndex",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 1600,
+              "id": 1702,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 1599,
+                  "id": 1701,
                   "name": "_index",
                   "nodeType": "VariableDeclaration",
-                  "scope": 1609,
-                  "src": "1249:11:15",
+                  "scope": 1711,
+                  "src": "2899:11:15",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
@@ -1503,10 +2739,10 @@
                     "typeString": "uint256"
                   },
                   "typeName": {
-                    "id": 1598,
+                    "id": 1700,
                     "name": "uint",
                     "nodeType": "ElementaryTypeName",
-                    "src": "1249:4:15",
+                    "src": "2899:4:15",
                     "typeDescriptions": {
                       "typeIdentifier": "t_uint256",
                       "typeString": "uint256"
@@ -1516,20 +2752,20 @@
                   "visibility": "internal"
                 }
               ],
-              "src": "1248:13:15"
+              "src": "2898:13:15"
             },
             "payable": false,
             "returnParameters": {
-              "id": 1603,
+              "id": 1705,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 1602,
+                  "id": 1704,
                   "name": "challengeID",
                   "nodeType": "VariableDeclaration",
-                  "scope": 1609,
-                  "src": "1278:16:15",
+                  "scope": 1711,
+                  "src": "2928:16:15",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
@@ -1537,10 +2773,10 @@
                     "typeString": "uint256"
                   },
                   "typeName": {
-                    "id": 1601,
+                    "id": 1703,
                     "name": "uint",
                     "nodeType": "ElementaryTypeName",
-                    "src": "1278:4:15",
+                    "src": "2928:4:15",
                     "typeDescriptions": {
                       "typeIdentifier": "t_uint256",
                       "typeString": "uint256"
@@ -1550,33 +2786,33 @@
                   "visibility": "internal"
                 }
               ],
-              "src": "1277:18:15"
+              "src": "2927:18:15"
             },
-            "scope": 1610,
-            "src": "1218:116:15",
+            "scope": 1712,
+            "src": "2868:116:15",
             "stateMutability": "nonpayable",
-            "superFunction": 2691,
+            "superFunction": 2743,
             "visibility": "public"
           }
         ],
-        "scope": 1611,
-        "src": "64:1272:15"
+        "scope": 1713,
+        "src": "64:2922:15"
       }
     ],
-    "src": "0:1337:15"
+    "src": "0:2987:15"
   },
   "legacyAST": {
     "absolutePath": "@settlemint/solidity-mint/contracts/marketplaces/tokencuratedregistry/Listing.sol",
     "exportedSymbols": {
       "Listing": [
-        1610
+        1712
       ]
     },
-    "id": 1611,
+    "id": 1713,
     "nodeType": "SourceUnit",
     "nodes": [
       {
-        "id": 1505,
+        "id": 1519,
         "literals": [
           "solidity",
           "^",
@@ -1589,10 +2825,10 @@
       {
         "absolutePath": "@settlemint/solidity-mint/contracts/marketplaces/tokencuratedregistry/interfaces/IListing.sol",
         "file": "./interfaces/IListing.sol",
-        "id": 1506,
+        "id": 1520,
         "nodeType": "ImportDirective",
-        "scope": 1611,
-        "sourceUnit": 2710,
+        "scope": 1713,
+        "sourceUnit": 2762,
         "src": "26:35:15",
         "symbolAliases": [],
         "unitAlias": ""
@@ -1603,54 +2839,553 @@
             "arguments": [],
             "baseName": {
               "contractScope": null,
-              "id": 1507,
+              "id": 1521,
               "name": "IListing",
               "nodeType": "UserDefinedTypeName",
-              "referencedDeclaration": 2709,
+              "referencedDeclaration": 2761,
               "src": "84:8:15",
               "typeDescriptions": {
-                "typeIdentifier": "t_contract$_IListing_$2709",
+                "typeIdentifier": "t_contract$_IListing_$2761",
                 "typeString": "contract IListing"
               }
             },
-            "id": 1508,
+            "id": 1522,
             "nodeType": "InheritanceSpecifier",
             "src": "84:8:15"
           }
         ],
         "contractDependencies": [
-          1471,
-          2709,
-          3939,
-          3968,
-          4029,
-          4050
+          1485,
+          2761,
+          3991,
+          4020,
+          4081,
+          4102
         ],
         "contractKind": "contract",
         "documentation": null,
         "fullyImplemented": false,
-        "id": 1610,
+        "id": 1712,
         "linearizedBaseContracts": [
-          1610,
-          2709,
-          4050,
-          3968,
-          3939,
-          4029,
-          1471
+          1712,
+          2761,
+          4102,
+          4020,
+          3991,
+          4081,
+          1485
         ],
         "name": "Listing",
         "nodeType": "ContractDefinition",
         "nodes": [
           {
+            "constant": true,
+            "id": 1525,
+            "name": "BLACKLIST_ROLE",
+            "nodeType": "VariableDeclaration",
+            "scope": 1712,
+            "src": "98:57:15",
+            "stateVariable": true,
+            "storageLocation": "default",
+            "typeDescriptions": {
+              "typeIdentifier": "t_bytes32",
+              "typeString": "bytes32"
+            },
+            "typeName": {
+              "id": 1523,
+              "name": "bytes32",
+              "nodeType": "ElementaryTypeName",
+              "src": "98:7:15",
+              "typeDescriptions": {
+                "typeIdentifier": "t_bytes32",
+                "typeString": "bytes32"
+              }
+            },
+            "value": {
+              "argumentTypes": null,
+              "hexValue": "424c41434b4c4953545f524f4c45",
+              "id": 1524,
+              "isConstant": false,
+              "isLValue": false,
+              "isPure": true,
+              "kind": "string",
+              "lValueRequested": false,
+              "nodeType": "Literal",
+              "src": "139:16:15",
+              "subdenomination": null,
+              "typeDescriptions": {
+                "typeIdentifier": "t_stringliteral_22435ed027edf5f902dc0093fbc24cdb50c05b5fd5f311b78c67c1cbaff60e13",
+                "typeString": "literal_string \"BLACKLIST_ROLE\""
+              },
+              "value": "BLACKLIST_ROLE"
+            },
+            "visibility": "public"
+          },
+          {
+            "anonymous": false,
+            "documentation": null,
+            "id": 1529,
+            "name": "Blacklisted",
+            "nodeType": "EventDefinition",
+            "parameters": {
+              "id": 1528,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 1527,
+                  "indexed": false,
+                  "name": "listing",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 1529,
+                  "src": "178:15:15",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 1526,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "178:7:15",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "177:17:15"
+            },
+            "src": "160:35:15"
+          },
+          {
+            "anonymous": false,
+            "documentation": null,
+            "id": 1535,
+            "name": "StakeSet",
+            "nodeType": "EventDefinition",
+            "parameters": {
+              "id": 1534,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 1531,
+                  "indexed": false,
+                  "name": "listing",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 1535,
+                  "src": "213:15:15",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 1530,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "213:7:15",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 1533,
+                  "indexed": false,
+                  "name": "stake",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 1535,
+                  "src": "230:10:15",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 1532,
+                    "name": "uint",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "230:4:15",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "212:29:15"
+            },
+            "src": "198:44:15"
+          },
+          {
+            "anonymous": false,
+            "documentation": null,
+            "id": 1541,
+            "name": "ChallengesStakeSet",
+            "nodeType": "EventDefinition",
+            "parameters": {
+              "id": 1540,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 1537,
+                  "indexed": false,
+                  "name": "listing",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 1541,
+                  "src": "270:15:15",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 1536,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "270:7:15",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 1539,
+                  "indexed": false,
+                  "name": "stake",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 1541,
+                  "src": "287:10:15",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 1538,
+                    "name": "uint",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "287:4:15",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "269:29:15"
+            },
+            "src": "245:54:15"
+          },
+          {
+            "anonymous": false,
+            "documentation": null,
+            "id": 1547,
+            "name": "ChallengesSet",
+            "nodeType": "EventDefinition",
+            "parameters": {
+              "id": 1546,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 1543,
+                  "indexed": false,
+                  "name": "listing",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 1547,
+                  "src": "322:15:15",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 1542,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "322:7:15",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 1545,
+                  "indexed": false,
+                  "name": "challenges",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 1547,
+                  "src": "339:15:15",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 1544,
+                    "name": "uint",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "339:4:15",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "321:34:15"
+            },
+            "src": "302:54:15"
+          },
+          {
+            "anonymous": false,
+            "documentation": null,
+            "id": 1553,
+            "name": "WhitelistedSet",
+            "nodeType": "EventDefinition",
+            "parameters": {
+              "id": 1552,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 1549,
+                  "indexed": false,
+                  "name": "listing",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 1553,
+                  "src": "380:15:15",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 1548,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "380:7:15",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 1551,
+                  "indexed": false,
+                  "name": "whitelisted",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 1553,
+                  "src": "397:16:15",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_bool",
+                    "typeString": "bool"
+                  },
+                  "typeName": {
+                    "id": 1550,
+                    "name": "bool",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "397:4:15",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_bool",
+                      "typeString": "bool"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "379:35:15"
+            },
+            "src": "359:56:15"
+          },
+          {
+            "anonymous": false,
+            "documentation": null,
+            "id": 1559,
+            "name": "PriceSet",
+            "nodeType": "EventDefinition",
+            "parameters": {
+              "id": 1558,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 1555,
+                  "indexed": false,
+                  "name": "listing",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 1559,
+                  "src": "433:15:15",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 1554,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "433:7:15",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 1557,
+                  "indexed": false,
+                  "name": "price",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 1559,
+                  "src": "450:10:15",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 1556,
+                    "name": "uint",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "450:4:15",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "432:29:15"
+            },
+            "src": "418:44:15"
+          },
+          {
+            "anonymous": false,
+            "documentation": null,
+            "id": 1565,
+            "name": "ChallengeIDSet",
+            "nodeType": "EventDefinition",
+            "parameters": {
+              "id": 1564,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 1561,
+                  "indexed": false,
+                  "name": "listing",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 1565,
+                  "src": "486:15:15",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 1560,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "486:7:15",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 1563,
+                  "indexed": false,
+                  "name": "challengeID",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 1565,
+                  "src": "503:16:15",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 1562,
+                    "name": "uint",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "503:4:15",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "485:35:15"
+            },
+            "src": "465:56:15"
+          },
+          {
             "body": {
-              "id": 1525,
+              "id": 1582,
               "nodeType": "Block",
-              "src": "553:2:15",
+              "src": "980:2:15",
               "statements": []
             },
             "documentation": "@dev Contructor\n@notice                Sets the address for token\n@param _owner          Address of the owner\n@param _price          Price for the listing\n@param _stakeAmount    Amount staked for the listing\n@param _gateKeeper     Address of the gatekeeper",
-            "id": 1526,
+            "id": 1583,
             "implemented": true,
             "isConstructor": true,
             "isDeclaredConst": false,
@@ -1659,12 +3394,12 @@
                 "arguments": [
                   {
                     "argumentTypes": null,
-                    "id": 1519,
+                    "id": 1576,
                     "name": "_owner",
                     "nodeType": "Identifier",
                     "overloadedDeclarations": [],
-                    "referencedDeclaration": 1510,
-                    "src": "497:6:15",
+                    "referencedDeclaration": 1567,
+                    "src": "924:6:15",
                     "typeDescriptions": {
                       "typeIdentifier": "t_address",
                       "typeString": "address"
@@ -1672,12 +3407,12 @@
                   },
                   {
                     "argumentTypes": null,
-                    "id": 1520,
+                    "id": 1577,
                     "name": "_price",
                     "nodeType": "Identifier",
                     "overloadedDeclarations": [],
-                    "referencedDeclaration": 1512,
-                    "src": "505:6:15",
+                    "referencedDeclaration": 1569,
+                    "src": "932:6:15",
                     "typeDescriptions": {
                       "typeIdentifier": "t_uint256",
                       "typeString": "uint256"
@@ -1685,12 +3420,12 @@
                   },
                   {
                     "argumentTypes": null,
-                    "id": 1521,
+                    "id": 1578,
                     "name": "_stakeAmount",
                     "nodeType": "Identifier",
                     "overloadedDeclarations": [],
-                    "referencedDeclaration": 1514,
-                    "src": "513:12:15",
+                    "referencedDeclaration": 1571,
+                    "src": "940:12:15",
                     "typeDescriptions": {
                       "typeIdentifier": "t_uint256",
                       "typeString": "uint256"
@@ -1698,49 +3433,49 @@
                   },
                   {
                     "argumentTypes": null,
-                    "id": 1522,
+                    "id": 1579,
                     "name": "_gateKeeper",
                     "nodeType": "Identifier",
                     "overloadedDeclarations": [],
-                    "referencedDeclaration": 1516,
-                    "src": "527:11:15",
+                    "referencedDeclaration": 1573,
+                    "src": "954:11:15",
                     "typeDescriptions": {
                       "typeIdentifier": "t_address",
                       "typeString": "address"
                     }
                   }
                 ],
-                "id": 1523,
+                "id": 1580,
                 "modifierName": {
                   "argumentTypes": null,
-                  "id": 1518,
+                  "id": 1575,
                   "name": "IListing",
                   "nodeType": "Identifier",
                   "overloadedDeclarations": [],
-                  "referencedDeclaration": 2709,
-                  "src": "488:8:15",
+                  "referencedDeclaration": 2761,
+                  "src": "915:8:15",
                   "typeDescriptions": {
-                    "typeIdentifier": "t_type$_t_contract$_IListing_$2709_$",
+                    "typeIdentifier": "t_type$_t_contract$_IListing_$2761_$",
                     "typeString": "type(contract IListing)"
                   }
                 },
                 "nodeType": "ModifierInvocation",
-                "src": "488:51:15"
+                "src": "915:51:15"
               }
             ],
             "name": "Listing",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 1517,
+              "id": 1574,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 1510,
+                  "id": 1567,
                   "name": "_owner",
                   "nodeType": "VariableDeclaration",
-                  "scope": 1526,
-                  "src": "400:14:15",
+                  "scope": 1583,
+                  "src": "827:14:15",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
@@ -1748,10 +3483,10 @@
                     "typeString": "address"
                   },
                   "typeName": {
-                    "id": 1509,
+                    "id": 1566,
                     "name": "address",
                     "nodeType": "ElementaryTypeName",
-                    "src": "400:7:15",
+                    "src": "827:7:15",
                     "typeDescriptions": {
                       "typeIdentifier": "t_address",
                       "typeString": "address"
@@ -1762,11 +3497,11 @@
                 },
                 {
                   "constant": false,
-                  "id": 1512,
+                  "id": 1569,
                   "name": "_price",
                   "nodeType": "VariableDeclaration",
-                  "scope": 1526,
-                  "src": "420:11:15",
+                  "scope": 1583,
+                  "src": "847:11:15",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
@@ -1774,10 +3509,10 @@
                     "typeString": "uint256"
                   },
                   "typeName": {
-                    "id": 1511,
+                    "id": 1568,
                     "name": "uint",
                     "nodeType": "ElementaryTypeName",
-                    "src": "420:4:15",
+                    "src": "847:4:15",
                     "typeDescriptions": {
                       "typeIdentifier": "t_uint256",
                       "typeString": "uint256"
@@ -1788,11 +3523,11 @@
                 },
                 {
                   "constant": false,
-                  "id": 1514,
+                  "id": 1571,
                   "name": "_stakeAmount",
                   "nodeType": "VariableDeclaration",
-                  "scope": 1526,
-                  "src": "437:17:15",
+                  "scope": 1583,
+                  "src": "864:17:15",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
@@ -1800,10 +3535,10 @@
                     "typeString": "uint256"
                   },
                   "typeName": {
-                    "id": 1513,
+                    "id": 1570,
                     "name": "uint",
                     "nodeType": "ElementaryTypeName",
-                    "src": "437:4:15",
+                    "src": "864:4:15",
                     "typeDescriptions": {
                       "typeIdentifier": "t_uint256",
                       "typeString": "uint256"
@@ -1814,11 +3549,11 @@
                 },
                 {
                   "constant": false,
-                  "id": 1516,
+                  "id": 1573,
                   "name": "_gateKeeper",
                   "nodeType": "VariableDeclaration",
-                  "scope": 1526,
-                  "src": "460:19:15",
+                  "scope": 1583,
+                  "src": "887:19:15",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
@@ -1826,10 +3561,10 @@
                     "typeString": "address"
                   },
                   "typeName": {
-                    "id": 1515,
+                    "id": 1572,
                     "name": "address",
                     "nodeType": "ElementaryTypeName",
-                    "src": "460:7:15",
+                    "src": "887:7:15",
                     "typeDescriptions": {
                       "typeIdentifier": "t_address",
                       "typeString": "address"
@@ -1839,43 +3574,217 @@
                   "visibility": "internal"
                 }
               ],
-              "src": "394:89:15"
+              "src": "821:89:15"
             },
             "payable": false,
             "returnParameters": {
-              "id": 1524,
+              "id": 1581,
               "nodeType": "ParameterList",
               "parameters": [],
-              "src": "553:0:15"
+              "src": "980:0:15"
             },
-            "scope": 1610,
-            "src": "378:177:15",
+            "scope": 1712,
+            "src": "805:177:15",
             "stateMutability": "nonpayable",
             "superFunction": null,
             "visibility": "public"
           },
           {
             "body": {
-              "id": 1535,
+              "id": 1597,
               "nodeType": "Block",
-              "src": "638:25:15",
+              "src": "1129:53:15",
               "statements": [
                 {
                   "expression": {
                     "argumentTypes": null,
-                    "id": 1533,
+                    "id": 1591,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
                     "lValueRequested": false,
                     "leftHandSide": {
                       "argumentTypes": null,
-                      "id": 1531,
+                      "id": 1589,
+                      "name": "whitelisted",
+                      "nodeType": "Identifier",
+                      "overloadedDeclarations": [],
+                      "referencedDeclaration": 2669,
+                      "src": "1135:11:15",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_bool",
+                        "typeString": "bool"
+                      }
+                    },
+                    "nodeType": "Assignment",
+                    "operator": "=",
+                    "rightHandSide": {
+                      "argumentTypes": null,
+                      "hexValue": "66616c7365",
+                      "id": 1590,
+                      "isConstant": false,
+                      "isLValue": false,
+                      "isPure": true,
+                      "kind": "bool",
+                      "lValueRequested": false,
+                      "nodeType": "Literal",
+                      "src": "1149:5:15",
+                      "subdenomination": null,
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_bool",
+                        "typeString": "bool"
+                      },
+                      "value": "false"
+                    },
+                    "src": "1135:19:15",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_bool",
+                      "typeString": "bool"
+                    }
+                  },
+                  "id": 1592,
+                  "nodeType": "ExpressionStatement",
+                  "src": "1135:19:15"
+                },
+                {
+                  "expression": {
+                    "argumentTypes": null,
+                    "arguments": [
+                      {
+                        "argumentTypes": null,
+                        "id": 1594,
+                        "name": "this",
+                        "nodeType": "Identifier",
+                        "overloadedDeclarations": [],
+                        "referencedDeclaration": 4274,
+                        "src": "1172:4:15",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_contract$_Listing_$1712",
+                          "typeString": "contract Listing"
+                        }
+                      }
+                    ],
+                    "expression": {
+                      "argumentTypes": [
+                        {
+                          "typeIdentifier": "t_contract$_Listing_$1712",
+                          "typeString": "contract Listing"
+                        }
+                      ],
+                      "id": 1593,
+                      "name": "Blacklisted",
+                      "nodeType": "Identifier",
+                      "overloadedDeclarations": [],
+                      "referencedDeclaration": 1529,
+                      "src": "1160:11:15",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_function_event_nonpayable$_t_address_$returns$__$",
+                        "typeString": "function (address)"
+                      }
+                    },
+                    "id": 1595,
+                    "isConstant": false,
+                    "isLValue": false,
+                    "isPure": false,
+                    "kind": "functionCall",
+                    "lValueRequested": false,
+                    "names": [],
+                    "nodeType": "FunctionCall",
+                    "src": "1160:17:15",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_tuple$__$",
+                      "typeString": "tuple()"
+                    }
+                  },
+                  "id": 1596,
+                  "nodeType": "ExpressionStatement",
+                  "src": "1160:17:15"
+                }
+              ]
+            },
+            "documentation": "@notice         Sets whitelisted to false: the listing should not appear anymore",
+            "id": 1598,
+            "implemented": true,
+            "isConstructor": false,
+            "isDeclaredConst": false,
+            "modifiers": [
+              {
+                "arguments": [
+                  {
+                    "argumentTypes": null,
+                    "id": 1586,
+                    "name": "BLACKLIST_ROLE",
+                    "nodeType": "Identifier",
+                    "overloadedDeclarations": [],
+                    "referencedDeclaration": 1525,
+                    "src": "1106:14:15",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_bytes32",
+                      "typeString": "bytes32"
+                    }
+                  }
+                ],
+                "id": 1587,
+                "modifierName": {
+                  "argumentTypes": null,
+                  "id": 1585,
+                  "name": "auth",
+                  "nodeType": "Identifier",
+                  "overloadedDeclarations": [],
+                  "referencedDeclaration": 1447,
+                  "src": "1101:4:15",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_modifier$_t_bytes32_$",
+                    "typeString": "modifier (bytes32)"
+                  }
+                },
+                "nodeType": "ModifierInvocation",
+                "src": "1101:20:15"
+              }
+            ],
+            "name": "blacklist",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 1584,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "1098:2:15"
+            },
+            "payable": false,
+            "returnParameters": {
+              "id": 1588,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "1129:0:15"
+            },
+            "scope": 1712,
+            "src": "1080:102:15",
+            "stateMutability": "nonpayable",
+            "superFunction": null,
+            "visibility": "public"
+          },
+          {
+            "body": {
+              "id": 1612,
+              "nodeType": "Block",
+              "src": "1334:53:15",
+              "statements": [
+                {
+                  "expression": {
+                    "argumentTypes": null,
+                    "id": 1605,
+                    "isConstant": false,
+                    "isLValue": false,
+                    "isPure": false,
+                    "lValueRequested": false,
+                    "leftHandSide": {
+                      "argumentTypes": null,
+                      "id": 1603,
                       "name": "stake",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 2605,
-                      "src": "644:5:15",
+                      "referencedDeclaration": 2657,
+                      "src": "1340:5:15",
                       "typeDescriptions": {
                         "typeIdentifier": "t_uint256",
                         "typeString": "uint256"
@@ -1885,31 +3794,102 @@
                     "operator": "=",
                     "rightHandSide": {
                       "argumentTypes": null,
-                      "id": 1532,
+                      "id": 1604,
                       "name": "_stake",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 1528,
-                      "src": "652:6:15",
+                      "referencedDeclaration": 1600,
+                      "src": "1348:6:15",
                       "typeDescriptions": {
                         "typeIdentifier": "t_uint256",
                         "typeString": "uint256"
                       }
                     },
-                    "src": "644:14:15",
+                    "src": "1340:14:15",
                     "typeDescriptions": {
                       "typeIdentifier": "t_uint256",
                       "typeString": "uint256"
                     }
                   },
-                  "id": 1534,
+                  "id": 1606,
                   "nodeType": "ExpressionStatement",
-                  "src": "644:14:15"
+                  "src": "1340:14:15"
+                },
+                {
+                  "expression": {
+                    "argumentTypes": null,
+                    "arguments": [
+                      {
+                        "argumentTypes": null,
+                        "id": 1608,
+                        "name": "this",
+                        "nodeType": "Identifier",
+                        "overloadedDeclarations": [],
+                        "referencedDeclaration": 4274,
+                        "src": "1369:4:15",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_contract$_Listing_$1712",
+                          "typeString": "contract Listing"
+                        }
+                      },
+                      {
+                        "argumentTypes": null,
+                        "id": 1609,
+                        "name": "_stake",
+                        "nodeType": "Identifier",
+                        "overloadedDeclarations": [],
+                        "referencedDeclaration": 1600,
+                        "src": "1375:6:15",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_uint256",
+                          "typeString": "uint256"
+                        }
+                      }
+                    ],
+                    "expression": {
+                      "argumentTypes": [
+                        {
+                          "typeIdentifier": "t_contract$_Listing_$1712",
+                          "typeString": "contract Listing"
+                        },
+                        {
+                          "typeIdentifier": "t_uint256",
+                          "typeString": "uint256"
+                        }
+                      ],
+                      "id": 1607,
+                      "name": "StakeSet",
+                      "nodeType": "Identifier",
+                      "overloadedDeclarations": [],
+                      "referencedDeclaration": 1535,
+                      "src": "1360:8:15",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_function_event_nonpayable$_t_address_$_t_uint256_$returns$__$",
+                        "typeString": "function (address,uint256)"
+                      }
+                    },
+                    "id": 1610,
+                    "isConstant": false,
+                    "isLValue": false,
+                    "isPure": false,
+                    "kind": "functionCall",
+                    "lValueRequested": false,
+                    "names": [],
+                    "nodeType": "FunctionCall",
+                    "src": "1360:22:15",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_tuple$__$",
+                      "typeString": "tuple()"
+                    }
+                  },
+                  "id": 1611,
+                  "nodeType": "ExpressionStatement",
+                  "src": "1360:22:15"
                 }
               ]
             },
-            "documentation": "implementation of setters",
-            "id": 1536,
+            "documentation": "@notice         Sets the stake\n@param _stake   Stake",
+            "id": 1613,
             "implemented": true,
             "isConstructor": false,
             "isDeclaredConst": false,
@@ -1917,16 +3897,16 @@
             "name": "setStake",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 1529,
+              "id": 1601,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 1528,
+                  "id": 1600,
                   "name": "_stake",
                   "nodeType": "VariableDeclaration",
-                  "scope": 1536,
-                  "src": "618:11:15",
+                  "scope": 1613,
+                  "src": "1314:11:15",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
@@ -1934,10 +3914,10 @@
                     "typeString": "uint256"
                   },
                   "typeName": {
-                    "id": 1527,
+                    "id": 1599,
                     "name": "uint",
                     "nodeType": "ElementaryTypeName",
-                    "src": "618:4:15",
+                    "src": "1314:4:15",
                     "typeDescriptions": {
                       "typeIdentifier": "t_uint256",
                       "typeString": "uint256"
@@ -1947,43 +3927,43 @@
                   "visibility": "internal"
                 }
               ],
-              "src": "617:13:15"
+              "src": "1313:13:15"
             },
             "payable": false,
             "returnParameters": {
-              "id": 1530,
+              "id": 1602,
               "nodeType": "ParameterList",
               "parameters": [],
-              "src": "638:0:15"
+              "src": "1334:0:15"
             },
-            "scope": 1610,
-            "src": "600:63:15",
+            "scope": 1712,
+            "src": "1296:91:15",
             "stateMutability": "nonpayable",
-            "superFunction": 2654,
+            "superFunction": 2706,
             "visibility": "public"
           },
           {
             "body": {
-              "id": 1545,
+              "id": 1627,
               "nodeType": "Block",
-              "src": "725:45:15",
+              "src": "1591:93:15",
               "statements": [
                 {
                   "expression": {
                     "argumentTypes": null,
-                    "id": 1543,
+                    "id": 1620,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
                     "lValueRequested": false,
                     "leftHandSide": {
                       "argumentTypes": null,
-                      "id": 1541,
+                      "id": 1618,
                       "name": "challengesStake",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 2614,
-                      "src": "731:15:15",
+                      "referencedDeclaration": 2666,
+                      "src": "1597:15:15",
                       "typeDescriptions": {
                         "typeIdentifier": "t_uint256",
                         "typeString": "uint256"
@@ -1993,31 +3973,102 @@
                     "operator": "=",
                     "rightHandSide": {
                       "argumentTypes": null,
-                      "id": 1542,
+                      "id": 1619,
                       "name": "_challengesStake",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 1538,
-                      "src": "749:16:15",
+                      "referencedDeclaration": 1615,
+                      "src": "1615:16:15",
                       "typeDescriptions": {
                         "typeIdentifier": "t_uint256",
                         "typeString": "uint256"
                       }
                     },
-                    "src": "731:34:15",
+                    "src": "1597:34:15",
                     "typeDescriptions": {
                       "typeIdentifier": "t_uint256",
                       "typeString": "uint256"
                     }
                   },
-                  "id": 1544,
+                  "id": 1621,
                   "nodeType": "ExpressionStatement",
-                  "src": "731:34:15"
+                  "src": "1597:34:15"
+                },
+                {
+                  "expression": {
+                    "argumentTypes": null,
+                    "arguments": [
+                      {
+                        "argumentTypes": null,
+                        "id": 1623,
+                        "name": "this",
+                        "nodeType": "Identifier",
+                        "overloadedDeclarations": [],
+                        "referencedDeclaration": 4274,
+                        "src": "1656:4:15",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_contract$_Listing_$1712",
+                          "typeString": "contract Listing"
+                        }
+                      },
+                      {
+                        "argumentTypes": null,
+                        "id": 1624,
+                        "name": "_challengesStake",
+                        "nodeType": "Identifier",
+                        "overloadedDeclarations": [],
+                        "referencedDeclaration": 1615,
+                        "src": "1662:16:15",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_uint256",
+                          "typeString": "uint256"
+                        }
+                      }
+                    ],
+                    "expression": {
+                      "argumentTypes": [
+                        {
+                          "typeIdentifier": "t_contract$_Listing_$1712",
+                          "typeString": "contract Listing"
+                        },
+                        {
+                          "typeIdentifier": "t_uint256",
+                          "typeString": "uint256"
+                        }
+                      ],
+                      "id": 1622,
+                      "name": "ChallengesStakeSet",
+                      "nodeType": "Identifier",
+                      "overloadedDeclarations": [],
+                      "referencedDeclaration": 1541,
+                      "src": "1637:18:15",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_function_event_nonpayable$_t_address_$_t_uint256_$returns$__$",
+                        "typeString": "function (address,uint256)"
+                      }
+                    },
+                    "id": 1625,
+                    "isConstant": false,
+                    "isLValue": false,
+                    "isPure": false,
+                    "kind": "functionCall",
+                    "lValueRequested": false,
+                    "names": [],
+                    "nodeType": "FunctionCall",
+                    "src": "1637:42:15",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_tuple$__$",
+                      "typeString": "tuple()"
+                    }
+                  },
+                  "id": 1626,
+                  "nodeType": "ExpressionStatement",
+                  "src": "1637:42:15"
                 }
               ]
             },
-            "documentation": null,
-            "id": 1546,
+            "documentation": "@notice                   Sets the amount staked for all challenged\n@param _challengesStake   Amount staked for all challenges",
+            "id": 1628,
             "implemented": true,
             "isConstructor": false,
             "isDeclaredConst": false,
@@ -2025,16 +4076,16 @@
             "name": "setChallengesStake",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 1539,
+              "id": 1616,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 1538,
+                  "id": 1615,
                   "name": "_challengesStake",
                   "nodeType": "VariableDeclaration",
-                  "scope": 1546,
-                  "src": "695:21:15",
+                  "scope": 1628,
+                  "src": "1561:21:15",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
@@ -2042,10 +4093,10 @@
                     "typeString": "uint256"
                   },
                   "typeName": {
-                    "id": 1537,
+                    "id": 1614,
                     "name": "uint",
                     "nodeType": "ElementaryTypeName",
-                    "src": "695:4:15",
+                    "src": "1561:4:15",
                     "typeDescriptions": {
                       "typeIdentifier": "t_uint256",
                       "typeString": "uint256"
@@ -2055,43 +4106,43 @@
                   "visibility": "internal"
                 }
               ],
-              "src": "694:23:15"
+              "src": "1560:23:15"
             },
             "payable": false,
             "returnParameters": {
-              "id": 1540,
+              "id": 1617,
               "nodeType": "ParameterList",
               "parameters": [],
-              "src": "725:0:15"
+              "src": "1591:0:15"
             },
-            "scope": 1610,
-            "src": "667:103:15",
+            "scope": 1712,
+            "src": "1533:151:15",
             "stateMutability": "nonpayable",
-            "superFunction": 2659,
+            "superFunction": 2711,
             "visibility": "public"
           },
           {
             "body": {
-              "id": 1555,
+              "id": 1642,
               "nodeType": "Block",
-              "src": "822:35:15",
+              "src": "1843:73:15",
               "statements": [
                 {
                   "expression": {
                     "argumentTypes": null,
-                    "id": 1553,
+                    "id": 1635,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
                     "lValueRequested": false,
                     "leftHandSide": {
                       "argumentTypes": null,
-                      "id": 1551,
+                      "id": 1633,
                       "name": "challenges",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 2608,
-                      "src": "828:10:15",
+                      "referencedDeclaration": 2660,
+                      "src": "1849:10:15",
                       "typeDescriptions": {
                         "typeIdentifier": "t_uint256",
                         "typeString": "uint256"
@@ -2101,31 +4152,102 @@
                     "operator": "=",
                     "rightHandSide": {
                       "argumentTypes": null,
-                      "id": 1552,
+                      "id": 1634,
                       "name": "_challenges",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 1548,
-                      "src": "841:11:15",
+                      "referencedDeclaration": 1630,
+                      "src": "1862:11:15",
                       "typeDescriptions": {
                         "typeIdentifier": "t_uint256",
                         "typeString": "uint256"
                       }
                     },
-                    "src": "828:24:15",
+                    "src": "1849:24:15",
                     "typeDescriptions": {
                       "typeIdentifier": "t_uint256",
                       "typeString": "uint256"
                     }
                   },
-                  "id": 1554,
+                  "id": 1636,
                   "nodeType": "ExpressionStatement",
-                  "src": "828:24:15"
+                  "src": "1849:24:15"
+                },
+                {
+                  "expression": {
+                    "argumentTypes": null,
+                    "arguments": [
+                      {
+                        "argumentTypes": null,
+                        "id": 1638,
+                        "name": "this",
+                        "nodeType": "Identifier",
+                        "overloadedDeclarations": [],
+                        "referencedDeclaration": 4274,
+                        "src": "1893:4:15",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_contract$_Listing_$1712",
+                          "typeString": "contract Listing"
+                        }
+                      },
+                      {
+                        "argumentTypes": null,
+                        "id": 1639,
+                        "name": "_challenges",
+                        "nodeType": "Identifier",
+                        "overloadedDeclarations": [],
+                        "referencedDeclaration": 1630,
+                        "src": "1899:11:15",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_uint256",
+                          "typeString": "uint256"
+                        }
+                      }
+                    ],
+                    "expression": {
+                      "argumentTypes": [
+                        {
+                          "typeIdentifier": "t_contract$_Listing_$1712",
+                          "typeString": "contract Listing"
+                        },
+                        {
+                          "typeIdentifier": "t_uint256",
+                          "typeString": "uint256"
+                        }
+                      ],
+                      "id": 1637,
+                      "name": "ChallengesSet",
+                      "nodeType": "Identifier",
+                      "overloadedDeclarations": [],
+                      "referencedDeclaration": 1547,
+                      "src": "1879:13:15",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_function_event_nonpayable$_t_address_$_t_uint256_$returns$__$",
+                        "typeString": "function (address,uint256)"
+                      }
+                    },
+                    "id": 1640,
+                    "isConstant": false,
+                    "isLValue": false,
+                    "isPure": false,
+                    "kind": "functionCall",
+                    "lValueRequested": false,
+                    "names": [],
+                    "nodeType": "FunctionCall",
+                    "src": "1879:32:15",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_tuple$__$",
+                      "typeString": "tuple()"
+                    }
+                  },
+                  "id": 1641,
+                  "nodeType": "ExpressionStatement",
+                  "src": "1879:32:15"
                 }
               ]
             },
-            "documentation": null,
-            "id": 1556,
+            "documentation": "@notice              Sets the muber of challenges\n@param _challenges   Number of challenges",
+            "id": 1643,
             "implemented": true,
             "isConstructor": false,
             "isDeclaredConst": false,
@@ -2133,16 +4255,16 @@
             "name": "setChallenges",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 1549,
+              "id": 1631,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 1548,
+                  "id": 1630,
                   "name": "_challenges",
                   "nodeType": "VariableDeclaration",
-                  "scope": 1556,
-                  "src": "797:16:15",
+                  "scope": 1643,
+                  "src": "1818:16:15",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
@@ -2150,10 +4272,10 @@
                     "typeString": "uint256"
                   },
                   "typeName": {
-                    "id": 1547,
+                    "id": 1629,
                     "name": "uint",
                     "nodeType": "ElementaryTypeName",
-                    "src": "797:4:15",
+                    "src": "1818:4:15",
                     "typeDescriptions": {
                       "typeIdentifier": "t_uint256",
                       "typeString": "uint256"
@@ -2163,43 +4285,43 @@
                   "visibility": "internal"
                 }
               ],
-              "src": "796:18:15"
+              "src": "1817:18:15"
             },
             "payable": false,
             "returnParameters": {
-              "id": 1550,
+              "id": 1632,
               "nodeType": "ParameterList",
               "parameters": [],
-              "src": "822:0:15"
+              "src": "1843:0:15"
             },
-            "scope": 1610,
-            "src": "774:83:15",
+            "scope": 1712,
+            "src": "1795:121:15",
             "stateMutability": "nonpayable",
-            "superFunction": 2664,
+            "superFunction": 2716,
             "visibility": "public"
           },
           {
             "body": {
-              "id": 1565,
+              "id": 1657,
               "nodeType": "Block",
-              "src": "911:37:15",
+              "src": "2088:77:15",
               "statements": [
                 {
                   "expression": {
                     "argumentTypes": null,
-                    "id": 1563,
+                    "id": 1650,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
                     "lValueRequested": false,
                     "leftHandSide": {
                       "argumentTypes": null,
-                      "id": 1561,
+                      "id": 1648,
                       "name": "whitelisted",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 2617,
-                      "src": "917:11:15",
+                      "referencedDeclaration": 2669,
+                      "src": "2094:11:15",
                       "typeDescriptions": {
                         "typeIdentifier": "t_bool",
                         "typeString": "bool"
@@ -2209,31 +4331,102 @@
                     "operator": "=",
                     "rightHandSide": {
                       "argumentTypes": null,
-                      "id": 1562,
+                      "id": 1649,
                       "name": "_whitelisted",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 1558,
-                      "src": "931:12:15",
+                      "referencedDeclaration": 1645,
+                      "src": "2108:12:15",
                       "typeDescriptions": {
                         "typeIdentifier": "t_bool",
                         "typeString": "bool"
                       }
                     },
-                    "src": "917:26:15",
+                    "src": "2094:26:15",
                     "typeDescriptions": {
                       "typeIdentifier": "t_bool",
                       "typeString": "bool"
                     }
                   },
-                  "id": 1564,
+                  "id": 1651,
                   "nodeType": "ExpressionStatement",
-                  "src": "917:26:15"
+                  "src": "2094:26:15"
+                },
+                {
+                  "expression": {
+                    "argumentTypes": null,
+                    "arguments": [
+                      {
+                        "argumentTypes": null,
+                        "id": 1653,
+                        "name": "this",
+                        "nodeType": "Identifier",
+                        "overloadedDeclarations": [],
+                        "referencedDeclaration": 4274,
+                        "src": "2141:4:15",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_contract$_Listing_$1712",
+                          "typeString": "contract Listing"
+                        }
+                      },
+                      {
+                        "argumentTypes": null,
+                        "id": 1654,
+                        "name": "_whitelisted",
+                        "nodeType": "Identifier",
+                        "overloadedDeclarations": [],
+                        "referencedDeclaration": 1645,
+                        "src": "2147:12:15",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_bool",
+                          "typeString": "bool"
+                        }
+                      }
+                    ],
+                    "expression": {
+                      "argumentTypes": [
+                        {
+                          "typeIdentifier": "t_contract$_Listing_$1712",
+                          "typeString": "contract Listing"
+                        },
+                        {
+                          "typeIdentifier": "t_bool",
+                          "typeString": "bool"
+                        }
+                      ],
+                      "id": 1652,
+                      "name": "WhitelistedSet",
+                      "nodeType": "Identifier",
+                      "overloadedDeclarations": [],
+                      "referencedDeclaration": 1553,
+                      "src": "2126:14:15",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_function_event_nonpayable$_t_address_$_t_bool_$returns$__$",
+                        "typeString": "function (address,bool)"
+                      }
+                    },
+                    "id": 1655,
+                    "isConstant": false,
+                    "isLValue": false,
+                    "isPure": false,
+                    "kind": "functionCall",
+                    "lValueRequested": false,
+                    "names": [],
+                    "nodeType": "FunctionCall",
+                    "src": "2126:34:15",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_tuple$__$",
+                      "typeString": "tuple()"
+                    }
+                  },
+                  "id": 1656,
+                  "nodeType": "ExpressionStatement",
+                  "src": "2126:34:15"
                 }
               ]
             },
-            "documentation": null,
-            "id": 1566,
+            "documentation": "@notice               Sets whether or not the listing is whitelisted\n@param _whitelisted   Whitelisted",
+            "id": 1658,
             "implemented": true,
             "isConstructor": false,
             "isDeclaredConst": false,
@@ -2241,16 +4434,16 @@
             "name": "setWhitelisted",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 1559,
+              "id": 1646,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 1558,
+                  "id": 1645,
                   "name": "_whitelisted",
                   "nodeType": "VariableDeclaration",
-                  "scope": 1566,
-                  "src": "885:17:15",
+                  "scope": 1658,
+                  "src": "2062:17:15",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
@@ -2258,10 +4451,10 @@
                     "typeString": "bool"
                   },
                   "typeName": {
-                    "id": 1557,
+                    "id": 1644,
                     "name": "bool",
                     "nodeType": "ElementaryTypeName",
-                    "src": "885:4:15",
+                    "src": "2062:4:15",
                     "typeDescriptions": {
                       "typeIdentifier": "t_bool",
                       "typeString": "bool"
@@ -2271,43 +4464,43 @@
                   "visibility": "internal"
                 }
               ],
-              "src": "884:19:15"
+              "src": "2061:19:15"
             },
             "payable": false,
             "returnParameters": {
-              "id": 1560,
+              "id": 1647,
               "nodeType": "ParameterList",
               "parameters": [],
-              "src": "911:0:15"
+              "src": "2088:0:15"
             },
-            "scope": 1610,
-            "src": "861:87:15",
+            "scope": 1712,
+            "src": "2038:127:15",
             "stateMutability": "nonpayable",
-            "superFunction": 2669,
+            "superFunction": 2721,
             "visibility": "public"
           },
           {
             "body": {
-              "id": 1575,
+              "id": 1672,
               "nodeType": "Block",
-              "src": "990:25:15",
+              "src": "2275:53:15",
               "statements": [
                 {
                   "expression": {
                     "argumentTypes": null,
-                    "id": 1573,
+                    "id": 1665,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
                     "lValueRequested": false,
                     "leftHandSide": {
                       "argumentTypes": null,
-                      "id": 1571,
+                      "id": 1663,
                       "name": "price",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 2602,
-                      "src": "996:5:15",
+                      "referencedDeclaration": 2654,
+                      "src": "2281:5:15",
                       "typeDescriptions": {
                         "typeIdentifier": "t_uint256",
                         "typeString": "uint256"
@@ -2317,31 +4510,102 @@
                     "operator": "=",
                     "rightHandSide": {
                       "argumentTypes": null,
-                      "id": 1572,
+                      "id": 1664,
                       "name": "_price",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 1568,
-                      "src": "1004:6:15",
+                      "referencedDeclaration": 1660,
+                      "src": "2289:6:15",
                       "typeDescriptions": {
                         "typeIdentifier": "t_uint256",
                         "typeString": "uint256"
                       }
                     },
-                    "src": "996:14:15",
+                    "src": "2281:14:15",
                     "typeDescriptions": {
                       "typeIdentifier": "t_uint256",
                       "typeString": "uint256"
                     }
                   },
-                  "id": 1574,
+                  "id": 1666,
                   "nodeType": "ExpressionStatement",
-                  "src": "996:14:15"
+                  "src": "2281:14:15"
+                },
+                {
+                  "expression": {
+                    "argumentTypes": null,
+                    "arguments": [
+                      {
+                        "argumentTypes": null,
+                        "id": 1668,
+                        "name": "this",
+                        "nodeType": "Identifier",
+                        "overloadedDeclarations": [],
+                        "referencedDeclaration": 4274,
+                        "src": "2310:4:15",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_contract$_Listing_$1712",
+                          "typeString": "contract Listing"
+                        }
+                      },
+                      {
+                        "argumentTypes": null,
+                        "id": 1669,
+                        "name": "_price",
+                        "nodeType": "Identifier",
+                        "overloadedDeclarations": [],
+                        "referencedDeclaration": 1660,
+                        "src": "2316:6:15",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_uint256",
+                          "typeString": "uint256"
+                        }
+                      }
+                    ],
+                    "expression": {
+                      "argumentTypes": [
+                        {
+                          "typeIdentifier": "t_contract$_Listing_$1712",
+                          "typeString": "contract Listing"
+                        },
+                        {
+                          "typeIdentifier": "t_uint256",
+                          "typeString": "uint256"
+                        }
+                      ],
+                      "id": 1667,
+                      "name": "PriceSet",
+                      "nodeType": "Identifier",
+                      "overloadedDeclarations": [],
+                      "referencedDeclaration": 1559,
+                      "src": "2301:8:15",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_function_event_nonpayable$_t_address_$_t_uint256_$returns$__$",
+                        "typeString": "function (address,uint256)"
+                      }
+                    },
+                    "id": 1670,
+                    "isConstant": false,
+                    "isLValue": false,
+                    "isPure": false,
+                    "kind": "functionCall",
+                    "lValueRequested": false,
+                    "names": [],
+                    "nodeType": "FunctionCall",
+                    "src": "2301:22:15",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_tuple$__$",
+                      "typeString": "tuple()"
+                    }
+                  },
+                  "id": 1671,
+                  "nodeType": "ExpressionStatement",
+                  "src": "2301:22:15"
                 }
               ]
             },
-            "documentation": null,
-            "id": 1576,
+            "documentation": "@notice         Sets the price\n@param _price   Price",
+            "id": 1673,
             "implemented": true,
             "isConstructor": false,
             "isDeclaredConst": false,
@@ -2349,16 +4613,16 @@
             "name": "setPrice",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 1569,
+              "id": 1661,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 1568,
+                  "id": 1660,
                   "name": "_price",
                   "nodeType": "VariableDeclaration",
-                  "scope": 1576,
-                  "src": "970:11:15",
+                  "scope": 1673,
+                  "src": "2255:11:15",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
@@ -2366,10 +4630,10 @@
                     "typeString": "uint256"
                   },
                   "typeName": {
-                    "id": 1567,
+                    "id": 1659,
                     "name": "uint",
                     "nodeType": "ElementaryTypeName",
-                    "src": "970:4:15",
+                    "src": "2255:4:15",
                     "typeDescriptions": {
                       "typeIdentifier": "t_uint256",
                       "typeString": "uint256"
@@ -2379,26 +4643,26 @@
                   "visibility": "internal"
                 }
               ],
-              "src": "969:13:15"
+              "src": "2254:13:15"
             },
             "payable": false,
             "returnParameters": {
-              "id": 1570,
+              "id": 1662,
               "nodeType": "ParameterList",
               "parameters": [],
-              "src": "990:0:15"
+              "src": "2275:0:15"
             },
-            "scope": 1610,
-            "src": "952:63:15",
+            "scope": 1712,
+            "src": "2237:91:15",
             "stateMutability": "nonpayable",
-            "superFunction": 2674,
+            "superFunction": 2726,
             "visibility": "public"
           },
           {
             "body": {
-              "id": 1587,
+              "id": 1689,
               "nodeType": "Block",
-              "src": "1069:42:15",
+              "src": "2487:82:15",
               "statements": [
                 {
                   "expression": {
@@ -2406,12 +4670,12 @@
                     "arguments": [
                       {
                         "argumentTypes": null,
-                        "id": 1584,
+                        "id": 1681,
                         "name": "_challengeID",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 1578,
-                        "src": "1093:12:15",
+                        "referencedDeclaration": 1675,
+                        "src": "2511:12:15",
                         "typeDescriptions": {
                           "typeIdentifier": "t_uint256",
                           "typeString": "uint256"
@@ -2427,18 +4691,18 @@
                       ],
                       "expression": {
                         "argumentTypes": null,
-                        "id": 1581,
+                        "id": 1678,
                         "name": "challengeIDs",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 2611,
-                        "src": "1075:12:15",
+                        "referencedDeclaration": 2663,
+                        "src": "2493:12:15",
                         "typeDescriptions": {
                           "typeIdentifier": "t_array$_t_uint256_$dyn_storage",
                           "typeString": "uint256[] storage ref"
                         }
                       },
-                      "id": 1583,
+                      "id": 1680,
                       "isConstant": false,
                       "isLValue": false,
                       "isPure": false,
@@ -2446,13 +4710,13 @@
                       "memberName": "push",
                       "nodeType": "MemberAccess",
                       "referencedDeclaration": null,
-                      "src": "1075:17:15",
+                      "src": "2493:17:15",
                       "typeDescriptions": {
                         "typeIdentifier": "t_function_arraypush_nonpayable$_t_uint256_$returns$_t_uint256_$",
                         "typeString": "function (uint256) returns (uint256)"
                       }
                     },
-                    "id": 1585,
+                    "id": 1682,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
@@ -2460,20 +4724,91 @@
                     "lValueRequested": false,
                     "names": [],
                     "nodeType": "FunctionCall",
-                    "src": "1075:31:15",
+                    "src": "2493:31:15",
                     "typeDescriptions": {
                       "typeIdentifier": "t_uint256",
                       "typeString": "uint256"
                     }
                   },
-                  "id": 1586,
+                  "id": 1683,
                   "nodeType": "ExpressionStatement",
-                  "src": "1075:31:15"
+                  "src": "2493:31:15"
+                },
+                {
+                  "expression": {
+                    "argumentTypes": null,
+                    "arguments": [
+                      {
+                        "argumentTypes": null,
+                        "id": 1685,
+                        "name": "this",
+                        "nodeType": "Identifier",
+                        "overloadedDeclarations": [],
+                        "referencedDeclaration": 4274,
+                        "src": "2545:4:15",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_contract$_Listing_$1712",
+                          "typeString": "contract Listing"
+                        }
+                      },
+                      {
+                        "argumentTypes": null,
+                        "id": 1686,
+                        "name": "_challengeID",
+                        "nodeType": "Identifier",
+                        "overloadedDeclarations": [],
+                        "referencedDeclaration": 1675,
+                        "src": "2551:12:15",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_uint256",
+                          "typeString": "uint256"
+                        }
+                      }
+                    ],
+                    "expression": {
+                      "argumentTypes": [
+                        {
+                          "typeIdentifier": "t_contract$_Listing_$1712",
+                          "typeString": "contract Listing"
+                        },
+                        {
+                          "typeIdentifier": "t_uint256",
+                          "typeString": "uint256"
+                        }
+                      ],
+                      "id": 1684,
+                      "name": "ChallengeIDSet",
+                      "nodeType": "Identifier",
+                      "overloadedDeclarations": [],
+                      "referencedDeclaration": 1565,
+                      "src": "2530:14:15",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_function_event_nonpayable$_t_address_$_t_uint256_$returns$__$",
+                        "typeString": "function (address,uint256)"
+                      }
+                    },
+                    "id": 1687,
+                    "isConstant": false,
+                    "isLValue": false,
+                    "isPure": false,
+                    "kind": "functionCall",
+                    "lValueRequested": false,
+                    "names": [],
+                    "nodeType": "FunctionCall",
+                    "src": "2530:34:15",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_tuple$__$",
+                      "typeString": "tuple()"
+                    }
+                  },
+                  "id": 1688,
+                  "nodeType": "ExpressionStatement",
+                  "src": "2530:34:15"
                 }
               ]
             },
-            "documentation": null,
-            "id": 1588,
+            "documentation": "@notice               Adds a challenge ID in the array\n@param _challengeID   Challenge ID",
+            "id": 1690,
             "implemented": true,
             "isConstructor": false,
             "isDeclaredConst": false,
@@ -2481,16 +4816,16 @@
             "name": "addChallengeID",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 1579,
+              "id": 1676,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 1578,
+                  "id": 1675,
                   "name": "_challengeID",
                   "nodeType": "VariableDeclaration",
-                  "scope": 1588,
-                  "src": "1043:17:15",
+                  "scope": 1690,
+                  "src": "2461:17:15",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
@@ -2498,10 +4833,10 @@
                     "typeString": "uint256"
                   },
                   "typeName": {
-                    "id": 1577,
+                    "id": 1674,
                     "name": "uint",
                     "nodeType": "ElementaryTypeName",
-                    "src": "1043:4:15",
+                    "src": "2461:4:15",
                     "typeDescriptions": {
                       "typeIdentifier": "t_uint256",
                       "typeString": "uint256"
@@ -2511,44 +4846,44 @@
                   "visibility": "internal"
                 }
               ],
-              "src": "1042:19:15"
+              "src": "2460:19:15"
             },
             "payable": false,
             "returnParameters": {
-              "id": 1580,
+              "id": 1677,
               "nodeType": "ParameterList",
               "parameters": [],
-              "src": "1069:0:15"
+              "src": "2487:0:15"
             },
-            "scope": 1610,
-            "src": "1019:92:15",
+            "scope": 1712,
+            "src": "2437:132:15",
             "stateMutability": "nonpayable",
-            "superFunction": 2679,
+            "superFunction": 2731,
             "visibility": "public"
           },
           {
             "body": {
-              "id": 1596,
+              "id": 1698,
               "nodeType": "Block",
-              "src": "1177:37:15",
+              "src": "2739:37:15",
               "statements": [
                 {
                   "expression": {
                     "argumentTypes": null,
                     "expression": {
                       "argumentTypes": null,
-                      "id": 1593,
+                      "id": 1695,
                       "name": "challengeIDs",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 2611,
-                      "src": "1190:12:15",
+                      "referencedDeclaration": 2663,
+                      "src": "2752:12:15",
                       "typeDescriptions": {
                         "typeIdentifier": "t_array$_t_uint256_$dyn_storage",
                         "typeString": "uint256[] storage ref"
                       }
                     },
-                    "id": 1594,
+                    "id": 1696,
                     "isConstant": false,
                     "isLValue": true,
                     "isPure": false,
@@ -2556,21 +4891,21 @@
                     "memberName": "length",
                     "nodeType": "MemberAccess",
                     "referencedDeclaration": null,
-                    "src": "1190:19:15",
+                    "src": "2752:19:15",
                     "typeDescriptions": {
                       "typeIdentifier": "t_uint256",
                       "typeString": "uint256"
                     }
                   },
-                  "functionReturnParameters": 1592,
-                  "id": 1595,
+                  "functionReturnParameters": 1694,
+                  "id": 1697,
                   "nodeType": "Return",
-                  "src": "1183:26:15"
+                  "src": "2745:26:15"
                 }
               ]
             },
-            "documentation": null,
-            "id": 1597,
+            "documentation": "@notice         Get length of challenge ID array",
+            "id": 1699,
             "implemented": true,
             "isConstructor": false,
             "isDeclaredConst": false,
@@ -2578,23 +4913,23 @@
             "name": "getChallengeIDsLength",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 1589,
+              "id": 1691,
               "nodeType": "ParameterList",
               "parameters": [],
-              "src": "1145:2:15"
+              "src": "2707:2:15"
             },
             "payable": false,
             "returnParameters": {
-              "id": 1592,
+              "id": 1694,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 1591,
+                  "id": 1693,
                   "name": "length",
                   "nodeType": "VariableDeclaration",
-                  "scope": 1597,
-                  "src": "1164:11:15",
+                  "scope": 1699,
+                  "src": "2726:11:15",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
@@ -2602,10 +4937,10 @@
                     "typeString": "uint256"
                   },
                   "typeName": {
-                    "id": 1590,
+                    "id": 1692,
                     "name": "uint",
                     "nodeType": "ElementaryTypeName",
-                    "src": "1164:4:15",
+                    "src": "2726:4:15",
                     "typeDescriptions": {
                       "typeIdentifier": "t_uint256",
                       "typeString": "uint256"
@@ -2615,45 +4950,45 @@
                   "visibility": "internal"
                 }
               ],
-              "src": "1163:13:15"
+              "src": "2725:13:15"
             },
-            "scope": 1610,
-            "src": "1115:99:15",
+            "scope": 1712,
+            "src": "2677:99:15",
             "stateMutability": "nonpayable",
-            "superFunction": 2684,
+            "superFunction": 2736,
             "visibility": "public"
           },
           {
             "body": {
-              "id": 1608,
+              "id": 1710,
               "nodeType": "Block",
-              "src": "1296:38:15",
+              "src": "2946:38:15",
               "statements": [
                 {
                   "expression": {
                     "argumentTypes": null,
                     "baseExpression": {
                       "argumentTypes": null,
-                      "id": 1604,
+                      "id": 1706,
                       "name": "challengeIDs",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 2611,
-                      "src": "1309:12:15",
+                      "referencedDeclaration": 2663,
+                      "src": "2959:12:15",
                       "typeDescriptions": {
                         "typeIdentifier": "t_array$_t_uint256_$dyn_storage",
                         "typeString": "uint256[] storage ref"
                       }
                     },
-                    "id": 1606,
+                    "id": 1708,
                     "indexExpression": {
                       "argumentTypes": null,
-                      "id": 1605,
+                      "id": 1707,
                       "name": "_index",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 1599,
-                      "src": "1322:6:15",
+                      "referencedDeclaration": 1701,
+                      "src": "2972:6:15",
                       "typeDescriptions": {
                         "typeIdentifier": "t_uint256",
                         "typeString": "uint256"
@@ -2664,21 +4999,21 @@
                     "isPure": false,
                     "lValueRequested": false,
                     "nodeType": "IndexAccess",
-                    "src": "1309:20:15",
+                    "src": "2959:20:15",
                     "typeDescriptions": {
                       "typeIdentifier": "t_uint256",
                       "typeString": "uint256"
                     }
                   },
-                  "functionReturnParameters": 1603,
-                  "id": 1607,
+                  "functionReturnParameters": 1705,
+                  "id": 1709,
                   "nodeType": "Return",
-                  "src": "1302:27:15"
+                  "src": "2952:27:15"
                 }
               ]
             },
-            "documentation": null,
-            "id": 1609,
+            "documentation": "@notice         Get challenge ID at index in array\n@param _index   Index",
+            "id": 1711,
             "implemented": true,
             "isConstructor": false,
             "isDeclaredConst": false,
@@ -2686,16 +5021,16 @@
             "name": "getChallengeIDAtIndex",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 1600,
+              "id": 1702,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 1599,
+                  "id": 1701,
                   "name": "_index",
                   "nodeType": "VariableDeclaration",
-                  "scope": 1609,
-                  "src": "1249:11:15",
+                  "scope": 1711,
+                  "src": "2899:11:15",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
@@ -2703,10 +5038,10 @@
                     "typeString": "uint256"
                   },
                   "typeName": {
-                    "id": 1598,
+                    "id": 1700,
                     "name": "uint",
                     "nodeType": "ElementaryTypeName",
-                    "src": "1249:4:15",
+                    "src": "2899:4:15",
                     "typeDescriptions": {
                       "typeIdentifier": "t_uint256",
                       "typeString": "uint256"
@@ -2716,20 +5051,20 @@
                   "visibility": "internal"
                 }
               ],
-              "src": "1248:13:15"
+              "src": "2898:13:15"
             },
             "payable": false,
             "returnParameters": {
-              "id": 1603,
+              "id": 1705,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 1602,
+                  "id": 1704,
                   "name": "challengeID",
                   "nodeType": "VariableDeclaration",
-                  "scope": 1609,
-                  "src": "1278:16:15",
+                  "scope": 1711,
+                  "src": "2928:16:15",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
@@ -2737,10 +5072,10 @@
                     "typeString": "uint256"
                   },
                   "typeName": {
-                    "id": 1601,
+                    "id": 1703,
                     "name": "uint",
                     "nodeType": "ElementaryTypeName",
-                    "src": "1278:4:15",
+                    "src": "2928:4:15",
                     "typeDescriptions": {
                       "typeIdentifier": "t_uint256",
                       "typeString": "uint256"
@@ -2750,20 +5085,20 @@
                   "visibility": "internal"
                 }
               ],
-              "src": "1277:18:15"
+              "src": "2927:18:15"
             },
-            "scope": 1610,
-            "src": "1218:116:15",
+            "scope": 1712,
+            "src": "2868:116:15",
             "stateMutability": "nonpayable",
-            "superFunction": 2691,
+            "superFunction": 2743,
             "visibility": "public"
           }
         ],
-        "scope": 1611,
-        "src": "64:1272:15"
+        "scope": 1713,
+        "src": "64:2922:15"
       }
     ],
-    "src": "0:1337:15"
+    "src": "0:2987:15"
   },
   "compiler": {
     "name": "solc",
@@ -2771,5 +5106,5 @@
   },
   "networks": {},
   "schemaVersion": "2.0.0",
-  "updatedAt": "2018-04-06T07:53:24.451Z"
+  "updatedAt": "2018-04-09T11:17:56.272Z"
 }

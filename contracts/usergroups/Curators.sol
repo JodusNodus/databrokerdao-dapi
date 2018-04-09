@@ -4,7 +4,7 @@ import "@settlemint/solidity-mint/contracts/authentication/RoleRegistry.sol";
 
 
 /**
- * Contains all the normal users of this system
+ * Contains all the curators of this system
  */
 contract Curators is RoleRegistry {
 

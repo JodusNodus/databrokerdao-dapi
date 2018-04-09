@@ -1,7 +1,7 @@
 const Token = artifacts.require('DtxToken.sol')
 const TokenMinter = artifacts.require('DtxMinter.sol')
 const GateKeeper = artifacts.require('GateKeeper')
-const { createPermission, grantPermission } = require('./helpers/permissions')
+const { createPermission } = require('./helpers/permissions')
 
 async function deployTokenMinter(deployer, network, accounts) {
   const dGateKeeper = await GateKeeper.deployed()
@@ -10,7 +10,7 @@ async function deployTokenMinter(deployer, network, accounts) {
   try {
     // Deploy minter
     await deployer.deploy(TokenMinter, dToken.address, dGateKeeper.address)
-    const dMinter = await TokenMinter.deployed()
+    const dTokenMinter = await TokenMinter.deployed()
 
     try {
       await createPermission(
@@ -18,7 +18,7 @@ async function deployTokenMinter(deployer, network, accounts) {
         accounts[0],
         dToken,
         'MINT_ROLE',
-        dMinter.address
+        dTokenMinter.address
       )
     } catch (error) {
       console.log('Error granting permissions on the Minter', error)

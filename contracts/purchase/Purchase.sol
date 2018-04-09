@@ -6,7 +6,9 @@ import "@settlemint/solidity-mint/contracts/utility/caching/Cacher.sol";
 import "@settlemint/solidity-mint/contracts/utility/caching/CachedByAddress.sol";
 import "@settlemint/solidity-mint/contracts/utility/metadata/MetaDataContainer.sol";
 
-
+/**
+ * Contains one sensor purchase entity
+ */
 contract Purchase is Secured, Cacher, CachedByAddress, MetaDataContainer {
 
   uint public price; // price per second for which access was purchased
@@ -38,7 +40,7 @@ contract Purchase is Secured, Cacher, CachedByAddress, MetaDataContainer {
   * implementation of cacher methods
   */
   function invalidateCache(address _cachedAddress, bytes32 /*_cachedBytes32*/, uint256 /*_cachedUint256*/) public {
-    AddressCacheInvalidated(_cachedAddress);
+    emit AddressCacheInvalidated(_cachedAddress);
   }
 
   /**

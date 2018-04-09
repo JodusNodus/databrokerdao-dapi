@@ -1,7 +1,7 @@
 const Token = artifacts.require('DtxToken.sol')
 const TokenRegistry = artifacts.require('DtxTokenRegistry.sol')
 const GateKeeper = artifacts.require('GateKeeper')
-const { createPermission, grantPermission } = require('./helpers/permissions')
+const { createPermission } = require('./helpers/permissions')
 
 async function deployTokenSystem(deployer, network, accounts) {
   const dGateKeeper = await GateKeeper.deployed()
@@ -9,12 +9,12 @@ async function deployTokenSystem(deployer, network, accounts) {
   try {
     // Deploy token registry
     await deployer.deploy(TokenRegistry, dGateKeeper.address)
-    const dRegistry = await TokenRegistry.deployed()
+    const dTokenRegistry = await TokenRegistry.deployed()
     try {
       await createPermission(
         dGateKeeper,
         accounts[0],
-        dRegistry,
+        dTokenRegistry,
         'LIST_TOKEN_ROLE',
         accounts[0]
       )
@@ -27,11 +27,10 @@ async function deployTokenSystem(deployer, network, accounts) {
       Token,
       'DTX',
       18,
-      dRegistry.address,
+      dTokenRegistry.address,
       dGateKeeper.address
     )
-    console.log(Token.address)
-    await dRegistry.addToken('DTX', Token.address)
+    await dTokenRegistry.addToken('DTX', Token.address)
   } catch (e) {
     console.log(e)
   }

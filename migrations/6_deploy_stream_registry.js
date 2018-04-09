@@ -13,8 +13,8 @@ const Token = artifacts.require('DtxToken.sol')
 const GateKeeper = artifacts.require('GateKeeper')
 
 async function enlistStream(deployer, network, accounts) {
-  const registry = await StreamRegistry.deployed()
-  const token = await Token.deployed()
+  const dStreamRegistry = await StreamRegistry.deployed()
+  const dToken = await Token.deployed()
 
   // Add metadata
   const metadata = {
@@ -40,12 +40,12 @@ async function enlistStream(deployer, network, accounts) {
     const ipfsHash = await addIpfs(metadata, authToken, network)
 
     // First, approve!
-    await token.approve(registry.address, '10', {
+    await dToken.approve(dStreamRegistry.address, '10', {
       from: accounts[0],
     })
 
     // Enlist
-    const tx = await registry.enlist('10', '10', ipfsHash || '', {
+    const tx = await dStreamRegistry.enlist('10', '10', ipfsHash || '', {
       from: accounts[0],
     })
 
@@ -53,7 +53,7 @@ async function enlistStream(deployer, network, accounts) {
     const streamAddress = event.args.listing
     process.env.STREAM_ADDRESS = streamAddress // Setting it in env variables to pass it to next migration
   } else {
-    console.log('AUTH FAILED')
+    console.log('AUTH FAILED: not enlisting demo sensor')
   }
 }
 
@@ -77,7 +77,6 @@ async function approveRegistryFor(addresses, dDtxToken, index) {
 async function deployRegistry(deployer, network, accounts) {
   const dGateKeeper = await GateKeeper.deployed()
   const dDtxToken = await Token.deployed()
-  let dTokenCuratedRegistry
 
   await deployer.deploy(StreamFactory, dGateKeeper.address)
   const dStreamFactory = await StreamFactory.deployed()
@@ -95,7 +94,8 @@ async function deployRegistry(deployer, network, accounts) {
     dDtxToken.address,
     dStreamFactory.address
   )
-  dTokenCuratedRegistry = await StreamRegistry.deployed()
+
+  const dStreamRegistry = await StreamRegistry.deployed()
 
   // Grant mint permission: we will mint in approveRegistryFor
   await grantPermission(dGateKeeper, dDtxToken, 'MINT_ROLE', accounts[0])
@@ -111,16 +111,14 @@ async function deployRegistry(deployer, network, accounts) {
   await createPermission(
     dGateKeeper,
     accounts[0],
-    dTokenCuratedRegistry,
+    dStreamRegistry,
     'WITHDRAW_FUNDS_ROLE',
     accounts[0]
   )
-
-  // Set curator permissions.
   await createPermission(
     dGateKeeper,
     accounts[0],
-    dTokenCuratedRegistry,
+    dStreamRegistry,
     'CURATE_CHALLENGE_ROLE',
     accounts[0]
   )

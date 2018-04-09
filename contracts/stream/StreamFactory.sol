@@ -4,7 +4,9 @@ import "./Stream.sol";
 import "./StreamRegistry.sol";
 import "@settlemint/solidity-mint/contracts/marketplaces/tokencuratedregistry/ListingFactory.sol";
 
-
+/**
+ * Creates new sensor streams
+ */
 contract StreamFactory is ListingFactory {
 
   function StreamFactory(address _gateKeeper) ListingFactory(_gateKeeper) public {}
@@ -25,7 +27,7 @@ contract StreamFactory is ListingFactory {
     _newStream.updateMetaData(_metadata);
 
     // Event
-    ListingCreated(address(_newStream));
+    emit ListingCreated(address(_newStream));
 
     // Add listing to token curated registry
     StreamRegistry streamRegistry = StreamRegistry(_tcr);
