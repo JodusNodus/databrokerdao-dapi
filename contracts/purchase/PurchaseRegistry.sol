@@ -11,7 +11,9 @@ import "@settlemint/solidity-mint/contracts/utility/caching/Cacher.sol";
 import "@settlemint/solidity-mint/contracts/utility/caching/CachedByBytes32.sol";
 import "zeppelin-solidity/contracts/math/SafeMath.sol";
 
-
+/**
+ * Contains all purchases of sensors
+ */
 contract PurchaseRegistry is Secured, Syncable, Cacher, CachedByBytes32 {
   using SafeMath for uint256;
 

@@ -53,7 +53,7 @@ async function enlistStream(deployer, network, accounts) {
     const streamAddress = event.args.listing
     process.env.STREAM_ADDRESS = streamAddress // Setting it in env variables to pass it to next migration
   } else {
-    console.log('AUTH FAILED')
+    console.log('AUTH FAILED: not enlisting demo sensor')
   }
 }
 

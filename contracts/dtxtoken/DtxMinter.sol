@@ -4,6 +4,9 @@ import "../dtxtoken/DtxToken.sol";
 import "@settlemint/solidity-mint/contracts/authentication/Secured.sol";
 import "@settlemint/solidity-mint/contracts/authentication/GateKeeper.sol";
 
+/**
+ * Allows a user to mint demo DTX tokens for his own address
+ */
 contract DtxMinter is Secured {
   event Minted(address to, uint amount);
 

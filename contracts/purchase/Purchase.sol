@@ -6,7 +6,9 @@ import "@settlemint/solidity-mint/contracts/utility/caching/Cacher.sol";
 import "@settlemint/solidity-mint/contracts/utility/caching/CachedByAddress.sol";
 import "@settlemint/solidity-mint/contracts/utility/metadata/MetaDataContainer.sol";
 
-
+/**
+ * Contains one sensor purchase entity
+ */
 contract Purchase is Secured, Cacher, CachedByAddress, MetaDataContainer {
 
   uint public price; // price per second for which access was purchased

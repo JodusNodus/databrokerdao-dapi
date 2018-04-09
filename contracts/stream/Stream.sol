@@ -3,7 +3,9 @@ pragma solidity ^0.4.20;
 import "../purchase/Purchase.sol";
 import "@settlemint/solidity-mint/contracts/marketplaces/tokencuratedregistry/Listing.sol";
 
-
+/**
+ * Contains one sensor stream entity
+ */
 contract Stream is Listing {
 
   /**

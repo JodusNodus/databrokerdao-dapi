@@ -4,7 +4,9 @@ import "./Stream.sol";
 import "./StreamRegistry.sol";
 import "@settlemint/solidity-mint/contracts/marketplaces/tokencuratedregistry/ListingFactory.sol";
 
-
+/**
+ * Creates new sensor streams
+ */
 contract StreamFactory is ListingFactory {
 
   function StreamFactory(address _gateKeeper) ListingFactory(_gateKeeper) public {}

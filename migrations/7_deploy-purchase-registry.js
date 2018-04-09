@@ -1,8 +1,8 @@
 const { grantPermission, createPermission } = require('./helpers/permissions')
 
-const StreamRegistry = artifacts.require('StreamRegistry.sol')
-const PurchaseRegistry = artifacts.require('PurchaseRegistry.sol')
-const Token = artifacts.require('DtxToken.sol')
+const StreamRegistry = artifacts.require('StreamRegistry')
+const PurchaseRegistry = artifacts.require('PurchaseRegistry')
+const Token = artifacts.require('DtxToken')
 const GateKeeper = artifacts.require('GateKeeper')
 
 const { authenticate, addIpfs } = require('./helpers/api')
@@ -39,52 +39,48 @@ async function purchaseStream(deployer, network, accounts) {
       from: accounts[0],
     })
   } else {
-    console.log('AUTH FAILED')
+    console.log('AUTH FAILED: not going forward with demo purchase')
   }
 }
 
 async function deployPurchasing(deployer, network, accounts) {
-  try {
-    const dGateKeeper = await GateKeeper.deployed()
-    const dDtxToken = await Token.deployed()
-    const dStreamRegistry = await StreamRegistry.deployed()
+  const dGateKeeper = await GateKeeper.deployed()
+  const dDtxToken = await Token.deployed()
+  const dStreamRegistry = await StreamRegistry.deployed()
 
-    await deployer.deploy(
-      PurchaseRegistry,
-      dGateKeeper.address,
-      dDtxToken.address,
-      dStreamRegistry.address
-    )
-    const dPurchaseRegistry = await PurchaseRegistry.deployed()
+  await deployer.deploy(
+    PurchaseRegistry,
+    dGateKeeper.address,
+    dDtxToken.address,
+    dStreamRegistry.address
+  )
+  const dPurchaseRegistry = await PurchaseRegistry.deployed()
 
-    // Grant permission to create permissions:
-    await grantPermission(
-      dGateKeeper,
-      dGateKeeper,
-      'CREATE_PERMISSIONS_ROLE',
-      dPurchaseRegistry.address
-    )
+  // Grant permission to create permissions:
+  await grantPermission(
+    dGateKeeper,
+    dGateKeeper,
+    'CREATE_PERMISSIONS_ROLE',
+    dPurchaseRegistry.address
+  )
 
-    // Give admin permission to change settings
-    await createPermission(
-      dGateKeeper,
-      accounts[0],
-      dPurchaseRegistry, // purchase registry
-      'CHANGE_SETTINGS_ROLE',
-      accounts[0]
-    )
-    await createPermission(
-      dGateKeeper,
-      accounts[0],
-      dStreamRegistry, // stream registry
-      'CHANGE_SETTINGS_ROLE',
-      accounts[0]
-    )
+  // Give admin permission to change settings
+  await createPermission(
+    dGateKeeper,
+    accounts[0],
+    dPurchaseRegistry, // purchase registry
+    'CHANGE_SETTINGS_ROLE',
+    accounts[0]
+  )
+  await createPermission(
+    dGateKeeper,
+    accounts[0],
+    dStreamRegistry, // stream registry
+    'CHANGE_SETTINGS_ROLE',
+    accounts[0]
+  )
 
-    await purchaseStream(deployer, network, accounts)
-  } catch (e) {
-    console.log('ERROR', e)
-  }
+  await purchaseStream(deployer, network, accounts)
 }
 
 module.exports = async (deployer, network, accounts) => {
