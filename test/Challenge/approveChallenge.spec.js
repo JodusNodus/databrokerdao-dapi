@@ -36,9 +36,7 @@ contract('StreamRegistry', accounts => {
       await registry.challenge(listingAddress, '10') // challenge 2
 
       // Approve
-      await token.approve(registry.address, '10', {
-        from: seller,
-      })
+      // No need to approve: we are transfering tokens from the contract itself
       const tx2 = await registry.approveChallenge(listingAddress, {
         from: seller,
       })
