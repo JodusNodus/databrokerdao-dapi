@@ -4,9 +4,9 @@ import "@settlemint/solidity-mint/contracts/marketplaces/tokencuratedregistry/To
 import "@settlemint/solidity-mint/contracts/marketplaces/tokensystem/Token.sol";
 
 /**
- * Contains all sensor streams
+ * Contains all sensors
  */
-contract StreamRegistry is TokenCuratedRegistry {
+contract SensorRegistry is TokenCuratedRegistry {
 
   // Initial values, these can be changed with setters
   uint MIN_ENLIST_AMOUNT = 10;
@@ -19,7 +19,7 @@ contract StreamRegistry is TokenCuratedRegistry {
   @param _gateKeeper     Address of the gatekeeper
   @param _token          Address of the token
   */
-  function StreamRegistry(
+  function SensorRegistry(
     address _gateKeeper,
     address _token,
     address _listingFactory

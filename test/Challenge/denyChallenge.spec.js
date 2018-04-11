@@ -4,16 +4,16 @@
 const testEvent = require('@settlemint/solidity-mint/test/helpers/testEvent')
 const getEventProperty = require('../helpers/getEventProperty')
 
-const StreamRegistry = artifacts.require('StreamRegistry.sol')
+const SensorRegistry = artifacts.require('SensorRegistry.sol')
 const Token = artifacts.require('DtxToken.sol')
-const Stream = artifacts.require('Stream.sol')
+const Sensor = artifacts.require('Sensor.sol')
 
-contract('StreamRegistry', accounts => {
+contract('SensorRegistry', accounts => {
   describe('Function: denyChallenge', async () => {
     const [seller] = accounts
 
     it('should deny the challenge and refund the stakes to the right addresses', async () => {
-      const registry = await StreamRegistry.deployed()
+      const registry = await SensorRegistry.deployed()
       const token = await Token.deployed()
 
       // Enlist before we can unlist
@@ -47,12 +47,12 @@ contract('StreamRegistry', accounts => {
       })
 
       // Check if listing is updated
-      const stream = await Stream.at(listingAddress)
-      const streamStake = await stream.stake.call()
-      const streamChallengesStake = await stream.challengesStake.call()
+      const sensor = await Sensor.at(listingAddress)
+      const sensorStake = await sensor.stake.call()
+      const sensorChallengesStake = await sensor.challengesStake.call()
 
-      assert.equal(streamStake.c[0], 20)
-      assert.equal(streamChallengesStake.c[0], 0)
+      assert.equal(sensorStake.c[0], 20)
+      assert.equal(sensorChallengesStake.c[0], 0)
     })
   })
 })

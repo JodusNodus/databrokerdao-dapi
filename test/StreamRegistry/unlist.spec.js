@@ -4,16 +4,16 @@
 const testEvent = require('@settlemint/solidity-mint/test/helpers/testEvent')
 const getEventProperty = require('../helpers/getEventProperty')
 
-const StreamRegistry = artifacts.require('StreamRegistry.sol')
+const SensorRegistry = artifacts.require('SensorRegistry.sol')
 const Token = artifacts.require('DtxToken.sol')
-const Stream = artifacts.require('Stream.sol')
+const Sensor = artifacts.require('Sensor.sol')
 
-contract('StreamRegistry', accounts => {
+contract('SensorRegistry', accounts => {
   describe('Function: unlist', async () => {
     const [seller] = accounts
 
     it('should remove the sensor data from the whitelist', async () => {
-      const registry = await StreamRegistry.deployed()
+      const registry = await SensorRegistry.deployed()
       const token = await Token.deployed()
 
       // Enlist before we can unlist
@@ -34,10 +34,10 @@ contract('StreamRegistry', accounts => {
         listing: listingAddress,
       })
 
-      const stream = await Stream.at(listingAddress)
-      const streamWhitelisted = await stream.whitelisted.call()
+      const sensor = await Sensor.at(listingAddress)
+      const sensorWhitelisted = await sensor.whitelisted.call()
 
-      assert.isFalse(streamWhitelisted)
+      assert.isFalse(sensorWhitelisted)
     })
   })
 })

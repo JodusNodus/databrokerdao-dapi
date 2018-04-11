@@ -4,9 +4,9 @@ import "../purchase/Purchase.sol";
 import "@settlemint/solidity-mint/contracts/marketplaces/tokencuratedregistry/Listing.sol";
 
 /**
- * Contains one sensor stream entity
+ * Contains one sensor entity
  */
-contract Stream is Listing {
+contract Sensor is Listing {
 
   /**
   @dev Contructor
@@ -16,7 +16,7 @@ contract Stream is Listing {
   @param _stakeAmount    Amount staked for the listing
   @param _gateKeeper     Address of the gatekeeper
   */
-  function Stream(
+  function Sensor(
     address _owner,
     uint _price,
     uint _stakeAmount,

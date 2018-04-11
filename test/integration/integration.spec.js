@@ -55,7 +55,7 @@ contract('Integration tests', function(accounts) {
     }
   })
 
-  it('should enlist a stream when all parameters are correct', async () => {
+  it('should enlist a sensor when all parameters are correct', async () => {
     // Get token address
     const tokenListRes = await axios({
       method: 'get',
@@ -67,10 +67,10 @@ contract('Integration tests', function(accounts) {
     assert.equal(tokenListRes.status, 200)
     const tokenAddress = _.get(tokenListRes, 'data.items[0].contractaddress')
 
-    // Get streamregistry address
+    // Get sensorregistry address
     const registryListRes = await axios({
       method: 'get',
-      url: `${baseURL}/streamregistry/list`,
+      url: `${baseURL}/sensorregistry/list`,
       headers: {
         Authorization: token,
       },
@@ -107,7 +107,7 @@ contract('Integration tests', function(accounts) {
     // Finally, enlist
     const enlistRes = await axios({
       method: 'post',
-      url: `${baseURL}/streamregistry/enlist`,
+      url: `${baseURL}/sensorregistry/enlist`,
       data: {
         price: '10',
         stakeamount: '10',
@@ -158,7 +158,7 @@ contract('Integration tests', function(accounts) {
     assert.equal(mintRes.status, 200)
   })
 
-  it('should purchase a stream when all parameters are correct', async () => {
+  it('should purchase a sensor when all parameters are correct', async () => {
     // Get token address
     const tokenListRes = await axios({
       method: 'get',
@@ -170,16 +170,16 @@ contract('Integration tests', function(accounts) {
     assert.equal(tokenListRes.status, 200)
     const tokenAddress = _.get(tokenListRes, 'data.items[0].contractaddress')
 
-    // Get streamregistry address
+    // Get sensorregistry address
     const registryListRes = await axios({
       method: 'get',
-      url: `${baseURL}/streamregistry/list`,
+      url: `${baseURL}/sensorregistry/list`,
       headers: {
         Authorization: token,
       },
     })
     assert.equal(registryListRes.status, 200)
-    const streamRegistryAddress = _.get(registryListRes, 'data.base.key')
+    const sensorRegistryAddress = _.get(registryListRes, 'data.base.key')
 
     // Create IPFS
     const ipfsRes = await axios({
@@ -198,7 +198,7 @@ contract('Integration tests', function(accounts) {
       method: 'post',
       url: `${baseURL}/dtxtoken/${tokenAddress}/approve`,
       data: {
-        spender: streamRegistryAddress,
+        spender: sensorRegistryAddress,
         value: '10',
       },
       headers: {
@@ -210,7 +210,7 @@ contract('Integration tests', function(accounts) {
     // Finally, enlist
     const enlistRes = await axios({
       method: 'post',
-      url: `${baseURL}/streamregistry/enlist`,
+      url: `${baseURL}/sensorregistry/enlist`,
       data: {
         price: '10',
         stakeamount: '10',
@@ -226,7 +226,7 @@ contract('Integration tests', function(accounts) {
       enlistRes.data.events,
       log => log.event === 'Enlisted'
     )[0]
-    const streamAddress = event.listing
+    const sensorAddress = event.listing
 
     // Calculate endtime
     const endtime = new Date().getTime() / 1000 + 60 // one minute from now
@@ -276,7 +276,7 @@ contract('Integration tests', function(accounts) {
       method: 'post',
       url: `${baseURL}/purchaseregistry/purchaseaccess`,
       data: {
-        stream: streamAddress,
+        sensor: sensorAddress,
         endtime: endtime.toString(),
         metadata: purchaseIpfsHash,
       },
@@ -299,19 +299,19 @@ contract('Integration tests', function(accounts) {
     assert.equal(tokenListRes.status, 200)
     const tokenAddress = _.get(tokenListRes, 'data.items[0].contractaddress')
 
-    // Get streamregistry address: needed for approve calls
+    // Get sensorregistry address: needed for approve calls
     const registryListRes = await axios({
       method: 'get',
-      url: `${baseURL}/streamregistry/list`,
+      url: `${baseURL}/sensorregistry/list`,
       headers: {
         Authorization: token,
       },
     })
     assert.equal(registryListRes.status, 200)
-    const streamRegistryAddress = _.get(registryListRes, 'data.base.key')
+    const sensorRegistryAddress = _.get(registryListRes, 'data.base.key')
 
-    // Create IPFS for stream enlisting
-    const streamIpfsRes = await axios({
+    // Create IPFS for sensor enlisting
+    const sensorIpfsRes = await axios({
       method: 'post',
       url: `${baseURL}/ipfs/add/json`,
       data: metadata,
@@ -319,15 +319,15 @@ contract('Integration tests', function(accounts) {
         Authorization: token,
       },
     })
-    assert.equal(streamIpfsRes.status, 200)
-    const streamIpfsHash = _.get(streamIpfsRes, 'data[0].hash')
+    assert.equal(sensorIpfsRes.status, 200)
+    const sensorIpfsHash = _.get(sensorIpfsRes, 'data[0].hash')
 
     // Approve the stake amount first, before enlisting
     const approveRes = await axios({
       method: 'post',
       url: `${baseURL}/dtxtoken/${tokenAddress}/approve`,
       data: {
-        spender: streamRegistryAddress,
+        spender: sensorRegistryAddress,
         value: '10',
       },
       headers: {
@@ -339,11 +339,11 @@ contract('Integration tests', function(accounts) {
     // Enlist
     const enlistRes = await axios({
       method: 'post',
-      url: `${baseURL}/streamregistry/enlist`,
+      url: `${baseURL}/sensorregistry/enlist`,
       data: {
         price: '1',
         stakeamount: '10',
-        metadata: streamIpfsHash,
+        metadata: sensorIpfsHash,
       },
       headers: {
         Authorization: token,
@@ -389,12 +389,12 @@ contract('Integration tests', function(accounts) {
 
     assert.equal(mintRes.status, 200)
 
-    // Save stream address for purchase
+    // Save sensor address for purchase
     const event = _.filter(
       enlistRes.data.events,
       log => log.event === 'Enlisted'
     )[0]
-    const streamAddress = event.listing
+    const sensorAddress = event.listing
 
     // Calculate endtime
     const endtime = new Date().getTime() / 1000 + 60 * 60 * 24 * 7 // one week from now
@@ -426,7 +426,7 @@ contract('Integration tests', function(accounts) {
     )
 
     // Approve the amount we guess the sensor will cost
-    const amount = 1 * endtime - new Date().getTime() / 1000 + 1000 // stream price times the endtime minus the start time, 1000 seconds added to be safe
+    const amount = 1 * endtime - new Date().getTime() / 1000 + 1000 // sensor price times the endtime minus the start time, 1000 seconds added to be safe
     const approvePurchaseRes = await axios({
       method: 'post',
       url: `${baseURL}/dtxtoken/${tokenAddress}/approve`,
@@ -445,7 +445,7 @@ contract('Integration tests', function(accounts) {
       method: 'post',
       url: `${baseURL}/purchaseregistry/purchaseaccess`,
       data: {
-        stream: streamAddress,
+        sensor: sensorAddress,
         endtime: endtime.toString(),
         metadata: purchaseIpfsHash,
       },
@@ -472,19 +472,19 @@ contract('Integration tests', function(accounts) {
     assert.equal(tokenListRes.status, 200)
     const tokenAddress = _.get(tokenListRes, 'data.items[0].contractaddress')
 
-    // Get streamregistry address: needed for approve calls
+    // Get sensorregistry address: needed for approve calls
     const registryListRes = await axios({
       method: 'get',
-      url: `${baseURL}/streamregistry/list`,
+      url: `${baseURL}/sensorregistry/list`,
       headers: {
         Authorization: token,
       },
     })
     assert.equal(registryListRes.status, 200)
-    const streamRegistryAddress = _.get(registryListRes, 'data.base.key')
+    const sensorRegistryAddress = _.get(registryListRes, 'data.base.key')
 
-    // Create IPFS for stream enlisting
-    const streamIpfsRes = await axios({
+    // Create IPFS for sensor enlisting
+    const sensorIpfsRes = await axios({
       method: 'post',
       url: `${baseURL}/ipfs/add/json`,
       data: metadata,
@@ -492,15 +492,15 @@ contract('Integration tests', function(accounts) {
         Authorization: token,
       },
     })
-    assert.equal(streamIpfsRes.status, 200)
-    const streamIpfsHash = _.get(streamIpfsRes, 'data[0].hash')
+    assert.equal(sensorIpfsRes.status, 200)
+    const sensorIpfsHash = _.get(sensorIpfsRes, 'data[0].hash')
 
     // Approve the stake amount first, before enlisting
     const enlistApproveRes = await axios({
       method: 'post',
       url: `${baseURL}/dtxtoken/${tokenAddress}/approve`,
       data: {
-        spender: streamRegistryAddress,
+        spender: sensorRegistryAddress,
         value: '10',
       },
       headers: {
@@ -512,11 +512,11 @@ contract('Integration tests', function(accounts) {
     // Enlist
     const enlistRes = await axios({
       method: 'post',
-      url: `${baseURL}/streamregistry/enlist`,
+      url: `${baseURL}/sensorregistry/enlist`,
       data: {
         price: '1',
         stakeamount: '10',
-        metadata: streamIpfsHash,
+        metadata: sensorIpfsHash,
       },
       headers: {
         Authorization: token,
@@ -524,12 +524,12 @@ contract('Integration tests', function(accounts) {
     })
     assert.equal(enlistRes.status, 200)
 
-    // Save stream address for challenge/denying challenge
+    // Save sensor address for challenge/denying challenge
     const event = _.filter(
       enlistRes.data.events,
       log => log.event === 'Enlisted'
     )[0]
-    const streamAddress = event.listing
+    const sensorAddress = event.listing
 
     /*
     * CREATE CHALLENGER USER
@@ -597,7 +597,7 @@ contract('Integration tests', function(accounts) {
       method: 'post',
       url: `${baseURL}/dtxtoken/${tokenAddress}/approve`,
       data: {
-        spender: streamRegistryAddress,
+        spender: sensorRegistryAddress,
         value: '5',
       },
       headers: {
@@ -609,9 +609,9 @@ contract('Integration tests', function(accounts) {
     // Challenge
     const challengeRes = await axios({
       method: 'post',
-      url: `${baseURL}/streamregistry/challenge`,
+      url: `${baseURL}/sensorregistry/challenge`,
       data: {
-        listing: streamAddress,
+        listing: sensorAddress,
         stakeamount: '5',
         metadata: challengeIpfsHash,
       },
@@ -646,9 +646,9 @@ contract('Integration tests', function(accounts) {
       */
     const approveChallengeRes = await axios({
       method: 'post',
-      url: `${baseURL}/streamregistry/approvechallenge`,
+      url: `${baseURL}/sensorregistry/approvechallenge`,
       data: {
-        listing: streamAddress,
+        listing: sensorAddress,
       },
       headers: {
         Authorization: curatorToken,
@@ -673,19 +673,19 @@ contract('Integration tests', function(accounts) {
     assert.equal(tokenListRes.status, 200)
     const tokenAddress = _.get(tokenListRes, 'data.items[0].contractaddress')
 
-    // Get streamregistry address: needed for approve calls
+    // Get sensorregistry address: needed for approve calls
     const registryListRes = await axios({
       method: 'get',
-      url: `${baseURL}/streamregistry/list`,
+      url: `${baseURL}/sensorregistry/list`,
       headers: {
         Authorization: token,
       },
     })
     assert.equal(registryListRes.status, 200)
-    const streamRegistryAddress = _.get(registryListRes, 'data.base.key')
+    const sensorRegistryAddress = _.get(registryListRes, 'data.base.key')
 
-    // Create IPFS for stream enlisting
-    const streamIpfsRes = await axios({
+    // Create IPFS for sensor enlisting
+    const sensorIpfsRes = await axios({
       method: 'post',
       url: `${baseURL}/ipfs/add/json`,
       data: metadata,
@@ -693,15 +693,15 @@ contract('Integration tests', function(accounts) {
         Authorization: token,
       },
     })
-    assert.equal(streamIpfsRes.status, 200)
-    const streamIpfsHash = _.get(streamIpfsRes, 'data[0].hash')
+    assert.equal(sensorIpfsRes.status, 200)
+    const sensorIpfsHash = _.get(sensorIpfsRes, 'data[0].hash')
 
     // Approve the stake amount first, before enlisting
     const enlistApproveRes = await axios({
       method: 'post',
       url: `${baseURL}/dtxtoken/${tokenAddress}/approve`,
       data: {
-        spender: streamRegistryAddress,
+        spender: sensorRegistryAddress,
         value: '10',
       },
       headers: {
@@ -713,11 +713,11 @@ contract('Integration tests', function(accounts) {
     // Enlist
     const enlistRes = await axios({
       method: 'post',
-      url: `${baseURL}/streamregistry/enlist`,
+      url: `${baseURL}/sensorregistry/enlist`,
       data: {
         price: '1',
         stakeamount: '10',
-        metadata: streamIpfsHash,
+        metadata: sensorIpfsHash,
       },
       headers: {
         Authorization: token,
@@ -725,12 +725,12 @@ contract('Integration tests', function(accounts) {
     })
     assert.equal(enlistRes.status, 200)
 
-    // Save stream address for challenge/denying challenge
+    // Save sensor address for challenge/denying challenge
     const event = _.filter(
       enlistRes.data.events,
       log => log.event === 'Enlisted'
     )[0]
-    const streamAddress = event.listing
+    const sensorAddress = event.listing
 
     /*
     * CREATE CHALLENGER USER
@@ -777,7 +777,7 @@ contract('Integration tests', function(accounts) {
     * CHALLENGE
     */
 
-    // Create IPFS for stream enlisting
+    // Create IPFS for sensor enlisting
     const challengeIpfsRes = await axios({
       method: 'post',
       url: `${baseURL}/ipfs/add/json`,
@@ -798,7 +798,7 @@ contract('Integration tests', function(accounts) {
       method: 'post',
       url: `${baseURL}/dtxtoken/${tokenAddress}/approve`,
       data: {
-        spender: streamRegistryAddress,
+        spender: sensorRegistryAddress,
         value: '5',
       },
       headers: {
@@ -810,9 +810,9 @@ contract('Integration tests', function(accounts) {
     // Challenge
     const challengeRes = await axios({
       method: 'post',
-      url: `${baseURL}/streamregistry/challenge`,
+      url: `${baseURL}/sensorregistry/challenge`,
       data: {
-        listing: streamAddress,
+        listing: sensorAddress,
         stakeamount: '5',
         metadata: challengeIpfsHash,
       },
@@ -847,9 +847,9 @@ contract('Integration tests', function(accounts) {
     */
     const denyRes = await axios({
       method: 'post',
-      url: `${baseURL}/streamregistry/denychallenge`,
+      url: `${baseURL}/sensorregistry/denychallenge`,
       data: {
-        listing: streamAddress,
+        listing: sensorAddress,
       },
       headers: {
         Authorization: curatorToken,

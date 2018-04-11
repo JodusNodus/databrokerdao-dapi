@@ -1,8 +1,8 @@
 pragma solidity ^0.4.20;
 
 import "./Purchase.sol";
-import "../stream/Stream.sol";
-import "../stream/StreamRegistry.sol";
+import "../sensor/Sensor.sol";
+import "../sensor/SensorRegistry.sol";
 import "../dtxtoken/DtxToken.sol";
 import "@settlemint/solidity-mint/contracts/authentication/Secured.sol";
 import "@settlemint/solidity-mint/contracts/authentication/GateKeeper.sol";
@@ -20,14 +20,14 @@ contract PurchaseRegistry is Secured, Syncable, Cacher, CachedByBytes32 {
   bytes32 constant public CREATE_PERMISSIONS_ROLE = "CREATE_PERMISSIONS_ROLE";
   bytes32 constant public CHANGE_SETTINGS_ROLE = "CHANGE_SETTINGS_ROLE";
 
-  event AccessPurchased(address stream, address user, uint startTime, uint endTime, uint price, address purchase);
+  event AccessPurchased(address sensor, address user, uint startTime, uint endTime, uint price, address purchase);
   event SalePercentageChanged(uint value);
 
   mapping (address => Purchase) public purchases;
   address[] public purchasesIndex;
 
   DtxToken public token;
-  StreamRegistry streamRegistry;
+  SensorRegistry sensorRegistry;
   uint salePercentage = 1;
 
   /**
@@ -39,41 +39,41 @@ contract PurchaseRegistry is Secured, Syncable, Cacher, CachedByBytes32 {
   function PurchaseRegistry(
     address _gateKeeper,
     address _token,
-    address _streamRegistry
+    address _sensorRegistry
   )
     Secured(_gateKeeper)
     CachedByBytes32("PurchaseRegistry", this)
     public
   {
     token = DtxToken(_token);
-    streamRegistry = StreamRegistry(_streamRegistry);
+    sensorRegistry = SensorRegistry(_sensorRegistry);
   }
 
   /**
-  @notice               Lets the sender buy access to the Stream
-  @param _stream        Id of the listing
-  @param _endTime       Timestamp of when the user will stop receiving Stream readings in seconds (not milliseconds!)
+  @notice               Lets the sender buy access to the sensor
+  @param _sensor        Id of the listing
+  @param _endTime       Timestamp of when the user will stop receiving sensor readings in seconds (not milliseconds!)
   */
-  function purchaseAccess(address _stream, uint _endTime, string _metadata) public {
+  function purchaseAccess(address _sensor, uint _endTime, string _metadata) public {
     // Calculate total cost for the user
-    uint _streamPricePerSecond = Stream(_stream).price();
+    uint _sensorPricePerSecond = Sensor(_sensor).price();
     uint _startTime = now;
-    uint _streamPrice = _streamPricePerSecond.mul(_endTime.sub(_startTime));
+    uint _sensorPrice = _sensorPricePerSecond.mul(_endTime.sub(_startTime));
 
     // Pay out:
-    uint _salePercentage = _streamPrice.mul(salePercentage.div(100));
+    uint _salePercentage = _sensorPrice.mul(salePercentage.div(100));
     // Sensor owner
-    require(token.transferFrom(msg.sender, Stream(_stream).owner(), _streamPrice.sub(_salePercentage)));
+    require(token.transferFrom(msg.sender, Sensor(_sensor).owner(), _sensorPrice.sub(_salePercentage)));
     // DBDAO
     require(token.transferFrom(msg.sender, this, _salePercentage));
 
     // Create purchase
     Purchase _purchase = new Purchase(
-      _streamPricePerSecond,
+      _sensorPricePerSecond,
       _startTime,
       _endTime,
       msg.sender,
-      _stream,
+      _sensor,
       address(gateKeeper)
     );
 
@@ -92,7 +92,7 @@ contract PurchaseRegistry is Secured, Syncable, Cacher, CachedByBytes32 {
     purchases[address(_purchase)] = Purchase(address(_purchase));
     purchasesIndex.push(address(_purchase));
 
-    emit AccessPurchased(_stream, msg.sender, _startTime, _endTime, _streamPrice, address(_purchase));
+    emit AccessPurchased(_sensor, msg.sender, _startTime, _endTime, _sensorPrice, address(_purchase));
     invalidateCache(_purchase, "", 0);
   }
 

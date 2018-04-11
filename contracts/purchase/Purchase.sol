@@ -12,17 +12,17 @@ import "@settlemint/solidity-mint/contracts/utility/metadata/MetaDataContainer.s
 contract Purchase is Secured, Cacher, CachedByAddress, MetaDataContainer {
 
   uint public price; // price per second for which access was purchased
-  uint public startTime; // the time at which the purchaser will gain access to this Stream
-  uint public endTime; // the time at which the purchaser will lose access to this Stream
+  uint public startTime; // the time at which the purchaser will gain access to this sensor
+  uint public endTime; // the time at which the purchaser will lose access to this sensor
   address public purchaser; // address of the user
-  address public stream; // id of the stream to which access was purchased
+  address public sensor; // id of the sensor to which access was purchased
 
   function Purchase(
     uint _price,
     uint _startTime,
     uint _endTime,
     address _purchaser,
-    address _stream,
+    address _sensor,
     address _gateKeeper
   )
     public
@@ -33,7 +33,7 @@ contract Purchase is Secured, Cacher, CachedByAddress, MetaDataContainer {
     startTime = _startTime;
     endTime = _endTime;
     purchaser = _purchaser;
-    stream = _stream;
+    sensor = _sensor;
   }
 
   /**

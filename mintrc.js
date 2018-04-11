@@ -9,21 +9,21 @@ module.exports = {
         token: 'DtxToken',
       },
       {
-        registry: 'StreamRegistry',
-        token: 'Stream',
+        registry: 'SensorRegistry',
+        token: 'Sensor',
       },
       {
         registry: 'PurchaseRegistry',
         token: 'Purchase',
       },
       {
-        registry: 'Stream',
+        registry: 'Sensor',
         token: 'Challenge',
       },
     ],
     contractsThatGetDeployedByOtherContracts: [
       'Purchase',
-      'Stream',
+      'Sensor',
       'DtxToken',
       'Challenge',
     ],

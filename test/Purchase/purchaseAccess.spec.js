@@ -5,10 +5,10 @@ const testEvent = require('@settlemint/solidity-mint/test/helpers/testEvent')
 const getEventProperty = require('../helpers/getEventProperty')
 
 const PurchaseRegistry = artifacts.require('PurchaseRegistry.sol')
-const StreamRegistry = artifacts.require('StreamRegistry.sol')
+const SensorRegistry = artifacts.require('SensorRegistry.sol')
 const Token = artifacts.require('DtxToken.sol')
 const Purchase = artifacts.require('Purchase.sol')
-const Stream = artifacts.require('Stream.sol')
+const Sensor = artifacts.require('Sensor.sol')
 
 contract('PurchaseRegistry', accounts => {
   describe('Function: purchaseAccess', async () => {
@@ -16,7 +16,7 @@ contract('PurchaseRegistry', accounts => {
 
     it('should allow a user to buy access to sensor data', async () => {
       const purchasing = await PurchaseRegistry.deployed()
-      const registry = await StreamRegistry.deployed()
+      const registry = await SensorRegistry.deployed()
       const token = await Token.deployed()
 
       // Enlist first
@@ -39,7 +39,7 @@ contract('PurchaseRegistry', accounts => {
 
       // Check if events have been emitted
       testEvent(tx2, 'AccessPurchased', {
-        stream: listingAddress,
+        sensor: listingAddress,
       })
       const purchaseAddress = getEventProperty(
         tx2,
@@ -49,10 +49,10 @@ contract('PurchaseRegistry', accounts => {
 
       const purchase = await Purchase.at(purchaseAddress)
       const purchasePurchaser = await purchase.purchaser.call()
-      const purchaseStream = await purchase.stream.call()
+      const purchaseSensor = await purchase.sensor.call()
 
       assert.equal(purchasePurchaser, seller)
-      assert.equal(purchaseStream, listingAddress)
+      assert.equal(purchaseSensor, listingAddress)
     })
   })
 })

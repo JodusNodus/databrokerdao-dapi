@@ -4,17 +4,17 @@
 const testEvent = require('@settlemint/solidity-mint/test/helpers/testEvent')
 const getEventProperty = require('../helpers/getEventProperty')
 
-const StreamRegistry = artifacts.require('StreamRegistry.sol')
+const SensorRegistry = artifacts.require('SensorRegistry.sol')
 const Token = artifacts.require('DtxToken.sol')
-const Stream = artifacts.require('Stream.sol')
+const Sensor = artifacts.require('Sensor.sol')
 const Challenge = artifacts.require('Challenge.sol')
 
-contract('StreamRegistry', accounts => {
+contract('SensorRegistry', accounts => {
   describe('Function: challenge', async () => {
     const [seller] = accounts
 
     it('should add a new challenge when minimum challenge stake amount is exceeded', async () => {
-      const registry = await StreamRegistry.deployed()
+      const registry = await SensorRegistry.deployed()
       const token = await Token.deployed()
 
       // Enlist before we can challenge
@@ -40,10 +40,10 @@ contract('StreamRegistry', accounts => {
       })
 
       // Check if listing is updated
-      const stream = await Stream.at(listingAddress)
-      const streamChallengesStake = await stream.challengesStake.call()
+      const sensor = await Sensor.at(listingAddress)
+      const sensorChallengesStake = await sensor.challengesStake.call()
 
-      assert.equal(streamChallengesStake, 5)
+      assert.equal(sensorChallengesStake, 5)
 
       const challengeAddress = getEventProperty(tx2, 'Challenged', 'challenge')
 
@@ -57,7 +57,7 @@ contract('StreamRegistry', accounts => {
     })
 
     it('should not add a new challenge when minimum challenge stake amount is not reached', async () => {
-      const registry = await StreamRegistry.deployed()
+      const registry = await SensorRegistry.deployed()
       const token = await Token.deployed()
 
       // Enlist before we can unlist

@@ -7,13 +7,13 @@ const {
   addIpfs,
 } = require('./helpers/api')
 
-const StreamRegistry = artifacts.require('StreamRegistry.sol')
-const StreamFactory = artifacts.require('StreamFactory.sol')
+const SensorRegistry = artifacts.require('SensorRegistry.sol')
+const SensorFactory = artifacts.require('SensorFactory.sol')
 const Token = artifacts.require('DtxToken.sol')
 const GateKeeper = artifacts.require('GateKeeper')
 
-async function enlistStream(deployer, network, accounts) {
-  const dStreamRegistry = await StreamRegistry.deployed()
+async function enlistSensor(deployer, network, accounts) {
+  const dSensorRegistry = await SensorRegistry.deployed()
   const dToken = await Token.deployed()
 
   // Add metadata
@@ -40,18 +40,18 @@ async function enlistStream(deployer, network, accounts) {
     const ipfsHash = await addIpfs(metadata, authToken, network)
 
     // First, approve!
-    await dToken.approve(dStreamRegistry.address, '10', {
+    await dToken.approve(dSensorRegistry.address, '10', {
       from: accounts[0],
     })
 
     // Enlist
-    const tx = await dStreamRegistry.enlist('10', '10', ipfsHash || '', {
+    const tx = await dSensorRegistry.enlist('10', '10', ipfsHash || '', {
       from: accounts[0],
     })
 
     const event = _.filter(tx.logs, log => log.event === 'Enlisted')[0]
-    const streamAddress = event.args.listing
-    process.env.STREAM_ADDRESS = streamAddress // Setting it in env variables to pass it to next migration
+    const sensorAddress = event.args.listing
+    process.env.SENSOR_ADDRESS = sensorAddress // Setting it in env variables to pass it to next migration
   } else {
     console.log('AUTH FAILED: not enlisting demo sensor')
   }
@@ -65,7 +65,7 @@ async function approveRegistryFor(addresses, dDtxToken, index) {
   })
   const balanceOfUser = await dDtxToken.balanceOf(user)
   // Approve tokens
-  await dDtxToken.approve(StreamRegistry.address, balanceOfUser, {
+  await dDtxToken.approve(SensorRegistry.address, balanceOfUser, {
     from: user,
   })
   if (index < addresses.length - 1) {
@@ -78,31 +78,31 @@ async function deployRegistry(deployer, network, accounts) {
   const dGateKeeper = await GateKeeper.deployed()
   const dDtxToken = await Token.deployed()
 
-  await deployer.deploy(StreamFactory, dGateKeeper.address)
-  const dStreamFactory = await StreamFactory.deployed()
+  await deployer.deploy(SensorFactory, dGateKeeper.address)
+  const dSensorFactory = await SensorFactory.deployed()
 
   await grantPermission(
     dGateKeeper,
     dGateKeeper,
     'CREATE_PERMISSIONS_ROLE',
-    dStreamFactory.address
+    dSensorFactory.address
   )
 
   await deployer.deploy(
-    StreamRegistry,
+    SensorRegistry,
     dGateKeeper.address,
     dDtxToken.address,
-    dStreamFactory.address
+    dSensorFactory.address
   )
 
-  const dStreamRegistry = await StreamRegistry.deployed()
+  const dSensorRegistry = await SensorRegistry.deployed()
 
-  // Grant streamregistry permission to create permissions:
+  // Grant sensor registry permission to create permissions:
   await grantPermission(
     dGateKeeper,
     dGateKeeper,
     'CREATE_PERMISSIONS_ROLE',
-    dStreamRegistry.address
+    dSensorRegistry.address
   )
 
   // Grant mint permission: we will mint in approveRegistryFor
@@ -119,20 +119,20 @@ async function deployRegistry(deployer, network, accounts) {
   await createPermission(
     dGateKeeper,
     accounts[0],
-    dStreamRegistry,
+    dSensorRegistry,
     'WITHDRAW_FUNDS_ROLE',
     accounts[0]
   )
   await createPermission(
     dGateKeeper,
     accounts[0],
-    dStreamRegistry,
+    dSensorRegistry,
     'CURATE_CHALLENGE_ROLE',
     accounts[0]
   )
 
-  // Enlist a stream!
-  await enlistStream(deployer, network, accounts)
+  // Enlist a sensor!
+  await enlistSensor(deployer, network, accounts)
 }
 
 module.exports = async (deployer, network, accounts) => {

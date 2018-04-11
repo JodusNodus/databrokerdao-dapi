@@ -1,13 +1,13 @@
 const { grantPermission, createPermission } = require('./helpers/permissions')
 
-const StreamRegistry = artifacts.require('StreamRegistry')
+const SensorRegistry = artifacts.require('SensorRegistry')
 const PurchaseRegistry = artifacts.require('PurchaseRegistry')
 const Token = artifacts.require('DtxToken')
 const GateKeeper = artifacts.require('GateKeeper')
 
 const { authenticate, addIpfs } = require('./helpers/api')
 
-async function purchaseStream(deployer, network, accounts) {
+async function purchaseSensor(deployer, network, accounts) {
   const purchase = await PurchaseRegistry.deployed()
   const token = await Token.deployed()
 
@@ -25,8 +25,8 @@ async function purchaseStream(deployer, network, accounts) {
     // Add metadata as ipfs
     const ipfsHash = await addIpfs(metadata, authToken, network)
 
-    // Get stream address
-    const streamAddress = process.env.STREAM_ADDRESS
+    // Get sensor address
+    const sensorAddress = process.env.SENSOR_ADDRESS
     // Calculate endtime
     const endtime = Math.floor(new Date().getTime() / 1000) + 60 // one minute from now
 
@@ -35,7 +35,7 @@ async function purchaseStream(deployer, network, accounts) {
       from: accounts[0],
     })
 
-    await purchase.purchaseAccess(streamAddress, endtime, ipfsHash, {
+    await purchase.purchaseAccess(sensorAddress, endtime, ipfsHash, {
       from: accounts[0],
     })
   } else {
@@ -46,13 +46,13 @@ async function purchaseStream(deployer, network, accounts) {
 async function deployPurchasing(deployer, network, accounts) {
   const dGateKeeper = await GateKeeper.deployed()
   const dDtxToken = await Token.deployed()
-  const dStreamRegistry = await StreamRegistry.deployed()
+  const dSensorRegistry = await SensorRegistry.deployed()
 
   await deployer.deploy(
     PurchaseRegistry,
     dGateKeeper.address,
     dDtxToken.address,
-    dStreamRegistry.address
+    dSensorRegistry.address
   )
   const dPurchaseRegistry = await PurchaseRegistry.deployed()
 
@@ -75,12 +75,12 @@ async function deployPurchasing(deployer, network, accounts) {
   await createPermission(
     dGateKeeper,
     accounts[0],
-    dStreamRegistry, // stream registry
+    dSensorRegistry, // sensor registry
     'CHANGE_SETTINGS_ROLE',
     accounts[0]
   )
 
-  await purchaseStream(deployer, network, accounts)
+  await purchaseSensor(deployer, network, accounts)
 }
 
 module.exports = async (deployer, network, accounts) => {

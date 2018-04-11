@@ -4,16 +4,16 @@
 const testEvent = require('@settlemint/solidity-mint/test/helpers/testEvent')
 const getEventProperty = require('../helpers/getEventProperty')
 
-const StreamRegistry = artifacts.require('StreamRegistry.sol')
+const SensorRegistry = artifacts.require('SensorRegistry.sol')
 const Token = artifacts.require('DtxToken.sol')
-const Stream = artifacts.require('Stream.sol')
+const Sensor = artifacts.require('Sensor.sol')
 
-contract('StreamRegistry', accounts => {
+contract('SensorRegistry', accounts => {
   describe('Function: enlist', async () => {
     const [seller] = accounts
 
     it('should allow a seller to enlist sensor data when stake is high enough', async () => {
-      const registry = await StreamRegistry.deployed()
+      const registry = await SensorRegistry.deployed()
       const token = await Token.deployed()
 
       await token.approve(registry.address, '10', {
@@ -32,20 +32,20 @@ contract('StreamRegistry', accounts => {
       const listingAddress = getEventProperty(tx, 'Enlisted', 'listing')
       assert.isDefined(listingAddress)
 
-      const stream = await Stream.at(listingAddress)
-      const streamOwner = await stream.owner.call()
-      const streamStake = await stream.stake.call()
-      const streamChallengesStake = await stream.challengesStake.call()
-      const streamPrice = await stream.price.call()
+      const sensor = await Sensor.at(listingAddress)
+      const sensorOwner = await sensor.owner.call()
+      const sensorStake = await sensor.stake.call()
+      const sensorChallengesStake = await sensor.challengesStake.call()
+      const sensorPrice = await sensor.price.call()
 
-      assert.equal(streamOwner, seller)
-      assert.equal(streamStake, '10')
-      assert.equal(streamChallengesStake, '0')
-      assert.equal(streamPrice, '1')
+      assert.equal(sensorOwner, seller)
+      assert.equal(sensorStake, '10')
+      assert.equal(sensorChallengesStake, '0')
+      assert.equal(sensorPrice, '1')
     })
 
     it('should not allow a seller to enlist sensor data when stake is not high enough', async () => {
-      const registry = await StreamRegistry.deployed()
+      const registry = await SensorRegistry.deployed()
       const token = await Token.deployed()
 
       // Enlist before we can unlist

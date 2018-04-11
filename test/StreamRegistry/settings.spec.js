@@ -3,14 +3,14 @@
 
 const testEvent = require('@settlemint/solidity-mint/test/helpers/testEvent')
 
-const StreamRegistry = artifacts.require('StreamRegistry.sol')
+const SensorRegistry = artifacts.require('SensorRegistry.sol')
 
-contract('StreamRegistry', accounts => {
+contract('SensorRegistry', accounts => {
   const [admin] = accounts
 
   describe('Function: setCuratorPercentage', async () => {
     it('should not change the min enlist amount when user does not have the right role', async () => {
-      const registry = await StreamRegistry.deployed()
+      const registry = await SensorRegistry.deployed()
 
       try {
         assert.throws(
@@ -25,7 +25,7 @@ contract('StreamRegistry', accounts => {
     })
 
     it('should change the min enlist amount when user has the right role', async () => {
-      const registry = await StreamRegistry.deployed()
+      const registry = await SensorRegistry.deployed()
 
       const tx = await registry.setCuratorPercentage(10, {
         from: admin,
@@ -40,7 +40,7 @@ contract('StreamRegistry', accounts => {
 
   describe('Function: setMinChallengeAmount', async () => {
     it('should not change the min enlist amount when user does not have the right role', async () => {
-      const registry = await StreamRegistry.deployed()
+      const registry = await SensorRegistry.deployed()
 
       try {
         assert.throws(
@@ -55,7 +55,7 @@ contract('StreamRegistry', accounts => {
     })
 
     it('should change the min enlist amount when user has the right role', async () => {
-      const registry = await StreamRegistry.deployed()
+      const registry = await SensorRegistry.deployed()
 
       const tx = await registry.setMinChallengeAmount(10, {
         from: admin,
@@ -70,7 +70,7 @@ contract('StreamRegistry', accounts => {
 
   describe('Function: setMinEnlistAmount', async () => {
     it('should not change the min enlist amount when user does not have the right role', async () => {
-      const registry = await StreamRegistry.deployed()
+      const registry = await SensorRegistry.deployed()
 
       try {
         assert.throws(
@@ -85,7 +85,7 @@ contract('StreamRegistry', accounts => {
     })
 
     it('should change the min enlist amount when user has the right role', async () => {
-      const registry = await StreamRegistry.deployed()
+      const registry = await SensorRegistry.deployed()
 
       const tx = await registry.setMinEnlistAmount(10, {
         from: admin,
