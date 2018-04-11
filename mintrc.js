@@ -16,11 +16,16 @@ module.exports = {
         registry: 'PurchaseRegistry',
         token: 'Purchase',
       },
+      {
+        registry: 'Stream',
+        token: 'Challenge',
+      },
     ],
     contractsThatGetDeployedByOtherContracts: [
       'Purchase',
       'Stream',
       'DtxToken',
+      'Challenge',
     ],
     roleRegistries: ['Administrators', 'Curators'],
     features: {

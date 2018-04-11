@@ -440,13 +440,23 @@ Expects the following parameters:
 
 #### 
 
-
-
 ## Challenges
 
-
-
 ### Challenge a stream
+
+Before raising a challenge, create an IPFS hash of the reason for this challenge:
+
+`POST /ipfs/add/json` with the following body (JSON.stringify if necessary): 
+
+```
+data: {
+    reason: 'The data is really really bad'
+}
+```
+
+A succesful response returns a hash property, which you can use in the challenge call.
+
+
 
  `POST /streamregistry/challenge`
 
@@ -454,6 +464,7 @@ Expects the following parameters:
 
 - listing: address of the stream contract. 
 - stakeamount: uint, amount of DTX that need to staked. Minimum stake amount of 5 DTX.
+- metadata: hash property of the IPFS call.
 
 
 

@@ -29,11 +29,11 @@ contract('StreamRegistry', accounts => {
       await token.approve(registry.address, '5', {
         from: seller,
       })
-      await registry.challenge(listingAddress, '5') // challenge 1
+      await registry.challenge(listingAddress, '5', '') // challenge 1
       await token.approve(registry.address, '10', {
         from: seller,
       })
-      await registry.challenge(listingAddress, '10') // challenge 2
+      await registry.challenge(listingAddress, '10', '') // challenge 2
 
       // Deny
       // No need to approve: we are transfering tokens from the contract itself
@@ -48,17 +48,11 @@ contract('StreamRegistry', accounts => {
 
       // Check if listing is updated
       const stream = await Stream.at(listingAddress)
-      const streamChallenges = await stream.challenges.call()
       const streamStake = await stream.stake.call()
       const streamChallengesStake = await stream.challengesStake.call()
 
-      assert.equal(streamChallenges.c[0], 0)
       assert.equal(streamStake.c[0], 20)
       assert.equal(streamChallengesStake.c[0], 0)
-
-      // Check if challenge is updated
-      const challenge = await registry.challenges.call('1')
-      assert.isTrue(challenge[1])
     })
   })
 })

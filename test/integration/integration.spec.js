@@ -155,12 +155,7 @@ contract('Integration tests', function(accounts) {
         Authorization: newToken,
       },
     })
-
     assert.equal(mintRes.status, 200)
-    assert.equal(
-      _.get(mintRes, 'data.debug.sender.balances.DTX.balance'),
-      '1000'
-    )
   })
 
   it('should purchase a stream when all parameters are correct', async () => {
@@ -581,6 +576,22 @@ contract('Integration tests', function(accounts) {
     * CHALLENGE
     */
 
+    // Create IPFS for challenge
+    const challengeIpfsRes = await axios({
+      method: 'post',
+      url: `${baseURL}/ipfs/add/json`,
+      data: {
+        data: {
+          reason: 'this data is baaaaaaad',
+        },
+      },
+      headers: {
+        Authorization: token,
+      },
+    })
+    assert.equal(challengeIpfsRes.status, 200)
+    const challengeIpfsHash = _.get(challengeIpfsRes, 'data[0].hash')
+
     // Approve first
     const challengeApproveRes = await axios({
       method: 'post',
@@ -602,6 +613,7 @@ contract('Integration tests', function(accounts) {
       data: {
         listing: streamAddress,
         stakeamount: '5',
+        metadata: challengeIpfsHash,
       },
       headers: {
         Authorization: challengerToken,
@@ -765,6 +777,22 @@ contract('Integration tests', function(accounts) {
     * CHALLENGE
     */
 
+    // Create IPFS for stream enlisting
+    const challengeIpfsRes = await axios({
+      method: 'post',
+      url: `${baseURL}/ipfs/add/json`,
+      data: {
+        data: {
+          reason: 'this data is baaaaaaad',
+        },
+      },
+      headers: {
+        Authorization: token,
+      },
+    })
+    assert.equal(challengeIpfsRes.status, 200)
+    const challengeIpfsHash = _.get(challengeIpfsRes, 'data[0].hash')
+
     // Approve first
     const challengeApproveRes = await axios({
       method: 'post',
@@ -786,6 +814,7 @@ contract('Integration tests', function(accounts) {
       data: {
         listing: streamAddress,
         stakeamount: '5',
+        metadata: challengeIpfsHash,
       },
       headers: {
         Authorization: challengerToken,

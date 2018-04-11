@@ -97,6 +97,14 @@ async function deployRegistry(deployer, network, accounts) {
 
   const dStreamRegistry = await StreamRegistry.deployed()
 
+  // Grant streamregistry permission to create permissions:
+  await grantPermission(
+    dGateKeeper,
+    dGateKeeper,
+    'CREATE_PERMISSIONS_ROLE',
+    dStreamRegistry.address
+  )
+
   // Grant mint permission: we will mint in approveRegistryFor
   await grantPermission(dGateKeeper, dDtxToken, 'MINT_ROLE', accounts[0])
   await approveRegistryFor(accounts, dDtxToken, 0)
