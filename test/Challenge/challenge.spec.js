@@ -42,8 +42,10 @@ contract('SensorRegistry', accounts => {
       // Check if listing is updated
       const sensor = await Sensor.at(listingAddress)
       const sensorChallengesStake = await sensor.challengesStake.call()
+      const sensorNumberOfChallenges = await sensor.numberOfChallenges.call()
 
       assert.equal(sensorChallengesStake, 5)
+      assert.equal(sensorNumberOfChallenges, 1)
 
       const challengeAddress = getEventProperty(tx2, 'Challenged', 'challenge')
 
