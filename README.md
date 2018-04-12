@@ -425,7 +425,7 @@ Expects the following parameters:
 
 * amount: uint, the new percentage (as a whole number)
 
-###
+
 
 ## Challenges
 
@@ -450,6 +450,77 @@ Expects the following parameters:
 * listing: address of the sensor contract.
 * stakeamount: uint, amount of DTX that need to staked. Minimum stake amount of 5 DTX.
 * metadata: hash property of the IPFS call.
+
+
+### Search for challenges
+
+Challenges are listed under the sensor that they challenge. To get a list of challenges on a sensor:
+
+`GET /sensor/[sensor address]/list`
+
+Expects the following parameters:
+
+- limit: uint, max number of sensors to return (useful for pagination).
+- skip: uint, skip to index (useful for pagination).
+- sort: string, parameter on which to sort (useful for pagination).
+- dir: string, sort direction, desc or asc (useful for pagination).
+
+You can also add custom Mongo query parameters like this: `&name=test`(see [https://github.com/settlemint/lib-ethereum/blob/master/src/utils/ParseMongoQueryString.js](https://github.com/settlemint/lib-ethereum/blob/master/src/utils/ParseMongoQueryString.js) for documentation)
+
+The response looks somewhat like this:
+
+````
+{
+  "base": {
+    "_id": "5acf6325429a430010ac50b5",
+    "originContractName": "Sensor",
+    "originContractAddress": "0xe530bf5b85a224d1e57bcb1114c9e214f28a1888",
+    "key": "0xe530bf5b85a224d1e57bcb1114c9e214f28a1888",
+    "blacklistrole": "BLACKLIST_ROLE",
+    "metadata": "QmbtwxUSc4TMbZLWkLfPHw6QT5ZTgD9JztiGTSdk9Zkry1",
+    "name": "Temperature outside Bar Berlin",
+    "geo": {
+      "type": "Point",
+      "coordinates": [
+        4.692725,
+        50.880722
+      ]
+    },
+    "type": "temperature",
+    "example": "{'value':11,'unit':'celsius'}",
+    "updateinterval": 60000,
+    "stake": "10",
+    "whitelisted": true,
+    "gatekeeper": "0x6a53dda54f8b3324f2e51eb4d05fca648121f65a",
+    "challengesstake": "10", // total stake of all the unresolved challenges
+    "owner": "0x3df2fd51cf19c0d8d1861d6ebc6457a1b0c7496f",
+    "price": "1",
+    "numberofchallenges": "2", // total number of unresolved challenges
+    "updatemetadatarole": "UPDATE_METADATA_ROLE"
+  },
+  "synced": false,
+  "total": 1,
+  "items": [ // all the challenges on this sensor: ALSO THE ONES THAT WERE RESOLVED
+    {
+      "_id": "5acf6326429a430010ac50b7",
+      "originContractName": "Sensor",
+      "originContractAddress": "0xe530bf5b85a224d1e57bcb1114c9e214f28a1888",
+      "key": "0xd43b60fdc4e3c746d78fb56c68a87a92f0a8240a",
+      "contractaddress": "0xd43b60fdc4e3c746d78fb56c68a87a92f0a8240a", // address of the challenge
+      "metadata": "QmavgN3LyWRndkVgB3gtJTCCSJYzpZ6ub7BNmyM3yUo8GE",
+      "reason": "this data is baaaaaaad",
+      "stake": "5",
+      "resolved": false, // whether or not the challenge has been denied/approved
+      "gatekeeper": "0x6a53dda54f8b3324f2e51eb4d05fca648121f65a",
+      "challenger": "0x99ab97de6b00bdef5a39bd4b11934d32c595dc9f",
+      "timestamp": "1523540772",
+      "listing": "0xe530bf5b85a224d1e57bcb1114c9e214f28a1888",
+      "updatemetadatarole": "UPDATE_METADATA_ROLE",
+      "subContractName": "Challenge"
+    }
+  ]
+}
+````
 
 
 
