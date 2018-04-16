@@ -62,8 +62,6 @@ curl -X POST \
    'http://localhost:3333/anchor'
 ```
 
-
-
 ## Minting tokens
 
 Users can (for now) mint demo DTX tokens for themselves.
@@ -73,8 +71,6 @@ Users can (for now) mint demo DTX tokens for themselves.
 Expects the following parameters:
 
 * amount: uint, amount of DTX tokens to mint
-
-
 
 ## Before transfering tokens
 
@@ -139,8 +135,6 @@ curl -X POST --header 'Content-Type: application/json' --header 'Accept: applica
 
 * value is the amount of DTX that will be spent, for the enlist call that is the amount that will be passed in the `stakeamount`property.
 
-
-
 ## Domain
 
 The domain consists of three main parts:
@@ -149,11 +143,9 @@ The domain consists of three main parts:
 * **Challenge**: represents a challenge on a sensor, and is listed on that sensor.
 * **Purchase**: represents a purchase of a sensor, by a user for a certain amount of time. Purchases are listed in the PurchaseRegistry
 
-
-
 ## Sensors
 
-Sensors can have two different types (for now): 
+Sensors can have two different types (for now):
 
 * **Stream**: represents a sensor that streams data at a certain interval. Buyers of a stream buy access to the new data that is **pushed** automatically to a webhook in the DataBroker DAO backend and then transferred to the buyers who have access at that moment. Example: a sensor that measures air quality in Leuven, BE, and pushes a reading every day.
 * **Dataset**: represents a sensor or other kind of data is a fixed format. The buyers buys this set, or buys access to this set for a certain amount of time, but the DataBroker DAO system **pulls** the data when the buyer requests it. Example: an excel sheet with all the readings of an air quality sensor in Leuven, BE, between March 1st and May 1st 2018.
@@ -200,8 +192,6 @@ Expects the following parameters:
 
 * sensor: address of the sensor contract.
 
-
-
 ### Increase sensor stake
 
 Only the **owner of the sensor** can increase the stake.
@@ -213,8 +203,6 @@ Expects the following parameters:
 * sensor: address of the sensor contract.
 * stakeamount: uint, amount of DTX that need to be added to the current stake.
 
-
-
 ### Decrease sensor stake
 
 Only the **owner of the sensor** can decrease the stake. Stake can not be decreased below the minimum stake amount of 10 DTX.
@@ -225,8 +213,6 @@ Expects the following parameters:
 
 * sensor: address of the sensor contract.
 * stakeamount: uint, amount of DTX that need to be subtracted from the current stake.
-
-
 
 ### Search for sensors
 
@@ -290,8 +276,6 @@ The response looks like this:
 }
 ```
 
-
-
 ### Change settings
 
 There are a few settings that can be changed on the sensor registry:
@@ -326,8 +310,6 @@ Expects the following parameters:
 
 * amount: uint, the new percentage (as a whole number)
 
-
-
 ## Purchasing
 
 ### Purchasing access to a sensor
@@ -354,8 +336,6 @@ Expects the following parameters:
   * sensor: address,
   * endtime: uint, unix (= in seconds) timestamp of time when the user should lose access.
   * metadata: hash property you get back from `POST /ipfs/add/json`
-
-
 
 ### Search for purchases
 
@@ -409,8 +389,6 @@ The response looks like this:
 }
 ```
 
-
-
 ### Change settings
 
 The only setting on purchasing that can be changed is **sale percentage**. This is the percentage of each sale that goes to DataBroker DAO, represented as whole number: 1% is represented by 1.
@@ -424,8 +402,6 @@ Settings can only be changed by **users with the CHANGE_SETTINGS_ROLE**. In deve
 Expects the following parameters:
 
 * amount: uint, the new percentage (as a whole number)
-
-
 
 ## Challenges
 
@@ -451,7 +427,6 @@ Expects the following parameters:
 * stakeamount: uint, amount of DTX that need to staked. Minimum stake amount of 5 DTX.
 * metadata: hash property of the IPFS call.
 
-
 ### Search for challenges
 
 Challenges are listed under the sensor that they challenge. To get a list of challenges on a sensor:
@@ -460,16 +435,16 @@ Challenges are listed under the sensor that they challenge. To get a list of cha
 
 Expects the following parameters:
 
-- limit: uint, max number of sensors to return (useful for pagination).
-- skip: uint, skip to index (useful for pagination).
-- sort: string, parameter on which to sort (useful for pagination).
-- dir: string, sort direction, desc or asc (useful for pagination).
+* limit: uint, max number of sensors to return (useful for pagination).
+* skip: uint, skip to index (useful for pagination).
+* sort: string, parameter on which to sort (useful for pagination).
+* dir: string, sort direction, desc or asc (useful for pagination).
 
 You can also add custom Mongo query parameters like this: `&name=test`(see [https://github.com/settlemint/lib-ethereum/blob/master/src/utils/ParseMongoQueryString.js](https://github.com/settlemint/lib-ethereum/blob/master/src/utils/ParseMongoQueryString.js) for documentation)
 
 The response looks somewhat like this:
 
-````
+```
 {
   "base": {
     "_id": "5acf6325429a430010ac50b5",
@@ -520,9 +495,7 @@ The response looks somewhat like this:
     }
   ]
 }
-````
-
-
+```
 
 ### Approve challenge on a sensor
 
@@ -533,8 +506,6 @@ The response looks somewhat like this:
 Expects the following parameters:
 
 * listing: address of the sensor contract.
-
-
 
 ### Deny challenge on a sensor
 
