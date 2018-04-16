@@ -417,6 +417,7 @@ The only setting on purchasing that can be changed is **sale percentage**. This 
 
 Settings can only be changed by **users with the CHANGE_SETTINGS_ROLE**. In development and staging, this is the admin0 user.
 
+
 #### setSalePercentage
 
 `POST /purchaseregistry/setsalepercentage`
