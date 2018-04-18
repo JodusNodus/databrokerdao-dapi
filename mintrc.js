@@ -16,10 +16,10 @@ module.exports = {
         registry: 'PurchaseRegistry',
         token: 'Purchase',
       },
-      {
-        registry: 'Sensor',
-        token: 'Challenge',
-      },
+      // {
+      //   registry: 'Sensor',
+      //   token: 'Challenge',
+      // },
     ],
     contractsThatGetDeployedByOtherContracts: [
       'Purchase',
@@ -38,9 +38,9 @@ module.exports = {
     },
   },
   environments: [
-    'http://localhost:3333',
+    // 'http://localhost:3333',
     'https://dapi-staging.databrokerdao.com',
-    'https://dapi.databrokerdao.com',
-    'https://dapi-demo.databrokerdao.com',
+    // 'https://dapi.databrokerdao.com',
+    // 'https://dapi-demo.databrokerdao.com',
   ],
 }
