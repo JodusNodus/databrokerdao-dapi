@@ -16,10 +16,10 @@ module.exports = {
         registry: 'PurchaseRegistry',
         token: 'Purchase',
       },
-      {
-        registry: 'Sensor',
-        token: 'Challenge',
-      },
+      // {
+      //   registry: 'Sensor',
+      //   token: 'Challenge',
+      // },
     ],
     contractsThatGetDeployedByOtherContracts: [
       'Purchase',
