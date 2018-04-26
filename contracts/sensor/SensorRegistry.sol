@@ -22,12 +22,14 @@ contract SensorRegistry is TokenCuratedRegistry {
   function SensorRegistry(
     address _gateKeeper,
     address _token,
-    address _listingFactory
+    address _listingFactory,
+    address _challengeRegistry
   )
     TokenCuratedRegistry(
       _gateKeeper,
       _token,
       _listingFactory,
+      _challengeRegistry,
       MIN_ENLIST_AMOUNT,
       MIN_CHALLENGE_AMOUNT,
       CURATOR_PERCENTAGE

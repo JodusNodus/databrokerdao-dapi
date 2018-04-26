@@ -27,7 +27,7 @@ contract SensorFactory is ListingFactory {
     _newSensor.updateMetaData(_metadata);
 
     // Event
-    emit ListingCreated(address(_newSensor));
+    // emit ListingCreated(address(_newSensor));
 
     // Add listing to token curated registry
     SensorRegistry sensorRegistry = SensorRegistry(_tcr);

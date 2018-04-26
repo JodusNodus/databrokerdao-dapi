@@ -1,0 +1,3417 @@
+{
+  "contractName": "ChallengeRegistry",
+  "abi": [
+    {
+      "constant": true,
+      "inputs": [
+        {
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "name": "challenges",
+      "outputs": [
+        {
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "constant": true,
+      "inputs": [],
+      "name": "gateKeeper",
+      "outputs": [
+        {
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "name": "_gateKeeper",
+          "type": "address"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "nonpayable",
+      "type": "constructor"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": false,
+          "name": "_address",
+          "type": "address"
+        }
+      ],
+      "name": "ChallengeAdded",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "name": "key",
+          "type": "address"
+        }
+      ],
+      "name": "AddressCacheInvalidated",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "name": "key",
+          "type": "bytes32"
+        }
+      ],
+      "name": "Bytes32CacheInvalidated",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "name": "key",
+          "type": "uint256"
+        }
+      ],
+      "name": "Uint256CacheInvalidated",
+      "type": "event"
+    },
+    {
+      "constant": false,
+      "inputs": [
+        {
+          "name": "_challenge",
+          "type": "address"
+        }
+      ],
+      "name": "addChallenge",
+      "outputs": [],
+      "payable": false,
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "constant": false,
+      "inputs": [
+        {
+          "name": "_cachedAddress",
+          "type": "address"
+        },
+        {
+          "name": "",
+          "type": "bytes32"
+        },
+        {
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "name": "invalidateCache",
+      "outputs": [],
+      "payable": false,
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "constant": true,
+      "inputs": [],
+      "name": "getIndexLength",
+      "outputs": [
+        {
+          "name": "length",
+          "type": "uint256"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "constant": true,
+      "inputs": [
+        {
+          "name": "index",
+          "type": "uint256"
+        }
+      ],
+      "name": "getByIndex",
+      "outputs": [
+        {
+          "name": "key",
+          "type": "address"
+        },
+        {
+          "name": "contractAddress",
+          "type": "address"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "constant": true,
+      "inputs": [
+        {
+          "name": "_key",
+          "type": "address"
+        }
+      ],
+      "name": "getByKey",
+      "outputs": [
+        {
+          "name": "key",
+          "type": "address"
+        },
+        {
+          "name": "contractAddress",
+          "type": "address"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "view",
+      "type": "function"
+    }
+  ],
+  "bytecode": "0x608060405234801561001057600080fd5b50604051602080610390833981016040525160008054600160a060020a03909216600160a060020a031990921691909117905561033e806100526000396000f3006080604052600436106100825763ffffffff7c010000000000000000000000000000000000000000000000000000000060003504166308b43a1981146100875780632d883a73146100c45780633d188fab1461010257806345d61ded1461012b5780634987703814610140578063e1ba7d0114610161578063f8242c3214610188575b600080fd5b34801561009357600080fd5b506100a8600160a060020a03600435166101a9565b60408051600160a060020a039092168252519081900360200190f35b3480156100d057600080fd5b506100dc6004356101c4565b60408051600160a060020a03938416815291909216602082015281519081900390910190f35b34801561010e57600080fd5b50610129600160a060020a03600435166024356044356101fc565b005b34801561013757600080fd5b506100a8610235565b34801561014c57600080fd5b506100dc600160a060020a0360043516610244565b34801561016d57600080fd5b50610176610264565b60408051918252519081900360200190f35b34801561019457600080fd5b50610129600160a060020a036004351661026a565b600160205260009081526040902054600160a060020a031681565b6000806101f36002848154811015156101d957fe5b600091825260209091200154600160a060020a0316610244565b91509150915091565b604051600160a060020a038416907f2130e02bc65616aa7f8f548960f51a08a1d0ea94efb33611412208c2d0306a2290600090a2505050565b600054600160a060020a031681565b600160a060020a0390811660009081526001602052604090205416908190565b60025490565b600160a060020a0381166000818152600160208181526040808420805473ffffffffffffffffffffffffffffffffffffffff1990811687179091556002805494850181559094527f405787fa12a823e0f2b7631cc41b3ba8828b3321ca811111fa75cd3aa3bb5ace909201805490931684179092558051928352517f2ffa3776d4bcbee1c082f84b2b35d2a24a419de30436c0c4b8f69ea2ced480b09281900390910190a1505600a165627a7a72305820e4db56a3fb14d5ecc18bde779b762638910ae14eee417abe66103513ef78e6ba0029",
+  "deployedBytecode": "0x6080604052600436106100825763ffffffff7c010000000000000000000000000000000000000000000000000000000060003504166308b43a1981146100875780632d883a73146100c45780633d188fab1461010257806345d61ded1461012b5780634987703814610140578063e1ba7d0114610161578063f8242c3214610188575b600080fd5b34801561009357600080fd5b506100a8600160a060020a03600435166101a9565b60408051600160a060020a039092168252519081900360200190f35b3480156100d057600080fd5b506100dc6004356101c4565b60408051600160a060020a03938416815291909216602082015281519081900390910190f35b34801561010e57600080fd5b50610129600160a060020a03600435166024356044356101fc565b005b34801561013757600080fd5b506100a8610235565b34801561014c57600080fd5b506100dc600160a060020a0360043516610244565b34801561016d57600080fd5b50610176610264565b60408051918252519081900360200190f35b34801561019457600080fd5b50610129600160a060020a036004351661026a565b600160205260009081526040902054600160a060020a031681565b6000806101f36002848154811015156101d957fe5b600091825260209091200154600160a060020a0316610244565b91509150915091565b604051600160a060020a038416907f2130e02bc65616aa7f8f548960f51a08a1d0ea94efb33611412208c2d0306a2290600090a2505050565b600054600160a060020a031681565b600160a060020a0390811660009081526001602052604090205416908190565b60025490565b600160a060020a0381166000818152600160208181526040808420805473ffffffffffffffffffffffffffffffffffffffff1990811687179091556002805494850181559094527f405787fa12a823e0f2b7631cc41b3ba8828b3321ca811111fa75cd3aa3bb5ace909201805490931684179092558051928352517f2ffa3776d4bcbee1c082f84b2b35d2a24a419de30436c0c4b8f69ea2ced480b09281900390910190a1505600a165627a7a72305820e4db56a3fb14d5ecc18bde779b762638910ae14eee417abe66103513ef78e6ba0029",
+  "sourceMap": "185:1352:16:-;;;426:78;8:9:-1;5:2;;;30:1;27;20:12;5:2;426:78:16;;;;;;;;;;;;;250:10:13;:36;;-1:-1:-1;;;;;250:36:13;;;-1:-1:-1;;;;;;250:36:13;;;;;;;;;185:1352:16;;;;;;",
+  "deployedSourceMap": "185:1352:16:-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;319:47;;8:9:-1;5:2;;;30:1;27;20:12;5:2;-1:-1;319:47:16;-1:-1:-1;;;;;319:47:16;;;;;;;;;-1:-1:-1;;;;;319:47:16;;;;;;;;;;;;;;1207:141;;8:9:-1;5:2;;;30:1;27;20:12;5:2;-1:-1;1207:141:16;;;;;;;;;-1:-1:-1;;;;;1207:141:16;;;;;;;;;;;;;;;;;;;;;;;;883:162;;8:9:-1;5:2;;;30:1;27;20:12;5:2;-1:-1;883:162:16;-1:-1:-1;;;;;883:162:16;;;;;;;;;;;77:28:13;;8:9:-1;5:2;;;30:1;27;20:12;5:2;77:28:13;;;;1352:182:16;;8:9:-1;5:2;;;30:1;27;20:12;5:2;-1:-1;1352:182:16;-1:-1:-1;;;;;1352:182:16;;;;;1101:102;;8:9:-1;5:2;;;30:1;27;20:12;5:2;1101:102:16;;;;;;;;;;;;;;;;;;;;628:203;;8:9:-1;5:2;;;30:1;27;20:12;5:2;-1:-1;628:203:16;-1:-1:-1;;;;;628:203:16;;;;;319:47;;;;;;;;;;;;-1:-1:-1;;;;;319:47:16;;:::o;1207:141::-;1260:11;1273:23;1311:32;1320:15;1336:5;1320:22;;;;;;;;;;;;;;;;;;;;-1:-1:-1;;;;;1320:22:16;1311:8;:32::i;:::-;1304:39;;;;1207:141;;;:::o;883:162::-;1001:39;;-1:-1:-1;;;;;1001:39:16;;;;;;;;883:162;;;:::o;77:28:13:-;;;-1:-1:-1;;;;;77:28:13;;:::o;1352:182:16:-;-1:-1:-1;;;;;1463:16:16;;;1405:11;1463:16;;;:10;:16;;;;;;;;;;1352:182::o;1101:102::-;1176:15;:22;;1101:102::o;628:203::-;-1:-1:-1;;;;;683:31:16;;;;;;:10;:31;;;;;;;;:64;;-1:-1:-1;;683:64:16;;;;;;;;753:15;27:10:-1;;23:18;;;45:23;;753:41:16;;;;;;;;;;;;;;;;;800:26;;;;;;;;;;;;;;;;628:203;:::o",
+  "source": "pragma solidity ^0.4.20;\n\nimport \"../../authentication/Secured.sol\";\nimport \"../../utility/caching/Cacher.sol\";\nimport \"../../utility/syncing/Syncable.sol\";\nimport \"./Challenge.sol\";\n\n\ncontract ChallengeRegistry is Secured, Syncable, Cacher {\n\n  event ChallengeAdded(address _address);\n\n  // Keep track of challenges\n  mapping(address => Challenge) public challenges;\n  address[] challengesIndex; // Array of challenge ids\n\n  function ChallengeRegistry(address _gateKeeper) Secured(_gateKeeper) public {}\n\n  /**\n  @notice             Adds a challenge to the registry\n  @param _challenge   Address of the challenge to add\n  */\n  function addChallenge(address _challenge) public {\n    challenges[address(_challenge)] = Challenge(address(_challenge));\n    challengesIndex.push(address(_challenge));\n    ChallengeAdded(_challenge);\n  }\n\n  /**\n  * implementation of cacher methods\n  */\n  function invalidateCache(address _cachedAddress, bytes32 /*_cachedBytes32*/, uint256 /*_cachedUint256*/) public {\n    AddressCacheInvalidated(_cachedAddress);\n  }\n\n    /**\n  * implementation of syncable methods\n  */\n  function getIndexLength() public view returns (uint length) {\n    length = challengesIndex.length;\n  }\n\n  function getByIndex(uint index) public view returns (address key, address contractAddress) {\n    return getByKey(challengesIndex[index]);\n  }\n\n  function getByKey(address _key) public view returns (address key, address contractAddress) {\n    key = address(challenges[_key]);\n    contractAddress = address(challenges[_key]);\n  }\n\n}\n",
+  "sourcePath": "@settlemint/solidity-mint/contracts/marketplaces/tokencuratedregistry/ChallengeRegistry.sol",
+  "ast": {
+    "absolutePath": "@settlemint/solidity-mint/contracts/marketplaces/tokencuratedregistry/ChallengeRegistry.sol",
+    "exportedSymbols": {
+      "ChallengeRegistry": [
+        1756
+      ]
+    },
+    "id": 1757,
+    "nodeType": "SourceUnit",
+    "nodes": [
+      {
+        "id": 1628,
+        "literals": [
+          "solidity",
+          "^",
+          "0.4",
+          ".20"
+        ],
+        "nodeType": "PragmaDirective",
+        "src": "0:24:16"
+      },
+      {
+        "absolutePath": "@settlemint/solidity-mint/contracts/authentication/Secured.sol",
+        "file": "../../authentication/Secured.sol",
+        "id": 1629,
+        "nodeType": "ImportDirective",
+        "scope": 1757,
+        "sourceUnit": 1483,
+        "src": "26:42:16",
+        "symbolAliases": [],
+        "unitAlias": ""
+      },
+      {
+        "absolutePath": "@settlemint/solidity-mint/contracts/utility/caching/Cacher.sol",
+        "file": "../../utility/caching/Cacher.sol",
+        "id": 1630,
+        "nodeType": "ImportDirective",
+        "scope": 1757,
+        "sourceUnit": 4331,
+        "src": "69:42:16",
+        "symbolAliases": [],
+        "unitAlias": ""
+      },
+      {
+        "absolutePath": "@settlemint/solidity-mint/contracts/utility/syncing/Syncable.sol",
+        "file": "../../utility/syncing/Syncable.sol",
+        "id": 1631,
+        "nodeType": "ImportDirective",
+        "scope": 1757,
+        "sourceUnit": 4360,
+        "src": "112:44:16",
+        "symbolAliases": [],
+        "unitAlias": ""
+      },
+      {
+        "absolutePath": "@settlemint/solidity-mint/contracts/marketplaces/tokencuratedregistry/Challenge.sol",
+        "file": "./Challenge.sol",
+        "id": 1632,
+        "nodeType": "ImportDirective",
+        "scope": 1757,
+        "sourceUnit": 1627,
+        "src": "157:25:16",
+        "symbolAliases": [],
+        "unitAlias": ""
+      },
+      {
+        "baseContracts": [
+          {
+            "arguments": null,
+            "baseName": {
+              "contractScope": null,
+              "id": 1633,
+              "name": "Secured",
+              "nodeType": "UserDefinedTypeName",
+              "referencedDeclaration": 1482,
+              "src": "215:7:16",
+              "typeDescriptions": {
+                "typeIdentifier": "t_contract$_Secured_$1482",
+                "typeString": "contract Secured"
+              }
+            },
+            "id": 1634,
+            "nodeType": "InheritanceSpecifier",
+            "src": "215:7:16"
+          },
+          {
+            "arguments": null,
+            "baseName": {
+              "contractScope": null,
+              "id": 1635,
+              "name": "Syncable",
+              "nodeType": "UserDefinedTypeName",
+              "referencedDeclaration": 4359,
+              "src": "224:8:16",
+              "typeDescriptions": {
+                "typeIdentifier": "t_contract$_Syncable_$4359",
+                "typeString": "contract Syncable"
+              }
+            },
+            "id": 1636,
+            "nodeType": "InheritanceSpecifier",
+            "src": "224:8:16"
+          },
+          {
+            "arguments": null,
+            "baseName": {
+              "contractScope": null,
+              "id": 1637,
+              "name": "Cacher",
+              "nodeType": "UserDefinedTypeName",
+              "referencedDeclaration": 4330,
+              "src": "234:6:16",
+              "typeDescriptions": {
+                "typeIdentifier": "t_contract$_Cacher_$4330",
+                "typeString": "contract Cacher"
+              }
+            },
+            "id": 1638,
+            "nodeType": "InheritanceSpecifier",
+            "src": "234:6:16"
+          }
+        ],
+        "contractDependencies": [
+          1482,
+          4330,
+          4359
+        ],
+        "contractKind": "contract",
+        "documentation": null,
+        "fullyImplemented": true,
+        "id": 1756,
+        "linearizedBaseContracts": [
+          1756,
+          4330,
+          4359,
+          1482
+        ],
+        "name": "ChallengeRegistry",
+        "nodeType": "ContractDefinition",
+        "nodes": [
+          {
+            "anonymous": false,
+            "documentation": null,
+            "id": 1642,
+            "name": "ChallengeAdded",
+            "nodeType": "EventDefinition",
+            "parameters": {
+              "id": 1641,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 1640,
+                  "indexed": false,
+                  "name": "_address",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 1642,
+                  "src": "267:16:16",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 1639,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "267:7:16",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "266:18:16"
+            },
+            "src": "246:39:16"
+          },
+          {
+            "constant": false,
+            "id": 1646,
+            "name": "challenges",
+            "nodeType": "VariableDeclaration",
+            "scope": 1756,
+            "src": "319:47:16",
+            "stateVariable": true,
+            "storageLocation": "default",
+            "typeDescriptions": {
+              "typeIdentifier": "t_mapping$_t_address_$_t_contract$_Challenge_$1626_$",
+              "typeString": "mapping(address => contract Challenge)"
+            },
+            "typeName": {
+              "id": 1645,
+              "keyType": {
+                "id": 1643,
+                "name": "address",
+                "nodeType": "ElementaryTypeName",
+                "src": "327:7:16",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_address",
+                  "typeString": "address"
+                }
+              },
+              "nodeType": "Mapping",
+              "src": "319:29:16",
+              "typeDescriptions": {
+                "typeIdentifier": "t_mapping$_t_address_$_t_contract$_Challenge_$1626_$",
+                "typeString": "mapping(address => contract Challenge)"
+              },
+              "valueType": {
+                "contractScope": null,
+                "id": 1644,
+                "name": "Challenge",
+                "nodeType": "UserDefinedTypeName",
+                "referencedDeclaration": 1626,
+                "src": "338:9:16",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_contract$_Challenge_$1626",
+                  "typeString": "contract Challenge"
+                }
+              }
+            },
+            "value": null,
+            "visibility": "public"
+          },
+          {
+            "constant": false,
+            "id": 1649,
+            "name": "challengesIndex",
+            "nodeType": "VariableDeclaration",
+            "scope": 1756,
+            "src": "370:25:16",
+            "stateVariable": true,
+            "storageLocation": "default",
+            "typeDescriptions": {
+              "typeIdentifier": "t_array$_t_address_$dyn_storage",
+              "typeString": "address[]"
+            },
+            "typeName": {
+              "baseType": {
+                "id": 1647,
+                "name": "address",
+                "nodeType": "ElementaryTypeName",
+                "src": "370:7:16",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_address",
+                  "typeString": "address"
+                }
+              },
+              "id": 1648,
+              "length": null,
+              "nodeType": "ArrayTypeName",
+              "src": "370:9:16",
+              "typeDescriptions": {
+                "typeIdentifier": "t_array$_t_address_$dyn_storage_ptr",
+                "typeString": "address[]"
+              }
+            },
+            "value": null,
+            "visibility": "internal"
+          },
+          {
+            "body": {
+              "id": 1657,
+              "nodeType": "Block",
+              "src": "502:2:16",
+              "statements": []
+            },
+            "documentation": null,
+            "id": 1658,
+            "implemented": true,
+            "isConstructor": true,
+            "isDeclaredConst": false,
+            "modifiers": [
+              {
+                "arguments": [
+                  {
+                    "argumentTypes": null,
+                    "id": 1654,
+                    "name": "_gateKeeper",
+                    "nodeType": "Identifier",
+                    "overloadedDeclarations": [],
+                    "referencedDeclaration": 1651,
+                    "src": "482:11:16",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  }
+                ],
+                "id": 1655,
+                "modifierName": {
+                  "argumentTypes": null,
+                  "id": 1653,
+                  "name": "Secured",
+                  "nodeType": "Identifier",
+                  "overloadedDeclarations": [],
+                  "referencedDeclaration": 1482,
+                  "src": "474:7:16",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_type$_t_contract$_Secured_$1482_$",
+                    "typeString": "type(contract Secured)"
+                  }
+                },
+                "nodeType": "ModifierInvocation",
+                "src": "474:20:16"
+              }
+            ],
+            "name": "ChallengeRegistry",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 1652,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 1651,
+                  "name": "_gateKeeper",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 1658,
+                  "src": "453:19:16",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 1650,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "453:7:16",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "452:21:16"
+            },
+            "payable": false,
+            "returnParameters": {
+              "id": 1656,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "502:0:16"
+            },
+            "scope": 1756,
+            "src": "426:78:16",
+            "stateMutability": "nonpayable",
+            "superFunction": null,
+            "visibility": "public"
+          },
+          {
+            "body": {
+              "id": 1687,
+              "nodeType": "Block",
+              "src": "677:154:16",
+              "statements": [
+                {
+                  "expression": {
+                    "argumentTypes": null,
+                    "id": 1673,
+                    "isConstant": false,
+                    "isLValue": false,
+                    "isPure": false,
+                    "lValueRequested": false,
+                    "leftHandSide": {
+                      "argumentTypes": null,
+                      "baseExpression": {
+                        "argumentTypes": null,
+                        "id": 1663,
+                        "name": "challenges",
+                        "nodeType": "Identifier",
+                        "overloadedDeclarations": [],
+                        "referencedDeclaration": 1646,
+                        "src": "683:10:16",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_mapping$_t_address_$_t_contract$_Challenge_$1626_$",
+                          "typeString": "mapping(address => contract Challenge)"
+                        }
+                      },
+                      "id": 1667,
+                      "indexExpression": {
+                        "argumentTypes": null,
+                        "arguments": [
+                          {
+                            "argumentTypes": null,
+                            "id": 1665,
+                            "name": "_challenge",
+                            "nodeType": "Identifier",
+                            "overloadedDeclarations": [],
+                            "referencedDeclaration": 1660,
+                            "src": "702:10:16",
+                            "typeDescriptions": {
+                              "typeIdentifier": "t_address",
+                              "typeString": "address"
+                            }
+                          }
+                        ],
+                        "expression": {
+                          "argumentTypes": [
+                            {
+                              "typeIdentifier": "t_address",
+                              "typeString": "address"
+                            }
+                          ],
+                          "id": 1664,
+                          "isConstant": false,
+                          "isLValue": false,
+                          "isPure": true,
+                          "lValueRequested": false,
+                          "nodeType": "ElementaryTypeNameExpression",
+                          "src": "694:7:16",
+                          "typeDescriptions": {
+                            "typeIdentifier": "t_type$_t_address_$",
+                            "typeString": "type(address)"
+                          },
+                          "typeName": "address"
+                        },
+                        "id": 1666,
+                        "isConstant": false,
+                        "isLValue": false,
+                        "isPure": false,
+                        "kind": "typeConversion",
+                        "lValueRequested": false,
+                        "names": [],
+                        "nodeType": "FunctionCall",
+                        "src": "694:19:16",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_address",
+                          "typeString": "address"
+                        }
+                      },
+                      "isConstant": false,
+                      "isLValue": true,
+                      "isPure": false,
+                      "lValueRequested": true,
+                      "nodeType": "IndexAccess",
+                      "src": "683:31:16",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_contract$_Challenge_$1626",
+                        "typeString": "contract Challenge"
+                      }
+                    },
+                    "nodeType": "Assignment",
+                    "operator": "=",
+                    "rightHandSide": {
+                      "argumentTypes": null,
+                      "arguments": [
+                        {
+                          "argumentTypes": null,
+                          "arguments": [
+                            {
+                              "argumentTypes": null,
+                              "id": 1670,
+                              "name": "_challenge",
+                              "nodeType": "Identifier",
+                              "overloadedDeclarations": [],
+                              "referencedDeclaration": 1660,
+                              "src": "735:10:16",
+                              "typeDescriptions": {
+                                "typeIdentifier": "t_address",
+                                "typeString": "address"
+                              }
+                            }
+                          ],
+                          "expression": {
+                            "argumentTypes": [
+                              {
+                                "typeIdentifier": "t_address",
+                                "typeString": "address"
+                              }
+                            ],
+                            "id": 1669,
+                            "isConstant": false,
+                            "isLValue": false,
+                            "isPure": true,
+                            "lValueRequested": false,
+                            "nodeType": "ElementaryTypeNameExpression",
+                            "src": "727:7:16",
+                            "typeDescriptions": {
+                              "typeIdentifier": "t_type$_t_address_$",
+                              "typeString": "type(address)"
+                            },
+                            "typeName": "address"
+                          },
+                          "id": 1671,
+                          "isConstant": false,
+                          "isLValue": false,
+                          "isPure": false,
+                          "kind": "typeConversion",
+                          "lValueRequested": false,
+                          "names": [],
+                          "nodeType": "FunctionCall",
+                          "src": "727:19:16",
+                          "typeDescriptions": {
+                            "typeIdentifier": "t_address",
+                            "typeString": "address"
+                          }
+                        }
+                      ],
+                      "expression": {
+                        "argumentTypes": [
+                          {
+                            "typeIdentifier": "t_address",
+                            "typeString": "address"
+                          }
+                        ],
+                        "id": 1668,
+                        "name": "Challenge",
+                        "nodeType": "Identifier",
+                        "overloadedDeclarations": [],
+                        "referencedDeclaration": 1626,
+                        "src": "717:9:16",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_type$_t_contract$_Challenge_$1626_$",
+                          "typeString": "type(contract Challenge)"
+                        }
+                      },
+                      "id": 1672,
+                      "isConstant": false,
+                      "isLValue": false,
+                      "isPure": false,
+                      "kind": "typeConversion",
+                      "lValueRequested": false,
+                      "names": [],
+                      "nodeType": "FunctionCall",
+                      "src": "717:30:16",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_contract$_Challenge_$1626",
+                        "typeString": "contract Challenge"
+                      }
+                    },
+                    "src": "683:64:16",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_contract$_Challenge_$1626",
+                      "typeString": "contract Challenge"
+                    }
+                  },
+                  "id": 1674,
+                  "nodeType": "ExpressionStatement",
+                  "src": "683:64:16"
+                },
+                {
+                  "expression": {
+                    "argumentTypes": null,
+                    "arguments": [
+                      {
+                        "argumentTypes": null,
+                        "arguments": [
+                          {
+                            "argumentTypes": null,
+                            "id": 1679,
+                            "name": "_challenge",
+                            "nodeType": "Identifier",
+                            "overloadedDeclarations": [],
+                            "referencedDeclaration": 1660,
+                            "src": "782:10:16",
+                            "typeDescriptions": {
+                              "typeIdentifier": "t_address",
+                              "typeString": "address"
+                            }
+                          }
+                        ],
+                        "expression": {
+                          "argumentTypes": [
+                            {
+                              "typeIdentifier": "t_address",
+                              "typeString": "address"
+                            }
+                          ],
+                          "id": 1678,
+                          "isConstant": false,
+                          "isLValue": false,
+                          "isPure": true,
+                          "lValueRequested": false,
+                          "nodeType": "ElementaryTypeNameExpression",
+                          "src": "774:7:16",
+                          "typeDescriptions": {
+                            "typeIdentifier": "t_type$_t_address_$",
+                            "typeString": "type(address)"
+                          },
+                          "typeName": "address"
+                        },
+                        "id": 1680,
+                        "isConstant": false,
+                        "isLValue": false,
+                        "isPure": false,
+                        "kind": "typeConversion",
+                        "lValueRequested": false,
+                        "names": [],
+                        "nodeType": "FunctionCall",
+                        "src": "774:19:16",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_address",
+                          "typeString": "address"
+                        }
+                      }
+                    ],
+                    "expression": {
+                      "argumentTypes": [
+                        {
+                          "typeIdentifier": "t_address",
+                          "typeString": "address"
+                        }
+                      ],
+                      "expression": {
+                        "argumentTypes": null,
+                        "id": 1675,
+                        "name": "challengesIndex",
+                        "nodeType": "Identifier",
+                        "overloadedDeclarations": [],
+                        "referencedDeclaration": 1649,
+                        "src": "753:15:16",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_array$_t_address_$dyn_storage",
+                          "typeString": "address[] storage ref"
+                        }
+                      },
+                      "id": 1677,
+                      "isConstant": false,
+                      "isLValue": false,
+                      "isPure": false,
+                      "lValueRequested": false,
+                      "memberName": "push",
+                      "nodeType": "MemberAccess",
+                      "referencedDeclaration": null,
+                      "src": "753:20:16",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_function_arraypush_nonpayable$_t_address_$returns$_t_uint256_$",
+                        "typeString": "function (address) returns (uint256)"
+                      }
+                    },
+                    "id": 1681,
+                    "isConstant": false,
+                    "isLValue": false,
+                    "isPure": false,
+                    "kind": "functionCall",
+                    "lValueRequested": false,
+                    "names": [],
+                    "nodeType": "FunctionCall",
+                    "src": "753:41:16",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "id": 1682,
+                  "nodeType": "ExpressionStatement",
+                  "src": "753:41:16"
+                },
+                {
+                  "expression": {
+                    "argumentTypes": null,
+                    "arguments": [
+                      {
+                        "argumentTypes": null,
+                        "id": 1684,
+                        "name": "_challenge",
+                        "nodeType": "Identifier",
+                        "overloadedDeclarations": [],
+                        "referencedDeclaration": 1660,
+                        "src": "815:10:16",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_address",
+                          "typeString": "address"
+                        }
+                      }
+                    ],
+                    "expression": {
+                      "argumentTypes": [
+                        {
+                          "typeIdentifier": "t_address",
+                          "typeString": "address"
+                        }
+                      ],
+                      "id": 1683,
+                      "name": "ChallengeAdded",
+                      "nodeType": "Identifier",
+                      "overloadedDeclarations": [],
+                      "referencedDeclaration": 1642,
+                      "src": "800:14:16",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_function_event_nonpayable$_t_address_$returns$__$",
+                        "typeString": "function (address)"
+                      }
+                    },
+                    "id": 1685,
+                    "isConstant": false,
+                    "isLValue": false,
+                    "isPure": false,
+                    "kind": "functionCall",
+                    "lValueRequested": false,
+                    "names": [],
+                    "nodeType": "FunctionCall",
+                    "src": "800:26:16",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_tuple$__$",
+                      "typeString": "tuple()"
+                    }
+                  },
+                  "id": 1686,
+                  "nodeType": "ExpressionStatement",
+                  "src": "800:26:16"
+                }
+              ]
+            },
+            "documentation": "@notice             Adds a challenge to the registry\n@param _challenge   Address of the challenge to add",
+            "id": 1688,
+            "implemented": true,
+            "isConstructor": false,
+            "isDeclaredConst": false,
+            "modifiers": [],
+            "name": "addChallenge",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 1661,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 1660,
+                  "name": "_challenge",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 1688,
+                  "src": "650:18:16",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 1659,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "650:7:16",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "649:20:16"
+            },
+            "payable": false,
+            "returnParameters": {
+              "id": 1662,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "677:0:16"
+            },
+            "scope": 1756,
+            "src": "628:203:16",
+            "stateMutability": "nonpayable",
+            "superFunction": null,
+            "visibility": "public"
+          },
+          {
+            "body": {
+              "id": 1701,
+              "nodeType": "Block",
+              "src": "995:50:16",
+              "statements": [
+                {
+                  "expression": {
+                    "argumentTypes": null,
+                    "arguments": [
+                      {
+                        "argumentTypes": null,
+                        "id": 1698,
+                        "name": "_cachedAddress",
+                        "nodeType": "Identifier",
+                        "overloadedDeclarations": [],
+                        "referencedDeclaration": 1690,
+                        "src": "1025:14:16",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_address",
+                          "typeString": "address"
+                        }
+                      }
+                    ],
+                    "expression": {
+                      "argumentTypes": [
+                        {
+                          "typeIdentifier": "t_address",
+                          "typeString": "address"
+                        }
+                      ],
+                      "id": 1697,
+                      "name": "AddressCacheInvalidated",
+                      "nodeType": "Identifier",
+                      "overloadedDeclarations": [],
+                      "referencedDeclaration": 4312,
+                      "src": "1001:23:16",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_function_event_nonpayable$_t_address_$returns$__$",
+                        "typeString": "function (address)"
+                      }
+                    },
+                    "id": 1699,
+                    "isConstant": false,
+                    "isLValue": false,
+                    "isPure": false,
+                    "kind": "functionCall",
+                    "lValueRequested": false,
+                    "names": [],
+                    "nodeType": "FunctionCall",
+                    "src": "1001:39:16",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_tuple$__$",
+                      "typeString": "tuple()"
+                    }
+                  },
+                  "id": 1700,
+                  "nodeType": "ExpressionStatement",
+                  "src": "1001:39:16"
+                }
+              ]
+            },
+            "documentation": "implementation of cacher methods",
+            "id": 1702,
+            "implemented": true,
+            "isConstructor": false,
+            "isDeclaredConst": false,
+            "modifiers": [],
+            "name": "invalidateCache",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 1695,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 1690,
+                  "name": "_cachedAddress",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 1702,
+                  "src": "908:22:16",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 1689,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "908:7:16",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 1692,
+                  "name": "",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 1702,
+                  "src": "932:7:16",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_bytes32",
+                    "typeString": "bytes32"
+                  },
+                  "typeName": {
+                    "id": 1691,
+                    "name": "bytes32",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "932:7:16",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_bytes32",
+                      "typeString": "bytes32"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 1694,
+                  "name": "",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 1702,
+                  "src": "960:7:16",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 1693,
+                    "name": "uint256",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "960:7:16",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "907:80:16"
+            },
+            "payable": false,
+            "returnParameters": {
+              "id": 1696,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "995:0:16"
+            },
+            "scope": 1756,
+            "src": "883:162:16",
+            "stateMutability": "nonpayable",
+            "superFunction": 4329,
+            "visibility": "public"
+          },
+          {
+            "body": {
+              "id": 1712,
+              "nodeType": "Block",
+              "src": "1161:42:16",
+              "statements": [
+                {
+                  "expression": {
+                    "argumentTypes": null,
+                    "id": 1710,
+                    "isConstant": false,
+                    "isLValue": false,
+                    "isPure": false,
+                    "lValueRequested": false,
+                    "leftHandSide": {
+                      "argumentTypes": null,
+                      "id": 1707,
+                      "name": "length",
+                      "nodeType": "Identifier",
+                      "overloadedDeclarations": [],
+                      "referencedDeclaration": 1705,
+                      "src": "1167:6:16",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_uint256",
+                        "typeString": "uint256"
+                      }
+                    },
+                    "nodeType": "Assignment",
+                    "operator": "=",
+                    "rightHandSide": {
+                      "argumentTypes": null,
+                      "expression": {
+                        "argumentTypes": null,
+                        "id": 1708,
+                        "name": "challengesIndex",
+                        "nodeType": "Identifier",
+                        "overloadedDeclarations": [],
+                        "referencedDeclaration": 1649,
+                        "src": "1176:15:16",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_array$_t_address_$dyn_storage",
+                          "typeString": "address[] storage ref"
+                        }
+                      },
+                      "id": 1709,
+                      "isConstant": false,
+                      "isLValue": true,
+                      "isPure": false,
+                      "lValueRequested": false,
+                      "memberName": "length",
+                      "nodeType": "MemberAccess",
+                      "referencedDeclaration": null,
+                      "src": "1176:22:16",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_uint256",
+                        "typeString": "uint256"
+                      }
+                    },
+                    "src": "1167:31:16",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "id": 1711,
+                  "nodeType": "ExpressionStatement",
+                  "src": "1167:31:16"
+                }
+              ]
+            },
+            "documentation": "implementation of syncable methods",
+            "id": 1713,
+            "implemented": true,
+            "isConstructor": false,
+            "isDeclaredConst": true,
+            "modifiers": [],
+            "name": "getIndexLength",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 1703,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "1124:2:16"
+            },
+            "payable": false,
+            "returnParameters": {
+              "id": 1706,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 1705,
+                  "name": "length",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 1713,
+                  "src": "1148:11:16",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 1704,
+                    "name": "uint",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "1148:4:16",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "1147:13:16"
+            },
+            "scope": 1756,
+            "src": "1101:102:16",
+            "stateMutability": "view",
+            "superFunction": 4358,
+            "visibility": "public"
+          },
+          {
+            "body": {
+              "id": 1728,
+              "nodeType": "Block",
+              "src": "1298:50:16",
+              "statements": [
+                {
+                  "expression": {
+                    "argumentTypes": null,
+                    "arguments": [
+                      {
+                        "argumentTypes": null,
+                        "baseExpression": {
+                          "argumentTypes": null,
+                          "id": 1723,
+                          "name": "challengesIndex",
+                          "nodeType": "Identifier",
+                          "overloadedDeclarations": [],
+                          "referencedDeclaration": 1649,
+                          "src": "1320:15:16",
+                          "typeDescriptions": {
+                            "typeIdentifier": "t_array$_t_address_$dyn_storage",
+                            "typeString": "address[] storage ref"
+                          }
+                        },
+                        "id": 1725,
+                        "indexExpression": {
+                          "argumentTypes": null,
+                          "id": 1724,
+                          "name": "index",
+                          "nodeType": "Identifier",
+                          "overloadedDeclarations": [],
+                          "referencedDeclaration": 1715,
+                          "src": "1336:5:16",
+                          "typeDescriptions": {
+                            "typeIdentifier": "t_uint256",
+                            "typeString": "uint256"
+                          }
+                        },
+                        "isConstant": false,
+                        "isLValue": true,
+                        "isPure": false,
+                        "lValueRequested": false,
+                        "nodeType": "IndexAccess",
+                        "src": "1320:22:16",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_address",
+                          "typeString": "address"
+                        }
+                      }
+                    ],
+                    "expression": {
+                      "argumentTypes": [
+                        {
+                          "typeIdentifier": "t_address",
+                          "typeString": "address"
+                        }
+                      ],
+                      "id": 1722,
+                      "name": "getByKey",
+                      "nodeType": "Identifier",
+                      "overloadedDeclarations": [],
+                      "referencedDeclaration": 1755,
+                      "src": "1311:8:16",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_function_internal_view$_t_address_$returns$_t_address_$_t_address_$",
+                        "typeString": "function (address) view returns (address,address)"
+                      }
+                    },
+                    "id": 1726,
+                    "isConstant": false,
+                    "isLValue": false,
+                    "isPure": false,
+                    "kind": "functionCall",
+                    "lValueRequested": false,
+                    "names": [],
+                    "nodeType": "FunctionCall",
+                    "src": "1311:32:16",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_tuple$_t_address_$_t_address_$",
+                      "typeString": "tuple(address,address)"
+                    }
+                  },
+                  "functionReturnParameters": 1721,
+                  "id": 1727,
+                  "nodeType": "Return",
+                  "src": "1304:39:16"
+                }
+              ]
+            },
+            "documentation": null,
+            "id": 1729,
+            "implemented": true,
+            "isConstructor": false,
+            "isDeclaredConst": true,
+            "modifiers": [],
+            "name": "getByIndex",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 1716,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 1715,
+                  "name": "index",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 1729,
+                  "src": "1227:10:16",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 1714,
+                    "name": "uint",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "1227:4:16",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "1226:12:16"
+            },
+            "payable": false,
+            "returnParameters": {
+              "id": 1721,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 1718,
+                  "name": "key",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 1729,
+                  "src": "1260:11:16",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 1717,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "1260:7:16",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 1720,
+                  "name": "contractAddress",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 1729,
+                  "src": "1273:23:16",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 1719,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "1273:7:16",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "1259:38:16"
+            },
+            "scope": 1756,
+            "src": "1207:141:16",
+            "stateMutability": "view",
+            "superFunction": null,
+            "visibility": "public"
+          },
+          {
+            "body": {
+              "id": 1754,
+              "nodeType": "Block",
+              "src": "1443:91:16",
+              "statements": [
+                {
+                  "expression": {
+                    "argumentTypes": null,
+                    "id": 1744,
+                    "isConstant": false,
+                    "isLValue": false,
+                    "isPure": false,
+                    "lValueRequested": false,
+                    "leftHandSide": {
+                      "argumentTypes": null,
+                      "id": 1738,
+                      "name": "key",
+                      "nodeType": "Identifier",
+                      "overloadedDeclarations": [],
+                      "referencedDeclaration": 1734,
+                      "src": "1449:3:16",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_address",
+                        "typeString": "address"
+                      }
+                    },
+                    "nodeType": "Assignment",
+                    "operator": "=",
+                    "rightHandSide": {
+                      "argumentTypes": null,
+                      "arguments": [
+                        {
+                          "argumentTypes": null,
+                          "baseExpression": {
+                            "argumentTypes": null,
+                            "id": 1740,
+                            "name": "challenges",
+                            "nodeType": "Identifier",
+                            "overloadedDeclarations": [],
+                            "referencedDeclaration": 1646,
+                            "src": "1463:10:16",
+                            "typeDescriptions": {
+                              "typeIdentifier": "t_mapping$_t_address_$_t_contract$_Challenge_$1626_$",
+                              "typeString": "mapping(address => contract Challenge)"
+                            }
+                          },
+                          "id": 1742,
+                          "indexExpression": {
+                            "argumentTypes": null,
+                            "id": 1741,
+                            "name": "_key",
+                            "nodeType": "Identifier",
+                            "overloadedDeclarations": [],
+                            "referencedDeclaration": 1731,
+                            "src": "1474:4:16",
+                            "typeDescriptions": {
+                              "typeIdentifier": "t_address",
+                              "typeString": "address"
+                            }
+                          },
+                          "isConstant": false,
+                          "isLValue": true,
+                          "isPure": false,
+                          "lValueRequested": false,
+                          "nodeType": "IndexAccess",
+                          "src": "1463:16:16",
+                          "typeDescriptions": {
+                            "typeIdentifier": "t_contract$_Challenge_$1626",
+                            "typeString": "contract Challenge"
+                          }
+                        }
+                      ],
+                      "expression": {
+                        "argumentTypes": [
+                          {
+                            "typeIdentifier": "t_contract$_Challenge_$1626",
+                            "typeString": "contract Challenge"
+                          }
+                        ],
+                        "id": 1739,
+                        "isConstant": false,
+                        "isLValue": false,
+                        "isPure": true,
+                        "lValueRequested": false,
+                        "nodeType": "ElementaryTypeNameExpression",
+                        "src": "1455:7:16",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_type$_t_address_$",
+                          "typeString": "type(address)"
+                        },
+                        "typeName": "address"
+                      },
+                      "id": 1743,
+                      "isConstant": false,
+                      "isLValue": false,
+                      "isPure": false,
+                      "kind": "typeConversion",
+                      "lValueRequested": false,
+                      "names": [],
+                      "nodeType": "FunctionCall",
+                      "src": "1455:25:16",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_address",
+                        "typeString": "address"
+                      }
+                    },
+                    "src": "1449:31:16",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "id": 1745,
+                  "nodeType": "ExpressionStatement",
+                  "src": "1449:31:16"
+                },
+                {
+                  "expression": {
+                    "argumentTypes": null,
+                    "id": 1752,
+                    "isConstant": false,
+                    "isLValue": false,
+                    "isPure": false,
+                    "lValueRequested": false,
+                    "leftHandSide": {
+                      "argumentTypes": null,
+                      "id": 1746,
+                      "name": "contractAddress",
+                      "nodeType": "Identifier",
+                      "overloadedDeclarations": [],
+                      "referencedDeclaration": 1736,
+                      "src": "1486:15:16",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_address",
+                        "typeString": "address"
+                      }
+                    },
+                    "nodeType": "Assignment",
+                    "operator": "=",
+                    "rightHandSide": {
+                      "argumentTypes": null,
+                      "arguments": [
+                        {
+                          "argumentTypes": null,
+                          "baseExpression": {
+                            "argumentTypes": null,
+                            "id": 1748,
+                            "name": "challenges",
+                            "nodeType": "Identifier",
+                            "overloadedDeclarations": [],
+                            "referencedDeclaration": 1646,
+                            "src": "1512:10:16",
+                            "typeDescriptions": {
+                              "typeIdentifier": "t_mapping$_t_address_$_t_contract$_Challenge_$1626_$",
+                              "typeString": "mapping(address => contract Challenge)"
+                            }
+                          },
+                          "id": 1750,
+                          "indexExpression": {
+                            "argumentTypes": null,
+                            "id": 1749,
+                            "name": "_key",
+                            "nodeType": "Identifier",
+                            "overloadedDeclarations": [],
+                            "referencedDeclaration": 1731,
+                            "src": "1523:4:16",
+                            "typeDescriptions": {
+                              "typeIdentifier": "t_address",
+                              "typeString": "address"
+                            }
+                          },
+                          "isConstant": false,
+                          "isLValue": true,
+                          "isPure": false,
+                          "lValueRequested": false,
+                          "nodeType": "IndexAccess",
+                          "src": "1512:16:16",
+                          "typeDescriptions": {
+                            "typeIdentifier": "t_contract$_Challenge_$1626",
+                            "typeString": "contract Challenge"
+                          }
+                        }
+                      ],
+                      "expression": {
+                        "argumentTypes": [
+                          {
+                            "typeIdentifier": "t_contract$_Challenge_$1626",
+                            "typeString": "contract Challenge"
+                          }
+                        ],
+                        "id": 1747,
+                        "isConstant": false,
+                        "isLValue": false,
+                        "isPure": true,
+                        "lValueRequested": false,
+                        "nodeType": "ElementaryTypeNameExpression",
+                        "src": "1504:7:16",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_type$_t_address_$",
+                          "typeString": "type(address)"
+                        },
+                        "typeName": "address"
+                      },
+                      "id": 1751,
+                      "isConstant": false,
+                      "isLValue": false,
+                      "isPure": false,
+                      "kind": "typeConversion",
+                      "lValueRequested": false,
+                      "names": [],
+                      "nodeType": "FunctionCall",
+                      "src": "1504:25:16",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_address",
+                        "typeString": "address"
+                      }
+                    },
+                    "src": "1486:43:16",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "id": 1753,
+                  "nodeType": "ExpressionStatement",
+                  "src": "1486:43:16"
+                }
+              ]
+            },
+            "documentation": null,
+            "id": 1755,
+            "implemented": true,
+            "isConstructor": false,
+            "isDeclaredConst": true,
+            "modifiers": [],
+            "name": "getByKey",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 1732,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 1731,
+                  "name": "_key",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 1755,
+                  "src": "1370:12:16",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 1730,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "1370:7:16",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "1369:14:16"
+            },
+            "payable": false,
+            "returnParameters": {
+              "id": 1737,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 1734,
+                  "name": "key",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 1755,
+                  "src": "1405:11:16",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 1733,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "1405:7:16",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 1736,
+                  "name": "contractAddress",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 1755,
+                  "src": "1418:23:16",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 1735,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "1418:7:16",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "1404:38:16"
+            },
+            "scope": 1756,
+            "src": "1352:182:16",
+            "stateMutability": "view",
+            "superFunction": null,
+            "visibility": "public"
+          }
+        ],
+        "scope": 1757,
+        "src": "185:1352:16"
+      }
+    ],
+    "src": "0:1538:16"
+  },
+  "legacyAST": {
+    "absolutePath": "@settlemint/solidity-mint/contracts/marketplaces/tokencuratedregistry/ChallengeRegistry.sol",
+    "exportedSymbols": {
+      "ChallengeRegistry": [
+        1756
+      ]
+    },
+    "id": 1757,
+    "nodeType": "SourceUnit",
+    "nodes": [
+      {
+        "id": 1628,
+        "literals": [
+          "solidity",
+          "^",
+          "0.4",
+          ".20"
+        ],
+        "nodeType": "PragmaDirective",
+        "src": "0:24:16"
+      },
+      {
+        "absolutePath": "@settlemint/solidity-mint/contracts/authentication/Secured.sol",
+        "file": "../../authentication/Secured.sol",
+        "id": 1629,
+        "nodeType": "ImportDirective",
+        "scope": 1757,
+        "sourceUnit": 1483,
+        "src": "26:42:16",
+        "symbolAliases": [],
+        "unitAlias": ""
+      },
+      {
+        "absolutePath": "@settlemint/solidity-mint/contracts/utility/caching/Cacher.sol",
+        "file": "../../utility/caching/Cacher.sol",
+        "id": 1630,
+        "nodeType": "ImportDirective",
+        "scope": 1757,
+        "sourceUnit": 4331,
+        "src": "69:42:16",
+        "symbolAliases": [],
+        "unitAlias": ""
+      },
+      {
+        "absolutePath": "@settlemint/solidity-mint/contracts/utility/syncing/Syncable.sol",
+        "file": "../../utility/syncing/Syncable.sol",
+        "id": 1631,
+        "nodeType": "ImportDirective",
+        "scope": 1757,
+        "sourceUnit": 4360,
+        "src": "112:44:16",
+        "symbolAliases": [],
+        "unitAlias": ""
+      },
+      {
+        "absolutePath": "@settlemint/solidity-mint/contracts/marketplaces/tokencuratedregistry/Challenge.sol",
+        "file": "./Challenge.sol",
+        "id": 1632,
+        "nodeType": "ImportDirective",
+        "scope": 1757,
+        "sourceUnit": 1627,
+        "src": "157:25:16",
+        "symbolAliases": [],
+        "unitAlias": ""
+      },
+      {
+        "baseContracts": [
+          {
+            "arguments": null,
+            "baseName": {
+              "contractScope": null,
+              "id": 1633,
+              "name": "Secured",
+              "nodeType": "UserDefinedTypeName",
+              "referencedDeclaration": 1482,
+              "src": "215:7:16",
+              "typeDescriptions": {
+                "typeIdentifier": "t_contract$_Secured_$1482",
+                "typeString": "contract Secured"
+              }
+            },
+            "id": 1634,
+            "nodeType": "InheritanceSpecifier",
+            "src": "215:7:16"
+          },
+          {
+            "arguments": null,
+            "baseName": {
+              "contractScope": null,
+              "id": 1635,
+              "name": "Syncable",
+              "nodeType": "UserDefinedTypeName",
+              "referencedDeclaration": 4359,
+              "src": "224:8:16",
+              "typeDescriptions": {
+                "typeIdentifier": "t_contract$_Syncable_$4359",
+                "typeString": "contract Syncable"
+              }
+            },
+            "id": 1636,
+            "nodeType": "InheritanceSpecifier",
+            "src": "224:8:16"
+          },
+          {
+            "arguments": null,
+            "baseName": {
+              "contractScope": null,
+              "id": 1637,
+              "name": "Cacher",
+              "nodeType": "UserDefinedTypeName",
+              "referencedDeclaration": 4330,
+              "src": "234:6:16",
+              "typeDescriptions": {
+                "typeIdentifier": "t_contract$_Cacher_$4330",
+                "typeString": "contract Cacher"
+              }
+            },
+            "id": 1638,
+            "nodeType": "InheritanceSpecifier",
+            "src": "234:6:16"
+          }
+        ],
+        "contractDependencies": [
+          1482,
+          4330,
+          4359
+        ],
+        "contractKind": "contract",
+        "documentation": null,
+        "fullyImplemented": true,
+        "id": 1756,
+        "linearizedBaseContracts": [
+          1756,
+          4330,
+          4359,
+          1482
+        ],
+        "name": "ChallengeRegistry",
+        "nodeType": "ContractDefinition",
+        "nodes": [
+          {
+            "anonymous": false,
+            "documentation": null,
+            "id": 1642,
+            "name": "ChallengeAdded",
+            "nodeType": "EventDefinition",
+            "parameters": {
+              "id": 1641,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 1640,
+                  "indexed": false,
+                  "name": "_address",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 1642,
+                  "src": "267:16:16",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 1639,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "267:7:16",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "266:18:16"
+            },
+            "src": "246:39:16"
+          },
+          {
+            "constant": false,
+            "id": 1646,
+            "name": "challenges",
+            "nodeType": "VariableDeclaration",
+            "scope": 1756,
+            "src": "319:47:16",
+            "stateVariable": true,
+            "storageLocation": "default",
+            "typeDescriptions": {
+              "typeIdentifier": "t_mapping$_t_address_$_t_contract$_Challenge_$1626_$",
+              "typeString": "mapping(address => contract Challenge)"
+            },
+            "typeName": {
+              "id": 1645,
+              "keyType": {
+                "id": 1643,
+                "name": "address",
+                "nodeType": "ElementaryTypeName",
+                "src": "327:7:16",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_address",
+                  "typeString": "address"
+                }
+              },
+              "nodeType": "Mapping",
+              "src": "319:29:16",
+              "typeDescriptions": {
+                "typeIdentifier": "t_mapping$_t_address_$_t_contract$_Challenge_$1626_$",
+                "typeString": "mapping(address => contract Challenge)"
+              },
+              "valueType": {
+                "contractScope": null,
+                "id": 1644,
+                "name": "Challenge",
+                "nodeType": "UserDefinedTypeName",
+                "referencedDeclaration": 1626,
+                "src": "338:9:16",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_contract$_Challenge_$1626",
+                  "typeString": "contract Challenge"
+                }
+              }
+            },
+            "value": null,
+            "visibility": "public"
+          },
+          {
+            "constant": false,
+            "id": 1649,
+            "name": "challengesIndex",
+            "nodeType": "VariableDeclaration",
+            "scope": 1756,
+            "src": "370:25:16",
+            "stateVariable": true,
+            "storageLocation": "default",
+            "typeDescriptions": {
+              "typeIdentifier": "t_array$_t_address_$dyn_storage",
+              "typeString": "address[]"
+            },
+            "typeName": {
+              "baseType": {
+                "id": 1647,
+                "name": "address",
+                "nodeType": "ElementaryTypeName",
+                "src": "370:7:16",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_address",
+                  "typeString": "address"
+                }
+              },
+              "id": 1648,
+              "length": null,
+              "nodeType": "ArrayTypeName",
+              "src": "370:9:16",
+              "typeDescriptions": {
+                "typeIdentifier": "t_array$_t_address_$dyn_storage_ptr",
+                "typeString": "address[]"
+              }
+            },
+            "value": null,
+            "visibility": "internal"
+          },
+          {
+            "body": {
+              "id": 1657,
+              "nodeType": "Block",
+              "src": "502:2:16",
+              "statements": []
+            },
+            "documentation": null,
+            "id": 1658,
+            "implemented": true,
+            "isConstructor": true,
+            "isDeclaredConst": false,
+            "modifiers": [
+              {
+                "arguments": [
+                  {
+                    "argumentTypes": null,
+                    "id": 1654,
+                    "name": "_gateKeeper",
+                    "nodeType": "Identifier",
+                    "overloadedDeclarations": [],
+                    "referencedDeclaration": 1651,
+                    "src": "482:11:16",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  }
+                ],
+                "id": 1655,
+                "modifierName": {
+                  "argumentTypes": null,
+                  "id": 1653,
+                  "name": "Secured",
+                  "nodeType": "Identifier",
+                  "overloadedDeclarations": [],
+                  "referencedDeclaration": 1482,
+                  "src": "474:7:16",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_type$_t_contract$_Secured_$1482_$",
+                    "typeString": "type(contract Secured)"
+                  }
+                },
+                "nodeType": "ModifierInvocation",
+                "src": "474:20:16"
+              }
+            ],
+            "name": "ChallengeRegistry",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 1652,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 1651,
+                  "name": "_gateKeeper",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 1658,
+                  "src": "453:19:16",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 1650,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "453:7:16",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "452:21:16"
+            },
+            "payable": false,
+            "returnParameters": {
+              "id": 1656,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "502:0:16"
+            },
+            "scope": 1756,
+            "src": "426:78:16",
+            "stateMutability": "nonpayable",
+            "superFunction": null,
+            "visibility": "public"
+          },
+          {
+            "body": {
+              "id": 1687,
+              "nodeType": "Block",
+              "src": "677:154:16",
+              "statements": [
+                {
+                  "expression": {
+                    "argumentTypes": null,
+                    "id": 1673,
+                    "isConstant": false,
+                    "isLValue": false,
+                    "isPure": false,
+                    "lValueRequested": false,
+                    "leftHandSide": {
+                      "argumentTypes": null,
+                      "baseExpression": {
+                        "argumentTypes": null,
+                        "id": 1663,
+                        "name": "challenges",
+                        "nodeType": "Identifier",
+                        "overloadedDeclarations": [],
+                        "referencedDeclaration": 1646,
+                        "src": "683:10:16",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_mapping$_t_address_$_t_contract$_Challenge_$1626_$",
+                          "typeString": "mapping(address => contract Challenge)"
+                        }
+                      },
+                      "id": 1667,
+                      "indexExpression": {
+                        "argumentTypes": null,
+                        "arguments": [
+                          {
+                            "argumentTypes": null,
+                            "id": 1665,
+                            "name": "_challenge",
+                            "nodeType": "Identifier",
+                            "overloadedDeclarations": [],
+                            "referencedDeclaration": 1660,
+                            "src": "702:10:16",
+                            "typeDescriptions": {
+                              "typeIdentifier": "t_address",
+                              "typeString": "address"
+                            }
+                          }
+                        ],
+                        "expression": {
+                          "argumentTypes": [
+                            {
+                              "typeIdentifier": "t_address",
+                              "typeString": "address"
+                            }
+                          ],
+                          "id": 1664,
+                          "isConstant": false,
+                          "isLValue": false,
+                          "isPure": true,
+                          "lValueRequested": false,
+                          "nodeType": "ElementaryTypeNameExpression",
+                          "src": "694:7:16",
+                          "typeDescriptions": {
+                            "typeIdentifier": "t_type$_t_address_$",
+                            "typeString": "type(address)"
+                          },
+                          "typeName": "address"
+                        },
+                        "id": 1666,
+                        "isConstant": false,
+                        "isLValue": false,
+                        "isPure": false,
+                        "kind": "typeConversion",
+                        "lValueRequested": false,
+                        "names": [],
+                        "nodeType": "FunctionCall",
+                        "src": "694:19:16",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_address",
+                          "typeString": "address"
+                        }
+                      },
+                      "isConstant": false,
+                      "isLValue": true,
+                      "isPure": false,
+                      "lValueRequested": true,
+                      "nodeType": "IndexAccess",
+                      "src": "683:31:16",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_contract$_Challenge_$1626",
+                        "typeString": "contract Challenge"
+                      }
+                    },
+                    "nodeType": "Assignment",
+                    "operator": "=",
+                    "rightHandSide": {
+                      "argumentTypes": null,
+                      "arguments": [
+                        {
+                          "argumentTypes": null,
+                          "arguments": [
+                            {
+                              "argumentTypes": null,
+                              "id": 1670,
+                              "name": "_challenge",
+                              "nodeType": "Identifier",
+                              "overloadedDeclarations": [],
+                              "referencedDeclaration": 1660,
+                              "src": "735:10:16",
+                              "typeDescriptions": {
+                                "typeIdentifier": "t_address",
+                                "typeString": "address"
+                              }
+                            }
+                          ],
+                          "expression": {
+                            "argumentTypes": [
+                              {
+                                "typeIdentifier": "t_address",
+                                "typeString": "address"
+                              }
+                            ],
+                            "id": 1669,
+                            "isConstant": false,
+                            "isLValue": false,
+                            "isPure": true,
+                            "lValueRequested": false,
+                            "nodeType": "ElementaryTypeNameExpression",
+                            "src": "727:7:16",
+                            "typeDescriptions": {
+                              "typeIdentifier": "t_type$_t_address_$",
+                              "typeString": "type(address)"
+                            },
+                            "typeName": "address"
+                          },
+                          "id": 1671,
+                          "isConstant": false,
+                          "isLValue": false,
+                          "isPure": false,
+                          "kind": "typeConversion",
+                          "lValueRequested": false,
+                          "names": [],
+                          "nodeType": "FunctionCall",
+                          "src": "727:19:16",
+                          "typeDescriptions": {
+                            "typeIdentifier": "t_address",
+                            "typeString": "address"
+                          }
+                        }
+                      ],
+                      "expression": {
+                        "argumentTypes": [
+                          {
+                            "typeIdentifier": "t_address",
+                            "typeString": "address"
+                          }
+                        ],
+                        "id": 1668,
+                        "name": "Challenge",
+                        "nodeType": "Identifier",
+                        "overloadedDeclarations": [],
+                        "referencedDeclaration": 1626,
+                        "src": "717:9:16",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_type$_t_contract$_Challenge_$1626_$",
+                          "typeString": "type(contract Challenge)"
+                        }
+                      },
+                      "id": 1672,
+                      "isConstant": false,
+                      "isLValue": false,
+                      "isPure": false,
+                      "kind": "typeConversion",
+                      "lValueRequested": false,
+                      "names": [],
+                      "nodeType": "FunctionCall",
+                      "src": "717:30:16",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_contract$_Challenge_$1626",
+                        "typeString": "contract Challenge"
+                      }
+                    },
+                    "src": "683:64:16",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_contract$_Challenge_$1626",
+                      "typeString": "contract Challenge"
+                    }
+                  },
+                  "id": 1674,
+                  "nodeType": "ExpressionStatement",
+                  "src": "683:64:16"
+                },
+                {
+                  "expression": {
+                    "argumentTypes": null,
+                    "arguments": [
+                      {
+                        "argumentTypes": null,
+                        "arguments": [
+                          {
+                            "argumentTypes": null,
+                            "id": 1679,
+                            "name": "_challenge",
+                            "nodeType": "Identifier",
+                            "overloadedDeclarations": [],
+                            "referencedDeclaration": 1660,
+                            "src": "782:10:16",
+                            "typeDescriptions": {
+                              "typeIdentifier": "t_address",
+                              "typeString": "address"
+                            }
+                          }
+                        ],
+                        "expression": {
+                          "argumentTypes": [
+                            {
+                              "typeIdentifier": "t_address",
+                              "typeString": "address"
+                            }
+                          ],
+                          "id": 1678,
+                          "isConstant": false,
+                          "isLValue": false,
+                          "isPure": true,
+                          "lValueRequested": false,
+                          "nodeType": "ElementaryTypeNameExpression",
+                          "src": "774:7:16",
+                          "typeDescriptions": {
+                            "typeIdentifier": "t_type$_t_address_$",
+                            "typeString": "type(address)"
+                          },
+                          "typeName": "address"
+                        },
+                        "id": 1680,
+                        "isConstant": false,
+                        "isLValue": false,
+                        "isPure": false,
+                        "kind": "typeConversion",
+                        "lValueRequested": false,
+                        "names": [],
+                        "nodeType": "FunctionCall",
+                        "src": "774:19:16",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_address",
+                          "typeString": "address"
+                        }
+                      }
+                    ],
+                    "expression": {
+                      "argumentTypes": [
+                        {
+                          "typeIdentifier": "t_address",
+                          "typeString": "address"
+                        }
+                      ],
+                      "expression": {
+                        "argumentTypes": null,
+                        "id": 1675,
+                        "name": "challengesIndex",
+                        "nodeType": "Identifier",
+                        "overloadedDeclarations": [],
+                        "referencedDeclaration": 1649,
+                        "src": "753:15:16",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_array$_t_address_$dyn_storage",
+                          "typeString": "address[] storage ref"
+                        }
+                      },
+                      "id": 1677,
+                      "isConstant": false,
+                      "isLValue": false,
+                      "isPure": false,
+                      "lValueRequested": false,
+                      "memberName": "push",
+                      "nodeType": "MemberAccess",
+                      "referencedDeclaration": null,
+                      "src": "753:20:16",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_function_arraypush_nonpayable$_t_address_$returns$_t_uint256_$",
+                        "typeString": "function (address) returns (uint256)"
+                      }
+                    },
+                    "id": 1681,
+                    "isConstant": false,
+                    "isLValue": false,
+                    "isPure": false,
+                    "kind": "functionCall",
+                    "lValueRequested": false,
+                    "names": [],
+                    "nodeType": "FunctionCall",
+                    "src": "753:41:16",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "id": 1682,
+                  "nodeType": "ExpressionStatement",
+                  "src": "753:41:16"
+                },
+                {
+                  "expression": {
+                    "argumentTypes": null,
+                    "arguments": [
+                      {
+                        "argumentTypes": null,
+                        "id": 1684,
+                        "name": "_challenge",
+                        "nodeType": "Identifier",
+                        "overloadedDeclarations": [],
+                        "referencedDeclaration": 1660,
+                        "src": "815:10:16",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_address",
+                          "typeString": "address"
+                        }
+                      }
+                    ],
+                    "expression": {
+                      "argumentTypes": [
+                        {
+                          "typeIdentifier": "t_address",
+                          "typeString": "address"
+                        }
+                      ],
+                      "id": 1683,
+                      "name": "ChallengeAdded",
+                      "nodeType": "Identifier",
+                      "overloadedDeclarations": [],
+                      "referencedDeclaration": 1642,
+                      "src": "800:14:16",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_function_event_nonpayable$_t_address_$returns$__$",
+                        "typeString": "function (address)"
+                      }
+                    },
+                    "id": 1685,
+                    "isConstant": false,
+                    "isLValue": false,
+                    "isPure": false,
+                    "kind": "functionCall",
+                    "lValueRequested": false,
+                    "names": [],
+                    "nodeType": "FunctionCall",
+                    "src": "800:26:16",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_tuple$__$",
+                      "typeString": "tuple()"
+                    }
+                  },
+                  "id": 1686,
+                  "nodeType": "ExpressionStatement",
+                  "src": "800:26:16"
+                }
+              ]
+            },
+            "documentation": "@notice             Adds a challenge to the registry\n@param _challenge   Address of the challenge to add",
+            "id": 1688,
+            "implemented": true,
+            "isConstructor": false,
+            "isDeclaredConst": false,
+            "modifiers": [],
+            "name": "addChallenge",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 1661,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 1660,
+                  "name": "_challenge",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 1688,
+                  "src": "650:18:16",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 1659,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "650:7:16",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "649:20:16"
+            },
+            "payable": false,
+            "returnParameters": {
+              "id": 1662,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "677:0:16"
+            },
+            "scope": 1756,
+            "src": "628:203:16",
+            "stateMutability": "nonpayable",
+            "superFunction": null,
+            "visibility": "public"
+          },
+          {
+            "body": {
+              "id": 1701,
+              "nodeType": "Block",
+              "src": "995:50:16",
+              "statements": [
+                {
+                  "expression": {
+                    "argumentTypes": null,
+                    "arguments": [
+                      {
+                        "argumentTypes": null,
+                        "id": 1698,
+                        "name": "_cachedAddress",
+                        "nodeType": "Identifier",
+                        "overloadedDeclarations": [],
+                        "referencedDeclaration": 1690,
+                        "src": "1025:14:16",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_address",
+                          "typeString": "address"
+                        }
+                      }
+                    ],
+                    "expression": {
+                      "argumentTypes": [
+                        {
+                          "typeIdentifier": "t_address",
+                          "typeString": "address"
+                        }
+                      ],
+                      "id": 1697,
+                      "name": "AddressCacheInvalidated",
+                      "nodeType": "Identifier",
+                      "overloadedDeclarations": [],
+                      "referencedDeclaration": 4312,
+                      "src": "1001:23:16",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_function_event_nonpayable$_t_address_$returns$__$",
+                        "typeString": "function (address)"
+                      }
+                    },
+                    "id": 1699,
+                    "isConstant": false,
+                    "isLValue": false,
+                    "isPure": false,
+                    "kind": "functionCall",
+                    "lValueRequested": false,
+                    "names": [],
+                    "nodeType": "FunctionCall",
+                    "src": "1001:39:16",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_tuple$__$",
+                      "typeString": "tuple()"
+                    }
+                  },
+                  "id": 1700,
+                  "nodeType": "ExpressionStatement",
+                  "src": "1001:39:16"
+                }
+              ]
+            },
+            "documentation": "implementation of cacher methods",
+            "id": 1702,
+            "implemented": true,
+            "isConstructor": false,
+            "isDeclaredConst": false,
+            "modifiers": [],
+            "name": "invalidateCache",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 1695,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 1690,
+                  "name": "_cachedAddress",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 1702,
+                  "src": "908:22:16",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 1689,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "908:7:16",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 1692,
+                  "name": "",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 1702,
+                  "src": "932:7:16",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_bytes32",
+                    "typeString": "bytes32"
+                  },
+                  "typeName": {
+                    "id": 1691,
+                    "name": "bytes32",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "932:7:16",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_bytes32",
+                      "typeString": "bytes32"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 1694,
+                  "name": "",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 1702,
+                  "src": "960:7:16",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 1693,
+                    "name": "uint256",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "960:7:16",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "907:80:16"
+            },
+            "payable": false,
+            "returnParameters": {
+              "id": 1696,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "995:0:16"
+            },
+            "scope": 1756,
+            "src": "883:162:16",
+            "stateMutability": "nonpayable",
+            "superFunction": 4329,
+            "visibility": "public"
+          },
+          {
+            "body": {
+              "id": 1712,
+              "nodeType": "Block",
+              "src": "1161:42:16",
+              "statements": [
+                {
+                  "expression": {
+                    "argumentTypes": null,
+                    "id": 1710,
+                    "isConstant": false,
+                    "isLValue": false,
+                    "isPure": false,
+                    "lValueRequested": false,
+                    "leftHandSide": {
+                      "argumentTypes": null,
+                      "id": 1707,
+                      "name": "length",
+                      "nodeType": "Identifier",
+                      "overloadedDeclarations": [],
+                      "referencedDeclaration": 1705,
+                      "src": "1167:6:16",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_uint256",
+                        "typeString": "uint256"
+                      }
+                    },
+                    "nodeType": "Assignment",
+                    "operator": "=",
+                    "rightHandSide": {
+                      "argumentTypes": null,
+                      "expression": {
+                        "argumentTypes": null,
+                        "id": 1708,
+                        "name": "challengesIndex",
+                        "nodeType": "Identifier",
+                        "overloadedDeclarations": [],
+                        "referencedDeclaration": 1649,
+                        "src": "1176:15:16",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_array$_t_address_$dyn_storage",
+                          "typeString": "address[] storage ref"
+                        }
+                      },
+                      "id": 1709,
+                      "isConstant": false,
+                      "isLValue": true,
+                      "isPure": false,
+                      "lValueRequested": false,
+                      "memberName": "length",
+                      "nodeType": "MemberAccess",
+                      "referencedDeclaration": null,
+                      "src": "1176:22:16",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_uint256",
+                        "typeString": "uint256"
+                      }
+                    },
+                    "src": "1167:31:16",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "id": 1711,
+                  "nodeType": "ExpressionStatement",
+                  "src": "1167:31:16"
+                }
+              ]
+            },
+            "documentation": "implementation of syncable methods",
+            "id": 1713,
+            "implemented": true,
+            "isConstructor": false,
+            "isDeclaredConst": true,
+            "modifiers": [],
+            "name": "getIndexLength",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 1703,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "1124:2:16"
+            },
+            "payable": false,
+            "returnParameters": {
+              "id": 1706,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 1705,
+                  "name": "length",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 1713,
+                  "src": "1148:11:16",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 1704,
+                    "name": "uint",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "1148:4:16",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "1147:13:16"
+            },
+            "scope": 1756,
+            "src": "1101:102:16",
+            "stateMutability": "view",
+            "superFunction": 4358,
+            "visibility": "public"
+          },
+          {
+            "body": {
+              "id": 1728,
+              "nodeType": "Block",
+              "src": "1298:50:16",
+              "statements": [
+                {
+                  "expression": {
+                    "argumentTypes": null,
+                    "arguments": [
+                      {
+                        "argumentTypes": null,
+                        "baseExpression": {
+                          "argumentTypes": null,
+                          "id": 1723,
+                          "name": "challengesIndex",
+                          "nodeType": "Identifier",
+                          "overloadedDeclarations": [],
+                          "referencedDeclaration": 1649,
+                          "src": "1320:15:16",
+                          "typeDescriptions": {
+                            "typeIdentifier": "t_array$_t_address_$dyn_storage",
+                            "typeString": "address[] storage ref"
+                          }
+                        },
+                        "id": 1725,
+                        "indexExpression": {
+                          "argumentTypes": null,
+                          "id": 1724,
+                          "name": "index",
+                          "nodeType": "Identifier",
+                          "overloadedDeclarations": [],
+                          "referencedDeclaration": 1715,
+                          "src": "1336:5:16",
+                          "typeDescriptions": {
+                            "typeIdentifier": "t_uint256",
+                            "typeString": "uint256"
+                          }
+                        },
+                        "isConstant": false,
+                        "isLValue": true,
+                        "isPure": false,
+                        "lValueRequested": false,
+                        "nodeType": "IndexAccess",
+                        "src": "1320:22:16",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_address",
+                          "typeString": "address"
+                        }
+                      }
+                    ],
+                    "expression": {
+                      "argumentTypes": [
+                        {
+                          "typeIdentifier": "t_address",
+                          "typeString": "address"
+                        }
+                      ],
+                      "id": 1722,
+                      "name": "getByKey",
+                      "nodeType": "Identifier",
+                      "overloadedDeclarations": [],
+                      "referencedDeclaration": 1755,
+                      "src": "1311:8:16",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_function_internal_view$_t_address_$returns$_t_address_$_t_address_$",
+                        "typeString": "function (address) view returns (address,address)"
+                      }
+                    },
+                    "id": 1726,
+                    "isConstant": false,
+                    "isLValue": false,
+                    "isPure": false,
+                    "kind": "functionCall",
+                    "lValueRequested": false,
+                    "names": [],
+                    "nodeType": "FunctionCall",
+                    "src": "1311:32:16",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_tuple$_t_address_$_t_address_$",
+                      "typeString": "tuple(address,address)"
+                    }
+                  },
+                  "functionReturnParameters": 1721,
+                  "id": 1727,
+                  "nodeType": "Return",
+                  "src": "1304:39:16"
+                }
+              ]
+            },
+            "documentation": null,
+            "id": 1729,
+            "implemented": true,
+            "isConstructor": false,
+            "isDeclaredConst": true,
+            "modifiers": [],
+            "name": "getByIndex",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 1716,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 1715,
+                  "name": "index",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 1729,
+                  "src": "1227:10:16",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 1714,
+                    "name": "uint",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "1227:4:16",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "1226:12:16"
+            },
+            "payable": false,
+            "returnParameters": {
+              "id": 1721,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 1718,
+                  "name": "key",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 1729,
+                  "src": "1260:11:16",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 1717,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "1260:7:16",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 1720,
+                  "name": "contractAddress",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 1729,
+                  "src": "1273:23:16",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 1719,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "1273:7:16",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "1259:38:16"
+            },
+            "scope": 1756,
+            "src": "1207:141:16",
+            "stateMutability": "view",
+            "superFunction": null,
+            "visibility": "public"
+          },
+          {
+            "body": {
+              "id": 1754,
+              "nodeType": "Block",
+              "src": "1443:91:16",
+              "statements": [
+                {
+                  "expression": {
+                    "argumentTypes": null,
+                    "id": 1744,
+                    "isConstant": false,
+                    "isLValue": false,
+                    "isPure": false,
+                    "lValueRequested": false,
+                    "leftHandSide": {
+                      "argumentTypes": null,
+                      "id": 1738,
+                      "name": "key",
+                      "nodeType": "Identifier",
+                      "overloadedDeclarations": [],
+                      "referencedDeclaration": 1734,
+                      "src": "1449:3:16",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_address",
+                        "typeString": "address"
+                      }
+                    },
+                    "nodeType": "Assignment",
+                    "operator": "=",
+                    "rightHandSide": {
+                      "argumentTypes": null,
+                      "arguments": [
+                        {
+                          "argumentTypes": null,
+                          "baseExpression": {
+                            "argumentTypes": null,
+                            "id": 1740,
+                            "name": "challenges",
+                            "nodeType": "Identifier",
+                            "overloadedDeclarations": [],
+                            "referencedDeclaration": 1646,
+                            "src": "1463:10:16",
+                            "typeDescriptions": {
+                              "typeIdentifier": "t_mapping$_t_address_$_t_contract$_Challenge_$1626_$",
+                              "typeString": "mapping(address => contract Challenge)"
+                            }
+                          },
+                          "id": 1742,
+                          "indexExpression": {
+                            "argumentTypes": null,
+                            "id": 1741,
+                            "name": "_key",
+                            "nodeType": "Identifier",
+                            "overloadedDeclarations": [],
+                            "referencedDeclaration": 1731,
+                            "src": "1474:4:16",
+                            "typeDescriptions": {
+                              "typeIdentifier": "t_address",
+                              "typeString": "address"
+                            }
+                          },
+                          "isConstant": false,
+                          "isLValue": true,
+                          "isPure": false,
+                          "lValueRequested": false,
+                          "nodeType": "IndexAccess",
+                          "src": "1463:16:16",
+                          "typeDescriptions": {
+                            "typeIdentifier": "t_contract$_Challenge_$1626",
+                            "typeString": "contract Challenge"
+                          }
+                        }
+                      ],
+                      "expression": {
+                        "argumentTypes": [
+                          {
+                            "typeIdentifier": "t_contract$_Challenge_$1626",
+                            "typeString": "contract Challenge"
+                          }
+                        ],
+                        "id": 1739,
+                        "isConstant": false,
+                        "isLValue": false,
+                        "isPure": true,
+                        "lValueRequested": false,
+                        "nodeType": "ElementaryTypeNameExpression",
+                        "src": "1455:7:16",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_type$_t_address_$",
+                          "typeString": "type(address)"
+                        },
+                        "typeName": "address"
+                      },
+                      "id": 1743,
+                      "isConstant": false,
+                      "isLValue": false,
+                      "isPure": false,
+                      "kind": "typeConversion",
+                      "lValueRequested": false,
+                      "names": [],
+                      "nodeType": "FunctionCall",
+                      "src": "1455:25:16",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_address",
+                        "typeString": "address"
+                      }
+                    },
+                    "src": "1449:31:16",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "id": 1745,
+                  "nodeType": "ExpressionStatement",
+                  "src": "1449:31:16"
+                },
+                {
+                  "expression": {
+                    "argumentTypes": null,
+                    "id": 1752,
+                    "isConstant": false,
+                    "isLValue": false,
+                    "isPure": false,
+                    "lValueRequested": false,
+                    "leftHandSide": {
+                      "argumentTypes": null,
+                      "id": 1746,
+                      "name": "contractAddress",
+                      "nodeType": "Identifier",
+                      "overloadedDeclarations": [],
+                      "referencedDeclaration": 1736,
+                      "src": "1486:15:16",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_address",
+                        "typeString": "address"
+                      }
+                    },
+                    "nodeType": "Assignment",
+                    "operator": "=",
+                    "rightHandSide": {
+                      "argumentTypes": null,
+                      "arguments": [
+                        {
+                          "argumentTypes": null,
+                          "baseExpression": {
+                            "argumentTypes": null,
+                            "id": 1748,
+                            "name": "challenges",
+                            "nodeType": "Identifier",
+                            "overloadedDeclarations": [],
+                            "referencedDeclaration": 1646,
+                            "src": "1512:10:16",
+                            "typeDescriptions": {
+                              "typeIdentifier": "t_mapping$_t_address_$_t_contract$_Challenge_$1626_$",
+                              "typeString": "mapping(address => contract Challenge)"
+                            }
+                          },
+                          "id": 1750,
+                          "indexExpression": {
+                            "argumentTypes": null,
+                            "id": 1749,
+                            "name": "_key",
+                            "nodeType": "Identifier",
+                            "overloadedDeclarations": [],
+                            "referencedDeclaration": 1731,
+                            "src": "1523:4:16",
+                            "typeDescriptions": {
+                              "typeIdentifier": "t_address",
+                              "typeString": "address"
+                            }
+                          },
+                          "isConstant": false,
+                          "isLValue": true,
+                          "isPure": false,
+                          "lValueRequested": false,
+                          "nodeType": "IndexAccess",
+                          "src": "1512:16:16",
+                          "typeDescriptions": {
+                            "typeIdentifier": "t_contract$_Challenge_$1626",
+                            "typeString": "contract Challenge"
+                          }
+                        }
+                      ],
+                      "expression": {
+                        "argumentTypes": [
+                          {
+                            "typeIdentifier": "t_contract$_Challenge_$1626",
+                            "typeString": "contract Challenge"
+                          }
+                        ],
+                        "id": 1747,
+                        "isConstant": false,
+                        "isLValue": false,
+                        "isPure": true,
+                        "lValueRequested": false,
+                        "nodeType": "ElementaryTypeNameExpression",
+                        "src": "1504:7:16",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_type$_t_address_$",
+                          "typeString": "type(address)"
+                        },
+                        "typeName": "address"
+                      },
+                      "id": 1751,
+                      "isConstant": false,
+                      "isLValue": false,
+                      "isPure": false,
+                      "kind": "typeConversion",
+                      "lValueRequested": false,
+                      "names": [],
+                      "nodeType": "FunctionCall",
+                      "src": "1504:25:16",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_address",
+                        "typeString": "address"
+                      }
+                    },
+                    "src": "1486:43:16",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "id": 1753,
+                  "nodeType": "ExpressionStatement",
+                  "src": "1486:43:16"
+                }
+              ]
+            },
+            "documentation": null,
+            "id": 1755,
+            "implemented": true,
+            "isConstructor": false,
+            "isDeclaredConst": true,
+            "modifiers": [],
+            "name": "getByKey",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 1732,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 1731,
+                  "name": "_key",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 1755,
+                  "src": "1370:12:16",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 1730,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "1370:7:16",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "1369:14:16"
+            },
+            "payable": false,
+            "returnParameters": {
+              "id": 1737,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 1734,
+                  "name": "key",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 1755,
+                  "src": "1405:11:16",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 1733,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "1405:7:16",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 1736,
+                  "name": "contractAddress",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 1755,
+                  "src": "1418:23:16",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 1735,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "1418:7:16",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "1404:38:16"
+            },
+            "scope": 1756,
+            "src": "1352:182:16",
+            "stateMutability": "view",
+            "superFunction": null,
+            "visibility": "public"
+          }
+        ],
+        "scope": 1757,
+        "src": "185:1352:16"
+      }
+    ],
+    "src": "0:1538:16"
+  },
+  "compiler": {
+    "name": "solc",
+    "version": "0.4.22+commit.4cb486ee.Emscripten.clang"
+  },
+  "networks": {
+    "1337": {
+      "events": {},
+      "links": {},
+      "address": "0x433363e6863a9eaad6df8010de3e5a8391cd0c25",
+      "transactionHash": "0xf1ba33c360af64956b27bbf8707dde723704759fbb5cb29ebdfb127ae9218512"
+    }
+  },
+  "schemaVersion": "2.0.0",
+  "updatedAt": "2018-04-26T08:36:05.733Z"
+}

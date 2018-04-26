@@ -7,6 +7,7 @@ const {
   addIpfs,
 } = require('./helpers/api')
 
+const ChallengeRegistry = artifacts.require('ChallengeRegistry.sol')
 const SensorRegistry = artifacts.require('SensorRegistry.sol')
 const SensorFactory = artifacts.require('SensorFactory.sol')
 const Token = artifacts.require('DtxToken.sol')
@@ -78,6 +79,12 @@ async function deployRegistry(deployer, network, accounts) {
   const dGateKeeper = await GateKeeper.deployed()
   const dDtxToken = await Token.deployed()
 
+  // Deploy registry for challenges
+  await deployer.deploy(ChallengeRegistry, dGateKeeper.address)
+  const dChallengeRegistry = await ChallengeRegistry.deployed()
+
+  // Deploy factory for sensors: we use this design pattern to make sure we can use the interfaces
+  // for the listings in the TCR
   await deployer.deploy(SensorFactory, dGateKeeper.address)
   const dSensorFactory = await SensorFactory.deployed()
 
@@ -92,7 +99,8 @@ async function deployRegistry(deployer, network, accounts) {
     SensorRegistry,
     dGateKeeper.address,
     dDtxToken.address,
-    dSensorFactory.address
+    dSensorFactory.address,
+    dChallengeRegistry.address
   )
 
   const dSensorRegistry = await SensorRegistry.deployed()
