@@ -41,14 +41,19 @@ async function enlistSensor(deployer, network, accounts) {
     const ipfsHash = await addIpfs(metadata, authToken, network)
 
     // First, approve!
-    await dToken.approve(dSensorRegistry.address, '10', {
+    await dToken.approve(dSensorRegistry.address, '10000000000000000000', {
       from: accounts[0],
     })
 
     // Enlist
-    const tx = await dSensorRegistry.enlist('10', '10', ipfsHash || '', {
-      from: accounts[0],
-    })
+    const tx = await dSensorRegistry.enlist(
+      '10000000000000000000',
+      '10',
+      ipfsHash || '',
+      {
+        from: accounts[0],
+      }
+    )
 
     const event = _.filter(tx.logs, log => log.event === 'Enlisted')[0]
     const sensorAddress = event.args.listing
@@ -61,7 +66,7 @@ async function enlistSensor(deployer, network, accounts) {
 async function approveRegistryFor(addresses, dDtxToken, index) {
   const user = addresses[index]
   // Mint tokens for user
-  await dDtxToken.mint(user, 1000, {
+  await dDtxToken.mint(user, 100000000000000000000, {
     from: addresses[0],
   })
   const balanceOfUser = await dDtxToken.balanceOf(user)
