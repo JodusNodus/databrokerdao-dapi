@@ -8,6 +8,7 @@ const SensorRegistry = artifacts.require('SensorRegistry.sol')
 const Token = artifacts.require('DtxToken.sol')
 const Sensor = artifacts.require('Sensor.sol')
 const Challenge = artifacts.require('Challenge.sol')
+const ChallengeRegistry = artifacts.require('ChallengeRegistry.sol')
 
 contract('SensorRegistry', accounts => {
   describe('Function: challenge', async () => {
@@ -16,6 +17,7 @@ contract('SensorRegistry', accounts => {
     it('should add a new challenge when minimum challenge stake amount is exceeded', async () => {
       const registry = await SensorRegistry.deployed()
       const token = await Token.deployed()
+      const challengeRegistry = await ChallengeRegistry.deployed()
 
       // Enlist before we can challenge
       await token.approve(registry.address, '20', {
@@ -56,6 +58,11 @@ contract('SensorRegistry', accounts => {
 
       assert.equal(challengeChallenger, seller)
       assert.equal(challengeListing, listingAddress)
+
+      const challengeInRegistry = await challengeRegistry.challenges.call(
+        challengeAddress
+      )
+      assert.equal(challengeInRegistry, challengeAddress)
     })
 
     it('should not add a new challenge when minimum challenge stake amount is not reached', async () => {

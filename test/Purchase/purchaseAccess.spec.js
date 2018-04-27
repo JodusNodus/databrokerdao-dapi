@@ -53,6 +53,11 @@ contract('PurchaseRegistry', accounts => {
 
       assert.equal(purchasePurchaser, seller)
       assert.equal(purchaseSensor, listingAddress)
+
+      const purchaseInRegistry = await purchasing.purchases.call(
+        purchaseAddress
+      )
+      assert.equal(purchaseInRegistry, purchaseAddress)
     })
   })
 })
