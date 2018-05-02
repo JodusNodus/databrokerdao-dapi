@@ -80,7 +80,7 @@ async function deployPurchasing(deployer, network, accounts) {
     accounts[0]
   )
 
-  await purchaseSensor(deployer, network, accounts)
+  // await purchaseSensor(deployer, network, accounts)
 }
 
 module.exports = async (deployer, network, accounts) => {
