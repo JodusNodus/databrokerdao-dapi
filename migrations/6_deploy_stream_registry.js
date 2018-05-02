@@ -56,7 +56,6 @@ async function enlistSensor(deployer, network, accounts) {
     )
 
     const event = _.filter(tx.logs, log => log.event === 'Enlisted')[0]
-    console.log(tx)
     const sensorAddress = event.args.listing
     process.env.SENSOR_ADDRESS = sensorAddress // Setting it in env variables to pass it to next migration
   } else {
