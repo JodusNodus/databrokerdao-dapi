@@ -146,7 +146,7 @@ async function deployRegistry(deployer, network, accounts) {
   )
 
   // Enlist a sensor!
-  // await enlistSensor(deployer, network, accounts)
+  await enlistSensor(deployer, network, accounts)
 }
 
 module.exports = async (deployer, network, accounts) => {
