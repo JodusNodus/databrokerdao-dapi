@@ -62,37 +62,37 @@
   "deployedBytecode": "0x",
   "sourceMap": "",
   "deployedSourceMap": "",
-  "source": "pragma solidity ^0.4.17;\n\nimport \"../../authentication/Secured.sol\";\n\n\ncontract MetaDataContainer is Secured {\n\n  bytes32 constant public UPDATE_METADATA_ROLE = \"UPDATE_METADATA_ROLE\";\n\n  string public metadata;\n\n  function updateMetaData(string ipfsHash) public {\n    metadata = ipfsHash;\n  }\n\n}\n",
+  "source": "pragma solidity ^0.4.22;\n\nimport \"../../authentication/Secured.sol\";\n\n\ncontract MetaDataContainer is Secured {\n\n  bytes32 constant public UPDATE_METADATA_ROLE = \"UPDATE_METADATA_ROLE\";\n\n  string public metadata;\n\n  function updateMetaData(string ipfsHash) public {\n    metadata = ipfsHash;\n  }\n\n}\n",
   "sourcePath": "@settlemint/solidity-mint/contracts/utility/metadata/MetaDataContainer.sol",
   "ast": {
     "absolutePath": "@settlemint/solidity-mint/contracts/utility/metadata/MetaDataContainer.sol",
     "exportedSymbols": {
       "MetaDataContainer": [
-        4386
+        4053
       ]
     },
-    "id": 4387,
+    "id": 4054,
     "nodeType": "SourceUnit",
     "nodes": [
       {
-        "id": 4367,
+        "id": 4034,
         "literals": [
           "solidity",
           "^",
           "0.4",
-          ".17"
+          ".22"
         ],
         "nodeType": "PragmaDirective",
-        "src": "0:24:31"
+        "src": "0:24:22"
       },
       {
         "absolutePath": "@settlemint/solidity-mint/contracts/authentication/Secured.sol",
         "file": "../../authentication/Secured.sol",
-        "id": 4368,
+        "id": 4035,
         "nodeType": "ImportDirective",
-        "scope": 4387,
-        "sourceUnit": 1509,
-        "src": "26:42:31",
+        "scope": 4054,
+        "sourceUnit": 1306,
+        "src": "26:42:22",
         "symbolAliases": [],
         "unitAlias": ""
       },
@@ -102,42 +102,42 @@
             "arguments": null,
             "baseName": {
               "contractScope": null,
-              "id": 4369,
+              "id": 4036,
               "name": "Secured",
               "nodeType": "UserDefinedTypeName",
-              "referencedDeclaration": 1508,
-              "src": "101:7:31",
+              "referencedDeclaration": 1305,
+              "src": "101:7:22",
               "typeDescriptions": {
-                "typeIdentifier": "t_contract$_Secured_$1508",
+                "typeIdentifier": "t_contract$_Secured_$1305",
                 "typeString": "contract Secured"
               }
             },
-            "id": 4370,
+            "id": 4037,
             "nodeType": "InheritanceSpecifier",
-            "src": "101:7:31"
+            "src": "101:7:22"
           }
         ],
         "contractDependencies": [
-          1508
+          1305
         ],
         "contractKind": "contract",
         "documentation": null,
         "fullyImplemented": false,
-        "id": 4386,
+        "id": 4053,
         "linearizedBaseContracts": [
-          4386,
-          1508
+          4053,
+          1305
         ],
         "name": "MetaDataContainer",
         "nodeType": "ContractDefinition",
         "nodes": [
           {
             "constant": true,
-            "id": 4373,
+            "id": 4040,
             "name": "UPDATE_METADATA_ROLE",
             "nodeType": "VariableDeclaration",
-            "scope": 4386,
-            "src": "114:69:31",
+            "scope": 4053,
+            "src": "114:69:22",
             "stateVariable": true,
             "storageLocation": "default",
             "typeDescriptions": {
@@ -145,10 +145,10 @@
               "typeString": "bytes32"
             },
             "typeName": {
-              "id": 4371,
+              "id": 4038,
               "name": "bytes32",
               "nodeType": "ElementaryTypeName",
-              "src": "114:7:31",
+              "src": "114:7:22",
               "typeDescriptions": {
                 "typeIdentifier": "t_bytes32",
                 "typeString": "bytes32"
@@ -157,14 +157,14 @@
             "value": {
               "argumentTypes": null,
               "hexValue": "5550444154455f4d455441444154415f524f4c45",
-              "id": 4372,
+              "id": 4039,
               "isConstant": false,
               "isLValue": false,
               "isPure": true,
               "kind": "string",
               "lValueRequested": false,
               "nodeType": "Literal",
-              "src": "161:22:31",
+              "src": "161:22:22",
               "subdenomination": null,
               "typeDescriptions": {
                 "typeIdentifier": "t_stringliteral_88fb79bac6d5202764c8da3d246794882668196b5ab4c31c89000e9475297b85",
@@ -176,11 +176,11 @@
           },
           {
             "constant": false,
-            "id": 4375,
+            "id": 4042,
             "name": "metadata",
             "nodeType": "VariableDeclaration",
-            "scope": 4386,
-            "src": "188:22:31",
+            "scope": 4053,
+            "src": "188:22:22",
             "stateVariable": true,
             "storageLocation": "default",
             "typeDescriptions": {
@@ -188,10 +188,10 @@
               "typeString": "string"
             },
             "typeName": {
-              "id": 4374,
+              "id": 4041,
               "name": "string",
               "nodeType": "ElementaryTypeName",
-              "src": "188:6:31",
+              "src": "188:6:22",
               "typeDescriptions": {
                 "typeIdentifier": "t_string_storage_ptr",
                 "typeString": "string"
@@ -202,26 +202,26 @@
           },
           {
             "body": {
-              "id": 4384,
+              "id": 4051,
               "nodeType": "Block",
-              "src": "263:30:31",
+              "src": "263:30:22",
               "statements": [
                 {
                   "expression": {
                     "argumentTypes": null,
-                    "id": 4382,
+                    "id": 4049,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
                     "lValueRequested": false,
                     "leftHandSide": {
                       "argumentTypes": null,
-                      "id": 4380,
+                      "id": 4047,
                       "name": "metadata",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 4375,
-                      "src": "269:8:31",
+                      "referencedDeclaration": 4042,
+                      "src": "269:8:22",
                       "typeDescriptions": {
                         "typeIdentifier": "t_string_storage",
                         "typeString": "string storage ref"
@@ -231,31 +231,31 @@
                     "operator": "=",
                     "rightHandSide": {
                       "argumentTypes": null,
-                      "id": 4381,
+                      "id": 4048,
                       "name": "ipfsHash",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 4377,
-                      "src": "280:8:31",
+                      "referencedDeclaration": 4044,
+                      "src": "280:8:22",
                       "typeDescriptions": {
                         "typeIdentifier": "t_string_memory_ptr",
                         "typeString": "string memory"
                       }
                     },
-                    "src": "269:19:31",
+                    "src": "269:19:22",
                     "typeDescriptions": {
                       "typeIdentifier": "t_string_storage",
                       "typeString": "string storage ref"
                     }
                   },
-                  "id": 4383,
+                  "id": 4050,
                   "nodeType": "ExpressionStatement",
-                  "src": "269:19:31"
+                  "src": "269:19:22"
                 }
               ]
             },
             "documentation": null,
-            "id": 4385,
+            "id": 4052,
             "implemented": true,
             "isConstructor": false,
             "isDeclaredConst": false,
@@ -263,16 +263,16 @@
             "name": "updateMetaData",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 4378,
+              "id": 4045,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 4377,
+                  "id": 4044,
                   "name": "ipfsHash",
                   "nodeType": "VariableDeclaration",
-                  "scope": 4385,
-                  "src": "239:15:31",
+                  "scope": 4052,
+                  "src": "239:15:22",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
@@ -280,10 +280,10 @@
                     "typeString": "string"
                   },
                   "typeName": {
-                    "id": 4376,
+                    "id": 4043,
                     "name": "string",
                     "nodeType": "ElementaryTypeName",
-                    "src": "239:6:31",
+                    "src": "239:6:22",
                     "typeDescriptions": {
                       "typeIdentifier": "t_string_storage_ptr",
                       "typeString": "string"
@@ -293,57 +293,57 @@
                   "visibility": "internal"
                 }
               ],
-              "src": "238:17:31"
+              "src": "238:17:22"
             },
             "payable": false,
             "returnParameters": {
-              "id": 4379,
+              "id": 4046,
               "nodeType": "ParameterList",
               "parameters": [],
-              "src": "263:0:31"
+              "src": "263:0:22"
             },
-            "scope": 4386,
-            "src": "215:78:31",
+            "scope": 4053,
+            "src": "215:78:22",
             "stateMutability": "nonpayable",
             "superFunction": null,
             "visibility": "public"
           }
         ],
-        "scope": 4387,
-        "src": "71:225:31"
+        "scope": 4054,
+        "src": "71:225:22"
       }
     ],
-    "src": "0:297:31"
+    "src": "0:297:22"
   },
   "legacyAST": {
     "absolutePath": "@settlemint/solidity-mint/contracts/utility/metadata/MetaDataContainer.sol",
     "exportedSymbols": {
       "MetaDataContainer": [
-        4386
+        4053
       ]
     },
-    "id": 4387,
+    "id": 4054,
     "nodeType": "SourceUnit",
     "nodes": [
       {
-        "id": 4367,
+        "id": 4034,
         "literals": [
           "solidity",
           "^",
           "0.4",
-          ".17"
+          ".22"
         ],
         "nodeType": "PragmaDirective",
-        "src": "0:24:31"
+        "src": "0:24:22"
       },
       {
         "absolutePath": "@settlemint/solidity-mint/contracts/authentication/Secured.sol",
         "file": "../../authentication/Secured.sol",
-        "id": 4368,
+        "id": 4035,
         "nodeType": "ImportDirective",
-        "scope": 4387,
-        "sourceUnit": 1509,
-        "src": "26:42:31",
+        "scope": 4054,
+        "sourceUnit": 1306,
+        "src": "26:42:22",
         "symbolAliases": [],
         "unitAlias": ""
       },
@@ -353,42 +353,42 @@
             "arguments": null,
             "baseName": {
               "contractScope": null,
-              "id": 4369,
+              "id": 4036,
               "name": "Secured",
               "nodeType": "UserDefinedTypeName",
-              "referencedDeclaration": 1508,
-              "src": "101:7:31",
+              "referencedDeclaration": 1305,
+              "src": "101:7:22",
               "typeDescriptions": {
-                "typeIdentifier": "t_contract$_Secured_$1508",
+                "typeIdentifier": "t_contract$_Secured_$1305",
                 "typeString": "contract Secured"
               }
             },
-            "id": 4370,
+            "id": 4037,
             "nodeType": "InheritanceSpecifier",
-            "src": "101:7:31"
+            "src": "101:7:22"
           }
         ],
         "contractDependencies": [
-          1508
+          1305
         ],
         "contractKind": "contract",
         "documentation": null,
         "fullyImplemented": false,
-        "id": 4386,
+        "id": 4053,
         "linearizedBaseContracts": [
-          4386,
-          1508
+          4053,
+          1305
         ],
         "name": "MetaDataContainer",
         "nodeType": "ContractDefinition",
         "nodes": [
           {
             "constant": true,
-            "id": 4373,
+            "id": 4040,
             "name": "UPDATE_METADATA_ROLE",
             "nodeType": "VariableDeclaration",
-            "scope": 4386,
-            "src": "114:69:31",
+            "scope": 4053,
+            "src": "114:69:22",
             "stateVariable": true,
             "storageLocation": "default",
             "typeDescriptions": {
@@ -396,10 +396,10 @@
               "typeString": "bytes32"
             },
             "typeName": {
-              "id": 4371,
+              "id": 4038,
               "name": "bytes32",
               "nodeType": "ElementaryTypeName",
-              "src": "114:7:31",
+              "src": "114:7:22",
               "typeDescriptions": {
                 "typeIdentifier": "t_bytes32",
                 "typeString": "bytes32"
@@ -408,14 +408,14 @@
             "value": {
               "argumentTypes": null,
               "hexValue": "5550444154455f4d455441444154415f524f4c45",
-              "id": 4372,
+              "id": 4039,
               "isConstant": false,
               "isLValue": false,
               "isPure": true,
               "kind": "string",
               "lValueRequested": false,
               "nodeType": "Literal",
-              "src": "161:22:31",
+              "src": "161:22:22",
               "subdenomination": null,
               "typeDescriptions": {
                 "typeIdentifier": "t_stringliteral_88fb79bac6d5202764c8da3d246794882668196b5ab4c31c89000e9475297b85",
@@ -427,11 +427,11 @@
           },
           {
             "constant": false,
-            "id": 4375,
+            "id": 4042,
             "name": "metadata",
             "nodeType": "VariableDeclaration",
-            "scope": 4386,
-            "src": "188:22:31",
+            "scope": 4053,
+            "src": "188:22:22",
             "stateVariable": true,
             "storageLocation": "default",
             "typeDescriptions": {
@@ -439,10 +439,10 @@
               "typeString": "string"
             },
             "typeName": {
-              "id": 4374,
+              "id": 4041,
               "name": "string",
               "nodeType": "ElementaryTypeName",
-              "src": "188:6:31",
+              "src": "188:6:22",
               "typeDescriptions": {
                 "typeIdentifier": "t_string_storage_ptr",
                 "typeString": "string"
@@ -453,26 +453,26 @@
           },
           {
             "body": {
-              "id": 4384,
+              "id": 4051,
               "nodeType": "Block",
-              "src": "263:30:31",
+              "src": "263:30:22",
               "statements": [
                 {
                   "expression": {
                     "argumentTypes": null,
-                    "id": 4382,
+                    "id": 4049,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
                     "lValueRequested": false,
                     "leftHandSide": {
                       "argumentTypes": null,
-                      "id": 4380,
+                      "id": 4047,
                       "name": "metadata",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 4375,
-                      "src": "269:8:31",
+                      "referencedDeclaration": 4042,
+                      "src": "269:8:22",
                       "typeDescriptions": {
                         "typeIdentifier": "t_string_storage",
                         "typeString": "string storage ref"
@@ -482,31 +482,31 @@
                     "operator": "=",
                     "rightHandSide": {
                       "argumentTypes": null,
-                      "id": 4381,
+                      "id": 4048,
                       "name": "ipfsHash",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 4377,
-                      "src": "280:8:31",
+                      "referencedDeclaration": 4044,
+                      "src": "280:8:22",
                       "typeDescriptions": {
                         "typeIdentifier": "t_string_memory_ptr",
                         "typeString": "string memory"
                       }
                     },
-                    "src": "269:19:31",
+                    "src": "269:19:22",
                     "typeDescriptions": {
                       "typeIdentifier": "t_string_storage",
                       "typeString": "string storage ref"
                     }
                   },
-                  "id": 4383,
+                  "id": 4050,
                   "nodeType": "ExpressionStatement",
-                  "src": "269:19:31"
+                  "src": "269:19:22"
                 }
               ]
             },
             "documentation": null,
-            "id": 4385,
+            "id": 4052,
             "implemented": true,
             "isConstructor": false,
             "isDeclaredConst": false,
@@ -514,16 +514,16 @@
             "name": "updateMetaData",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 4378,
+              "id": 4045,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 4377,
+                  "id": 4044,
                   "name": "ipfsHash",
                   "nodeType": "VariableDeclaration",
-                  "scope": 4385,
-                  "src": "239:15:31",
+                  "scope": 4052,
+                  "src": "239:15:22",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
@@ -531,10 +531,10 @@
                     "typeString": "string"
                   },
                   "typeName": {
-                    "id": 4376,
+                    "id": 4043,
                     "name": "string",
                     "nodeType": "ElementaryTypeName",
-                    "src": "239:6:31",
+                    "src": "239:6:22",
                     "typeDescriptions": {
                       "typeIdentifier": "t_string_storage_ptr",
                       "typeString": "string"
@@ -544,27 +544,27 @@
                   "visibility": "internal"
                 }
               ],
-              "src": "238:17:31"
+              "src": "238:17:22"
             },
             "payable": false,
             "returnParameters": {
-              "id": 4379,
+              "id": 4046,
               "nodeType": "ParameterList",
               "parameters": [],
-              "src": "263:0:31"
+              "src": "263:0:22"
             },
-            "scope": 4386,
-            "src": "215:78:31",
+            "scope": 4053,
+            "src": "215:78:22",
             "stateMutability": "nonpayable",
             "superFunction": null,
             "visibility": "public"
           }
         ],
-        "scope": 4387,
-        "src": "71:225:31"
+        "scope": 4054,
+        "src": "71:225:22"
       }
     ],
-    "src": "0:297:31"
+    "src": "0:297:22"
   },
   "compiler": {
     "name": "solc",
@@ -572,5 +572,5 @@
   },
   "networks": {},
   "schemaVersion": "2.0.0",
-  "updatedAt": "2018-05-02T15:17:45.011Z"
+  "updatedAt": "2018-05-07T07:25:33.243Z"
 }
