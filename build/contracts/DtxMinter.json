@@ -107,11 +107,11 @@
       "type": "function"
     }
   ],
-  "bytecode": "0x608060405234801561001057600080fd5b506040516040806102e283398101604052805160209091015160008054600160a060020a03928316600160a060020a0319918216179091556002805492909316911617905561027e806100646000396000f3006080604052600436106100615763ffffffff7c010000000000000000000000000000000000000000000000000000000060003504166317f82139811461006657806345d61ded1461008d578063a0712d68146100cb578063fc0c546a146100e5575b600080fd5b34801561007257600080fd5b5061007b6100fa565b60408051918252519081900360200190f35b34801561009957600080fd5b506100a261011e565b6040805173ffffffffffffffffffffffffffffffffffffffff9092168252519081900360200190f35b3480156100d757600080fd5b506100e360043561013a565b005b3480156100f157600080fd5b506100a2610236565b7f555047524144455f434f4e54524143540000000000000000000000000000000081565b60005473ffffffffffffffffffffffffffffffffffffffff1681565b600254604080517f2a81e4b500000000000000000000000000000000000000000000000000000000815273ffffffffffffffffffffffffffffffffffffffff33811660048301526024820185905291519190921691632a81e4b59160448083019260209291908290030181600087803b1580156101b657600080fd5b505af11580156101ca573d6000803e3d6000fd5b505050506040513d60208110156101e057600080fd5b50506040805173ffffffffffffffffffffffffffffffffffffffff331681526020810183905281517f30385c845b448a36257a6a1716e6ad2e1bc2cbe333cde1e69fe849ad6511adfe929181900390910190a150565b60025473ffffffffffffffffffffffffffffffffffffffff16815600a165627a7a72305820ddd46525243de4404984ceca70ca73c002ed3990c5eb79514550c986abab0d020029",
-  "deployedBytecode": "0x6080604052600436106100615763ffffffff7c010000000000000000000000000000000000000000000000000000000060003504166317f82139811461006657806345d61ded1461008d578063a0712d68146100cb578063fc0c546a146100e5575b600080fd5b34801561007257600080fd5b5061007b6100fa565b60408051918252519081900360200190f35b34801561009957600080fd5b506100a261011e565b6040805173ffffffffffffffffffffffffffffffffffffffff9092168252519081900360200190f35b3480156100d757600080fd5b506100e360043561013a565b005b3480156100f157600080fd5b506100a2610236565b7f555047524144455f434f4e54524143540000000000000000000000000000000081565b60005473ffffffffffffffffffffffffffffffffffffffff1681565b600254604080517f2a81e4b500000000000000000000000000000000000000000000000000000000815273ffffffffffffffffffffffffffffffffffffffff33811660048301526024820185905291519190921691632a81e4b59160448083019260209291908290030181600087803b1580156101b657600080fd5b505af11580156101ca573d6000803e3d6000fd5b505050506040513d60208110156101e057600080fd5b50506040805173ffffffffffffffffffffffffffffffffffffffff331681526020810183905281517f30385c845b448a36257a6a1716e6ad2e1bc2cbe333cde1e69fe849ad6511adfe929181900390910190a150565b60025473ffffffffffffffffffffffffffffffffffffffff16815600a165627a7a72305820ddd46525243de4404984ceca70ca73c002ed3990c5eb79514550c986abab0d020029",
-  "sourceMap": "361:761:1:-;;;698:141;8:9:-1;5:2;;;30:1;27;20:12;5:2;698:141:1;;;;;;;;;;;;;;;;;;;245:10:14;:36;;-1:-1:-1;;;;;245:36:14;;;-1:-1:-1;;;;;;245:36:14;;;;;;;810:5:1;:24;;;;;;;;;;;361:761;;;;;;",
-  "deployedSourceMap": "361:761:1:-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;1141:61:34;;8:9:-1;5:2;;;30:1;27;20:12;5:2;1141:61:34;;;;;;;;;;;;;;;;;;;;77:28:14;;8:9:-1;5:2;;;30:1;27;20:12;5:2;77:28:14;;;;;;;;;;;;;;;;;;;;;;;986:134:1;;8:9:-1;5:2;;;30:1;27;20:12;5:2;-1:-1;986:134:1;;;;;;;494:21;;8:9:-1;5:2;;;30:1;27;20:12;5:2;494:21:1;;;;1141:61:34;;;:::o;77:28:14:-;;;;;;:::o;986:134:1:-;1027:5;;:36;;;;;;:5;1043:10;1027:36;;;;;;;;;;;;;;:5;;;;;:15;;:36;;;;;;;;;;;;;;-1:-1:-1;1027:5:1;:36;;;5:2:-1;;;;30:1;27;20:12;5:2;1027:36:1;;;;8:9:-1;5:2;;;45:16;42:1;39;24:38;77:16;74:1;67:27;5:2;1027:36:1;;;;;;;13:2:-1;8:3;5:11;2:2;;;29:1;26;19:12;2:2;-1:-1;;1088:27:1;;;;1095:10;1088:27;;;1027:36;1088:27;;;;;;;;;;;;;;;;;;986:134;:::o;494:21::-;;;;;;:::o",
-  "source": "pragma solidity ^0.4.20;\n\nimport \"../dtxtoken/DtxToken.sol\";\nimport \"@settlemint/solidity-mint/contracts/authentication/Secured.sol\";\nimport \"@settlemint/solidity-mint/contracts/authentication/GateKeeper.sol\";\nimport \"@settlemint/solidity-mint/contracts/utility/upgrading/Upgradeable.sol\";\n\n\n/**\n * Allows a user to mint demo DTX tokens for his own address\n */\ncontract DtxMinter is Secured, Upgradeable {\n  event Minted(address to, uint amount);\n  event Debug(address sender, uint amount);\n\n  DtxToken public token;\n\n  /**\n  @dev Contructor\n  @notice                Sets the address for token\n  @param _token          Address of the token\n  @param _gateKeeper     Address of the gatekeeper\n  */\n  function DtxMinter(\n    address _token,\n    address _gateKeeper\n  )\n    Secured(_gateKeeper)\n    public\n  {\n    token = DtxToken(_token);\n  }\n\n  /**\n  @notice               Mints demo DTX for the user calling this method.\n  @param _amount        How much DTX to mint for this user\n  */\n  function mint(uint _amount) public {\n    token.otherMint(msg.sender, _amount);\n\n    // Event\n    emit Minted(msg.sender, _amount);\n  }\n}\n",
+  "bytecode": "0x608060405234801561001057600080fd5b506040516040806102e283398101604052805160209091015160008054600160a060020a03928316600160a060020a0319918216179091556002805492909316911617905561027e806100646000396000f3006080604052600436106100615763ffffffff7c010000000000000000000000000000000000000000000000000000000060003504166317f82139811461006657806345d61ded1461008d578063a0712d68146100cb578063fc0c546a146100e5575b600080fd5b34801561007257600080fd5b5061007b6100fa565b60408051918252519081900360200190f35b34801561009957600080fd5b506100a261011e565b6040805173ffffffffffffffffffffffffffffffffffffffff9092168252519081900360200190f35b3480156100d757600080fd5b506100e360043561013a565b005b3480156100f157600080fd5b506100a2610236565b7f555047524144455f434f4e54524143540000000000000000000000000000000081565b60005473ffffffffffffffffffffffffffffffffffffffff1681565b600254604080517f40c10f1900000000000000000000000000000000000000000000000000000000815273ffffffffffffffffffffffffffffffffffffffff338116600483015260248201859052915191909216916340c10f199160448083019260209291908290030181600087803b1580156101b657600080fd5b505af11580156101ca573d6000803e3d6000fd5b505050506040513d60208110156101e057600080fd5b50506040805173ffffffffffffffffffffffffffffffffffffffff331681526020810183905281517f30385c845b448a36257a6a1716e6ad2e1bc2cbe333cde1e69fe849ad6511adfe929181900390910190a150565b60025473ffffffffffffffffffffffffffffffffffffffff16815600a165627a7a72305820a42e8b8f40bb8f39b44f57e99cc3e87f24b4d3fef3a7f640e23d78c6c61ec2370029",
+  "deployedBytecode": "0x6080604052600436106100615763ffffffff7c010000000000000000000000000000000000000000000000000000000060003504166317f82139811461006657806345d61ded1461008d578063a0712d68146100cb578063fc0c546a146100e5575b600080fd5b34801561007257600080fd5b5061007b6100fa565b60408051918252519081900360200190f35b34801561009957600080fd5b506100a261011e565b6040805173ffffffffffffffffffffffffffffffffffffffff9092168252519081900360200190f35b3480156100d757600080fd5b506100e360043561013a565b005b3480156100f157600080fd5b506100a2610236565b7f555047524144455f434f4e54524143540000000000000000000000000000000081565b60005473ffffffffffffffffffffffffffffffffffffffff1681565b600254604080517f40c10f1900000000000000000000000000000000000000000000000000000000815273ffffffffffffffffffffffffffffffffffffffff338116600483015260248201859052915191909216916340c10f199160448083019260209291908290030181600087803b1580156101b657600080fd5b505af11580156101ca573d6000803e3d6000fd5b505050506040513d60208110156101e057600080fd5b50506040805173ffffffffffffffffffffffffffffffffffffffff331681526020810183905281517f30385c845b448a36257a6a1716e6ad2e1bc2cbe333cde1e69fe849ad6511adfe929181900390910190a150565b60025473ffffffffffffffffffffffffffffffffffffffff16815600a165627a7a72305820a42e8b8f40bb8f39b44f57e99cc3e87f24b4d3fef3a7f640e23d78c6c61ec2370029",
+  "sourceMap": "361:756:1:-;;;698:141;8:9:-1;5:2;;;30:1;27;20:12;5:2;698:141:1;;;;;;;;;;;;;;;;;;;245:10:13;:36;;-1:-1:-1;;;;;245:36:13;;;-1:-1:-1;;;;;;245:36:13;;;;;;;810:5:1;:24;;;;;;;;;;;361:756;;;;;;",
+  "deployedSourceMap": "361:756:1:-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;1141:61:32;;8:9:-1;5:2;;;30:1;27;20:12;5:2;1141:61:32;;;;;;;;;;;;;;;;;;;;77:28:13;;8:9:-1;5:2;;;30:1;27;20:12;5:2;77:28:13;;;;;;;;;;;;;;;;;;;;;;;986:129:1;;8:9:-1;5:2;;;30:1;27;20:12;5:2;-1:-1;986:129:1;;;;;;;494:21;;8:9:-1;5:2;;;30:1;27;20:12;5:2;494:21:1;;;;1141:61:32;;;:::o;77:28:13:-;;;;;;:::o;986:129:1:-;1027:5;;:31;;;;;;:5;1038:10;1027:31;;;;;;;;;;;;;;:5;;;;;:10;;:31;;;;;;;;;;;;;;-1:-1:-1;1027:5:1;:31;;;5:2:-1;;;;30:1;27;20:12;5:2;1027:31:1;;;;8:9:-1;5:2;;;45:16;42:1;39;24:38;77:16;74:1;67:27;5:2;1027:31:1;;;;;;;13:2:-1;8:3;5:11;2:2;;;29:1;26;19:12;2:2;-1:-1;;1083:27:1;;;;1090:10;1083:27;;;1027:31;1083:27;;;;;;;;;;;;;;;;;;986:129;:::o;494:21::-;;;;;;:::o",
+  "source": "pragma solidity ^0.4.20;\n\nimport \"../dtxtoken/DtxToken.sol\";\nimport \"@settlemint/solidity-mint/contracts/authentication/Secured.sol\";\nimport \"@settlemint/solidity-mint/contracts/authentication/GateKeeper.sol\";\nimport \"@settlemint/solidity-mint/contracts/utility/upgrading/Upgradeable.sol\";\n\n\n/**\n * Allows a user to mint demo DTX tokens for his own address\n */\ncontract DtxMinter is Secured, Upgradeable {\n  event Minted(address to, uint amount);\n  event Debug(address sender, uint amount);\n\n  DtxToken public token;\n\n  /**\n  @dev Contructor\n  @notice                Sets the address for token\n  @param _token          Address of the token\n  @param _gateKeeper     Address of the gatekeeper\n  */\n  function DtxMinter(\n    address _token,\n    address _gateKeeper\n  )\n    Secured(_gateKeeper)\n    public\n  {\n    token = DtxToken(_token);\n  }\n\n  /**\n  @notice               Mints demo DTX for the user calling this method.\n  @param _amount        How much DTX to mint for this user\n  */\n  function mint(uint _amount) public {\n    token.mint(msg.sender, _amount);\n\n    // Event\n    emit Minted(msg.sender, _amount);\n  }\n}\n",
   "sourcePath": "/Users/silkevandenbroeck/databrokerDAO/databrokerdao-dapi/contracts/dtxtoken/DtxMinter.sol",
   "ast": {
     "absolutePath": "/Users/silkevandenbroeck/databrokerDAO/databrokerdao-dapi/contracts/dtxtoken/DtxMinter.sol",
@@ -140,7 +140,7 @@
         "id": 59,
         "nodeType": "ImportDirective",
         "scope": 119,
-        "sourceUnit": 234,
+        "sourceUnit": 200,
         "src": "26:34:1",
         "symbolAliases": [],
         "unitAlias": ""
@@ -151,7 +151,7 @@
         "id": 60,
         "nodeType": "ImportDirective",
         "scope": 119,
-        "sourceUnit": 1527,
+        "sourceUnit": 1493,
         "src": "61:72:1",
         "symbolAliases": [],
         "unitAlias": ""
@@ -162,7 +162,7 @@
         "id": 61,
         "nodeType": "ImportDirective",
         "scope": 119,
-        "sourceUnit": 1233,
+        "sourceUnit": 1199,
         "src": "134:75:1",
         "symbolAliases": [],
         "unitAlias": ""
@@ -173,7 +173,7 @@
         "id": 62,
         "nodeType": "ImportDirective",
         "scope": 119,
-        "sourceUnit": 4507,
+        "sourceUnit": 4388,
         "src": "210:79:1",
         "symbolAliases": [],
         "unitAlias": ""
@@ -187,10 +187,10 @@
               "id": 63,
               "name": "Secured",
               "nodeType": "UserDefinedTypeName",
-              "referencedDeclaration": 1526,
+              "referencedDeclaration": 1492,
               "src": "383:7:1",
               "typeDescriptions": {
-                "typeIdentifier": "t_contract$_Secured_$1526",
+                "typeIdentifier": "t_contract$_Secured_$1492",
                 "typeString": "contract Secured"
               }
             },
@@ -205,10 +205,10 @@
               "id": 65,
               "name": "Upgradeable",
               "nodeType": "UserDefinedTypeName",
-              "referencedDeclaration": 4506,
+              "referencedDeclaration": 4387,
               "src": "392:11:1",
               "typeDescriptions": {
-                "typeIdentifier": "t_contract$_Upgradeable_$4506",
+                "typeIdentifier": "t_contract$_Upgradeable_$4387",
                 "typeString": "contract Upgradeable"
               }
             },
@@ -218,8 +218,8 @@
           }
         ],
         "contractDependencies": [
-          1526,
-          4506
+          1492,
+          4387
         ],
         "contractKind": "contract",
         "documentation": "Allows a user to mint demo DTX tokens for his own address",
@@ -227,8 +227,8 @@
         "id": 118,
         "linearizedBaseContracts": [
           118,
-          4506,
-          1526
+          4387,
+          1492
         ],
         "name": "DtxMinter",
         "nodeType": "ContractDefinition",
@@ -381,7 +381,7 @@
             "stateVariable": true,
             "storageLocation": "default",
             "typeDescriptions": {
-              "typeIdentifier": "t_contract$_DtxToken_$233",
+              "typeIdentifier": "t_contract$_DtxToken_$199",
               "typeString": "contract DtxToken"
             },
             "typeName": {
@@ -389,10 +389,10 @@
               "id": 79,
               "name": "DtxToken",
               "nodeType": "UserDefinedTypeName",
-              "referencedDeclaration": 233,
+              "referencedDeclaration": 199,
               "src": "494:8:1",
               "typeDescriptions": {
-                "typeIdentifier": "t_contract$_DtxToken_$233",
+                "typeIdentifier": "t_contract$_DtxToken_$199",
                 "typeString": "contract DtxToken"
               }
             },
@@ -422,7 +422,7 @@
                       "referencedDeclaration": 80,
                       "src": "810:5:1",
                       "typeDescriptions": {
-                        "typeIdentifier": "t_contract$_DtxToken_$233",
+                        "typeIdentifier": "t_contract$_DtxToken_$199",
                         "typeString": "contract DtxToken"
                       }
                     },
@@ -456,10 +456,10 @@
                         "name": "DtxToken",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 233,
+                        "referencedDeclaration": 199,
                         "src": "818:8:1",
                         "typeDescriptions": {
-                          "typeIdentifier": "t_type$_t_contract$_DtxToken_$233_$",
+                          "typeIdentifier": "t_type$_t_contract$_DtxToken_$199_$",
                           "typeString": "type(contract DtxToken)"
                         }
                       },
@@ -473,13 +473,13 @@
                       "nodeType": "FunctionCall",
                       "src": "818:16:1",
                       "typeDescriptions": {
-                        "typeIdentifier": "t_contract$_DtxToken_$233",
+                        "typeIdentifier": "t_contract$_DtxToken_$199",
                         "typeString": "contract DtxToken"
                       }
                     },
                     "src": "810:24:1",
                     "typeDescriptions": {
-                      "typeIdentifier": "t_contract$_DtxToken_$233",
+                      "typeIdentifier": "t_contract$_DtxToken_$199",
                       "typeString": "contract DtxToken"
                     }
                   },
@@ -518,10 +518,10 @@
                   "name": "Secured",
                   "nodeType": "Identifier",
                   "overloadedDeclarations": [],
-                  "referencedDeclaration": 1526,
+                  "referencedDeclaration": 1492,
                   "src": "770:7:1",
                   "typeDescriptions": {
-                    "typeIdentifier": "t_type$_t_contract$_Secured_$1526_$",
+                    "typeIdentifier": "t_type$_t_contract$_Secured_$1492_$",
                     "typeString": "type(contract Secured)"
                   }
                 },
@@ -607,7 +607,7 @@
             "body": {
               "id": 116,
               "nodeType": "Block",
-              "src": "1021:99:1",
+              "src": "1021:94:1",
               "statements": [
                 {
                   "expression": {
@@ -621,8 +621,8 @@
                           "name": "msg",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
-                          "referencedDeclaration": 4615,
-                          "src": "1043:3:1",
+                          "referencedDeclaration": 4496,
+                          "src": "1038:3:1",
                           "typeDescriptions": {
                             "typeIdentifier": "t_magic_message",
                             "typeString": "msg"
@@ -636,7 +636,7 @@
                         "memberName": "sender",
                         "nodeType": "MemberAccess",
                         "referencedDeclaration": null,
-                        "src": "1043:10:1",
+                        "src": "1038:10:1",
                         "typeDescriptions": {
                           "typeIdentifier": "t_address",
                           "typeString": "address"
@@ -649,7 +649,7 @@
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
                         "referencedDeclaration": 99,
-                        "src": "1055:7:1",
+                        "src": "1050:7:1",
                         "typeDescriptions": {
                           "typeIdentifier": "t_uint256",
                           "typeString": "uint256"
@@ -676,7 +676,7 @@
                         "referencedDeclaration": 80,
                         "src": "1027:5:1",
                         "typeDescriptions": {
-                          "typeIdentifier": "t_contract$_DtxToken_$233",
+                          "typeIdentifier": "t_contract$_DtxToken_$199",
                           "typeString": "contract DtxToken"
                         }
                       },
@@ -685,10 +685,10 @@
                       "isLValue": false,
                       "isPure": false,
                       "lValueRequested": false,
-                      "memberName": "otherMint",
+                      "memberName": "mint",
                       "nodeType": "MemberAccess",
-                      "referencedDeclaration": 3273,
-                      "src": "1027:15:1",
+                      "referencedDeclaration": 3182,
+                      "src": "1027:10:1",
                       "typeDescriptions": {
                         "typeIdentifier": "t_function_external_nonpayable$_t_address_$_t_uint256_$returns$_t_bool_$",
                         "typeString": "function (address,uint256) external returns (bool)"
@@ -702,7 +702,7 @@
                     "lValueRequested": false,
                     "names": [],
                     "nodeType": "FunctionCall",
-                    "src": "1027:36:1",
+                    "src": "1027:31:1",
                     "typeDescriptions": {
                       "typeIdentifier": "t_bool",
                       "typeString": "bool"
@@ -710,7 +710,7 @@
                   },
                   "id": 109,
                   "nodeType": "ExpressionStatement",
-                  "src": "1027:36:1"
+                  "src": "1027:31:1"
                 },
                 {
                   "eventCall": {
@@ -724,8 +724,8 @@
                           "name": "msg",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
-                          "referencedDeclaration": 4615,
-                          "src": "1095:3:1",
+                          "referencedDeclaration": 4496,
+                          "src": "1090:3:1",
                           "typeDescriptions": {
                             "typeIdentifier": "t_magic_message",
                             "typeString": "msg"
@@ -739,7 +739,7 @@
                         "memberName": "sender",
                         "nodeType": "MemberAccess",
                         "referencedDeclaration": null,
-                        "src": "1095:10:1",
+                        "src": "1090:10:1",
                         "typeDescriptions": {
                           "typeIdentifier": "t_address",
                           "typeString": "address"
@@ -752,7 +752,7 @@
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
                         "referencedDeclaration": 99,
-                        "src": "1107:7:1",
+                        "src": "1102:7:1",
                         "typeDescriptions": {
                           "typeIdentifier": "t_uint256",
                           "typeString": "uint256"
@@ -775,7 +775,7 @@
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
                       "referencedDeclaration": 72,
-                      "src": "1088:6:1",
+                      "src": "1083:6:1",
                       "typeDescriptions": {
                         "typeIdentifier": "t_function_event_nonpayable$_t_address_$_t_uint256_$returns$__$",
                         "typeString": "function (address,uint256)"
@@ -789,7 +789,7 @@
                     "lValueRequested": false,
                     "names": [],
                     "nodeType": "FunctionCall",
-                    "src": "1088:27:1",
+                    "src": "1083:27:1",
                     "typeDescriptions": {
                       "typeIdentifier": "t_tuple$__$",
                       "typeString": "tuple()"
@@ -797,7 +797,7 @@
                   },
                   "id": 115,
                   "nodeType": "EmitStatement",
-                  "src": "1083:32:1"
+                  "src": "1078:32:1"
                 }
               ]
             },
@@ -850,17 +850,17 @@
               "src": "1021:0:1"
             },
             "scope": 118,
-            "src": "986:134:1",
+            "src": "986:129:1",
             "stateMutability": "nonpayable",
             "superFunction": null,
             "visibility": "public"
           }
         ],
         "scope": 119,
-        "src": "361:761:1"
+        "src": "361:756:1"
       }
     ],
-    "src": "0:1123:1"
+    "src": "0:1118:1"
   },
   "legacyAST": {
     "absolutePath": "/Users/silkevandenbroeck/databrokerDAO/databrokerdao-dapi/contracts/dtxtoken/DtxMinter.sol",
@@ -889,7 +889,7 @@
         "id": 59,
         "nodeType": "ImportDirective",
         "scope": 119,
-        "sourceUnit": 234,
+        "sourceUnit": 200,
         "src": "26:34:1",
         "symbolAliases": [],
         "unitAlias": ""
@@ -900,7 +900,7 @@
         "id": 60,
         "nodeType": "ImportDirective",
         "scope": 119,
-        "sourceUnit": 1527,
+        "sourceUnit": 1493,
         "src": "61:72:1",
         "symbolAliases": [],
         "unitAlias": ""
@@ -911,7 +911,7 @@
         "id": 61,
         "nodeType": "ImportDirective",
         "scope": 119,
-        "sourceUnit": 1233,
+        "sourceUnit": 1199,
         "src": "134:75:1",
         "symbolAliases": [],
         "unitAlias": ""
@@ -922,7 +922,7 @@
         "id": 62,
         "nodeType": "ImportDirective",
         "scope": 119,
-        "sourceUnit": 4507,
+        "sourceUnit": 4388,
         "src": "210:79:1",
         "symbolAliases": [],
         "unitAlias": ""
@@ -936,10 +936,10 @@
               "id": 63,
               "name": "Secured",
               "nodeType": "UserDefinedTypeName",
-              "referencedDeclaration": 1526,
+              "referencedDeclaration": 1492,
               "src": "383:7:1",
               "typeDescriptions": {
-                "typeIdentifier": "t_contract$_Secured_$1526",
+                "typeIdentifier": "t_contract$_Secured_$1492",
                 "typeString": "contract Secured"
               }
             },
@@ -954,10 +954,10 @@
               "id": 65,
               "name": "Upgradeable",
               "nodeType": "UserDefinedTypeName",
-              "referencedDeclaration": 4506,
+              "referencedDeclaration": 4387,
               "src": "392:11:1",
               "typeDescriptions": {
-                "typeIdentifier": "t_contract$_Upgradeable_$4506",
+                "typeIdentifier": "t_contract$_Upgradeable_$4387",
                 "typeString": "contract Upgradeable"
               }
             },
@@ -967,8 +967,8 @@
           }
         ],
         "contractDependencies": [
-          1526,
-          4506
+          1492,
+          4387
         ],
         "contractKind": "contract",
         "documentation": "Allows a user to mint demo DTX tokens for his own address",
@@ -976,8 +976,8 @@
         "id": 118,
         "linearizedBaseContracts": [
           118,
-          4506,
-          1526
+          4387,
+          1492
         ],
         "name": "DtxMinter",
         "nodeType": "ContractDefinition",
@@ -1130,7 +1130,7 @@
             "stateVariable": true,
             "storageLocation": "default",
             "typeDescriptions": {
-              "typeIdentifier": "t_contract$_DtxToken_$233",
+              "typeIdentifier": "t_contract$_DtxToken_$199",
               "typeString": "contract DtxToken"
             },
             "typeName": {
@@ -1138,10 +1138,10 @@
               "id": 79,
               "name": "DtxToken",
               "nodeType": "UserDefinedTypeName",
-              "referencedDeclaration": 233,
+              "referencedDeclaration": 199,
               "src": "494:8:1",
               "typeDescriptions": {
-                "typeIdentifier": "t_contract$_DtxToken_$233",
+                "typeIdentifier": "t_contract$_DtxToken_$199",
                 "typeString": "contract DtxToken"
               }
             },
@@ -1171,7 +1171,7 @@
                       "referencedDeclaration": 80,
                       "src": "810:5:1",
                       "typeDescriptions": {
-                        "typeIdentifier": "t_contract$_DtxToken_$233",
+                        "typeIdentifier": "t_contract$_DtxToken_$199",
                         "typeString": "contract DtxToken"
                       }
                     },
@@ -1205,10 +1205,10 @@
                         "name": "DtxToken",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 233,
+                        "referencedDeclaration": 199,
                         "src": "818:8:1",
                         "typeDescriptions": {
-                          "typeIdentifier": "t_type$_t_contract$_DtxToken_$233_$",
+                          "typeIdentifier": "t_type$_t_contract$_DtxToken_$199_$",
                           "typeString": "type(contract DtxToken)"
                         }
                       },
@@ -1222,13 +1222,13 @@
                       "nodeType": "FunctionCall",
                       "src": "818:16:1",
                       "typeDescriptions": {
-                        "typeIdentifier": "t_contract$_DtxToken_$233",
+                        "typeIdentifier": "t_contract$_DtxToken_$199",
                         "typeString": "contract DtxToken"
                       }
                     },
                     "src": "810:24:1",
                     "typeDescriptions": {
-                      "typeIdentifier": "t_contract$_DtxToken_$233",
+                      "typeIdentifier": "t_contract$_DtxToken_$199",
                       "typeString": "contract DtxToken"
                     }
                   },
@@ -1267,10 +1267,10 @@
                   "name": "Secured",
                   "nodeType": "Identifier",
                   "overloadedDeclarations": [],
-                  "referencedDeclaration": 1526,
+                  "referencedDeclaration": 1492,
                   "src": "770:7:1",
                   "typeDescriptions": {
-                    "typeIdentifier": "t_type$_t_contract$_Secured_$1526_$",
+                    "typeIdentifier": "t_type$_t_contract$_Secured_$1492_$",
                     "typeString": "type(contract Secured)"
                   }
                 },
@@ -1356,7 +1356,7 @@
             "body": {
               "id": 116,
               "nodeType": "Block",
-              "src": "1021:99:1",
+              "src": "1021:94:1",
               "statements": [
                 {
                   "expression": {
@@ -1370,8 +1370,8 @@
                           "name": "msg",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
-                          "referencedDeclaration": 4615,
-                          "src": "1043:3:1",
+                          "referencedDeclaration": 4496,
+                          "src": "1038:3:1",
                           "typeDescriptions": {
                             "typeIdentifier": "t_magic_message",
                             "typeString": "msg"
@@ -1385,7 +1385,7 @@
                         "memberName": "sender",
                         "nodeType": "MemberAccess",
                         "referencedDeclaration": null,
-                        "src": "1043:10:1",
+                        "src": "1038:10:1",
                         "typeDescriptions": {
                           "typeIdentifier": "t_address",
                           "typeString": "address"
@@ -1398,7 +1398,7 @@
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
                         "referencedDeclaration": 99,
-                        "src": "1055:7:1",
+                        "src": "1050:7:1",
                         "typeDescriptions": {
                           "typeIdentifier": "t_uint256",
                           "typeString": "uint256"
@@ -1425,7 +1425,7 @@
                         "referencedDeclaration": 80,
                         "src": "1027:5:1",
                         "typeDescriptions": {
-                          "typeIdentifier": "t_contract$_DtxToken_$233",
+                          "typeIdentifier": "t_contract$_DtxToken_$199",
                           "typeString": "contract DtxToken"
                         }
                       },
@@ -1434,10 +1434,10 @@
                       "isLValue": false,
                       "isPure": false,
                       "lValueRequested": false,
-                      "memberName": "otherMint",
+                      "memberName": "mint",
                       "nodeType": "MemberAccess",
-                      "referencedDeclaration": 3273,
-                      "src": "1027:15:1",
+                      "referencedDeclaration": 3182,
+                      "src": "1027:10:1",
                       "typeDescriptions": {
                         "typeIdentifier": "t_function_external_nonpayable$_t_address_$_t_uint256_$returns$_t_bool_$",
                         "typeString": "function (address,uint256) external returns (bool)"
@@ -1451,7 +1451,7 @@
                     "lValueRequested": false,
                     "names": [],
                     "nodeType": "FunctionCall",
-                    "src": "1027:36:1",
+                    "src": "1027:31:1",
                     "typeDescriptions": {
                       "typeIdentifier": "t_bool",
                       "typeString": "bool"
@@ -1459,7 +1459,7 @@
                   },
                   "id": 109,
                   "nodeType": "ExpressionStatement",
-                  "src": "1027:36:1"
+                  "src": "1027:31:1"
                 },
                 {
                   "eventCall": {
@@ -1473,8 +1473,8 @@
                           "name": "msg",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
-                          "referencedDeclaration": 4615,
-                          "src": "1095:3:1",
+                          "referencedDeclaration": 4496,
+                          "src": "1090:3:1",
                           "typeDescriptions": {
                             "typeIdentifier": "t_magic_message",
                             "typeString": "msg"
@@ -1488,7 +1488,7 @@
                         "memberName": "sender",
                         "nodeType": "MemberAccess",
                         "referencedDeclaration": null,
-                        "src": "1095:10:1",
+                        "src": "1090:10:1",
                         "typeDescriptions": {
                           "typeIdentifier": "t_address",
                           "typeString": "address"
@@ -1501,7 +1501,7 @@
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
                         "referencedDeclaration": 99,
-                        "src": "1107:7:1",
+                        "src": "1102:7:1",
                         "typeDescriptions": {
                           "typeIdentifier": "t_uint256",
                           "typeString": "uint256"
@@ -1524,7 +1524,7 @@
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
                       "referencedDeclaration": 72,
-                      "src": "1088:6:1",
+                      "src": "1083:6:1",
                       "typeDescriptions": {
                         "typeIdentifier": "t_function_event_nonpayable$_t_address_$_t_uint256_$returns$__$",
                         "typeString": "function (address,uint256)"
@@ -1538,7 +1538,7 @@
                     "lValueRequested": false,
                     "names": [],
                     "nodeType": "FunctionCall",
-                    "src": "1088:27:1",
+                    "src": "1083:27:1",
                     "typeDescriptions": {
                       "typeIdentifier": "t_tuple$__$",
                       "typeString": "tuple()"
@@ -1546,7 +1546,7 @@
                   },
                   "id": 115,
                   "nodeType": "EmitStatement",
-                  "src": "1083:32:1"
+                  "src": "1078:32:1"
                 }
               ]
             },
@@ -1599,17 +1599,17 @@
               "src": "1021:0:1"
             },
             "scope": 118,
-            "src": "986:134:1",
+            "src": "986:129:1",
             "stateMutability": "nonpayable",
             "superFunction": null,
             "visibility": "public"
           }
         ],
         "scope": 119,
-        "src": "361:761:1"
+        "src": "361:756:1"
       }
     ],
-    "src": "0:1123:1"
+    "src": "0:1118:1"
   },
   "compiler": {
     "name": "solc",
@@ -1619,10 +1619,10 @@
     "1337": {
       "events": {},
       "links": {},
-      "address": "0x05e22a6fa41a958a4c9f517f6d8c5fb3d8f635a6",
-      "transactionHash": "0x19a257a8ade826aa052026cdeb26703784d65444c2b44c8bb1fb5f3da27086cd"
+      "address": "0xdf6ffbef2ad471b6c36cad726068ae34692ba963",
+      "transactionHash": "0xc57c07a6de0be5eee33ca70ff19972742a32a2bf16822e9157925cbf45ea086e"
     }
   },
   "schemaVersion": "2.0.0",
-  "updatedAt": "2018-05-04T14:54:58.111Z"
+  "updatedAt": "2018-05-08T09:12:22.620Z"
 }

@@ -1,7 +1,9 @@
 module.exports = {
-  // ipfs: {
-  //   host: 'ipfs.infura.io',
-  // },
+  ipfs: {
+    host: 'ipfs.infura.io',
+    protocol: 'https',
+    port: 5001,
+  },
   ethereum: {
     tokenRegistryCombos: [
       {

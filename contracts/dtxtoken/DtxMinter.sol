@@ -36,7 +36,7 @@ contract DtxMinter is Secured, Upgradeable {
   @param _amount        How much DTX to mint for this user
   */
   function mint(uint _amount) public {
-    token.otherMint(msg.sender, _amount);
+    token.mint(msg.sender, _amount);
 
     // Event
     emit Minted(msg.sender, _amount);
