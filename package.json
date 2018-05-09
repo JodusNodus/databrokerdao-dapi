@@ -11,7 +11,7 @@
     "node": ">=8.7.0"
   },
   "scripts": {
-    "dev-test": "mint compile --all && mint start",
+    "dev-test": "mint compile --all && mint migrate --reset && mint test",
     "dev": "mint compile --all && mint start",
     "test": "mint test",
     "lint": "npm run solium -- --dir contracts --fix",

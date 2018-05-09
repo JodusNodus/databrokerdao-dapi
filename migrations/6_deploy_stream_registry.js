@@ -9,6 +9,9 @@ const {
 
 const ChallengeRegistry = artifacts.require('ChallengeRegistry.sol')
 const SensorRegistry = artifacts.require('SensorRegistry.sol')
+const SensorRegistryDispatcher = artifacts.require(
+  'SensorRegistryDispatcher.sol'
+)
 const SensorFactory = artifacts.require('SensorFactory.sol')
 const Token = artifacts.require('DtxToken.sol')
 const GateKeeper = artifacts.require('GateKeeper')
@@ -100,15 +103,41 @@ async function deployRegistry(deployer, network, accounts) {
     dSensorFactory.address
   )
 
+  // Deploy sensor registry dispatcher, and grant permissions
+  await deployer.deploy(
+    SensorRegistryDispatcher,
+    dGateKeeper.address,
+    dDtxToken.address,
+    dSensorFactory.address,
+    dChallengeRegistry.address,
+    10, // minimum enlist amount (in wDTX)
+    5, // minimum challenge amount (in wDTX)
+    10 // curator percentage
+  )
+  const dSensorRegistryDispatcher = await SensorRegistryDispatcher.deployed()
+  await createPermission(
+    dGateKeeper,
+    accounts[0],
+    dSensorRegistryDispatcher,
+    'UPGRADE_CONTRACT',
+    accounts[0]
+  )
+
+  // Deploy sensor registry
   await deployer.deploy(
     SensorRegistry,
     dGateKeeper.address,
     dDtxToken.address,
     dSensorFactory.address,
-    dChallengeRegistry.address
+    dChallengeRegistry.address,
+    10, // minimum enlist amount (in wDTX)
+    5, // minimum challenge amount (in wDTX)
+    10 // curator percentage
   )
-
   const dSensorRegistry = await SensorRegistry.deployed()
+
+  // Set sensor registry address in dispatcher
+  dSensorRegistryDispatcher.setTarget(dSensorRegistry.address)
 
   // Grant sensor registry permission to create permissions:
   await grantPermission(
