@@ -11,7 +11,7 @@ const SensorRegistryDispatcher = artifacts.require(
 const Token = artifacts.require('DtxToken.sol')
 
 contract('SensorRegistry', accounts => {
-  describe.only('Function: enlist', async () => {
+  describe('Function: enlist', async () => {
     const [seller] = accounts
 
     it('is upgradeable', async () => {

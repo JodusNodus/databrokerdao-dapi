@@ -13,6 +13,7 @@ const SensorRegistryDispatcher = artifacts.require(
   'SensorRegistryDispatcher.sol'
 )
 const SensorFactory = artifacts.require('SensorFactory.sol')
+const SensorFactoryDispatcher = artifacts.require('SensorFactoryDispatcher.sol')
 const Token = artifacts.require('DtxToken.sol')
 const GateKeeper = artifacts.require('GateKeeper')
 
@@ -91,10 +92,24 @@ async function deployRegistry(deployer, network, accounts) {
   await deployer.deploy(ChallengeRegistry, dGateKeeper.address)
   const dChallengeRegistry = await ChallengeRegistry.deployed()
 
+  // Deploy factory dispatcher
+  await deployer.deploy(SensorFactoryDispatcher, dGateKeeper.address)
+  const dSensorFactoryDispatcher = await SensorFactoryDispatcher.deployed()
+  await createPermission(
+    dGateKeeper,
+    accounts[0],
+    dSensorFactoryDispatcher,
+    'UPGRADE_CONTRACT',
+    accounts[0]
+  )
+
   // Deploy factory for sensors: we use this design pattern to make sure we can use the interfaces
   // for the listings in the TCR
   await deployer.deploy(SensorFactory, dGateKeeper.address)
   const dSensorFactory = await SensorFactory.deployed()
+
+  // Set sensor registry address in dispatcher
+  dSensorFactoryDispatcher.setTarget(dSensorFactory.address)
 
   await grantPermission(
     dGateKeeper,
