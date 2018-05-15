@@ -1,10 +1,12 @@
 const axios = require('axios')
 const _ = require('lodash')
+const SensorRegistryDispatcher = artifacts.require(
+  'SensorRegistryDispatcher.sol'
+)
 
 const baseURL = process.env.BASE_URL || 'http://localhost:3333'
 const GATEWAY_OPERATOR_PRIVATE_KEY =
   'ca1398820695e93cea849b841a9aae4eeae65518d14353ab73d21fa4af2d58a7'
-const GATEWAY_OPERATOR_ADDRESS = '0x3df2fd51cf19c0d8d1861d6ebc6457a1b0c7496f'
 
 const metadata = {
   data: {
@@ -19,7 +21,7 @@ const metadata = {
   },
 }
 
-contract('Integration tests', function(accounts) {
+contract('Integration tests', accounts => {
   let token
 
   beforeEach(async () => {
@@ -858,172 +860,50 @@ contract('Integration tests', function(accounts) {
     assert.equal(denyRes.status, 200)
   })
 
-  it('should go through the whole process: enlist, new user, mint tokens, purchase WITH DISPATCHERS', async () => {
+  it('should be able to upgrade contract behind dispatcher', async () => {
+    // Get sensorregistry address
+    const registryListRes = await axios({
+      method: 'get',
+      url: `${baseURL}/sensorregistry/list`,
+      headers: {
+        Authorization: token,
+      },
+    })
+    assert.equal(registryListRes.status, 200)
+    const oldRegistryAddress = _.get(registryListRes, 'data.base.key')
+
+    // Get registry dispatcher at right address
+    const json = require('../../build/contracts/SensorRegistryDispatcher.json')
+    const address = json['networks']['1337']['address']
+    const registryDispatcher = SensorRegistryDispatcher.at(address)
+
+    // Set new target
+    await registryDispatcher.setTarget(
+      '0x0000000000000000000000000000000000000001'
+    )
+
+    // Target should be the new one
+    const newRegistryAddress = await registryDispatcher.target.call()
+    assert.equal(
+      newRegistryAddress,
+      '0x0000000000000000000000000000000000000001'
+    )
+
+    // Get sensor registry address: will throw because there is no contract at the address
     try {
-      // Get token address: needed for approve calls
-      const tokenListRes = await axios({
-        method: 'get',
-        url: `${baseURL}/dtxtokenregistry/list`,
-        headers: {
-          Authorization: token,
-        },
-      })
-      assert.equal(tokenListRes.status, 200)
-      const tokenAddress = _.get(tokenListRes, 'data.items[0].contractaddress')
-
-      // Get sensorregistry address: needed for approve calls
-      const registryListRes = await axios({
-        method: 'get',
-        url: `${baseURL}/sensorregistrydispatcher/target`,
-        headers: {
-          Authorization: token,
-        },
-      })
-      assert.equal(registryListRes.status, 200)
-      const sensorRegistryAddress = _.get(registryListRes, 'data.target')
-
-      // Create IPFS for sensor enlisting
-      const sensorIpfsRes = await axios({
-        method: 'post',
-        url: `${baseURL}/ipfs/add/json`,
-        data: metadata,
-        headers: {
-          Authorization: token,
-        },
-      })
-      assert.equal(sensorIpfsRes.status, 200)
-      const sensorIpfsHash = _.get(sensorIpfsRes, 'data[0].hash')
-
-      // Approve the stake amount first, before enlisting
-      const approveRes = await axios({
-        method: 'post',
-        url: `${baseURL}/dtxtoken/${tokenAddress}/approve`,
-        data: {
-          spender: sensorRegistryAddress,
-          value: '10',
-        },
-        headers: {
-          Authorization: token,
-        },
-      })
-      assert.equal(approveRes.status, 200)
-
-      // Enlist
-      const enlistRes = await axios({
-        method: 'post',
-        url: `${baseURL}/sensorregistrydispatcher/enlist`,
-        data: {
-          price: '1',
-          stakeamount: '10',
-          metadata: sensorIpfsHash,
-        },
-        headers: {
-          Authorization: token,
-        },
-      })
-      assert.equal(enlistRes.status, 200)
-
-      // Create new user
-      const walletRes = await axios({
-        method: 'post',
-        url: `${baseURL}/wallet`,
-        data: {
-          email: 'silke@databrokerdao.com',
-          password: 'dbdao',
-        },
-      })
-      const newPrivateKey = _.get(walletRes, 'data.privateKey')
-
-      // Authenticate with this user
-      const authRes = await axios({
-        method: 'post',
-        url: `${baseURL}/authenticate`,
-        data: {
-          privateKeys: {
-            ethereum: newPrivateKey,
+      assert.throws(
+        await axios({
+          method: 'get',
+          url: `${baseURL}/sensorregistry/list`,
+          headers: {
+            Authorization: token,
           },
-          encrypted: false,
-        },
-      })
-      const newToken = _.get(authRes, 'data.token')
+        }),
+        '404'
+      )
+    } catch (e) {}
 
-      // Mint 1000 DTX for the new user
-      const mintRes = await axios({
-        method: 'post',
-        url: `${baseURL}/dtxminter/mint`,
-        data: {
-          amount: (1000 * Math.pow(10, 18)).toString(), // 1000 DTX, taking the 18 decimals into account
-        },
-        headers: {
-          Authorization: newToken,
-        },
-      })
-      assert.equal(mintRes.status, 200)
-
-      // Save sensor address for purchase
-      const event = _.filter(
-        enlistRes.data.events,
-        log => log.event === 'Enlisted'
-      )[0]
-      const sensorAddress = event.listing
-
-      // Calculate endtime
-      const endtime = new Date().getTime() / 1000 + 60 * 60 * 24 * 7 // one week from now
-
-      // Create purchase IPFS
-      const purchaseIpfsRes = await axios({
-        method: 'post',
-        url: `${baseURL}/ipfs/add/json`,
-        data: metadata,
-        headers: {
-          Authorization: newToken,
-        },
-      })
-      assert.equal(purchaseIpfsRes.status, 200)
-      const purchaseIpfsHash = _.get(purchaseIpfsRes, 'data[0].hash')
-
-      // Get purchaseregistry address: for approving
-      const purchaseRegistryListRes = await axios({
-        method: 'get',
-        url: `${baseURL}/purchaseregistrydispatcher/target`,
-        headers: {
-          Authorization: newToken,
-        },
-      })
-      assert.equal(purchaseRegistryListRes.status, 200)
-      const purchaseRegistryAddress = _.get(purchaseRegistryListRes, 'data.target')
-
-      // Approve the amount we guess the sensor will cost
-      const amount = 1 * endtime - new Date().getTime() / 1000 + 1000 // sensor price times the endtime minus the start time, 1000 seconds added to be safe
-      const approvePurchaseRes = await axios({
-        method: 'post',
-        url: `${baseURL}/dtxtoken/${tokenAddress}/approve`,
-        data: {
-          spender: purchaseRegistryAddress,
-          value: amount.toString(),
-        },
-        headers: {
-          Authorization: newToken,
-        },
-      })
-      assert.equal(approvePurchaseRes.status, 200)
-
-      // Purchase
-      const purchaseRes = await axios({
-        method: 'post',
-        url: `${baseURL}/purchaseregistrydispatcher/purchaseaccess`,
-        data: {
-          sensor: sensorAddress,
-          endtime: endtime.toString(),
-          metadata: purchaseIpfsHash,
-        },
-        headers: {
-          Authorization: newToken,
-        },
-      })
-      assert.equal(purchaseRes.status, 200)
-    } catch (e) {
-      // console.log(e)
-    }
+    // Set target back to original one
+    await registryDispatcher.setTarget(oldRegistryAddress)
   })
 })

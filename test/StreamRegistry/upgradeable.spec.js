@@ -2,7 +2,6 @@
 /* global assert contract artifacts */
 
 const testEvent = require('@settlemint/solidity-mint/test/helpers/testEvent')
-const getEventProperty = require('../helpers/getEventProperty')
 
 const SensorRegistry = artifacts.require('SensorRegistry.sol')
 const SensorRegistryDispatcher = artifacts.require(

@@ -1,6 +1,8 @@
 pragma solidity ^0.4.20;
 
 import "@settlemint/solidity-mint/contracts/utility/upgrading/Dispatcher.sol";
+import "@settlemint/solidity-mint/contracts/utility/caching/CachedByAddress.sol";
+
 import "../sensor/SensorRegistry.sol";
 import "../dtxtoken/DtxToken.sol";
 import "./Purchase.sol";
@@ -9,7 +11,7 @@ import "./Purchase.sol";
 /**
  * Dispatches calls to the purchase registry
  */
-contract PurchaseRegistryDispatcher is Dispatcher {
+contract PurchaseRegistryDispatcher is Dispatcher, CachedByAddress {
 
   // Same state as contract it will refer to
   bytes32 constant public CREATE_PERMISSIONS_ROLE = "CREATE_PERMISSIONS_ROLE";
@@ -26,10 +28,16 @@ contract PurchaseRegistryDispatcher is Dispatcher {
     address _sensorRegistry
   )
     Secured(_gateKeeper)
+    CachedByAddress(this)
     public
   {
     // State also needs to initialized!
     token = DtxToken(_token);
     sensorRegistry = SensorRegistry(_sensorRegistry);
+  }
+
+  function setTarget(address _target) public {
+    super.setTarget(_target);
+    super.invalidateCache();
   }
 }
