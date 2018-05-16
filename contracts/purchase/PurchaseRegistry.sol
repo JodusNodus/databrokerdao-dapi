@@ -54,10 +54,18 @@ contract PurchaseRegistry is Secured, Syncable, Cacher, CachedByBytes32 {
   @param _endTime       Timestamp of when the user will stop receiving sensor readings in seconds (not milliseconds!)
   */
   function purchaseAccess(address _sensor, uint _endTime, string _metadata) public {
-    // Calculate total cost for the user
-    uint _sensorPricePerSecond = Sensor(_sensor).price();
+    // Calculate total cost for the user.
+    // If endtime is 0, the purchase is forever, and the price is just the price as listed.
+    uint _sensorPricePerSecond;
     uint _startTime = now;
-    uint _sensorPrice = _sensorPricePerSecond.mul(_endTime.sub(_startTime));
+    uint _sensorPrice;
+    if (_endTime == 0) {
+      _sensorPricePerSecond = Sensor(_sensor).price();
+      _sensorPrice = _sensorPricePerSecond;
+    } else {
+      _sensorPricePerSecond = Sensor(_sensor).price();
+      _sensorPrice = _sensorPricePerSecond.mul(_endTime.sub(_startTime));
+    }
 
     // Pay out:
     uint _salePercentage = _sensorPrice.mul(salePercentage.div(100));
