@@ -2,6 +2,9 @@ const { grantPermission, createPermission } = require('./helpers/permissions')
 
 const SensorRegistry = artifacts.require('SensorRegistry')
 const PurchaseRegistry = artifacts.require('PurchaseRegistry')
+const PurchaseRegistryDispatcher = artifacts.require(
+  'PurchaseRegistryDispatcher'
+)
 const Token = artifacts.require('DtxToken')
 const GateKeeper = artifacts.require('GateKeeper')
 
@@ -48,6 +51,23 @@ async function deployPurchasing(deployer, network, accounts) {
   const dDtxToken = await Token.deployed()
   const dSensorRegistry = await SensorRegistry.deployed()
 
+  // Deploy purchase registry dispatcher, and grant permissions
+  await deployer.deploy(
+    PurchaseRegistryDispatcher,
+    dGateKeeper.address,
+    dDtxToken.address,
+    dSensorRegistry.address
+  )
+  const dPurchaseRegistryDispatcher = await PurchaseRegistryDispatcher.deployed()
+  await createPermission(
+    dGateKeeper,
+    accounts[0],
+    dPurchaseRegistryDispatcher,
+    'UPGRADE_CONTRACT',
+    accounts[0]
+  )
+
+  // Deploy purchase registry
   await deployer.deploy(
     PurchaseRegistry,
     dGateKeeper.address,
@@ -55,6 +75,9 @@ async function deployPurchasing(deployer, network, accounts) {
     dSensorRegistry.address
   )
   const dPurchaseRegistry = await PurchaseRegistry.deployed()
+
+  // Set purchase registry address in dispatcher
+  dPurchaseRegistryDispatcher.setTarget(dPurchaseRegistry.address)
 
   // Grant permission to create permissions:
   await grantPermission(

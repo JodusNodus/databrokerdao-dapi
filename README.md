@@ -25,7 +25,7 @@ A data buyer that is unhappy with the quality of data can challenge an entry in 
 
 Data buyers are encouraged to report bad data to recoup the lost funds due to bad data, and discouraged from reporting false challenges. The seller can reduce lost funds due to unfair bad reputation. The DataBroker DAO platform and its administrators are encouraged to handle these disputes quickly and efficiently and are rewarded for their time and effort.
 
-1.  ​
+
 
 ## Authentication
 
@@ -131,9 +131,118 @@ curl -X POST --header 'Content-Type: application/json' --header 'Accept: applica
   }
   ```
 
-* spender is the address of the contract that will spend the tokens in your name, in this example the sensorRegistry contract. You can find the address by calling `GET /sensorregistry/list`, the sensorRegistry address can be found in `base.key`.
+* spender is the address of the contract that will spend the tokens in your name, in this example the sensorRegistry Dispatcher contract. (See the upgradeable contracts section below for more info) You can find the address by calling `GET /sensorregistrydispatcher/target`, the sensorRegistry address can be found in `target`. This address will change when the registry is updated, so it's important to get it in a dynamic way and not hardcode it.
 
 * value is the amount of DTX that will be spent, for the enlist call that is the amount that will be passed in the `stakeamount`property.
+
+
+
+## Upgradeable contracts
+
+One of the major differences between blockchain applications and tradional ones, is the immutability of the contracts deployed on the chain. Once a contract is deployed, it can **never** be changed again. That is a good thing, but can cause a lot of problems: how do you fix a bug? How do you implement a new feature? To solve this, we've been looking for a way to be able to upgrade Ethereum smart contracts, without their storage and state being lost.
+
+For our solution, we found inspiration in [Arachnid's Upgradeable.sol contract](https://gist.github.com/Arachnid/4ca9da48d51e23e5cfe0f0e14dd6318f). However, Arachnid uses an initialize method that we replaced by using the assembly code from [Maroaz's Dispatcher.sol contract](https://github.com/maraoz/solidity-proxy/blob/master/contracts/Dispatcher.sol)
+
+The structure looks like this:
+
+```mermaid
+graph LR
+    A(Dispatcher) --> B[ExampleDispatcher]
+    E(Upgradeable) --> A(Dispatcher)
+    B[ExampleDispatcher] --> D[Example1]
+    E(Upgradeable) --> D[Example1]
+    F[IExample] --> D[Example1]
+    B[ExampleDispatcher] --> G[Example2]
+    E(Upgradeable) --> G[Example2]
+    F[IExample] --> G[Example2]
+```
+
+The Upgradable contract is generic, as is the Dispatcher contract. For each contract that needs to become upgradeable, you need to create a specific Dispatcher, that extends the generic Dispatcher. This is needed because a Dispatcher can only work when it has the same storage scheme as the underlying contract. This means that **the storage scheme of a smart contract cannot be upgraded**.
+
+### Create an upgradeable contract
+
+- create a contract and **make sure it extends Upgradeable**:
+
+  ```javascript
+  import "@settlemint/solidity-mint/contracts/utility/upgrading/Upgradeable.sol";
+  
+  /* Contract interface */
+  contract ISimpleExample {
+    function getUint() public returns (uint);
+  }
+  
+  /* Contract */
+  contract SimpleExample is ISimpleExample, Upgradeable { 
+    function SimpleExample(address gatekeeper) Secured(gatekeeper) public {}
+  
+    function getUint() public returns (uint) {
+      return 10;
+    }
+  }
+  ```
+
+- create a custom dispatcher with the same storage scheme as the contract, and **make sure it extends Dispatcher**:
+
+  ```javascript
+  import "@settlemint/solidity-mint/contracts/utility/upgrading/Dispatcher.sol";
+  
+  contract SimpleExampleDispatcher is Dispatcher {
+    function SimpleExampleDispatcher(address gatekeeper)
+      Secured(gatekeeper)
+      public
+    {}
+  }
+  ```
+
+- make sure your wallet has the proper permission:
+
+  ```javascript
+  const dispatcher = SimpleExampleDispatcher.new(gatekeeper.address)
+  
+  const role = await dispatcher['UPGRADE_CONTRACT'].call() 
+  await gateKeeper.createPermission(
+     accounts[0], // Your wallet
+     dispatcher.address, // Dispatcher contract will need the permission
+     role,
+     accounts[0] // Permission manager, can be any wallet, but preferably an admin one
+  )
+  ```
+
+- calls the `setTarget` method on the custom dispatcher:
+
+  ```javascript
+  const contract = new SimpleExample.new(gatekeeper.address)
+  dispatcher.setTarget(contract.address)
+  ```
+
+- dispatcher address is now the address of the contract, if you need to refer to it
+
+  ​
+
+### Upgrade and upgradeable contract
+
+- create a new contract: 
+
+  ```javascript
+  contract NewSimpleExample is ISimpleExample, Upgradeable { 
+    function NewSimpleExample(address gatekeeper) Secured(gatekeeper) public {}
+  
+    function getUint() public returns (uint) {
+      return 1; // Update: returns 1 in stead of 10
+    }
+  }
+  ```
+
+- call the `setTarget` method in the custom dispatcher with the new contract's address:
+
+  ```javascript
+  const newContract = new NewSimpleExample.new(gatekeeper.address)
+  dispatcher.setTarget(newContract.address)
+  ```
+
+- to call the contract, you still use the dispatcher address, but the dispatcher will call the new contract internally
+
+
 
 ## Domain
 
@@ -172,7 +281,7 @@ data: {
 
 A succesful response returns a hash property, which you can use in the enlist call.
 
-`POST /sensorregistry/enlist`
+`POST /sensorregistrydispatcher/enlist`
 
 Expects the following parameters:
 
@@ -186,7 +295,7 @@ Expects the following parameters:
 
 Only the **owner of the sensor** can unlist it. Sensor can only be unlisted when it's **whitelisted** and has **no challenges** ongoing.
 
-`POST /sensorregistry/unlist`
+`POST /sensorregistrydispatcher/unlist`
 
 Expects the following parameters:
 
@@ -196,7 +305,7 @@ Expects the following parameters:
 
 Only the **owner of the sensor** can increase the stake.
 
-`POST /sensorregistry/increase`
+`POST /sensorregistrydispatcher/increase`
 
 Expects the following parameters:
 
@@ -207,7 +316,7 @@ Expects the following parameters:
 
 Only the **owner of the sensor** can decrease the stake. Stake can not be decreased below the minimum stake amount of 10 DTX.
 
-`POST /sensorregistry/decrease`
+`POST /sensorregistrydispatcher/decrease`
 
 Expects the following parameters:
 
@@ -218,7 +327,7 @@ Expects the following parameters:
 
 Queries the MongoDB collection where sensors have been saved.
 
-`GET /sensorregistry/list`
+`GET /sensorregistrydispatcher/list`
 
 Expects the following query parameters:
 
@@ -288,7 +397,7 @@ Settings can only be changed by **users with the CHANGE_SETTINGS_ROLE**. In deve
 
 #### setMinEnlistAmount
 
-`POST /sensorregistry/setminenlistamount`
+`POST /sensorregistrydispatcher/setminenlistamount`
 
 Expects the following parameters:
 
@@ -296,7 +405,7 @@ Expects the following parameters:
 
 #### setMinChallengeAmount
 
-`POST /sensorregistry/setminchallengeamount`
+`POST /sensorregistrydispatcher/setminchallengeamount`
 
 Expects the following parameters:
 
@@ -304,7 +413,7 @@ Expects the following parameters:
 
 #### setCuratorPercentage
 
-`POST /sensorregistry/setcuratorpercentage`
+`POST /sensorregistrydispatcher/setcuratorpercentage`
 
 Expects the following parameters:
 
@@ -329,7 +438,7 @@ Expects the following parameters:
 * Before purchasing, we need to approve the token amount (see [Before transfering tokens](?id=before-transfering-tokens))
   Make sure the amount you approve is >= the price the buyer will have to pay: **seconds from now to endtime \* sensor price**. You can use something like following algorithm to predict the amount: `sensorPrice * (endtime - (new Date().getTime() / 1000)) + 1000`. The 1000 seconds added at the end are a safety measure, to make sure the approved amount is high enough.
 
-* `POST /purchaseregistry/purchaseaccess`
+* `POST /purchaseregistrydispatcher/purchaseaccess`
 
   Expects the following parameters:
 
@@ -341,7 +450,7 @@ Expects the following parameters:
 
 Queries the MongoDB collection where sensors have been saved.
 
-`GET /purchaseregistry/list`
+`GET /purchaseregistrydispatcher/list`
 
 Expects the following query parameters:
 
@@ -397,7 +506,7 @@ Settings can only be changed by **users with the CHANGE_SETTINGS_ROLE**. In deve
 
 #### setSalePercentage
 
-`POST /purchaseregistry/setsalepercentage`
+`POST /purchaseregistrydispatcher/setsalepercentage`
 
 Expects the following parameters:
 
@@ -419,7 +528,7 @@ data: {
 
 A succesful response returns a hash property, which you can use in the challenge call.
 
-`POST /sensorregistry/challenge`
+`POST /sensorregistrydispatcher/challenge`
 
 Expects the following parameters:
 
@@ -431,7 +540,7 @@ Expects the following parameters:
 
 Challenges are listed in the ChallengeRegistry. To get a list of challenges:
 
-`GET /challengeregistry/list`
+`GET /challengeregistrydispatcher/list`
 
 Expects the following parameters:
 
@@ -482,7 +591,7 @@ The response looks somewhat like this:
 
 **Only admins** can approve a challenge. When a challenge is approved, 10% of the total challenge stake goes to the admin approving it. The rest of the sum of the challenges stakes and the enlist stake of the sensor is divided among the challengers, according to how much their challenge makes up of the total challenged stake.
 
-`POST /sensorregistry/approvechallenge`
+`POST /sensorregistrydispatcher/approvechallenge`
 
 Expects the following parameters:
 
@@ -492,7 +601,7 @@ Expects the following parameters:
 
 **Only admins** can deny a challenge. When a challenge is denied, 10% of the total challenge stake goes to the admin denying it. The rest of the sum of the challenges stakes and the enlist stake of the sensor is transferred to the sensor owner.
 
-`POST /sensorregistry/denychallenge`
+`POST /sensorregistrydispatcher/denychallenge`
 
 Expects the following parameters:
 

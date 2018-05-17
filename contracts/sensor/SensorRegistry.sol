@@ -8,11 +8,6 @@ import "@settlemint/solidity-mint/contracts/marketplaces/tokensystem/Token.sol";
  */
 contract SensorRegistry is TokenCuratedRegistry {
 
-  // Initial values, these can be changed with setters
-  uint MIN_ENLIST_AMOUNT = 10;
-  uint MIN_CHALLENGE_AMOUNT = 5;
-  uint CURATOR_PERCENTAGE = 10;
-
   /**
   @dev Contructor
   @notice                Sets the address for token
@@ -23,16 +18,19 @@ contract SensorRegistry is TokenCuratedRegistry {
     address _gateKeeper,
     address _token,
     address _listingFactory,
-    address _challengeRegistry
+    address _challengeRegistry,
+    uint _minEnlistAmount,
+    uint _minChallengeAmount,
+    uint _curatorPercentage
   )
     TokenCuratedRegistry(
       _gateKeeper,
       _token,
       _listingFactory,
       _challengeRegistry,
-      MIN_ENLIST_AMOUNT,
-      MIN_CHALLENGE_AMOUNT,
-      CURATOR_PERCENTAGE
+      _minEnlistAmount,
+      _minChallengeAmount,
+      _curatorPercentage
     )
     public
   {}
