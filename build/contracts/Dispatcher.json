@@ -50,14 +50,14 @@
     },
     {
       "anonymous": false,
-      "inputs": [
-        {
-          "indexed": false,
-          "name": "user",
-          "type": "address"
-        }
-      ],
+      "inputs": [],
       "name": "Debug",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [],
+      "name": "Replace",
       "type": "event"
     },
     {
@@ -79,16 +79,16 @@
   "deployedBytecode": "0x",
   "sourceMap": "",
   "deployedSourceMap": "",
-  "source": "pragma solidity ^0.4.20;\n\nimport \"./Upgradeable.sol\";\n\n/**\n * Found at: https://gist.github.com/Arachnid/4ca9da48d51e23e5cfe0f0e14dd6318f and https://github.com/maraoz/solidity-proxy/blob/master/contracts/Dispatcher.sol\n *\n * The dispatcher is a minimal 'shim' that dispatches calls to a targeted\n * contract. Calls are made using 'delegatecall', meaning all storage and value\n * is kept on the dispatcher. As a result, when the target is updated, the new\n * contract inherits all the stored data and value from the old contract.\n */\n\n\ncontract Dispatcher is Upgradeable {\n\n  event Debug(address user);\n\n  function() public {\n    bytes4 sig;\n    assembly { sig := calldataload(0) }\n    var dest = target;\n\n    assembly {\n      calldatacopy(0x0, 0x0, calldatasize)\n      let callResult := delegatecall(sub(gas, 10000), dest, 0x0, calldatasize, 0, 0)\n      let retSz := returndatasize\n      returndatacopy(0, 0, retSz)\n      switch callResult\n      case 0 {\n        revert(0, retSz)\n      }\n      default {\n        return(0, retSz)\n      }\n    }\n  }\n\n  function setTarget(address _target) public {\n    replace(_target);\n  }\n\n}\n",
+  "source": "pragma solidity ^0.4.20;\n\nimport \"./Upgradeable.sol\";\n\n/**\n * Found at: https://gist.github.com/Arachnid/4ca9da48d51e23e5cfe0f0e14dd6318f and https://github.com/maraoz/solidity-proxy/blob/master/contracts/Dispatcher.sol\n *\n * The dispatcher is a minimal 'shim' that dispatches calls to a targeted\n * contract. Calls are made using 'delegatecall', meaning all storage and value\n * is kept on the dispatcher. As a result, when the target is updated, the new\n * contract inherits all the stored data and value from the old contract.\n */\n\n\ncontract Dispatcher is Upgradeable {\n  event Debug();\n\n  function() public {\n    bytes4 sig;\n    assembly { sig := calldataload(0) }\n    var dest = target;\n\n    assembly {\n      calldatacopy(0x0, 0x0, calldatasize)\n      let callResult := delegatecall(sub(gas, 10000), dest, 0x0, calldatasize, 0, 0)\n      let retSz := returndatasize\n      returndatacopy(0, 0, retSz)\n      switch callResult\n      case 0 {\n        // revert(0, retSz)\n      }\n      default {\n        return(0, retSz)\n      }\n    }\n  }\n\n  function setTarget(address _target) public {\n    emit Debug();\n    replace(_target);\n  }\n\n}\n",
   "sourcePath": "@settlemint/solidity-mint/contracts/utility/upgrading/Dispatcher.sol",
   "ast": {
     "absolutePath": "@settlemint/solidity-mint/contracts/utility/upgrading/Dispatcher.sol",
     "exportedSymbols": {
       "Dispatcher": [
-        4638
+        4639
       ]
     },
-    "id": 4639,
+    "id": 4640,
     "nodeType": "SourceUnit",
     "nodes": [
       {
@@ -107,8 +107,8 @@
         "file": "./Upgradeable.sol",
         "id": 4609,
         "nodeType": "ImportDirective",
-        "scope": 4639,
-        "sourceUnit": 4663,
+        "scope": 4640,
+        "sourceUnit": 4669,
         "src": "26:27:35",
         "symbolAliases": [],
         "unitAlias": ""
@@ -122,10 +122,10 @@
               "id": 4610,
               "name": "Upgradeable",
               "nodeType": "UserDefinedTypeName",
-              "referencedDeclaration": 4662,
+              "referencedDeclaration": 4668,
               "src": "559:11:35",
               "typeDescriptions": {
-                "typeIdentifier": "t_contract$_Upgradeable_$4662",
+                "typeIdentifier": "t_contract$_Upgradeable_$4668",
                 "typeString": "contract Upgradeable"
               }
             },
@@ -136,15 +136,15 @@
         ],
         "contractDependencies": [
           1735,
-          4662
+          4668
         ],
         "contractKind": "contract",
         "documentation": "Found at: https://gist.github.com/Arachnid/4ca9da48d51e23e5cfe0f0e14dd6318f and https://github.com/maraoz/solidity-proxy/blob/master/contracts/Dispatcher.sol\n * The dispatcher is a minimal 'shim' that dispatches calls to a targeted\ncontract. Calls are made using 'delegatecall', meaning all storage and value\nis kept on the dispatcher. As a result, when the target is updated, the new\ncontract inherits all the stored data and value from the old contract.",
         "fullyImplemented": false,
-        "id": 4638,
+        "id": 4639,
         "linearizedBaseContracts": [
-          4638,
-          4662,
+          4639,
+          4668,
           1735
         ],
         "name": "Dispatcher",
@@ -153,61 +153,33 @@
           {
             "anonymous": false,
             "documentation": null,
-            "id": 4615,
+            "id": 4613,
             "name": "Debug",
             "nodeType": "EventDefinition",
             "parameters": {
-              "id": 4614,
+              "id": 4612,
               "nodeType": "ParameterList",
-              "parameters": [
-                {
-                  "constant": false,
-                  "id": 4613,
-                  "indexed": false,
-                  "name": "user",
-                  "nodeType": "VariableDeclaration",
-                  "scope": 4615,
-                  "src": "588:12:35",
-                  "stateVariable": false,
-                  "storageLocation": "default",
-                  "typeDescriptions": {
-                    "typeIdentifier": "t_address",
-                    "typeString": "address"
-                  },
-                  "typeName": {
-                    "id": 4612,
-                    "name": "address",
-                    "nodeType": "ElementaryTypeName",
-                    "src": "588:7:35",
-                    "typeDescriptions": {
-                      "typeIdentifier": "t_address",
-                      "typeString": "address"
-                    }
-                  },
-                  "value": null,
-                  "visibility": "internal"
-                }
-              ],
-              "src": "587:14:35"
+              "parameters": [],
+              "src": "586:2:35"
             },
-            "src": "576:26:35"
+            "src": "575:14:35"
           },
           {
             "body": {
-              "id": 4626,
+              "id": 4624,
               "nodeType": "Block",
-              "src": "624:423:35",
+              "src": "611:426:35",
               "statements": [
                 {
                   "assignments": [],
                   "declarations": [
                     {
                       "constant": false,
-                      "id": 4619,
+                      "id": 4617,
                       "name": "sig",
                       "nodeType": "VariableDeclaration",
-                      "scope": 4627,
-                      "src": "630:10:35",
+                      "scope": 4625,
+                      "src": "617:10:35",
                       "stateVariable": false,
                       "storageLocation": "default",
                       "typeDescriptions": {
@@ -215,10 +187,10 @@
                         "typeString": "bytes4"
                       },
                       "typeName": {
-                        "id": 4618,
+                        "id": 4616,
                         "name": "bytes4",
                         "nodeType": "ElementaryTypeName",
-                        "src": "630:6:35",
+                        "src": "617:6:35",
                         "typeDescriptions": {
                           "typeIdentifier": "t_bytes4",
                           "typeString": "bytes4"
@@ -228,40 +200,40 @@
                       "visibility": "internal"
                     }
                   ],
-                  "id": 4620,
+                  "id": 4618,
                   "initialValue": null,
                   "nodeType": "VariableDeclarationStatement",
-                  "src": "630:10:35"
+                  "src": "617:10:35"
                 },
                 {
                   "externalReferences": [
                     {
                       "sig": {
-                        "declaration": 4619,
+                        "declaration": 4617,
                         "isOffset": false,
                         "isSlot": false,
-                        "src": "657:3:35",
+                        "src": "644:3:35",
                         "valueSize": 1
                       }
                     }
                   ],
-                  "id": 4621,
+                  "id": 4619,
                   "nodeType": "InlineAssembly",
                   "operations": "{\n    sig := calldataload(0)\n}",
-                  "src": "646:43:35"
+                  "src": "633:43:35"
                 },
                 {
                   "assignments": [
-                    4622
+                    4620
                   ],
                   "declarations": [
                     {
                       "constant": false,
-                      "id": 4622,
+                      "id": 4620,
                       "name": "dest",
                       "nodeType": "VariableDeclaration",
-                      "scope": 4627,
-                      "src": "686:8:35",
+                      "scope": 4625,
+                      "src": "673:8:35",
                       "stateVariable": false,
                       "storageLocation": "default",
                       "typeDescriptions": {
@@ -273,44 +245,44 @@
                       "visibility": "internal"
                     }
                   ],
-                  "id": 4624,
+                  "id": 4622,
                   "initialValue": {
                     "argumentTypes": null,
-                    "id": 4623,
+                    "id": 4621,
                     "name": "target",
                     "nodeType": "Identifier",
                     "overloadedDeclarations": [],
-                    "referencedDeclaration": 4648,
-                    "src": "697:6:35",
+                    "referencedDeclaration": 4651,
+                    "src": "684:6:35",
                     "typeDescriptions": {
                       "typeIdentifier": "t_address",
                       "typeString": "address"
                     }
                   },
                   "nodeType": "VariableDeclarationStatement",
-                  "src": "686:17:35"
+                  "src": "673:17:35"
                 },
                 {
                   "externalReferences": [
                     {
                       "dest": {
-                        "declaration": 4622,
+                        "declaration": 4620,
                         "isOffset": false,
                         "isSlot": false,
-                        "src": "818:4:35",
+                        "src": "805:4:35",
                         "valueSize": 1
                       }
                     }
                   ],
-                  "id": 4625,
+                  "id": 4623,
                   "nodeType": "InlineAssembly",
-                  "operations": "{\n    calldatacopy(0x0, 0x0, calldatasize())\n    let callResult := delegatecall(sub(gas(), 10000), dest, 0x0, calldatasize(), 0, 0)\n    let retSz := returndatasize()\n    returndatacopy(0, 0, retSz)\n    switch callResult\n    case 0 {\n        revert(0, retSz)\n    }\n    default {\n        return(0, retSz)\n    }\n}",
-                  "src": "710:337:35"
+                  "operations": "{\n    calldatacopy(0x0, 0x0, calldatasize())\n    let callResult := delegatecall(sub(gas(), 10000), dest, 0x0, calldatasize(), 0, 0)\n    let retSz := returndatasize()\n    returndatacopy(0, 0, retSz)\n    switch callResult\n    case 0 {\n    }\n    default {\n        return(0, retSz)\n    }\n}",
+                  "src": "697:340:35"
                 }
               ]
             },
             "documentation": null,
-            "id": 4627,
+            "id": 4625,
             "implemented": true,
             "isConstructor": false,
             "isDeclaredConst": false,
@@ -318,42 +290,77 @@
             "name": "",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 4616,
+              "id": 4614,
               "nodeType": "ParameterList",
               "parameters": [],
-              "src": "614:2:35"
+              "src": "601:2:35"
             },
             "payable": false,
             "returnParameters": {
-              "id": 4617,
+              "id": 4615,
               "nodeType": "ParameterList",
               "parameters": [],
-              "src": "624:0:35"
+              "src": "611:0:35"
             },
-            "scope": 4638,
-            "src": "606:441:35",
+            "scope": 4639,
+            "src": "593:444:35",
             "stateMutability": "nonpayable",
             "superFunction": null,
             "visibility": "public"
           },
           {
             "body": {
-              "id": 4636,
+              "id": 4637,
               "nodeType": "Block",
-              "src": "1094:27:35",
+              "src": "1084:45:35",
               "statements": [
+                {
+                  "eventCall": {
+                    "argumentTypes": null,
+                    "arguments": [],
+                    "expression": {
+                      "argumentTypes": [],
+                      "id": 4630,
+                      "name": "Debug",
+                      "nodeType": "Identifier",
+                      "overloadedDeclarations": [],
+                      "referencedDeclaration": 4613,
+                      "src": "1095:5:35",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_function_event_nonpayable$__$returns$__$",
+                        "typeString": "function ()"
+                      }
+                    },
+                    "id": 4631,
+                    "isConstant": false,
+                    "isLValue": false,
+                    "isPure": false,
+                    "kind": "functionCall",
+                    "lValueRequested": false,
+                    "names": [],
+                    "nodeType": "FunctionCall",
+                    "src": "1095:7:35",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_tuple$__$",
+                      "typeString": "tuple()"
+                    }
+                  },
+                  "id": 4632,
+                  "nodeType": "EmitStatement",
+                  "src": "1090:12:35"
+                },
                 {
                   "expression": {
                     "argumentTypes": null,
                     "arguments": [
                       {
                         "argumentTypes": null,
-                        "id": 4633,
+                        "id": 4634,
                         "name": "_target",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 4629,
-                        "src": "1108:7:35",
+                        "referencedDeclaration": 4627,
+                        "src": "1116:7:35",
                         "typeDescriptions": {
                           "typeIdentifier": "t_address",
                           "typeString": "address"
@@ -367,18 +374,18 @@
                           "typeString": "address"
                         }
                       ],
-                      "id": 4632,
+                      "id": 4633,
                       "name": "replace",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 4661,
-                      "src": "1100:7:35",
+                      "referencedDeclaration": 4667,
+                      "src": "1108:7:35",
                       "typeDescriptions": {
                         "typeIdentifier": "t_function_internal_nonpayable$_t_address_$returns$__$",
                         "typeString": "function (address)"
                       }
                     },
-                    "id": 4634,
+                    "id": 4635,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
@@ -386,20 +393,20 @@
                     "lValueRequested": false,
                     "names": [],
                     "nodeType": "FunctionCall",
-                    "src": "1100:16:35",
+                    "src": "1108:16:35",
                     "typeDescriptions": {
                       "typeIdentifier": "t_tuple$__$",
                       "typeString": "tuple()"
                     }
                   },
-                  "id": 4635,
+                  "id": 4636,
                   "nodeType": "ExpressionStatement",
-                  "src": "1100:16:35"
+                  "src": "1108:16:35"
                 }
               ]
             },
             "documentation": null,
-            "id": 4637,
+            "id": 4638,
             "implemented": true,
             "isConstructor": false,
             "isDeclaredConst": false,
@@ -407,16 +414,16 @@
             "name": "setTarget",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 4630,
+              "id": 4628,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 4629,
+                  "id": 4627,
                   "name": "_target",
                   "nodeType": "VariableDeclaration",
-                  "scope": 4637,
-                  "src": "1070:15:35",
+                  "scope": 4638,
+                  "src": "1060:15:35",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
@@ -424,10 +431,10 @@
                     "typeString": "address"
                   },
                   "typeName": {
-                    "id": 4628,
+                    "id": 4626,
                     "name": "address",
                     "nodeType": "ElementaryTypeName",
-                    "src": "1070:7:35",
+                    "src": "1060:7:35",
                     "typeDescriptions": {
                       "typeIdentifier": "t_address",
                       "typeString": "address"
@@ -437,36 +444,36 @@
                   "visibility": "internal"
                 }
               ],
-              "src": "1069:17:35"
+              "src": "1059:17:35"
             },
             "payable": false,
             "returnParameters": {
-              "id": 4631,
+              "id": 4629,
               "nodeType": "ParameterList",
               "parameters": [],
-              "src": "1094:0:35"
+              "src": "1084:0:35"
             },
-            "scope": 4638,
-            "src": "1051:70:35",
+            "scope": 4639,
+            "src": "1041:88:35",
             "stateMutability": "nonpayable",
             "superFunction": null,
             "visibility": "public"
           }
         ],
-        "scope": 4639,
-        "src": "536:588:35"
+        "scope": 4640,
+        "src": "536:596:35"
       }
     ],
-    "src": "0:1125:35"
+    "src": "0:1133:35"
   },
   "legacyAST": {
     "absolutePath": "@settlemint/solidity-mint/contracts/utility/upgrading/Dispatcher.sol",
     "exportedSymbols": {
       "Dispatcher": [
-        4638
+        4639
       ]
     },
-    "id": 4639,
+    "id": 4640,
     "nodeType": "SourceUnit",
     "nodes": [
       {
@@ -485,8 +492,8 @@
         "file": "./Upgradeable.sol",
         "id": 4609,
         "nodeType": "ImportDirective",
-        "scope": 4639,
-        "sourceUnit": 4663,
+        "scope": 4640,
+        "sourceUnit": 4669,
         "src": "26:27:35",
         "symbolAliases": [],
         "unitAlias": ""
@@ -500,10 +507,10 @@
               "id": 4610,
               "name": "Upgradeable",
               "nodeType": "UserDefinedTypeName",
-              "referencedDeclaration": 4662,
+              "referencedDeclaration": 4668,
               "src": "559:11:35",
               "typeDescriptions": {
-                "typeIdentifier": "t_contract$_Upgradeable_$4662",
+                "typeIdentifier": "t_contract$_Upgradeable_$4668",
                 "typeString": "contract Upgradeable"
               }
             },
@@ -514,15 +521,15 @@
         ],
         "contractDependencies": [
           1735,
-          4662
+          4668
         ],
         "contractKind": "contract",
         "documentation": "Found at: https://gist.github.com/Arachnid/4ca9da48d51e23e5cfe0f0e14dd6318f and https://github.com/maraoz/solidity-proxy/blob/master/contracts/Dispatcher.sol\n * The dispatcher is a minimal 'shim' that dispatches calls to a targeted\ncontract. Calls are made using 'delegatecall', meaning all storage and value\nis kept on the dispatcher. As a result, when the target is updated, the new\ncontract inherits all the stored data and value from the old contract.",
         "fullyImplemented": false,
-        "id": 4638,
+        "id": 4639,
         "linearizedBaseContracts": [
-          4638,
-          4662,
+          4639,
+          4668,
           1735
         ],
         "name": "Dispatcher",
@@ -531,61 +538,33 @@
           {
             "anonymous": false,
             "documentation": null,
-            "id": 4615,
+            "id": 4613,
             "name": "Debug",
             "nodeType": "EventDefinition",
             "parameters": {
-              "id": 4614,
+              "id": 4612,
               "nodeType": "ParameterList",
-              "parameters": [
-                {
-                  "constant": false,
-                  "id": 4613,
-                  "indexed": false,
-                  "name": "user",
-                  "nodeType": "VariableDeclaration",
-                  "scope": 4615,
-                  "src": "588:12:35",
-                  "stateVariable": false,
-                  "storageLocation": "default",
-                  "typeDescriptions": {
-                    "typeIdentifier": "t_address",
-                    "typeString": "address"
-                  },
-                  "typeName": {
-                    "id": 4612,
-                    "name": "address",
-                    "nodeType": "ElementaryTypeName",
-                    "src": "588:7:35",
-                    "typeDescriptions": {
-                      "typeIdentifier": "t_address",
-                      "typeString": "address"
-                    }
-                  },
-                  "value": null,
-                  "visibility": "internal"
-                }
-              ],
-              "src": "587:14:35"
+              "parameters": [],
+              "src": "586:2:35"
             },
-            "src": "576:26:35"
+            "src": "575:14:35"
           },
           {
             "body": {
-              "id": 4626,
+              "id": 4624,
               "nodeType": "Block",
-              "src": "624:423:35",
+              "src": "611:426:35",
               "statements": [
                 {
                   "assignments": [],
                   "declarations": [
                     {
                       "constant": false,
-                      "id": 4619,
+                      "id": 4617,
                       "name": "sig",
                       "nodeType": "VariableDeclaration",
-                      "scope": 4627,
-                      "src": "630:10:35",
+                      "scope": 4625,
+                      "src": "617:10:35",
                       "stateVariable": false,
                       "storageLocation": "default",
                       "typeDescriptions": {
@@ -593,10 +572,10 @@
                         "typeString": "bytes4"
                       },
                       "typeName": {
-                        "id": 4618,
+                        "id": 4616,
                         "name": "bytes4",
                         "nodeType": "ElementaryTypeName",
-                        "src": "630:6:35",
+                        "src": "617:6:35",
                         "typeDescriptions": {
                           "typeIdentifier": "t_bytes4",
                           "typeString": "bytes4"
@@ -606,40 +585,40 @@
                       "visibility": "internal"
                     }
                   ],
-                  "id": 4620,
+                  "id": 4618,
                   "initialValue": null,
                   "nodeType": "VariableDeclarationStatement",
-                  "src": "630:10:35"
+                  "src": "617:10:35"
                 },
                 {
                   "externalReferences": [
                     {
                       "sig": {
-                        "declaration": 4619,
+                        "declaration": 4617,
                         "isOffset": false,
                         "isSlot": false,
-                        "src": "657:3:35",
+                        "src": "644:3:35",
                         "valueSize": 1
                       }
                     }
                   ],
-                  "id": 4621,
+                  "id": 4619,
                   "nodeType": "InlineAssembly",
                   "operations": "{\n    sig := calldataload(0)\n}",
-                  "src": "646:43:35"
+                  "src": "633:43:35"
                 },
                 {
                   "assignments": [
-                    4622
+                    4620
                   ],
                   "declarations": [
                     {
                       "constant": false,
-                      "id": 4622,
+                      "id": 4620,
                       "name": "dest",
                       "nodeType": "VariableDeclaration",
-                      "scope": 4627,
-                      "src": "686:8:35",
+                      "scope": 4625,
+                      "src": "673:8:35",
                       "stateVariable": false,
                       "storageLocation": "default",
                       "typeDescriptions": {
@@ -651,44 +630,44 @@
                       "visibility": "internal"
                     }
                   ],
-                  "id": 4624,
+                  "id": 4622,
                   "initialValue": {
                     "argumentTypes": null,
-                    "id": 4623,
+                    "id": 4621,
                     "name": "target",
                     "nodeType": "Identifier",
                     "overloadedDeclarations": [],
-                    "referencedDeclaration": 4648,
-                    "src": "697:6:35",
+                    "referencedDeclaration": 4651,
+                    "src": "684:6:35",
                     "typeDescriptions": {
                       "typeIdentifier": "t_address",
                       "typeString": "address"
                     }
                   },
                   "nodeType": "VariableDeclarationStatement",
-                  "src": "686:17:35"
+                  "src": "673:17:35"
                 },
                 {
                   "externalReferences": [
                     {
                       "dest": {
-                        "declaration": 4622,
+                        "declaration": 4620,
                         "isOffset": false,
                         "isSlot": false,
-                        "src": "818:4:35",
+                        "src": "805:4:35",
                         "valueSize": 1
                       }
                     }
                   ],
-                  "id": 4625,
+                  "id": 4623,
                   "nodeType": "InlineAssembly",
-                  "operations": "{\n    calldatacopy(0x0, 0x0, calldatasize())\n    let callResult := delegatecall(sub(gas(), 10000), dest, 0x0, calldatasize(), 0, 0)\n    let retSz := returndatasize()\n    returndatacopy(0, 0, retSz)\n    switch callResult\n    case 0 {\n        revert(0, retSz)\n    }\n    default {\n        return(0, retSz)\n    }\n}",
-                  "src": "710:337:35"
+                  "operations": "{\n    calldatacopy(0x0, 0x0, calldatasize())\n    let callResult := delegatecall(sub(gas(), 10000), dest, 0x0, calldatasize(), 0, 0)\n    let retSz := returndatasize()\n    returndatacopy(0, 0, retSz)\n    switch callResult\n    case 0 {\n    }\n    default {\n        return(0, retSz)\n    }\n}",
+                  "src": "697:340:35"
                 }
               ]
             },
             "documentation": null,
-            "id": 4627,
+            "id": 4625,
             "implemented": true,
             "isConstructor": false,
             "isDeclaredConst": false,
@@ -696,42 +675,77 @@
             "name": "",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 4616,
+              "id": 4614,
               "nodeType": "ParameterList",
               "parameters": [],
-              "src": "614:2:35"
+              "src": "601:2:35"
             },
             "payable": false,
             "returnParameters": {
-              "id": 4617,
+              "id": 4615,
               "nodeType": "ParameterList",
               "parameters": [],
-              "src": "624:0:35"
+              "src": "611:0:35"
             },
-            "scope": 4638,
-            "src": "606:441:35",
+            "scope": 4639,
+            "src": "593:444:35",
             "stateMutability": "nonpayable",
             "superFunction": null,
             "visibility": "public"
           },
           {
             "body": {
-              "id": 4636,
+              "id": 4637,
               "nodeType": "Block",
-              "src": "1094:27:35",
+              "src": "1084:45:35",
               "statements": [
+                {
+                  "eventCall": {
+                    "argumentTypes": null,
+                    "arguments": [],
+                    "expression": {
+                      "argumentTypes": [],
+                      "id": 4630,
+                      "name": "Debug",
+                      "nodeType": "Identifier",
+                      "overloadedDeclarations": [],
+                      "referencedDeclaration": 4613,
+                      "src": "1095:5:35",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_function_event_nonpayable$__$returns$__$",
+                        "typeString": "function ()"
+                      }
+                    },
+                    "id": 4631,
+                    "isConstant": false,
+                    "isLValue": false,
+                    "isPure": false,
+                    "kind": "functionCall",
+                    "lValueRequested": false,
+                    "names": [],
+                    "nodeType": "FunctionCall",
+                    "src": "1095:7:35",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_tuple$__$",
+                      "typeString": "tuple()"
+                    }
+                  },
+                  "id": 4632,
+                  "nodeType": "EmitStatement",
+                  "src": "1090:12:35"
+                },
                 {
                   "expression": {
                     "argumentTypes": null,
                     "arguments": [
                       {
                         "argumentTypes": null,
-                        "id": 4633,
+                        "id": 4634,
                         "name": "_target",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 4629,
-                        "src": "1108:7:35",
+                        "referencedDeclaration": 4627,
+                        "src": "1116:7:35",
                         "typeDescriptions": {
                           "typeIdentifier": "t_address",
                           "typeString": "address"
@@ -745,18 +759,18 @@
                           "typeString": "address"
                         }
                       ],
-                      "id": 4632,
+                      "id": 4633,
                       "name": "replace",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 4661,
-                      "src": "1100:7:35",
+                      "referencedDeclaration": 4667,
+                      "src": "1108:7:35",
                       "typeDescriptions": {
                         "typeIdentifier": "t_function_internal_nonpayable$_t_address_$returns$__$",
                         "typeString": "function (address)"
                       }
                     },
-                    "id": 4634,
+                    "id": 4635,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
@@ -764,20 +778,20 @@
                     "lValueRequested": false,
                     "names": [],
                     "nodeType": "FunctionCall",
-                    "src": "1100:16:35",
+                    "src": "1108:16:35",
                     "typeDescriptions": {
                       "typeIdentifier": "t_tuple$__$",
                       "typeString": "tuple()"
                     }
                   },
-                  "id": 4635,
+                  "id": 4636,
                   "nodeType": "ExpressionStatement",
-                  "src": "1100:16:35"
+                  "src": "1108:16:35"
                 }
               ]
             },
             "documentation": null,
-            "id": 4637,
+            "id": 4638,
             "implemented": true,
             "isConstructor": false,
             "isDeclaredConst": false,
@@ -785,16 +799,16 @@
             "name": "setTarget",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 4630,
+              "id": 4628,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 4629,
+                  "id": 4627,
                   "name": "_target",
                   "nodeType": "VariableDeclaration",
-                  "scope": 4637,
-                  "src": "1070:15:35",
+                  "scope": 4638,
+                  "src": "1060:15:35",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
@@ -802,10 +816,10 @@
                     "typeString": "address"
                   },
                   "typeName": {
-                    "id": 4628,
+                    "id": 4626,
                     "name": "address",
                     "nodeType": "ElementaryTypeName",
-                    "src": "1070:7:35",
+                    "src": "1060:7:35",
                     "typeDescriptions": {
                       "typeIdentifier": "t_address",
                       "typeString": "address"
@@ -815,33 +829,33 @@
                   "visibility": "internal"
                 }
               ],
-              "src": "1069:17:35"
+              "src": "1059:17:35"
             },
             "payable": false,
             "returnParameters": {
-              "id": 4631,
+              "id": 4629,
               "nodeType": "ParameterList",
               "parameters": [],
-              "src": "1094:0:35"
+              "src": "1084:0:35"
             },
-            "scope": 4638,
-            "src": "1051:70:35",
+            "scope": 4639,
+            "src": "1041:88:35",
             "stateMutability": "nonpayable",
             "superFunction": null,
             "visibility": "public"
           }
         ],
-        "scope": 4639,
-        "src": "536:588:35"
+        "scope": 4640,
+        "src": "536:596:35"
       }
     ],
-    "src": "0:1125:35"
+    "src": "0:1133:35"
   },
   "compiler": {
     "name": "solc",
-    "version": "0.4.22+commit.4cb486ee.Emscripten.clang"
+    "version": "0.4.24+commit.e67f0147.Emscripten.clang"
   },
   "networks": {},
   "schemaVersion": "2.0.0",
-  "updatedAt": "2018-05-17T13:46:57.269Z"
+  "updatedAt": "2018-05-18T12:47:17.780Z"
 }

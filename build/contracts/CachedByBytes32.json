@@ -17,8 +17,8 @@
       "type": "constructor"
     }
   ],
-  "bytecode": "0x6080604052348015600f57600080fd5b50604051604080608d83398101604052805160209091015160008054600160a060020a03909216600160a060020a031990921691909117905560015560358060586000396000f3006080604052600080fd00a165627a7a723058205f572dc48ac60061211fa0476c569991801dd43959585fc270d93d009041591b0029",
-  "deployedBytecode": "0x6080604052600080fd00a165627a7a723058205f572dc48ac60061211fa0476c569991801dd43959585fc270d93d009041591b0029",
+  "bytecode": "0x6080604052348015600f57600080fd5b50604051604080608d83398101604052805160209091015160008054600160a060020a03909216600160a060020a031990921691909117905560015560358060586000396000f3006080604052600080fd00a165627a7a7230582058be20c2013d94d196b5381342ba4f91d2c7e5758fc0943c71cd9838c1007efc0029",
+  "deployedBytecode": "0x6080604052600080fd00a165627a7a7230582058be20c2013d94d196b5381342ba4f91d2c7e5758fc0943c71cd9838c1007efc0029",
   "sourceMap": "51:266:31:-;;;112:102;8:9:-1;5:2;;;30:1;27;20:12;5:2;112:102:31;;;;;;;;;;;;;;;;;;;141:6:29;:24;;-1:-1:-1;;;;;141:24:29;;;-1:-1:-1;;;;;;141:24:29;;;;;;;;;;189:20:31;51:266;;;;;;",
   "deployedSourceMap": "51:266:31:-;;;;;",
   "source": "pragma solidity ^0.4.22;\n\nimport \"./Cached.sol\";\n\n\ncontract CachedByBytes32 is Cached {\n\n  bytes32 cacheKey;\n\n  constructor(bytes32 _cacheKey, address _cacher) Cached(_cacher) public {\n    cacheKey = _cacheKey;\n  }\n\n  function invalidateCache() internal {\n    cacher.invalidateCache(address(0x0), cacheKey, 0);\n  }\n\n}\n\n\n",
@@ -935,9 +935,9 @@
   },
   "compiler": {
     "name": "solc",
-    "version": "0.4.22+commit.4cb486ee.Emscripten.clang"
+    "version": "0.4.24+commit.e67f0147.Emscripten.clang"
   },
   "networks": {},
   "schemaVersion": "2.0.0",
-  "updatedAt": "2018-05-17T13:46:57.268Z"
+  "updatedAt": "2018-05-18T12:47:17.780Z"
 }

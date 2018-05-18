@@ -27,8 +27,8 @@
       "type": "constructor"
     }
   ],
-  "bytecode": "0x608060405234801561001057600080fd5b50604051602080610117833981016040525160008054600160a060020a03909216600160a060020a031990921691909117905560c6806100516000396000f300608060405260043610603e5763ffffffff7c010000000000000000000000000000000000000000000000000000000060003504166345d61ded81146043575b600080fd5b348015604e57600080fd5b506055607e565b6040805173ffffffffffffffffffffffffffffffffffffffff9092168252519081900360200190f35b60005473ffffffffffffffffffffffffffffffffffffffff16815600a165627a7a723058203ed508b5bed5c04c6727231fa4647368163f9e2214a1a9121a26cd9c71f66bef0029",
-  "deployedBytecode": "0x608060405260043610603e5763ffffffff7c010000000000000000000000000000000000000000000000000000000060003504166345d61ded81146043575b600080fd5b348015604e57600080fd5b506055607e565b6040805173ffffffffffffffffffffffffffffffffffffffff9092168252519081900360200190f35b60005473ffffffffffffffffffffffffffffffffffffffff16815600a165627a7a723058203ed508b5bed5c04c6727231fa4647368163f9e2214a1a9121a26cd9c71f66bef0029",
+  "bytecode": "0x608060405234801561001057600080fd5b50604051602080610117833981016040525160008054600160a060020a03909216600160a060020a031990921691909117905560c6806100516000396000f300608060405260043610603e5763ffffffff7c010000000000000000000000000000000000000000000000000000000060003504166345d61ded81146043575b600080fd5b348015604e57600080fd5b506055607e565b6040805173ffffffffffffffffffffffffffffffffffffffff9092168252519081900360200190f35b60005473ffffffffffffffffffffffffffffffffffffffff16815600a165627a7a72305820176c042ed9599147549ff973f26228543c8eb3d8214a4aeefcdb187e1c7638f80029",
+  "deployedBytecode": "0x608060405260043610603e5763ffffffff7c010000000000000000000000000000000000000000000000000000000060003504166345d61ded81146043575b600080fd5b348015604e57600080fd5b506055607e565b6040805173ffffffffffffffffffffffffffffffffffffffff9092168252519081900360200190f35b60005473ffffffffffffffffffffffffffffffffffffffff16815600a165627a7a72305820176c042ed9599147549ff973f26228543c8eb3d8214a4aeefcdb187e1c7638f80029",
   "sourceMap": "55:420:16:-;;;199:87;8:9:-1;5:2;;;30:1;27;20:12;5:2;199:87:16;;;;;;;;;;;;;245:10;:36;;-1:-1:-1;;;;;245:36:16;;;-1:-1:-1;;;;;;245:36:16;;;;;;;;;55:420;;;;;;",
   "deployedSourceMap": "55:420:16:-;;;;;;;;;;;;;;;;;;;;;;;77:28;;8:9:-1;5:2;;;30:1;27;20:12;5:2;77:28:16;;;;;;;;;;;;;;;;;;;;;;;;;;;;;:::o",
   "source": "pragma solidity ^0.4.22;\n\nimport \"./GateKeeper.sol\";\n\n\ncontract Secured {\n\n  GateKeeper public gateKeeper;\n\n  modifier auth(bytes32 _role) {\n    require(canPerform(msg.sender, _role));\n    _;\n  }\n\n  constructor(address _gateKeeper) public {\n    gateKeeper = GateKeeper(_gateKeeper);\n  }\n\n  function canPerform(address _sender, bytes32 _role) internal view returns (bool) {\n    return address(gateKeeper) == 0 || gateKeeper.hasPermission(_sender, address(this), _role);\n  }\n\n}\n",
@@ -127,7 +127,7 @@
                               "name": "msg",
                               "nodeType": "Identifier",
                               "overloadedDeclarations": [],
-                              "referencedDeclaration": 4771,
+                              "referencedDeclaration": 4777,
                               "src": "164:3:16",
                               "typeDescriptions": {
                                 "typeIdentifier": "t_magic_message",
@@ -210,10 +210,10 @@
                       "name": "require",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [
-                        4774,
-                        4775
+                        4780,
+                        4781
                       ],
-                      "referencedDeclaration": 4774,
+                      "referencedDeclaration": 4780,
                       "src": "145:7:16",
                       "typeDescriptions": {
                         "typeIdentifier": "t_function_require_pure$_t_bool_$returns$__$",
@@ -562,7 +562,7 @@
                               "name": "this",
                               "nodeType": "Identifier",
                               "overloadedDeclarations": [],
-                              "referencedDeclaration": 4794,
+                              "referencedDeclaration": 4800,
                               "src": "454:4:16",
                               "typeDescriptions": {
                                 "typeIdentifier": "t_contract$_Secured_$1735",
@@ -895,7 +895,7 @@
                               "name": "msg",
                               "nodeType": "Identifier",
                               "overloadedDeclarations": [],
-                              "referencedDeclaration": 4771,
+                              "referencedDeclaration": 4777,
                               "src": "164:3:16",
                               "typeDescriptions": {
                                 "typeIdentifier": "t_magic_message",
@@ -978,10 +978,10 @@
                       "name": "require",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [
-                        4774,
-                        4775
+                        4780,
+                        4781
                       ],
-                      "referencedDeclaration": 4774,
+                      "referencedDeclaration": 4780,
                       "src": "145:7:16",
                       "typeDescriptions": {
                         "typeIdentifier": "t_function_require_pure$_t_bool_$returns$__$",
@@ -1330,7 +1330,7 @@
                               "name": "this",
                               "nodeType": "Identifier",
                               "overloadedDeclarations": [],
-                              "referencedDeclaration": 4794,
+                              "referencedDeclaration": 4800,
                               "src": "454:4:16",
                               "typeDescriptions": {
                                 "typeIdentifier": "t_contract$_Secured_$1735",
@@ -1571,9 +1571,9 @@
   },
   "compiler": {
     "name": "solc",
-    "version": "0.4.22+commit.4cb486ee.Emscripten.clang"
+    "version": "0.4.24+commit.e67f0147.Emscripten.clang"
   },
   "networks": {},
   "schemaVersion": "2.0.0",
-  "updatedAt": "2018-05-17T13:46:57.253Z"
+  "updatedAt": "2018-05-18T12:47:17.760Z"
 }

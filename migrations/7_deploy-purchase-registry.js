@@ -76,9 +76,6 @@ async function deployPurchasing(deployer, network, accounts) {
   )
   const dPurchaseRegistry = await PurchaseRegistry.deployed()
 
-  // Set purchase registry address in dispatcher
-  dPurchaseRegistryDispatcher.setTarget(dPurchaseRegistry.address)
-
   // Grant permission to create permissions:
   await grantPermission(
     dGateKeeper,
@@ -86,6 +83,9 @@ async function deployPurchasing(deployer, network, accounts) {
     'CREATE_PERMISSIONS_ROLE',
     dPurchaseRegistry.address
   )
+
+  // Set purchase registry address in dispatcher
+  await dPurchaseRegistryDispatcher.setTarget(dPurchaseRegistry.address)
 
   // Give admin permission to change settings
   await createPermission(

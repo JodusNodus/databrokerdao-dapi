@@ -108,15 +108,15 @@ async function deployRegistry(deployer, network, accounts) {
   await deployer.deploy(SensorFactory, dGateKeeper.address)
   const dSensorFactory = await SensorFactory.deployed()
 
-  // Set sensor registry address in dispatcher
-  dSensorFactoryDispatcher.setTarget(dSensorFactory.address)
-
   await grantPermission(
     dGateKeeper,
     dGateKeeper,
     'CREATE_PERMISSIONS_ROLE',
     dSensorFactory.address
   )
+
+  // Set sensor registry address in dispatcher
+  await dSensorFactoryDispatcher.setTarget(dSensorFactory.address)
 
   // Deploy sensor registry dispatcher, and grant permissions
   await deployer.deploy(
@@ -151,9 +151,6 @@ async function deployRegistry(deployer, network, accounts) {
   )
   const dSensorRegistry = await SensorRegistry.deployed()
 
-  // Set sensor registry address in dispatcher
-  dSensorRegistryDispatcher.setTarget(dSensorRegistry.address)
-
   // Grant sensor registry permission to create permissions:
   await grantPermission(
     dGateKeeper,
@@ -161,6 +158,9 @@ async function deployRegistry(deployer, network, accounts) {
     'CREATE_PERMISSIONS_ROLE',
     dSensorRegistry.address
   )
+
+  // Set sensor registry address in dispatcher
+  await dSensorRegistryDispatcher.setTarget(dSensorRegistry.address)
 
   // Grant mint permission: we will mint in approveRegistryFor
   await grantPermission(dGateKeeper, dDtxToken, 'MINT_ROLE', accounts[0])
