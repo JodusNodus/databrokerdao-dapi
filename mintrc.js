@@ -30,14 +30,17 @@ module.exports = {
       'Challenge',
     ],
     roleRegistries: ['Administrators', 'Curators'],
-    features: {
-      statistics: {
-        enabled: false,
-      },
-      ui: {
-        enabled: false,
-      },
-    },
+    // features: {
+    //   contracts: {
+    //     enabled: true,
+    //   },
+    //   statistics: {
+    //     enabled: false,
+    //   },
+    //   ui: {
+    //     enabled: false,
+    //   },
+    // },
   },
   environments: [
     'http://localhost:3333',
