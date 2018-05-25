@@ -1,0 +1,2065 @@
+{
+  "contractName": "PurchaseRegistryDispatcher",
+  "abi": [
+    {
+      "constant": true,
+      "inputs": [],
+      "name": "UPGRADE_CONTRACT",
+      "outputs": [
+        {
+          "name": "",
+          "type": "bytes32"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "constant": true,
+      "inputs": [],
+      "name": "CHANGE_SETTINGS_ROLE",
+      "outputs": [
+        {
+          "name": "",
+          "type": "bytes32"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "constant": true,
+      "inputs": [],
+      "name": "CREATE_PERMISSIONS_ROLE",
+      "outputs": [
+        {
+          "name": "",
+          "type": "bytes32"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "constant": true,
+      "inputs": [],
+      "name": "gateKeeper",
+      "outputs": [
+        {
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "constant": true,
+      "inputs": [
+        {
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "name": "purchases",
+      "outputs": [
+        {
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "constant": true,
+      "inputs": [
+        {
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "name": "purchasesIndex",
+      "outputs": [
+        {
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "constant": true,
+      "inputs": [],
+      "name": "target",
+      "outputs": [
+        {
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "constant": true,
+      "inputs": [],
+      "name": "token",
+      "outputs": [
+        {
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "name": "_gateKeeper",
+          "type": "address"
+        },
+        {
+          "name": "_token",
+          "type": "address"
+        },
+        {
+          "name": "_sensorRegistry",
+          "type": "address"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "nonpayable",
+      "type": "constructor"
+    },
+    {
+      "payable": false,
+      "stateMutability": "nonpayable",
+      "type": "fallback"
+    },
+    {
+      "constant": false,
+      "inputs": [
+        {
+          "name": "_target",
+          "type": "address"
+        }
+      ],
+      "name": "setTarget",
+      "outputs": [],
+      "payable": false,
+      "stateMutability": "nonpayable",
+      "type": "function"
+    }
+  ],
+  "bytecode": "0x6080604052600160075534801561001557600080fd5b5060405160608061053a83398101604090815281516020830151919092015160008054600160a060020a03948516600160a060020a0319918216179091556002805482163017905560058054938516938216939093179092556006805493909116929091169190911790556104ab8061008f6000396000f3006080604052600436106100985763ffffffff7c010000000000000000000000000000000000000000000000000000000060003504166317f8213981146100d35780633426ddd5146100fa5780633d6ab68f1461010f57806345d61ded14610124578063776d1a0114610155578063842a77d314610178578063b8e52d8714610199578063d4b83992146101b1578063fc0c546a146101c6575b3480156100a457600080fd5b506001546000803591600160a060020a03169036908037600080366000846127105a03f43d806000803e806000f35b3480156100df57600080fd5b506100e86101db565b60408051918252519081900360200190f35b34801561010657600080fd5b506100e86101ff565b34801561011b57600080fd5b506100e8610223565b34801561013057600080fd5b50610139610247565b60408051600160a060020a039092168252519081900360200190f35b34801561016157600080fd5b50610176600160a060020a0360043516610256565b005b34801561018457600080fd5b50610139600160a060020a036004351661026a565b3480156101a557600080fd5b50610139600435610285565b3480156101bd57600080fd5b506101396102ad565b3480156101d257600080fd5b506101396102bc565b7f555047524144455f434f4e54524143540000000000000000000000000000000081565b7f4348414e47455f53455454494e47535f524f4c4500000000000000000000000081565b7f4352454154455f5045524d495353494f4e535f524f4c4500000000000000000081565b600054600160a060020a031681565b61025f816102cb565b6102676102d4565b50565b600360205260009081526040902054600160a060020a031681565b600480548290811061029357fe5b600091825260209091200154600160a060020a0316905081565b600154600160a060020a031681565b600554600160a060020a031681565b61026781610359565b600254604080517f3d188fab0000000000000000000000000000000000000000000000000000000081523060048201526000604482018190529151600160a060020a0390931692633d188fab9260648084019391929182900301818387803b15801561033f57600080fd5b505af1158015610353573d6000803e3d6000fd5b50505050565b7f555047524144455f434f4e54524143540000000000000000000000000000000061038433826103bf565b151561038f57600080fd5b506001805473ffffffffffffffffffffffffffffffffffffffff1916600160a060020a0392909216919091179055565b60008054600160a060020a03161580610478575060008054604080517f6d6712d8000000000000000000000000000000000000000000000000000000008152600160a060020a0387811660048301523060248301526044820187905291519190921692636d6712d892606480820193602093909283900390910190829087803b15801561044b57600080fd5b505af115801561045f573d6000803e3d6000fd5b505050506040513d602081101561047557600080fd5b50515b93925050505600a165627a7a72305820e0314b906c1058fc658391f908e12171dd4ab6aaa442c4d1dff3b2baa2c92c870029",
+  "deployedBytecode": "0x6080604052600436106100985763ffffffff7c010000000000000000000000000000000000000000000000000000000060003504166317f8213981146100d35780633426ddd5146100fa5780633d6ab68f1461010f57806345d61ded14610124578063776d1a0114610155578063842a77d314610178578063b8e52d8714610199578063d4b83992146101b1578063fc0c546a146101c6575b3480156100a457600080fd5b506001546000803591600160a060020a03169036908037600080366000846127105a03f43d806000803e806000f35b3480156100df57600080fd5b506100e86101db565b60408051918252519081900360200190f35b34801561010657600080fd5b506100e86101ff565b34801561011b57600080fd5b506100e8610223565b34801561013057600080fd5b50610139610247565b60408051600160a060020a039092168252519081900360200190f35b34801561016157600080fd5b50610176600160a060020a0360043516610256565b005b34801561018457600080fd5b50610139600160a060020a036004351661026a565b3480156101a557600080fd5b50610139600435610285565b3480156101bd57600080fd5b506101396102ad565b3480156101d257600080fd5b506101396102bc565b7f555047524144455f434f4e54524143540000000000000000000000000000000081565b7f4348414e47455f53455454494e47535f524f4c4500000000000000000000000081565b7f4352454154455f5045524d495353494f4e535f524f4c4500000000000000000081565b600054600160a060020a031681565b61025f816102cb565b6102676102d4565b50565b600360205260009081526040902054600160a060020a031681565b600480548290811061029357fe5b600091825260209091200154600160a060020a0316905081565b600154600160a060020a031681565b600554600160a060020a031681565b61026781610359565b600254604080517f3d188fab0000000000000000000000000000000000000000000000000000000081523060048201526000604482018190529151600160a060020a0390931692633d188fab9260648084019391929182900301818387803b15801561033f57600080fd5b505af1158015610353573d6000803e3d6000fd5b50505050565b7f555047524144455f434f4e54524143540000000000000000000000000000000061038433826103bf565b151561038f57600080fd5b506001805473ffffffffffffffffffffffffffffffffffffffff1916600160a060020a0392909216919091179055565b60008054600160a060020a03161580610478575060008054604080517f6d6712d8000000000000000000000000000000000000000000000000000000008152600160a060020a0387811660048301523060248301526044820187905291519190921692636d6712d892606480820193602093909283900390910190829087803b15801561044b57600080fd5b505af115801561045f573d6000803e3d6000fd5b505050506040513d602081101561047557600080fd5b50515b93925050505600a165627a7a72305820e0314b906c1058fc658391f908e12171dd4ab6aaa442c4d1dff3b2baa2c92c870029",
+  "sourceMap": "342:860:6:-;;;776:1;754:23;;782:307;8:9:-1;5:2;;;30:1;27;20:12;5:2;782:307:6;;;;;;;;;;;;;;;;;;;;;;;;;245:10:16;:36;;-1:-1:-1;;;;;245:36:16;;;-1:-1:-1;;;;;;245:36:16;;;;;;;141:6:29;:24;;;;941:4:6;141:24:29;;;1006:5:6;:24;;;;;;;;;;;;;;;1036:14;:48;;;;;;;;;;;;;;;;342:860;;;;;;",
+  "deployedSourceMap": "342:860:6:-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;8:9:-1;5:2;;;30:1;27;20:12;5:2;-1:-1;667:6:35;;600:10;634:15;;;-1:-1:-1;;;;;667:6:35;;720:12;;600:10;697:36;816:1;813;799:12;794:3;788:4;780:5;775:3;771:15;758:60;838:14;880:5;877:1;874;859:27;903:5;900:1;893:16;1141:61:36;;8:9:-1;5:2;;;30:1;27;20:12;5:2;1141:61:36;;;;;;;;;;;;;;;;;;;;538:69:6;;8:9:-1;5:2;;;30:1;27;20:12;5:2;538:69:6;;;;459:75;;8:9:-1;5:2;;;30:1;27;20:12;5:2;459:75:6;;;;77:28:16;;8:9:-1;5:2;;;30:1;27;20:12;5:2;77:28:16;;;;;;;;-1:-1:-1;;;;;77:28:16;;;;;;;;;;;;;;1093:107:6;;8:9:-1;5:2;;;30:1;27;20:12;5:2;-1:-1;1093:107:6;-1:-1:-1;;;;;1093:107:6;;;;;;;611:46;;8:9:-1;5:2;;;30:1;27;20:12;5:2;-1:-1;611:46:6;-1:-1:-1;;;;;611:46:6;;;;;661:31;;8:9:-1;5:2;;;30:1;27;20:12;5:2;-1:-1;661:31:6;;;;;1207:21:36;;8:9:-1;5:2;;;30:1;27;20:12;5:2;1207:21:36;;;;696::6;;8:9:-1;5:2;;;30:1;27;20:12;5:2;696:21:6;;;;1141:61:36;;;:::o;538:69:6:-;;;:::o;459:75::-;;;:::o;77:28:16:-;;;-1:-1:-1;;;;;77:28:16;;:::o;1093:107:6:-;1142:24;1158:7;1142:15;:24::i;:::-;1172:23;:21;:23::i;:::-;1093:107;:::o;611:46::-;;;;;;;;;;;;-1:-1:-1;;;;;611:46:6;;:::o;661:31::-;;;;;;;;;;;;;;;;;;;;;;-1:-1:-1;;;;;661:31:6;;-1:-1:-1;661:31:6;:::o;1207:21:36:-;;;-1:-1:-1;;;;;1207:21:36;;:::o;696::6:-;;;-1:-1:-1;;;;;696:21:6;;:::o;923:70:35:-;972:16;980:7;972;:16::i;149:91:30:-;191:6;;:44;;;;;;222:4;191:44;;;;:6;:44;;;;;;;;-1:-1:-1;;;;;191:6:30;;;;:22;;:44;;;;;:6;;:44;;;;;;:6;;:44;;;5:2:-1;;;;30:1;27;20:12;5:2;191:44:30;;;;8:9:-1;5:2;;;45:16;42:1;39;24:38;77:16;74:1;67:27;5:2;191:44:30;;;;149:91::o;1304:93:36:-;1343:16;153:29:16;164:10;176:5;153:10;:29::i;:::-;145:38;;;;;;;;-1:-1:-1;1376:6:36;:16;;-1:-1:-1;;1376:16:36;-1:-1:-1;;;;;1376:16:36;;;;;;;;;;1304:93::o;290:182:16:-;365:4;392:10;;-1:-1:-1;;;;;392:10:16;384:24;;:83;;-1:-1:-1;412:10:16;;;:55;;;;;;-1:-1:-1;;;;;412:55:16;;;;;;;454:4;412:55;;;;;;;;;;;;:10;;;;;:24;;:55;;;;;;;;;;;;;;;;;;:10;:55;;;5:2:-1;;;;30:1;27;20:12;5:2;412:55:16;;;;8:9:-1;5:2;;;45:16;42:1;39;24:38;77:16;74:1;67:27;5:2;412:55:16;;;;;;;13:2:-1;8:3;5:11;2:2;;;29:1;26;19:12;2:2;-1:-1;412:55:16;384:83;377:90;290:182;-1:-1:-1;;;290:182:16:o",
+  "source": "pragma solidity ^0.4.20;\n\nimport \"@settlemint/solidity-mint/contracts/utility/upgrading/Dispatcher.sol\";\nimport \"@settlemint/solidity-mint/contracts/utility/caching/CachedByAddress.sol\";\n\nimport \"../sensor/SensorRegistry.sol\";\nimport \"../dtxtoken/DtxToken.sol\";\nimport \"./Purchase.sol\";\n\n\n/**\n * Dispatches calls to the purchase registry\n */\ncontract PurchaseRegistryDispatcher is Dispatcher, CachedByAddress {\n\n  // Same state as contract it will refer to\n  bytes32 constant public CREATE_PERMISSIONS_ROLE = \"CREATE_PERMISSIONS_ROLE\";\n  bytes32 constant public CHANGE_SETTINGS_ROLE = \"CHANGE_SETTINGS_ROLE\";\n  mapping (address => Purchase) public purchases;\n  address[] public purchasesIndex;\n  DtxToken public token;\n  SensorRegistry sensorRegistry;\n  uint salePercentage = 1;\n\n  function PurchaseRegistryDispatcher(\n    address _gateKeeper,\n    address _token,\n    address _sensorRegistry\n  )\n    Secured(_gateKeeper)\n    CachedByAddress(this)\n    public\n  {\n    // State also needs to initialized!\n    token = DtxToken(_token);\n    sensorRegistry = SensorRegistry(_sensorRegistry);\n  }\n\n  function setTarget(address _target) public {\n    super.setTarget(_target);\n    super.invalidateCache();\n  }\n}\n",
+  "sourcePath": "/Users/silkevandenbroeck/databrokerDAO/databrokerdao-dapi/contracts/purchase/PurchaseRegistryDispatcher.sol",
+  "ast": {
+    "absolutePath": "/Users/silkevandenbroeck/databrokerDAO/databrokerdao-dapi/contracts/purchase/PurchaseRegistryDispatcher.sol",
+    "exportedSymbols": {
+      "PurchaseRegistryDispatcher": [
+        731
+      ]
+    },
+    "id": 732,
+    "nodeType": "SourceUnit",
+    "nodes": [
+      {
+        "id": 656,
+        "literals": [
+          "solidity",
+          "^",
+          "0.4",
+          ".20"
+        ],
+        "nodeType": "PragmaDirective",
+        "src": "0:24:6"
+      },
+      {
+        "absolutePath": "@settlemint/solidity-mint/contracts/utility/upgrading/Dispatcher.sol",
+        "file": "@settlemint/solidity-mint/contracts/utility/upgrading/Dispatcher.sol",
+        "id": 657,
+        "nodeType": "ImportDirective",
+        "scope": 732,
+        "sourceUnit": 4635,
+        "src": "26:78:6",
+        "symbolAliases": [],
+        "unitAlias": ""
+      },
+      {
+        "absolutePath": "@settlemint/solidity-mint/contracts/utility/caching/CachedByAddress.sol",
+        "file": "@settlemint/solidity-mint/contracts/utility/caching/CachedByAddress.sol",
+        "id": 658,
+        "nodeType": "ImportDirective",
+        "scope": 732,
+        "sourceUnit": 4517,
+        "src": "105:81:6",
+        "symbolAliases": [],
+        "unitAlias": ""
+      },
+      {
+        "absolutePath": "/Users/silkevandenbroeck/databrokerDAO/databrokerdao-dapi/contracts/sensor/SensorRegistry.sol",
+        "file": "../sensor/SensorRegistry.sol",
+        "id": 659,
+        "nodeType": "ImportDirective",
+        "scope": 732,
+        "sourceUnit": 923,
+        "src": "188:38:6",
+        "symbolAliases": [],
+        "unitAlias": ""
+      },
+      {
+        "absolutePath": "/Users/silkevandenbroeck/databrokerDAO/databrokerdao-dapi/contracts/dtxtoken/DtxToken.sol",
+        "file": "../dtxtoken/DtxToken.sol",
+        "id": 660,
+        "nodeType": "ImportDirective",
+        "scope": 732,
+        "sourceUnit": 200,
+        "src": "227:34:6",
+        "symbolAliases": [],
+        "unitAlias": ""
+      },
+      {
+        "absolutePath": "/Users/silkevandenbroeck/databrokerDAO/databrokerdao-dapi/contracts/purchase/Purchase.sol",
+        "file": "./Purchase.sol",
+        "id": 661,
+        "nodeType": "ImportDirective",
+        "scope": 732,
+        "sourceUnit": 314,
+        "src": "262:24:6",
+        "symbolAliases": [],
+        "unitAlias": ""
+      },
+      {
+        "baseContracts": [
+          {
+            "arguments": null,
+            "baseName": {
+              "contractScope": null,
+              "id": 662,
+              "name": "Dispatcher",
+              "nodeType": "UserDefinedTypeName",
+              "referencedDeclaration": 4634,
+              "src": "381:10:6",
+              "typeDescriptions": {
+                "typeIdentifier": "t_contract$_Dispatcher_$4634",
+                "typeString": "contract Dispatcher"
+              }
+            },
+            "id": 663,
+            "nodeType": "InheritanceSpecifier",
+            "src": "381:10:6"
+          },
+          {
+            "arguments": null,
+            "baseName": {
+              "contractScope": null,
+              "id": 664,
+              "name": "CachedByAddress",
+              "nodeType": "UserDefinedTypeName",
+              "referencedDeclaration": 4516,
+              "src": "393:15:6",
+              "typeDescriptions": {
+                "typeIdentifier": "t_contract$_CachedByAddress_$4516",
+                "typeString": "contract CachedByAddress"
+              }
+            },
+            "id": 665,
+            "nodeType": "InheritanceSpecifier",
+            "src": "393:15:6"
+          }
+        ],
+        "contractDependencies": [
+          1735,
+          4487,
+          4516,
+          4634,
+          4658
+        ],
+        "contractKind": "contract",
+        "documentation": "Dispatches calls to the purchase registry",
+        "fullyImplemented": true,
+        "id": 731,
+        "linearizedBaseContracts": [
+          731,
+          4516,
+          4487,
+          4634,
+          4658,
+          1735
+        ],
+        "name": "PurchaseRegistryDispatcher",
+        "nodeType": "ContractDefinition",
+        "nodes": [
+          {
+            "constant": true,
+            "id": 668,
+            "name": "CREATE_PERMISSIONS_ROLE",
+            "nodeType": "VariableDeclaration",
+            "scope": 731,
+            "src": "459:75:6",
+            "stateVariable": true,
+            "storageLocation": "default",
+            "typeDescriptions": {
+              "typeIdentifier": "t_bytes32",
+              "typeString": "bytes32"
+            },
+            "typeName": {
+              "id": 666,
+              "name": "bytes32",
+              "nodeType": "ElementaryTypeName",
+              "src": "459:7:6",
+              "typeDescriptions": {
+                "typeIdentifier": "t_bytes32",
+                "typeString": "bytes32"
+              }
+            },
+            "value": {
+              "argumentTypes": null,
+              "hexValue": "4352454154455f5045524d495353494f4e535f524f4c45",
+              "id": 667,
+              "isConstant": false,
+              "isLValue": false,
+              "isPure": true,
+              "kind": "string",
+              "lValueRequested": false,
+              "nodeType": "Literal",
+              "src": "509:25:6",
+              "subdenomination": null,
+              "typeDescriptions": {
+                "typeIdentifier": "t_stringliteral_0b719b33c83b8e5d300c521cb8b54ae9bd933996a14bef8c2f4e0285d2d2400a",
+                "typeString": "literal_string \"CREATE_PERMISSIONS_ROLE\""
+              },
+              "value": "CREATE_PERMISSIONS_ROLE"
+            },
+            "visibility": "public"
+          },
+          {
+            "constant": true,
+            "id": 671,
+            "name": "CHANGE_SETTINGS_ROLE",
+            "nodeType": "VariableDeclaration",
+            "scope": 731,
+            "src": "538:69:6",
+            "stateVariable": true,
+            "storageLocation": "default",
+            "typeDescriptions": {
+              "typeIdentifier": "t_bytes32",
+              "typeString": "bytes32"
+            },
+            "typeName": {
+              "id": 669,
+              "name": "bytes32",
+              "nodeType": "ElementaryTypeName",
+              "src": "538:7:6",
+              "typeDescriptions": {
+                "typeIdentifier": "t_bytes32",
+                "typeString": "bytes32"
+              }
+            },
+            "value": {
+              "argumentTypes": null,
+              "hexValue": "4348414e47455f53455454494e47535f524f4c45",
+              "id": 670,
+              "isConstant": false,
+              "isLValue": false,
+              "isPure": true,
+              "kind": "string",
+              "lValueRequested": false,
+              "nodeType": "Literal",
+              "src": "585:22:6",
+              "subdenomination": null,
+              "typeDescriptions": {
+                "typeIdentifier": "t_stringliteral_6ad8cb53fd38f7b9f993110c1a0b0e5f2a9cfd0a801d919edef696309d76702e",
+                "typeString": "literal_string \"CHANGE_SETTINGS_ROLE\""
+              },
+              "value": "CHANGE_SETTINGS_ROLE"
+            },
+            "visibility": "public"
+          },
+          {
+            "constant": false,
+            "id": 675,
+            "name": "purchases",
+            "nodeType": "VariableDeclaration",
+            "scope": 731,
+            "src": "611:46:6",
+            "stateVariable": true,
+            "storageLocation": "default",
+            "typeDescriptions": {
+              "typeIdentifier": "t_mapping$_t_address_$_t_contract$_Purchase_$313_$",
+              "typeString": "mapping(address => contract Purchase)"
+            },
+            "typeName": {
+              "id": 674,
+              "keyType": {
+                "id": 672,
+                "name": "address",
+                "nodeType": "ElementaryTypeName",
+                "src": "620:7:6",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_address",
+                  "typeString": "address"
+                }
+              },
+              "nodeType": "Mapping",
+              "src": "611:29:6",
+              "typeDescriptions": {
+                "typeIdentifier": "t_mapping$_t_address_$_t_contract$_Purchase_$313_$",
+                "typeString": "mapping(address => contract Purchase)"
+              },
+              "valueType": {
+                "contractScope": null,
+                "id": 673,
+                "name": "Purchase",
+                "nodeType": "UserDefinedTypeName",
+                "referencedDeclaration": 313,
+                "src": "631:8:6",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_contract$_Purchase_$313",
+                  "typeString": "contract Purchase"
+                }
+              }
+            },
+            "value": null,
+            "visibility": "public"
+          },
+          {
+            "constant": false,
+            "id": 678,
+            "name": "purchasesIndex",
+            "nodeType": "VariableDeclaration",
+            "scope": 731,
+            "src": "661:31:6",
+            "stateVariable": true,
+            "storageLocation": "default",
+            "typeDescriptions": {
+              "typeIdentifier": "t_array$_t_address_$dyn_storage",
+              "typeString": "address[]"
+            },
+            "typeName": {
+              "baseType": {
+                "id": 676,
+                "name": "address",
+                "nodeType": "ElementaryTypeName",
+                "src": "661:7:6",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_address",
+                  "typeString": "address"
+                }
+              },
+              "id": 677,
+              "length": null,
+              "nodeType": "ArrayTypeName",
+              "src": "661:9:6",
+              "typeDescriptions": {
+                "typeIdentifier": "t_array$_t_address_$dyn_storage_ptr",
+                "typeString": "address[]"
+              }
+            },
+            "value": null,
+            "visibility": "public"
+          },
+          {
+            "constant": false,
+            "id": 680,
+            "name": "token",
+            "nodeType": "VariableDeclaration",
+            "scope": 731,
+            "src": "696:21:6",
+            "stateVariable": true,
+            "storageLocation": "default",
+            "typeDescriptions": {
+              "typeIdentifier": "t_contract$_DtxToken_$199",
+              "typeString": "contract DtxToken"
+            },
+            "typeName": {
+              "contractScope": null,
+              "id": 679,
+              "name": "DtxToken",
+              "nodeType": "UserDefinedTypeName",
+              "referencedDeclaration": 199,
+              "src": "696:8:6",
+              "typeDescriptions": {
+                "typeIdentifier": "t_contract$_DtxToken_$199",
+                "typeString": "contract DtxToken"
+              }
+            },
+            "value": null,
+            "visibility": "public"
+          },
+          {
+            "constant": false,
+            "id": 682,
+            "name": "sensorRegistry",
+            "nodeType": "VariableDeclaration",
+            "scope": 731,
+            "src": "721:29:6",
+            "stateVariable": true,
+            "storageLocation": "default",
+            "typeDescriptions": {
+              "typeIdentifier": "t_contract$_SensorRegistry_$922",
+              "typeString": "contract SensorRegistry"
+            },
+            "typeName": {
+              "contractScope": null,
+              "id": 681,
+              "name": "SensorRegistry",
+              "nodeType": "UserDefinedTypeName",
+              "referencedDeclaration": 922,
+              "src": "721:14:6",
+              "typeDescriptions": {
+                "typeIdentifier": "t_contract$_SensorRegistry_$922",
+                "typeString": "contract SensorRegistry"
+              }
+            },
+            "value": null,
+            "visibility": "internal"
+          },
+          {
+            "constant": false,
+            "id": 685,
+            "name": "salePercentage",
+            "nodeType": "VariableDeclaration",
+            "scope": 731,
+            "src": "754:23:6",
+            "stateVariable": true,
+            "storageLocation": "default",
+            "typeDescriptions": {
+              "typeIdentifier": "t_uint256",
+              "typeString": "uint256"
+            },
+            "typeName": {
+              "id": 683,
+              "name": "uint",
+              "nodeType": "ElementaryTypeName",
+              "src": "754:4:6",
+              "typeDescriptions": {
+                "typeIdentifier": "t_uint256",
+                "typeString": "uint256"
+              }
+            },
+            "value": {
+              "argumentTypes": null,
+              "hexValue": "31",
+              "id": 684,
+              "isConstant": false,
+              "isLValue": false,
+              "isPure": true,
+              "kind": "number",
+              "lValueRequested": false,
+              "nodeType": "Literal",
+              "src": "776:1:6",
+              "subdenomination": null,
+              "typeDescriptions": {
+                "typeIdentifier": "t_rational_1_by_1",
+                "typeString": "int_const 1"
+              },
+              "value": "1"
+            },
+            "visibility": "internal"
+          },
+          {
+            "body": {
+              "id": 712,
+              "nodeType": "Block",
+              "src": "960:129:6",
+              "statements": [
+                {
+                  "expression": {
+                    "argumentTypes": null,
+                    "id": 704,
+                    "isConstant": false,
+                    "isLValue": false,
+                    "isPure": false,
+                    "lValueRequested": false,
+                    "leftHandSide": {
+                      "argumentTypes": null,
+                      "id": 700,
+                      "name": "token",
+                      "nodeType": "Identifier",
+                      "overloadedDeclarations": [],
+                      "referencedDeclaration": 680,
+                      "src": "1006:5:6",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_contract$_DtxToken_$199",
+                        "typeString": "contract DtxToken"
+                      }
+                    },
+                    "nodeType": "Assignment",
+                    "operator": "=",
+                    "rightHandSide": {
+                      "argumentTypes": null,
+                      "arguments": [
+                        {
+                          "argumentTypes": null,
+                          "id": 702,
+                          "name": "_token",
+                          "nodeType": "Identifier",
+                          "overloadedDeclarations": [],
+                          "referencedDeclaration": 689,
+                          "src": "1023:6:6",
+                          "typeDescriptions": {
+                            "typeIdentifier": "t_address",
+                            "typeString": "address"
+                          }
+                        }
+                      ],
+                      "expression": {
+                        "argumentTypes": [
+                          {
+                            "typeIdentifier": "t_address",
+                            "typeString": "address"
+                          }
+                        ],
+                        "id": 701,
+                        "name": "DtxToken",
+                        "nodeType": "Identifier",
+                        "overloadedDeclarations": [],
+                        "referencedDeclaration": 199,
+                        "src": "1014:8:6",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_type$_t_contract$_DtxToken_$199_$",
+                          "typeString": "type(contract DtxToken)"
+                        }
+                      },
+                      "id": 703,
+                      "isConstant": false,
+                      "isLValue": false,
+                      "isPure": false,
+                      "kind": "typeConversion",
+                      "lValueRequested": false,
+                      "names": [],
+                      "nodeType": "FunctionCall",
+                      "src": "1014:16:6",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_contract$_DtxToken_$199",
+                        "typeString": "contract DtxToken"
+                      }
+                    },
+                    "src": "1006:24:6",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_contract$_DtxToken_$199",
+                      "typeString": "contract DtxToken"
+                    }
+                  },
+                  "id": 705,
+                  "nodeType": "ExpressionStatement",
+                  "src": "1006:24:6"
+                },
+                {
+                  "expression": {
+                    "argumentTypes": null,
+                    "id": 710,
+                    "isConstant": false,
+                    "isLValue": false,
+                    "isPure": false,
+                    "lValueRequested": false,
+                    "leftHandSide": {
+                      "argumentTypes": null,
+                      "id": 706,
+                      "name": "sensorRegistry",
+                      "nodeType": "Identifier",
+                      "overloadedDeclarations": [],
+                      "referencedDeclaration": 682,
+                      "src": "1036:14:6",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_contract$_SensorRegistry_$922",
+                        "typeString": "contract SensorRegistry"
+                      }
+                    },
+                    "nodeType": "Assignment",
+                    "operator": "=",
+                    "rightHandSide": {
+                      "argumentTypes": null,
+                      "arguments": [
+                        {
+                          "argumentTypes": null,
+                          "id": 708,
+                          "name": "_sensorRegistry",
+                          "nodeType": "Identifier",
+                          "overloadedDeclarations": [],
+                          "referencedDeclaration": 691,
+                          "src": "1068:15:6",
+                          "typeDescriptions": {
+                            "typeIdentifier": "t_address",
+                            "typeString": "address"
+                          }
+                        }
+                      ],
+                      "expression": {
+                        "argumentTypes": [
+                          {
+                            "typeIdentifier": "t_address",
+                            "typeString": "address"
+                          }
+                        ],
+                        "id": 707,
+                        "name": "SensorRegistry",
+                        "nodeType": "Identifier",
+                        "overloadedDeclarations": [],
+                        "referencedDeclaration": 922,
+                        "src": "1053:14:6",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_type$_t_contract$_SensorRegistry_$922_$",
+                          "typeString": "type(contract SensorRegistry)"
+                        }
+                      },
+                      "id": 709,
+                      "isConstant": false,
+                      "isLValue": false,
+                      "isPure": false,
+                      "kind": "typeConversion",
+                      "lValueRequested": false,
+                      "names": [],
+                      "nodeType": "FunctionCall",
+                      "src": "1053:31:6",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_contract$_SensorRegistry_$922",
+                        "typeString": "contract SensorRegistry"
+                      }
+                    },
+                    "src": "1036:48:6",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_contract$_SensorRegistry_$922",
+                      "typeString": "contract SensorRegistry"
+                    }
+                  },
+                  "id": 711,
+                  "nodeType": "ExpressionStatement",
+                  "src": "1036:48:6"
+                }
+              ]
+            },
+            "documentation": null,
+            "id": 713,
+            "implemented": true,
+            "isConstructor": true,
+            "isDeclaredConst": false,
+            "modifiers": [
+              {
+                "arguments": [
+                  {
+                    "argumentTypes": null,
+                    "id": 694,
+                    "name": "_gateKeeper",
+                    "nodeType": "Identifier",
+                    "overloadedDeclarations": [],
+                    "referencedDeclaration": 687,
+                    "src": "908:11:6",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  }
+                ],
+                "id": 695,
+                "modifierName": {
+                  "argumentTypes": null,
+                  "id": 693,
+                  "name": "Secured",
+                  "nodeType": "Identifier",
+                  "overloadedDeclarations": [],
+                  "referencedDeclaration": 1735,
+                  "src": "900:7:6",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_type$_t_contract$_Secured_$1735_$",
+                    "typeString": "type(contract Secured)"
+                  }
+                },
+                "nodeType": "ModifierInvocation",
+                "src": "900:20:6"
+              },
+              {
+                "arguments": [
+                  {
+                    "argumentTypes": null,
+                    "id": 697,
+                    "name": "this",
+                    "nodeType": "Identifier",
+                    "overloadedDeclarations": [],
+                    "referencedDeclaration": 4842,
+                    "src": "941:4:6",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_contract$_PurchaseRegistryDispatcher_$731",
+                      "typeString": "contract PurchaseRegistryDispatcher"
+                    }
+                  }
+                ],
+                "id": 698,
+                "modifierName": {
+                  "argumentTypes": null,
+                  "id": 696,
+                  "name": "CachedByAddress",
+                  "nodeType": "Identifier",
+                  "overloadedDeclarations": [],
+                  "referencedDeclaration": 4516,
+                  "src": "925:15:6",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_type$_t_contract$_CachedByAddress_$4516_$",
+                    "typeString": "type(contract CachedByAddress)"
+                  }
+                },
+                "nodeType": "ModifierInvocation",
+                "src": "925:21:6"
+              }
+            ],
+            "name": "PurchaseRegistryDispatcher",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 692,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 687,
+                  "name": "_gateKeeper",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 713,
+                  "src": "823:19:6",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 686,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "823:7:6",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 689,
+                  "name": "_token",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 713,
+                  "src": "848:14:6",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 688,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "848:7:6",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 691,
+                  "name": "_sensorRegistry",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 713,
+                  "src": "868:23:6",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 690,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "868:7:6",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "817:78:6"
+            },
+            "payable": false,
+            "returnParameters": {
+              "id": 699,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "960:0:6"
+            },
+            "scope": 731,
+            "src": "782:307:6",
+            "stateMutability": "nonpayable",
+            "superFunction": null,
+            "visibility": "public"
+          },
+          {
+            "body": {
+              "id": 729,
+              "nodeType": "Block",
+              "src": "1136:64:6",
+              "statements": [
+                {
+                  "expression": {
+                    "argumentTypes": null,
+                    "arguments": [
+                      {
+                        "argumentTypes": null,
+                        "id": 721,
+                        "name": "_target",
+                        "nodeType": "Identifier",
+                        "overloadedDeclarations": [],
+                        "referencedDeclaration": 715,
+                        "src": "1158:7:6",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_address",
+                          "typeString": "address"
+                        }
+                      }
+                    ],
+                    "expression": {
+                      "argumentTypes": [
+                        {
+                          "typeIdentifier": "t_address",
+                          "typeString": "address"
+                        }
+                      ],
+                      "expression": {
+                        "argumentTypes": null,
+                        "id": 718,
+                        "name": "super",
+                        "nodeType": "Identifier",
+                        "overloadedDeclarations": [],
+                        "referencedDeclaration": 4843,
+                        "src": "1142:5:6",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_super$_PurchaseRegistryDispatcher_$731",
+                          "typeString": "contract super PurchaseRegistryDispatcher"
+                        }
+                      },
+                      "id": 720,
+                      "isConstant": false,
+                      "isLValue": false,
+                      "isPure": false,
+                      "lValueRequested": false,
+                      "memberName": "setTarget",
+                      "nodeType": "MemberAccess",
+                      "referencedDeclaration": 4633,
+                      "src": "1142:15:6",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_function_internal_nonpayable$_t_address_$returns$__$",
+                        "typeString": "function (address)"
+                      }
+                    },
+                    "id": 722,
+                    "isConstant": false,
+                    "isLValue": false,
+                    "isPure": false,
+                    "kind": "functionCall",
+                    "lValueRequested": false,
+                    "names": [],
+                    "nodeType": "FunctionCall",
+                    "src": "1142:24:6",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_tuple$__$",
+                      "typeString": "tuple()"
+                    }
+                  },
+                  "id": 723,
+                  "nodeType": "ExpressionStatement",
+                  "src": "1142:24:6"
+                },
+                {
+                  "expression": {
+                    "argumentTypes": null,
+                    "arguments": [],
+                    "expression": {
+                      "argumentTypes": [],
+                      "expression": {
+                        "argumentTypes": null,
+                        "id": 724,
+                        "name": "super",
+                        "nodeType": "Identifier",
+                        "overloadedDeclarations": [],
+                        "referencedDeclaration": 4843,
+                        "src": "1172:5:6",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_super$_PurchaseRegistryDispatcher_$731",
+                          "typeString": "contract super PurchaseRegistryDispatcher"
+                        }
+                      },
+                      "id": 726,
+                      "isConstant": false,
+                      "isLValue": false,
+                      "isPure": false,
+                      "lValueRequested": false,
+                      "memberName": "invalidateCache",
+                      "nodeType": "MemberAccess",
+                      "referencedDeclaration": 4515,
+                      "src": "1172:21:6",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_function_internal_nonpayable$__$returns$__$",
+                        "typeString": "function ()"
+                      }
+                    },
+                    "id": 727,
+                    "isConstant": false,
+                    "isLValue": false,
+                    "isPure": false,
+                    "kind": "functionCall",
+                    "lValueRequested": false,
+                    "names": [],
+                    "nodeType": "FunctionCall",
+                    "src": "1172:23:6",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_tuple$__$",
+                      "typeString": "tuple()"
+                    }
+                  },
+                  "id": 728,
+                  "nodeType": "ExpressionStatement",
+                  "src": "1172:23:6"
+                }
+              ]
+            },
+            "documentation": null,
+            "id": 730,
+            "implemented": true,
+            "isConstructor": false,
+            "isDeclaredConst": false,
+            "modifiers": [],
+            "name": "setTarget",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 716,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 715,
+                  "name": "_target",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 730,
+                  "src": "1112:15:6",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 714,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "1112:7:6",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "1111:17:6"
+            },
+            "payable": false,
+            "returnParameters": {
+              "id": 717,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "1136:0:6"
+            },
+            "scope": 731,
+            "src": "1093:107:6",
+            "stateMutability": "nonpayable",
+            "superFunction": 4633,
+            "visibility": "public"
+          }
+        ],
+        "scope": 732,
+        "src": "342:860:6"
+      }
+    ],
+    "src": "0:1203:6"
+  },
+  "legacyAST": {
+    "absolutePath": "/Users/silkevandenbroeck/databrokerDAO/databrokerdao-dapi/contracts/purchase/PurchaseRegistryDispatcher.sol",
+    "exportedSymbols": {
+      "PurchaseRegistryDispatcher": [
+        731
+      ]
+    },
+    "id": 732,
+    "nodeType": "SourceUnit",
+    "nodes": [
+      {
+        "id": 656,
+        "literals": [
+          "solidity",
+          "^",
+          "0.4",
+          ".20"
+        ],
+        "nodeType": "PragmaDirective",
+        "src": "0:24:6"
+      },
+      {
+        "absolutePath": "@settlemint/solidity-mint/contracts/utility/upgrading/Dispatcher.sol",
+        "file": "@settlemint/solidity-mint/contracts/utility/upgrading/Dispatcher.sol",
+        "id": 657,
+        "nodeType": "ImportDirective",
+        "scope": 732,
+        "sourceUnit": 4635,
+        "src": "26:78:6",
+        "symbolAliases": [],
+        "unitAlias": ""
+      },
+      {
+        "absolutePath": "@settlemint/solidity-mint/contracts/utility/caching/CachedByAddress.sol",
+        "file": "@settlemint/solidity-mint/contracts/utility/caching/CachedByAddress.sol",
+        "id": 658,
+        "nodeType": "ImportDirective",
+        "scope": 732,
+        "sourceUnit": 4517,
+        "src": "105:81:6",
+        "symbolAliases": [],
+        "unitAlias": ""
+      },
+      {
+        "absolutePath": "/Users/silkevandenbroeck/databrokerDAO/databrokerdao-dapi/contracts/sensor/SensorRegistry.sol",
+        "file": "../sensor/SensorRegistry.sol",
+        "id": 659,
+        "nodeType": "ImportDirective",
+        "scope": 732,
+        "sourceUnit": 923,
+        "src": "188:38:6",
+        "symbolAliases": [],
+        "unitAlias": ""
+      },
+      {
+        "absolutePath": "/Users/silkevandenbroeck/databrokerDAO/databrokerdao-dapi/contracts/dtxtoken/DtxToken.sol",
+        "file": "../dtxtoken/DtxToken.sol",
+        "id": 660,
+        "nodeType": "ImportDirective",
+        "scope": 732,
+        "sourceUnit": 200,
+        "src": "227:34:6",
+        "symbolAliases": [],
+        "unitAlias": ""
+      },
+      {
+        "absolutePath": "/Users/silkevandenbroeck/databrokerDAO/databrokerdao-dapi/contracts/purchase/Purchase.sol",
+        "file": "./Purchase.sol",
+        "id": 661,
+        "nodeType": "ImportDirective",
+        "scope": 732,
+        "sourceUnit": 314,
+        "src": "262:24:6",
+        "symbolAliases": [],
+        "unitAlias": ""
+      },
+      {
+        "baseContracts": [
+          {
+            "arguments": null,
+            "baseName": {
+              "contractScope": null,
+              "id": 662,
+              "name": "Dispatcher",
+              "nodeType": "UserDefinedTypeName",
+              "referencedDeclaration": 4634,
+              "src": "381:10:6",
+              "typeDescriptions": {
+                "typeIdentifier": "t_contract$_Dispatcher_$4634",
+                "typeString": "contract Dispatcher"
+              }
+            },
+            "id": 663,
+            "nodeType": "InheritanceSpecifier",
+            "src": "381:10:6"
+          },
+          {
+            "arguments": null,
+            "baseName": {
+              "contractScope": null,
+              "id": 664,
+              "name": "CachedByAddress",
+              "nodeType": "UserDefinedTypeName",
+              "referencedDeclaration": 4516,
+              "src": "393:15:6",
+              "typeDescriptions": {
+                "typeIdentifier": "t_contract$_CachedByAddress_$4516",
+                "typeString": "contract CachedByAddress"
+              }
+            },
+            "id": 665,
+            "nodeType": "InheritanceSpecifier",
+            "src": "393:15:6"
+          }
+        ],
+        "contractDependencies": [
+          1735,
+          4487,
+          4516,
+          4634,
+          4658
+        ],
+        "contractKind": "contract",
+        "documentation": "Dispatches calls to the purchase registry",
+        "fullyImplemented": true,
+        "id": 731,
+        "linearizedBaseContracts": [
+          731,
+          4516,
+          4487,
+          4634,
+          4658,
+          1735
+        ],
+        "name": "PurchaseRegistryDispatcher",
+        "nodeType": "ContractDefinition",
+        "nodes": [
+          {
+            "constant": true,
+            "id": 668,
+            "name": "CREATE_PERMISSIONS_ROLE",
+            "nodeType": "VariableDeclaration",
+            "scope": 731,
+            "src": "459:75:6",
+            "stateVariable": true,
+            "storageLocation": "default",
+            "typeDescriptions": {
+              "typeIdentifier": "t_bytes32",
+              "typeString": "bytes32"
+            },
+            "typeName": {
+              "id": 666,
+              "name": "bytes32",
+              "nodeType": "ElementaryTypeName",
+              "src": "459:7:6",
+              "typeDescriptions": {
+                "typeIdentifier": "t_bytes32",
+                "typeString": "bytes32"
+              }
+            },
+            "value": {
+              "argumentTypes": null,
+              "hexValue": "4352454154455f5045524d495353494f4e535f524f4c45",
+              "id": 667,
+              "isConstant": false,
+              "isLValue": false,
+              "isPure": true,
+              "kind": "string",
+              "lValueRequested": false,
+              "nodeType": "Literal",
+              "src": "509:25:6",
+              "subdenomination": null,
+              "typeDescriptions": {
+                "typeIdentifier": "t_stringliteral_0b719b33c83b8e5d300c521cb8b54ae9bd933996a14bef8c2f4e0285d2d2400a",
+                "typeString": "literal_string \"CREATE_PERMISSIONS_ROLE\""
+              },
+              "value": "CREATE_PERMISSIONS_ROLE"
+            },
+            "visibility": "public"
+          },
+          {
+            "constant": true,
+            "id": 671,
+            "name": "CHANGE_SETTINGS_ROLE",
+            "nodeType": "VariableDeclaration",
+            "scope": 731,
+            "src": "538:69:6",
+            "stateVariable": true,
+            "storageLocation": "default",
+            "typeDescriptions": {
+              "typeIdentifier": "t_bytes32",
+              "typeString": "bytes32"
+            },
+            "typeName": {
+              "id": 669,
+              "name": "bytes32",
+              "nodeType": "ElementaryTypeName",
+              "src": "538:7:6",
+              "typeDescriptions": {
+                "typeIdentifier": "t_bytes32",
+                "typeString": "bytes32"
+              }
+            },
+            "value": {
+              "argumentTypes": null,
+              "hexValue": "4348414e47455f53455454494e47535f524f4c45",
+              "id": 670,
+              "isConstant": false,
+              "isLValue": false,
+              "isPure": true,
+              "kind": "string",
+              "lValueRequested": false,
+              "nodeType": "Literal",
+              "src": "585:22:6",
+              "subdenomination": null,
+              "typeDescriptions": {
+                "typeIdentifier": "t_stringliteral_6ad8cb53fd38f7b9f993110c1a0b0e5f2a9cfd0a801d919edef696309d76702e",
+                "typeString": "literal_string \"CHANGE_SETTINGS_ROLE\""
+              },
+              "value": "CHANGE_SETTINGS_ROLE"
+            },
+            "visibility": "public"
+          },
+          {
+            "constant": false,
+            "id": 675,
+            "name": "purchases",
+            "nodeType": "VariableDeclaration",
+            "scope": 731,
+            "src": "611:46:6",
+            "stateVariable": true,
+            "storageLocation": "default",
+            "typeDescriptions": {
+              "typeIdentifier": "t_mapping$_t_address_$_t_contract$_Purchase_$313_$",
+              "typeString": "mapping(address => contract Purchase)"
+            },
+            "typeName": {
+              "id": 674,
+              "keyType": {
+                "id": 672,
+                "name": "address",
+                "nodeType": "ElementaryTypeName",
+                "src": "620:7:6",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_address",
+                  "typeString": "address"
+                }
+              },
+              "nodeType": "Mapping",
+              "src": "611:29:6",
+              "typeDescriptions": {
+                "typeIdentifier": "t_mapping$_t_address_$_t_contract$_Purchase_$313_$",
+                "typeString": "mapping(address => contract Purchase)"
+              },
+              "valueType": {
+                "contractScope": null,
+                "id": 673,
+                "name": "Purchase",
+                "nodeType": "UserDefinedTypeName",
+                "referencedDeclaration": 313,
+                "src": "631:8:6",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_contract$_Purchase_$313",
+                  "typeString": "contract Purchase"
+                }
+              }
+            },
+            "value": null,
+            "visibility": "public"
+          },
+          {
+            "constant": false,
+            "id": 678,
+            "name": "purchasesIndex",
+            "nodeType": "VariableDeclaration",
+            "scope": 731,
+            "src": "661:31:6",
+            "stateVariable": true,
+            "storageLocation": "default",
+            "typeDescriptions": {
+              "typeIdentifier": "t_array$_t_address_$dyn_storage",
+              "typeString": "address[]"
+            },
+            "typeName": {
+              "baseType": {
+                "id": 676,
+                "name": "address",
+                "nodeType": "ElementaryTypeName",
+                "src": "661:7:6",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_address",
+                  "typeString": "address"
+                }
+              },
+              "id": 677,
+              "length": null,
+              "nodeType": "ArrayTypeName",
+              "src": "661:9:6",
+              "typeDescriptions": {
+                "typeIdentifier": "t_array$_t_address_$dyn_storage_ptr",
+                "typeString": "address[]"
+              }
+            },
+            "value": null,
+            "visibility": "public"
+          },
+          {
+            "constant": false,
+            "id": 680,
+            "name": "token",
+            "nodeType": "VariableDeclaration",
+            "scope": 731,
+            "src": "696:21:6",
+            "stateVariable": true,
+            "storageLocation": "default",
+            "typeDescriptions": {
+              "typeIdentifier": "t_contract$_DtxToken_$199",
+              "typeString": "contract DtxToken"
+            },
+            "typeName": {
+              "contractScope": null,
+              "id": 679,
+              "name": "DtxToken",
+              "nodeType": "UserDefinedTypeName",
+              "referencedDeclaration": 199,
+              "src": "696:8:6",
+              "typeDescriptions": {
+                "typeIdentifier": "t_contract$_DtxToken_$199",
+                "typeString": "contract DtxToken"
+              }
+            },
+            "value": null,
+            "visibility": "public"
+          },
+          {
+            "constant": false,
+            "id": 682,
+            "name": "sensorRegistry",
+            "nodeType": "VariableDeclaration",
+            "scope": 731,
+            "src": "721:29:6",
+            "stateVariable": true,
+            "storageLocation": "default",
+            "typeDescriptions": {
+              "typeIdentifier": "t_contract$_SensorRegistry_$922",
+              "typeString": "contract SensorRegistry"
+            },
+            "typeName": {
+              "contractScope": null,
+              "id": 681,
+              "name": "SensorRegistry",
+              "nodeType": "UserDefinedTypeName",
+              "referencedDeclaration": 922,
+              "src": "721:14:6",
+              "typeDescriptions": {
+                "typeIdentifier": "t_contract$_SensorRegistry_$922",
+                "typeString": "contract SensorRegistry"
+              }
+            },
+            "value": null,
+            "visibility": "internal"
+          },
+          {
+            "constant": false,
+            "id": 685,
+            "name": "salePercentage",
+            "nodeType": "VariableDeclaration",
+            "scope": 731,
+            "src": "754:23:6",
+            "stateVariable": true,
+            "storageLocation": "default",
+            "typeDescriptions": {
+              "typeIdentifier": "t_uint256",
+              "typeString": "uint256"
+            },
+            "typeName": {
+              "id": 683,
+              "name": "uint",
+              "nodeType": "ElementaryTypeName",
+              "src": "754:4:6",
+              "typeDescriptions": {
+                "typeIdentifier": "t_uint256",
+                "typeString": "uint256"
+              }
+            },
+            "value": {
+              "argumentTypes": null,
+              "hexValue": "31",
+              "id": 684,
+              "isConstant": false,
+              "isLValue": false,
+              "isPure": true,
+              "kind": "number",
+              "lValueRequested": false,
+              "nodeType": "Literal",
+              "src": "776:1:6",
+              "subdenomination": null,
+              "typeDescriptions": {
+                "typeIdentifier": "t_rational_1_by_1",
+                "typeString": "int_const 1"
+              },
+              "value": "1"
+            },
+            "visibility": "internal"
+          },
+          {
+            "body": {
+              "id": 712,
+              "nodeType": "Block",
+              "src": "960:129:6",
+              "statements": [
+                {
+                  "expression": {
+                    "argumentTypes": null,
+                    "id": 704,
+                    "isConstant": false,
+                    "isLValue": false,
+                    "isPure": false,
+                    "lValueRequested": false,
+                    "leftHandSide": {
+                      "argumentTypes": null,
+                      "id": 700,
+                      "name": "token",
+                      "nodeType": "Identifier",
+                      "overloadedDeclarations": [],
+                      "referencedDeclaration": 680,
+                      "src": "1006:5:6",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_contract$_DtxToken_$199",
+                        "typeString": "contract DtxToken"
+                      }
+                    },
+                    "nodeType": "Assignment",
+                    "operator": "=",
+                    "rightHandSide": {
+                      "argumentTypes": null,
+                      "arguments": [
+                        {
+                          "argumentTypes": null,
+                          "id": 702,
+                          "name": "_token",
+                          "nodeType": "Identifier",
+                          "overloadedDeclarations": [],
+                          "referencedDeclaration": 689,
+                          "src": "1023:6:6",
+                          "typeDescriptions": {
+                            "typeIdentifier": "t_address",
+                            "typeString": "address"
+                          }
+                        }
+                      ],
+                      "expression": {
+                        "argumentTypes": [
+                          {
+                            "typeIdentifier": "t_address",
+                            "typeString": "address"
+                          }
+                        ],
+                        "id": 701,
+                        "name": "DtxToken",
+                        "nodeType": "Identifier",
+                        "overloadedDeclarations": [],
+                        "referencedDeclaration": 199,
+                        "src": "1014:8:6",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_type$_t_contract$_DtxToken_$199_$",
+                          "typeString": "type(contract DtxToken)"
+                        }
+                      },
+                      "id": 703,
+                      "isConstant": false,
+                      "isLValue": false,
+                      "isPure": false,
+                      "kind": "typeConversion",
+                      "lValueRequested": false,
+                      "names": [],
+                      "nodeType": "FunctionCall",
+                      "src": "1014:16:6",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_contract$_DtxToken_$199",
+                        "typeString": "contract DtxToken"
+                      }
+                    },
+                    "src": "1006:24:6",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_contract$_DtxToken_$199",
+                      "typeString": "contract DtxToken"
+                    }
+                  },
+                  "id": 705,
+                  "nodeType": "ExpressionStatement",
+                  "src": "1006:24:6"
+                },
+                {
+                  "expression": {
+                    "argumentTypes": null,
+                    "id": 710,
+                    "isConstant": false,
+                    "isLValue": false,
+                    "isPure": false,
+                    "lValueRequested": false,
+                    "leftHandSide": {
+                      "argumentTypes": null,
+                      "id": 706,
+                      "name": "sensorRegistry",
+                      "nodeType": "Identifier",
+                      "overloadedDeclarations": [],
+                      "referencedDeclaration": 682,
+                      "src": "1036:14:6",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_contract$_SensorRegistry_$922",
+                        "typeString": "contract SensorRegistry"
+                      }
+                    },
+                    "nodeType": "Assignment",
+                    "operator": "=",
+                    "rightHandSide": {
+                      "argumentTypes": null,
+                      "arguments": [
+                        {
+                          "argumentTypes": null,
+                          "id": 708,
+                          "name": "_sensorRegistry",
+                          "nodeType": "Identifier",
+                          "overloadedDeclarations": [],
+                          "referencedDeclaration": 691,
+                          "src": "1068:15:6",
+                          "typeDescriptions": {
+                            "typeIdentifier": "t_address",
+                            "typeString": "address"
+                          }
+                        }
+                      ],
+                      "expression": {
+                        "argumentTypes": [
+                          {
+                            "typeIdentifier": "t_address",
+                            "typeString": "address"
+                          }
+                        ],
+                        "id": 707,
+                        "name": "SensorRegistry",
+                        "nodeType": "Identifier",
+                        "overloadedDeclarations": [],
+                        "referencedDeclaration": 922,
+                        "src": "1053:14:6",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_type$_t_contract$_SensorRegistry_$922_$",
+                          "typeString": "type(contract SensorRegistry)"
+                        }
+                      },
+                      "id": 709,
+                      "isConstant": false,
+                      "isLValue": false,
+                      "isPure": false,
+                      "kind": "typeConversion",
+                      "lValueRequested": false,
+                      "names": [],
+                      "nodeType": "FunctionCall",
+                      "src": "1053:31:6",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_contract$_SensorRegistry_$922",
+                        "typeString": "contract SensorRegistry"
+                      }
+                    },
+                    "src": "1036:48:6",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_contract$_SensorRegistry_$922",
+                      "typeString": "contract SensorRegistry"
+                    }
+                  },
+                  "id": 711,
+                  "nodeType": "ExpressionStatement",
+                  "src": "1036:48:6"
+                }
+              ]
+            },
+            "documentation": null,
+            "id": 713,
+            "implemented": true,
+            "isConstructor": true,
+            "isDeclaredConst": false,
+            "modifiers": [
+              {
+                "arguments": [
+                  {
+                    "argumentTypes": null,
+                    "id": 694,
+                    "name": "_gateKeeper",
+                    "nodeType": "Identifier",
+                    "overloadedDeclarations": [],
+                    "referencedDeclaration": 687,
+                    "src": "908:11:6",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  }
+                ],
+                "id": 695,
+                "modifierName": {
+                  "argumentTypes": null,
+                  "id": 693,
+                  "name": "Secured",
+                  "nodeType": "Identifier",
+                  "overloadedDeclarations": [],
+                  "referencedDeclaration": 1735,
+                  "src": "900:7:6",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_type$_t_contract$_Secured_$1735_$",
+                    "typeString": "type(contract Secured)"
+                  }
+                },
+                "nodeType": "ModifierInvocation",
+                "src": "900:20:6"
+              },
+              {
+                "arguments": [
+                  {
+                    "argumentTypes": null,
+                    "id": 697,
+                    "name": "this",
+                    "nodeType": "Identifier",
+                    "overloadedDeclarations": [],
+                    "referencedDeclaration": 4842,
+                    "src": "941:4:6",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_contract$_PurchaseRegistryDispatcher_$731",
+                      "typeString": "contract PurchaseRegistryDispatcher"
+                    }
+                  }
+                ],
+                "id": 698,
+                "modifierName": {
+                  "argumentTypes": null,
+                  "id": 696,
+                  "name": "CachedByAddress",
+                  "nodeType": "Identifier",
+                  "overloadedDeclarations": [],
+                  "referencedDeclaration": 4516,
+                  "src": "925:15:6",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_type$_t_contract$_CachedByAddress_$4516_$",
+                    "typeString": "type(contract CachedByAddress)"
+                  }
+                },
+                "nodeType": "ModifierInvocation",
+                "src": "925:21:6"
+              }
+            ],
+            "name": "PurchaseRegistryDispatcher",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 692,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 687,
+                  "name": "_gateKeeper",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 713,
+                  "src": "823:19:6",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 686,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "823:7:6",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 689,
+                  "name": "_token",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 713,
+                  "src": "848:14:6",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 688,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "848:7:6",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 691,
+                  "name": "_sensorRegistry",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 713,
+                  "src": "868:23:6",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 690,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "868:7:6",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "817:78:6"
+            },
+            "payable": false,
+            "returnParameters": {
+              "id": 699,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "960:0:6"
+            },
+            "scope": 731,
+            "src": "782:307:6",
+            "stateMutability": "nonpayable",
+            "superFunction": null,
+            "visibility": "public"
+          },
+          {
+            "body": {
+              "id": 729,
+              "nodeType": "Block",
+              "src": "1136:64:6",
+              "statements": [
+                {
+                  "expression": {
+                    "argumentTypes": null,
+                    "arguments": [
+                      {
+                        "argumentTypes": null,
+                        "id": 721,
+                        "name": "_target",
+                        "nodeType": "Identifier",
+                        "overloadedDeclarations": [],
+                        "referencedDeclaration": 715,
+                        "src": "1158:7:6",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_address",
+                          "typeString": "address"
+                        }
+                      }
+                    ],
+                    "expression": {
+                      "argumentTypes": [
+                        {
+                          "typeIdentifier": "t_address",
+                          "typeString": "address"
+                        }
+                      ],
+                      "expression": {
+                        "argumentTypes": null,
+                        "id": 718,
+                        "name": "super",
+                        "nodeType": "Identifier",
+                        "overloadedDeclarations": [],
+                        "referencedDeclaration": 4843,
+                        "src": "1142:5:6",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_super$_PurchaseRegistryDispatcher_$731",
+                          "typeString": "contract super PurchaseRegistryDispatcher"
+                        }
+                      },
+                      "id": 720,
+                      "isConstant": false,
+                      "isLValue": false,
+                      "isPure": false,
+                      "lValueRequested": false,
+                      "memberName": "setTarget",
+                      "nodeType": "MemberAccess",
+                      "referencedDeclaration": 4633,
+                      "src": "1142:15:6",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_function_internal_nonpayable$_t_address_$returns$__$",
+                        "typeString": "function (address)"
+                      }
+                    },
+                    "id": 722,
+                    "isConstant": false,
+                    "isLValue": false,
+                    "isPure": false,
+                    "kind": "functionCall",
+                    "lValueRequested": false,
+                    "names": [],
+                    "nodeType": "FunctionCall",
+                    "src": "1142:24:6",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_tuple$__$",
+                      "typeString": "tuple()"
+                    }
+                  },
+                  "id": 723,
+                  "nodeType": "ExpressionStatement",
+                  "src": "1142:24:6"
+                },
+                {
+                  "expression": {
+                    "argumentTypes": null,
+                    "arguments": [],
+                    "expression": {
+                      "argumentTypes": [],
+                      "expression": {
+                        "argumentTypes": null,
+                        "id": 724,
+                        "name": "super",
+                        "nodeType": "Identifier",
+                        "overloadedDeclarations": [],
+                        "referencedDeclaration": 4843,
+                        "src": "1172:5:6",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_super$_PurchaseRegistryDispatcher_$731",
+                          "typeString": "contract super PurchaseRegistryDispatcher"
+                        }
+                      },
+                      "id": 726,
+                      "isConstant": false,
+                      "isLValue": false,
+                      "isPure": false,
+                      "lValueRequested": false,
+                      "memberName": "invalidateCache",
+                      "nodeType": "MemberAccess",
+                      "referencedDeclaration": 4515,
+                      "src": "1172:21:6",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_function_internal_nonpayable$__$returns$__$",
+                        "typeString": "function ()"
+                      }
+                    },
+                    "id": 727,
+                    "isConstant": false,
+                    "isLValue": false,
+                    "isPure": false,
+                    "kind": "functionCall",
+                    "lValueRequested": false,
+                    "names": [],
+                    "nodeType": "FunctionCall",
+                    "src": "1172:23:6",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_tuple$__$",
+                      "typeString": "tuple()"
+                    }
+                  },
+                  "id": 728,
+                  "nodeType": "ExpressionStatement",
+                  "src": "1172:23:6"
+                }
+              ]
+            },
+            "documentation": null,
+            "id": 730,
+            "implemented": true,
+            "isConstructor": false,
+            "isDeclaredConst": false,
+            "modifiers": [],
+            "name": "setTarget",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 716,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 715,
+                  "name": "_target",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 730,
+                  "src": "1112:15:6",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 714,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "1112:7:6",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "1111:17:6"
+            },
+            "payable": false,
+            "returnParameters": {
+              "id": 717,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "1136:0:6"
+            },
+            "scope": 731,
+            "src": "1093:107:6",
+            "stateMutability": "nonpayable",
+            "superFunction": 4633,
+            "visibility": "public"
+          }
+        ],
+        "scope": 732,
+        "src": "342:860:6"
+      }
+    ],
+    "src": "0:1203:6"
+  },
+  "compiler": {
+    "name": "solc",
+    "version": "0.4.24+commit.e67f0147.Emscripten.clang"
+  },
+  "networks": {
+    "8995": {
+      "events": {},
+      "links": {},
+      "address": "0x209feef07c8cb01530cbec02f10a2eb730efd48f",
+      "transactionHash": "0x2ce835126560e79170736d8007a21b6cbbba68aad5fed5622e42ad6b0bc46279"
+    }
+  },
+  "schemaVersion": "2.0.0",
+  "updatedAt": "2018-05-25T07:58:05.650Z"
+}

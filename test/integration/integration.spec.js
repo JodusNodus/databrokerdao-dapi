@@ -1,10 +1,12 @@
 const axios = require('axios')
 const _ = require('lodash')
+const SensorRegistryDispatcher = artifacts.require(
+  'SensorRegistryDispatcher.sol'
+)
 
 const baseURL = process.env.BASE_URL || 'http://localhost:3333'
 const GATEWAY_OPERATOR_PRIVATE_KEY =
   'ca1398820695e93cea849b841a9aae4eeae65518d14353ab73d21fa4af2d58a7'
-const GATEWAY_OPERATOR_ADDRESS = '0x3df2fd51cf19c0d8d1861d6ebc6457a1b0c7496f'
 
 const metadata = {
   data: {
@@ -19,7 +21,7 @@ const metadata = {
   },
 }
 
-contract('Integration tests', function(accounts) {
+contract('Integration tests', accounts => {
   let token
 
   beforeEach(async () => {
@@ -856,5 +858,52 @@ contract('Integration tests', function(accounts) {
       },
     })
     assert.equal(denyRes.status, 200)
+  })
+
+  it('should be able to upgrade contract behind dispatcher', async () => {
+    // Get sensorregistry address
+    const registryListRes = await axios({
+      method: 'get',
+      url: `${baseURL}/sensorregistry/list`,
+      headers: {
+        Authorization: token,
+      },
+    })
+    assert.equal(registryListRes.status, 200)
+    const oldRegistryAddress = _.get(registryListRes, 'data.base.key')
+
+    // Get registry dispatcher at right address
+    const json = require('../../build/contracts/SensorRegistryDispatcher.json')
+    const address = json['networks']['1337']['address']
+    const registryDispatcher = SensorRegistryDispatcher.at(address)
+
+    // Set new target
+    await registryDispatcher.setTarget(
+      '0x0000000000000000000000000000000000000001'
+    )
+
+    // Target should be the new one
+    const newRegistryAddress = await registryDispatcher.target.call()
+    assert.equal(
+      newRegistryAddress,
+      '0x0000000000000000000000000000000000000001'
+    )
+
+    // Get sensor registry address: will throw because there is no contract at the address
+    try {
+      assert.throws(
+        await axios({
+          method: 'get',
+          url: `${baseURL}/sensorregistry/list`,
+          headers: {
+            Authorization: token,
+          },
+        }),
+        '404'
+      )
+    } catch (e) {}
+
+    // Set target back to original one
+    await registryDispatcher.setTarget(oldRegistryAddress)
   })
 })

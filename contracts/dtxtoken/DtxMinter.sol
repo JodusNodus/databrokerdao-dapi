@@ -3,12 +3,15 @@ pragma solidity ^0.4.20;
 import "../dtxtoken/DtxToken.sol";
 import "@settlemint/solidity-mint/contracts/authentication/Secured.sol";
 import "@settlemint/solidity-mint/contracts/authentication/GateKeeper.sol";
+import "@settlemint/solidity-mint/contracts/utility/upgrading/Upgradeable.sol";
+
 
 /**
  * Allows a user to mint demo DTX tokens for his own address
  */
-contract DtxMinter is Secured {
+contract DtxMinter is Secured, Upgradeable {
   event Minted(address to, uint amount);
+  event Debug(address sender, uint amount);
 
   DtxToken public token;
 

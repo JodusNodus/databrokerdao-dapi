@@ -12,18 +12,14 @@ async function deployTokenMinter(deployer, network, accounts) {
     await deployer.deploy(TokenMinter, dToken.address, dGateKeeper.address)
     const dTokenMinter = await TokenMinter.deployed()
 
-    try {
-      await createPermission(
-        dGateKeeper,
-        accounts[0],
-        dToken,
-        'MINT_ROLE',
-        dTokenMinter.address
-      )
-    } catch (error) {
-      console.log('Error granting permissions on the Minter', error)
-      throw new Error(error.message)
-    }
+    // Grant permission to mint
+    await createPermission(
+      dGateKeeper,
+      accounts[0],
+      dToken,
+      'MINT_ROLE',
+      dTokenMinter.address
+    )
   } catch (e) {
     console.log(e)
   }
