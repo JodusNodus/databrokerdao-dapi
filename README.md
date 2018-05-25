@@ -263,6 +263,8 @@ Sensors can have two different types (for now):
 
 When enlisting a sensor, you want to enlist some metadata too.
 
+#### Streams
+
 `POST /ipfs/add/json` with the following body (JSON.stringify if necessary):
 
 ```
@@ -272,8 +274,8 @@ data: {
         lat: 50.880722,
         lng: 4.692725,
     },
-    sensortype: 'temperature', // the type of the sensor itself
-    datatype: 'stream', // can be stream or dataset
+    type: 'temperature', // the type of the sensor itself
+    sensortype: 'STREAM', // can be stream or dataset
     example: "{'value':11,'unit':'celsius'}",
     updateinterval: 60000,
 }
@@ -285,11 +287,37 @@ A succesful response returns a hash property, which you can use in the enlist ca
 
 Expects the following parameters:
 
+- stakeamount: uint, amount of DTX the owner of the sensor want to stake. Minimum of 10 DTX for now.
+- price: uint, amount of DTX needed to purchase access to **one second** of this sensor.
+- metadata: hash property you get back from `POST /ipfs/add/json`
+
+
+
+#### Datasets
+
+`POST /ipfs/add/json` with the following body (JSON.stringify if necessary):
+
+```
+data: {
+    name: 'Temperature outside Bar Berlin',
+    sensortype: 'DATASET', // can be stream or dataset
+    example: "{'value':11,'unit':'celsius'}",
+    category: "health", // supported categories FOR NOW are health, environment, agriculture, energy
+    filetype: "csv" // supported filtypes FOR NOW are csv, xls and json
+}
+```
+
+A succesful response returns a hash property, which you can use in the enlist call.
+
+`POST /sensorregistrydispatcher/enlist`
+
+Expects the following parameters:
+
 * stakeamount: uint, amount of DTX the owner of the sensor want to stake. Minimum of 10 DTX for now.
-* price: uint, amount of DTX needed to purchase access to **one second** of this sensor.
+* price: uint, amount of DTX needed to buy this dataset.
 * metadata: hash property you get back from `POST /ipfs/add/json`
 
-​
+
 
 ### Unlist a sensor
 
