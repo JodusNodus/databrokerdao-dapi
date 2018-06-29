@@ -1,10 +1,10 @@
-const _ = require('lodash')
+// const _ = require('lodash')
 
 const { createPermission, grantPermission } = require('./helpers/permissions')
 const {
   GATEWAY_OPERATOR_ADDRESS,
-  authenticate,
-  addIpfs,
+  // authenticate,
+  // addIpfs,
 } = require('./helpers/api')
 
 const ChallengeRegistry = artifacts.require('ChallengeRegistry.sol')
@@ -17,55 +17,55 @@ const SensorFactoryDispatcher = artifacts.require('SensorFactoryDispatcher.sol')
 const Token = artifacts.require('DtxToken.sol')
 const GateKeeper = artifacts.require('GateKeeper')
 
-async function enlistSensor(deployer, network, accounts) {
-  const dSensorRegistry = await SensorRegistry.deployed()
-  const dToken = await Token.deployed()
+// async function enlistSensor(deployer, network, accounts) {
+//   const dSensorRegistry = await SensorRegistry.deployed()
+//   const dToken = await Token.deployed()
 
-  // Add metadata
-  const metadata = {
-    data: {
-      name: 'Temperature outside Bar Berlin',
-      geo: {
-        lat: 50.880722,
-        lng: 4.692725,
-        // type: 'Point',
-        // coordinates: [4.692725, 50.880722],
-      },
-      type: 'temperature',
-      example: "{'value':11,'unit':'celsius'}",
-      updateinterval: 60000,
-    },
-  }
+//   // Add metadata
+//   const metadata = {
+//     data: {
+//       name: 'Temperature outside Bar Berlin',
+//       geo: {
+//         lat: 50.880722,
+//         lng: 4.692725,
+//         // type: 'Point',
+//         // coordinates: [4.692725, 50.880722],
+//       },
+//       type: 'temperature',
+//       example: "{'value':11,'unit':'celsius'}",
+//       updateinterval: 60000,
+//     },
+//   }
 
-  // Authenticate
-  const authToken = await authenticate(network)
+//   // Authenticate
+//   const authToken = await authenticate(network)
 
-  if (authToken) {
-    // Add metadata as ipfs
-    const ipfsHash = await addIpfs(metadata, authToken, network)
+//   if (authToken) {
+//     // Add metadata as ipfs
+//     const ipfsHash = await addIpfs(metadata, authToken, network)
 
-    // First, approve!
-    await dToken.approve(dSensorRegistry.address, '10000000000000000000', {
-      from: accounts[0],
-    })
+//     // First, approve!
+//     await dToken.approve(dSensorRegistry.address, '10000000000000000000', {
+//       from: accounts[0],
+//     })
 
-    // Enlist
-    const tx = await dSensorRegistry.enlist(
-      '10000000000000000000',
-      '10',
-      ipfsHash || '',
-      {
-        from: accounts[0],
-      }
-    )
+//     // Enlist
+//     const tx = await dSensorRegistry.enlist(
+//       '10000000000000000000',
+//       '10',
+//       ipfsHash || '',
+//       {
+//         from: accounts[0],
+//       }
+//     )
 
-    const event = _.filter(tx.logs, log => log.event === 'Enlisted')[0]
-    const sensorAddress = event.args.listing
-    process.env.SENSOR_ADDRESS = sensorAddress // Setting it in env variables to pass it to next migration
-  } else {
-    console.log('AUTH FAILED: not enlisting demo sensor')
-  }
-}
+//     const event = _.filter(tx.logs, log => log.event === 'Enlisted')[0]
+//     const sensorAddress = event.args.listing
+//     process.env.SENSOR_ADDRESS = sensorAddress // Setting it in env variables to pass it to next migration
+//   } else {
+//     console.log('AUTH FAILED: not enlisting demo sensor')
+//   }
+// }
 
 async function approveRegistryFor(addresses, dDtxToken, index) {
   const user = addresses[index]
@@ -84,7 +84,7 @@ async function approveRegistryFor(addresses, dDtxToken, index) {
   }
 }
 
-async function deployRegistry(deployer, network, accounts) {
+async function performMigration(deployer, network, accounts) {
   const dGateKeeper = await GateKeeper.deployed()
   const dDtxToken = await Token.deployed()
 
@@ -192,10 +192,10 @@ async function deployRegistry(deployer, network, accounts) {
   // await enlistSensor(deployer, network, accounts)
 }
 
-module.exports = async (deployer, network, accounts) => {
+module.exports = function(deployer, network, accounts) {
   deployer
-    .then(function() {
-      return deployRegistry(deployer, network, accounts)
+    .then(() => {
+      return performMigration(deployer, network, accounts)
     })
     .catch(error => {
       console.log(error)

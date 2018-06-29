@@ -6,7 +6,7 @@ async function performMigration(deployer, network, accounts) {
 
 module.exports = function(deployer, network, accounts) {
   deployer
-    .then(function() {
+    .then(() => {
       return performMigration(deployer, network, accounts)
     })
     .catch(error => {

@@ -3,7 +3,7 @@ const TokenMinter = artifacts.require('DtxMinter.sol')
 const GateKeeper = artifacts.require('GateKeeper')
 const { createPermission } = require('./helpers/permissions')
 
-async function deployTokenMinter(deployer, network, accounts) {
+async function performMigration(deployer, network, accounts) {
   const dGateKeeper = await GateKeeper.deployed()
   const dToken = await Token.deployed()
 
@@ -25,10 +25,10 @@ async function deployTokenMinter(deployer, network, accounts) {
   }
 }
 
-module.exports = (deployer, network, accounts) => {
+module.exports = function(deployer, network, accounts) {
   deployer
-    .then(function() {
-      return deployTokenMinter(deployer, network, accounts)
+    .then(() => {
+      return performMigration(deployer, network, accounts)
     })
     .catch(error => {
       console.log(error)

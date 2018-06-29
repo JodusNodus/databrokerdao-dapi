@@ -8,45 +8,45 @@ const PurchaseRegistryDispatcher = artifacts.require(
 const Token = artifacts.require('DtxToken')
 const GateKeeper = artifacts.require('GateKeeper')
 
-const { authenticate, addIpfs } = require('./helpers/api')
+// const { authenticate, addIpfs } = require('./helpers/api')
 
-async function purchaseSensor(deployer, network, accounts) {
-  const purchase = await PurchaseRegistry.deployed()
-  const token = await Token.deployed()
+// async function purchaseSensor(deployer, network, accounts) {
+//   const purchase = await PurchaseRegistry.deployed()
+//   const token = await Token.deployed()
 
-  // Add metadata
-  const metadata = {
-    data: {
-      email: 'silke@databrokerdao.com',
-    },
-  }
+//   // Add metadata
+//   const metadata = {
+//     data: {
+//       email: 'silke@databrokerdao.com',
+//     },
+//   }
 
-  // Authenticate
-  const authToken = await authenticate(network)
+//   // Authenticate
+//   const authToken = await authenticate(network)
 
-  if (authToken) {
-    // Add metadata as ipfs
-    const ipfsHash = await addIpfs(metadata, authToken, network)
+//   if (authToken) {
+//     // Add metadata as ipfs
+//     const ipfsHash = await addIpfs(metadata, authToken, network)
 
-    // Get sensor address
-    const sensorAddress = process.env.SENSOR_ADDRESS
-    // Calculate endtime
-    const endtime = Math.floor(new Date().getTime() / 1000) + 60 // one minute from now
+//     // Get sensor address
+//     const sensorAddress = process.env.SENSOR_ADDRESS
+//     // Calculate endtime
+//     const endtime = Math.floor(new Date().getTime() / 1000) + 60 // one minute from now
 
-    // First, approve!
-    await token.approve(purchase.address, '1000', {
-      from: accounts[0],
-    })
+//     // First, approve!
+//     await token.approve(purchase.address, '1000', {
+//       from: accounts[0],
+//     })
 
-    await purchase.purchaseAccess(sensorAddress, endtime, ipfsHash, {
-      from: accounts[0],
-    })
-  } else {
-    console.log('AUTH FAILED: not going forward with demo purchase')
-  }
-}
+//     await purchase.purchaseAccess(sensorAddress, endtime, ipfsHash, {
+//       from: accounts[0],
+//     })
+//   } else {
+//     console.log('AUTH FAILED: not going forward with demo purchase')
+//   }
+// }
 
-async function deployPurchasing(deployer, network, accounts) {
+async function performMigration(deployer, network, accounts) {
   const dGateKeeper = await GateKeeper.deployed()
   const dDtxToken = await Token.deployed()
   const dSensorRegistry = await SensorRegistry.deployed()
@@ -106,10 +106,10 @@ async function deployPurchasing(deployer, network, accounts) {
   // await purchaseSensor(deployer, network, accounts)
 }
 
-module.exports = async (deployer, network, accounts) => {
+module.exports = function(deployer, network, accounts) {
   deployer
-    .then(function(a) {
-      return deployPurchasing(deployer, network, accounts)
+    .then(() => {
+      return performMigration(deployer, network, accounts)
     })
     .catch(error => {
       console.log(error)

@@ -3,7 +3,7 @@ const TokenRegistry = artifacts.require('DtxTokenRegistry.sol')
 const GateKeeper = artifacts.require('GateKeeper')
 const { createPermission } = require('./helpers/permissions')
 
-async function deployTokenSystem(deployer, network, accounts) {
+async function performMigration(deployer, network, accounts) {
   const dGateKeeper = await GateKeeper.deployed()
 
   try {
@@ -36,10 +36,10 @@ async function deployTokenSystem(deployer, network, accounts) {
   }
 }
 
-module.exports = (deployer, network, accounts) => {
+module.exports = function(deployer, network, accounts) {
   deployer
-    .then(function() {
-      return deployTokenSystem(deployer, network, accounts)
+    .then(() => {
+      return performMigration(deployer, network, accounts)
     })
     .catch(error => {
       console.log(error)
