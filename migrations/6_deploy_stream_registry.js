@@ -15,7 +15,7 @@ const SensorRegistryDispatcher = artifacts.require(
 const SensorFactory = artifacts.require('SensorFactory.sol')
 const SensorFactoryDispatcher = artifacts.require('SensorFactoryDispatcher.sol')
 const Token = artifacts.require('DtxToken.sol')
-const GateKeeper = artifacts.require('GateKeeper')
+const GateKeeper = artifacts.require('GateKeeper.sol')
 
 // async function enlistSensor(deployer, network, accounts) {
 //   const dSensorRegistry = await SensorRegistry.deployed()
@@ -194,9 +194,7 @@ async function performMigration(deployer, network, accounts) {
 
 module.exports = function(deployer, network, accounts) {
   deployer
-    .then(() => {
-      return performMigration(deployer, network, accounts)
-    })
+    .then(() => performMigration(deployer, network, accounts))
     .catch(error => {
       console.log(error)
       process.exit(1)

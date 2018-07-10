@@ -1,12 +1,12 @@
 const { grantPermission, createPermission } = require('./helpers/permissions')
 
-const SensorRegistry = artifacts.require('SensorRegistry')
-const PurchaseRegistry = artifacts.require('PurchaseRegistry')
+const SensorRegistry = artifacts.require('SensorRegistry.sol')
+const PurchaseRegistry = artifacts.require('PurchaseRegistry.sol')
 const PurchaseRegistryDispatcher = artifacts.require(
-  'PurchaseRegistryDispatcher'
+  'PurchaseRegistryDispatcher.sol'
 )
-const Token = artifacts.require('DtxToken')
-const GateKeeper = artifacts.require('GateKeeper')
+const Token = artifacts.require('DtxToken.sol')
+const GateKeeper = artifacts.require('GateKeeper.sol')
 
 // const { authenticate, addIpfs } = require('./helpers/api')
 
@@ -108,9 +108,7 @@ async function performMigration(deployer, network, accounts) {
 
 module.exports = function(deployer, network, accounts) {
   deployer
-    .then(() => {
-      return performMigration(deployer, network, accounts)
-    })
+    .then(() => performMigration(deployer, network, accounts))
     .catch(error => {
       console.log(error)
       process.exit(1)

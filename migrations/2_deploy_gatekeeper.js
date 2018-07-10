@@ -1,4 +1,4 @@
-const GateKeeper = artifacts.require('GateKeeper')
+const GateKeeper = artifacts.require('GateKeeper.sol')
 
 async function performMigration(deployer, network, accounts) {
   await deployer.deploy(GateKeeper)
@@ -6,9 +6,7 @@ async function performMigration(deployer, network, accounts) {
 
 module.exports = function(deployer, network, accounts) {
   deployer
-    .then(() => {
-      return performMigration(deployer, network, accounts)
-    })
+    .then(() => performMigration(deployer, network, accounts))
     .catch(error => {
       console.log(error)
       process.exit(1)

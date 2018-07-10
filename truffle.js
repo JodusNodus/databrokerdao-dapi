@@ -32,7 +32,8 @@ module.exports = {
     minttestnet: {
       provider: () => {
         return new HDWalletProvider(
-          process.env.ETHEREUM_DEPLOYER_SEED,
+          process.env.ETHEREUM_DEPLOYER_SEED ||
+            'robot robot robot robot robot robot robot robot robot robot robot robot',
           'https://minttestnet.settlemint.com'
         )
       },
@@ -66,13 +67,6 @@ module.exports = {
         )
       },
       network_id: '4',
-    },
-    coverage: {
-      host: 'localhost',
-      network_id: '*',
-      port: 8555, // <-- Use port 8555
-      gas: 0xfffffffffff, // <-- Use this high gas value
-      gasPrice: 0x01, // <-- Use this low gas price
     },
   },
 }

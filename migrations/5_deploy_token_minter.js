@@ -1,6 +1,6 @@
 const Token = artifacts.require('DtxToken.sol')
 const TokenMinter = artifacts.require('DtxMinter.sol')
-const GateKeeper = artifacts.require('GateKeeper')
+const GateKeeper = artifacts.require('GateKeeper.sol')
 const { createPermission } = require('./helpers/permissions')
 
 async function performMigration(deployer, network, accounts) {
@@ -27,9 +27,7 @@ async function performMigration(deployer, network, accounts) {
 
 module.exports = function(deployer, network, accounts) {
   deployer
-    .then(() => {
-      return performMigration(deployer, network, accounts)
-    })
+    .then(() => performMigration(deployer, network, accounts))
     .catch(error => {
       console.log(error)
       process.exit(1)
