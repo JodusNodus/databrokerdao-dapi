@@ -1,12 +1,15 @@
+/* eslint-env mocha */
+/* global assert contract artifacts */
+
 const axios = require('axios')
 const _ = require('lodash')
+const crypto = require('crypto')
+
 const SensorRegistryDispatcher = artifacts.require(
   'SensorRegistryDispatcher.sol'
 )
 
 const baseURL = process.env.BASE_URL || 'http://localhost:3333'
-const GATEWAY_OPERATOR_PRIVATE_KEY =
-  'ca1398820695e93cea849b841a9aae4eeae65518d14353ab73d21fa4af2d58a7'
 
 const metadata = {
   data: {
@@ -23,37 +26,40 @@ const metadata = {
 
 contract('Integration tests', accounts => {
   let token
+  let username
+  let password
 
-  beforeEach(async () => {
-    const response = await axios.post(`${baseURL}/authenticate`, {
+  beforeAll(async () => {
+    username = crypto.randomBytes(20).toString('hex')
+    password = 'Bl0ckch41n1sD4B0mb'
+
+    const response = await axios.post(`${baseURL}/accounts/user`, {
+      username,
+      password,
       privateKeys: {
-        ethereum: GATEWAY_OPERATOR_PRIVATE_KEY,
+        ethereum:
+          '0xca1398820695e93cea849b841a9aae4eeae65518d14353ab73d21fa4af2d58a7',
       },
-      encrypted: false,
     })
     token = response.data.token
   })
 
-  it('should be able to authenticate using an authorised address', async () => {
-    const response = await axios.post(`${baseURL}/authenticate`, {
-      privateKeys: {
-        ethereum: GATEWAY_OPERATOR_PRIVATE_KEY,
-      },
-      encrypted: false,
+  it('should be able to authenticate using an authorised user', async () => {
+    const response = await axios.post(`${baseURL}/accounts/authenticate`, {
+      username,
+      password,
     })
     assert.isOk(response.data.token)
   })
 
-  it('should not be possible to authenticate using an authorised address', async () => {
+  it('should not be possible to authenticate using an authorised user', async () => {
     try {
-      await axios.post(`${baseURL}/authenticate`, {
-        privateKeys: {
-          ethereum: GATEWAY_OPERATOR_PRIVATE_KEY,
-        },
-        encrypted: false,
+      await axios.post(`${baseURL}/accounts/authenticate`, {
+        username: `${username}123`,
+        password,
       })
     } catch (e) {
-      assert.equal(e.response.status, 402)
+      assert.equal(e.response.status, 404)
     }
   })
 
