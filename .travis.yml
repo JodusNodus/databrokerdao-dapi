@@ -19,7 +19,7 @@ before_install:
   - ganache-cli -l 0xfffffffffff -i 1337 -m "robot robot robot robot robot robot robot robot robot robot robot robot" > /dev/null &
 
 deploy:
-  provider: script:
+  provider: script
   skip_cleanup: true
   script:
     - bash ./scripts/deploy.sh
