@@ -21,11 +21,9 @@ before_install:
 
 script: echo "npm test temporarily disabled"
 
-deploy:
-  provider: script
-  skip_cleanup: true
-  script:
-    - bash ./scripts/deploy.sh
-  on:
-    all_branches: true
-    repo: databrokerdao/databrokerdao-dapi
+after_success:
+  - npm run semantic-release
+  - if ([ $TRAVIS_PULL_REQUEST == "false" ]); then
+    docker build --build-arg NPM_TOKEN=${NPM_TOKEN} -t settlemint/${PROJECT_NAME}:${TRAVIS_BRANCH} -t settlemint/${PROJECT_NAME}:${TRAVIS_BRANCH}-`date +%s` .;
+    docker push settlemint/${PROJECT_NAME};
+    fi
