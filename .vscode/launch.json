@@ -17,13 +17,34 @@
       "address": "TCP/IP address of process to be debugged",
       "port": 9229,
       "localRoot": "${workspaceFolder}",
-      "remoteRoot": "Absolute path to the remote directory containing the program"
+      "remoteRoot":
+        "Absolute path to the remote directory containing the program"
     },
     {
       "type": "node",
       "request": "launch",
       "name": "Launch Program",
       "program": "${workspaceFolder}/truffle.js"
+    },
+    {
+      "name": "Run mocha",
+      "type": "node",
+      "request": "launch",
+      "program": "${workspaceRoot}/node_modules/mocha/bin/_mocha",
+      "stopOnEntry": false,
+      "args": ["test/integration/*.js", "--no-timeouts"],
+      "cwd": "${workspaceRoot}",
+      "runtimeExecutable": null,
+      "env": { "NODE_ENV": "testing" }
+    },
+    {
+      "name": "run tests",
+      "type": "node",
+      "request": "launch",
+      "program": "${workspaceRoot}/node_modules/truffle/build/cli.bundled.js",
+      "args": ["test"],
+      "cwd": "${workspaceRoot}",
+      "outFiles": ["${workspaceRoot}/test/**/*"]
     }
   ]
 }
