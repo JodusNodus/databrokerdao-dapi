@@ -13,12 +13,13 @@ notifications:
 node_js:
   - '9'
 
-script: echo "npm test temporarily disabled"
 
 before_install:
   - echo "//registry.npmjs.org/:_authToken=\${NPM_TOKEN}" > ~/.npmrc
   - npm i -g @settlemint/mint-cli ganache-cli
   - ganache-cli -l 0xfffffffffff -i 1337 -m "robot robot robot robot robot robot robot robot robot robot robot robot" > /dev/null &
+
+script: echo "npm test temporarily disabled"
 
 deploy:
   provider: script
@@ -27,4 +28,4 @@ deploy:
     - bash ./scripts/deploy.sh
   on:
     all_branches: true
-    repo: settlemint/databrokerdao-dapi
+    repo: databrokerdao/databrokerdao-dapi
