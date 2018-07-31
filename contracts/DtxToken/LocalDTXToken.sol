@@ -1,13 +1,14 @@
-pragma solidity ^0.4.20;
+pragma solidity ^0.4.24;
 
 import "@settlemint/solidity-mint/contracts/marketplaces/tokensystem/Token.sol";
 
-/**
- * Contains the DTX token
- */
-contract DtxToken is Token {
 
-  function DtxToken(
+/**
+ * Contains the Local DTX token
+ */
+contract LocalDTXToken is Token {
+
+  constructor(
     bytes32 _name,
     uint8 _decimals,
     address _registry,
@@ -26,12 +27,12 @@ contract DtxToken is Token {
     length = tokenHolders.length;
   }
 
-  function getByIndex(uint index) view public returns (address key, uint256 balance) {
+  function getByIndex(uint index) public view returns (address key, uint256 balance) {
     key = tokenHolders[index];
     balance = balances[tokenHolders[index]].balance;
   }
 
-  function getByKey(address _key) view public returns (address key, uint256 balance) {
+  function getByKey(address _key) public view returns (address key, uint256 balance) {
     key = _key;
     balance = balances[_key].balance;
   }

@@ -1,4 +1,4 @@
-pragma solidity ^0.4.20;
+pragma solidity ^0.4.24;
 
 import "@settlemint/solidity-mint/contracts/utility/upgrading/Dispatcher.sol";
 import "@settlemint/solidity-mint/contracts/marketplaces/tokensystem/interfaces/IToken.sol";
@@ -23,7 +23,7 @@ contract SensorRegistryDispatcher is Dispatcher, CachedByAddress {
   IListingFactory public listingFactory;
   ChallengeRegistry challengeRegistry;
 
-  function SensorRegistryDispatcher(
+  constructor(
     address _gateKeeper,
     address _token,
     address _listingFactory,

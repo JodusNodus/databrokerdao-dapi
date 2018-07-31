@@ -1,10 +1,10 @@
-pragma solidity ^0.4.20;
+pragma solidity ^0.4.24;
 
 import "@settlemint/solidity-mint/contracts/utility/upgrading/Dispatcher.sol";
 import "@settlemint/solidity-mint/contracts/utility/caching/CachedByAddress.sol";
 
 import "../sensor/SensorRegistry.sol";
-import "../dtxtoken/DtxToken.sol";
+import "../dtxtoken/LocalDTXToken.sol";
 import "./Purchase.sol";
 
 
@@ -18,11 +18,11 @@ contract PurchaseRegistryDispatcher is Dispatcher, CachedByAddress {
   bytes32 constant public CHANGE_SETTINGS_ROLE = "CHANGE_SETTINGS_ROLE";
   mapping (address => Purchase) public purchases;
   address[] public purchasesIndex;
-  DtxToken public token;
+  LocalDTXToken public token;
   SensorRegistry sensorRegistry;
   uint salePercentage = 1;
 
-  function PurchaseRegistryDispatcher(
+  constructor(
     address _gateKeeper,
     address _token,
     address _sensorRegistry
@@ -32,7 +32,7 @@ contract PurchaseRegistryDispatcher is Dispatcher, CachedByAddress {
     public
   {
     // State also needs to initialized!
-    token = DtxToken(_token);
+    token = LocalDTXToken(_token);
     sensorRegistry = SensorRegistry(_sensorRegistry);
   }
 

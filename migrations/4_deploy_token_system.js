@@ -1,5 +1,5 @@
-const Token = artifacts.require('DtxToken.sol')
-const TokenRegistry = artifacts.require('DtxTokenRegistry.sol')
+const Token = artifacts.require('LocalDTXToken.sol')
+const TokenRegistry = artifacts.require('LocalDTXTokenRegistry.sol')
 const GateKeeper = artifacts.require('GateKeeper.sol')
 const { createPermission } = require('./helpers/permissions')
 

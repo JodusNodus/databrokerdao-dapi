@@ -1,14 +1,15 @@
-pragma solidity ^0.4.20;
+pragma solidity ^0.4.24;
 
 import "./Purchase.sol";
 import "../sensor/Sensor.sol";
 import "../sensor/SensorRegistry.sol";
-import "../dtxtoken/DtxToken.sol";
+import "../dtxtoken/LocalDTXToken.sol";
 import "@settlemint/solidity-mint/contracts/authentication/Secured.sol";
 import "@settlemint/solidity-mint/contracts/authentication/GateKeeper.sol";
 import "@settlemint/solidity-mint/contracts/utility/syncing/Syncable.sol";
 import "@settlemint/solidity-mint/contracts/utility/caching/Cacher.sol";
 import "@settlemint/solidity-mint/contracts/utility/caching/CachedByBytes32.sol";
+
 
 /**
  * Contains all purchases of sensors
@@ -25,7 +26,7 @@ contract PurchaseRegistry is Secured, Syncable, Cacher, CachedByBytes32 {
   mapping (address => Purchase) public purchases;
   address[] public purchasesIndex;
 
-  DtxToken public token;
+  LocalDTXToken public token;
   SensorRegistry sensorRegistry;
   uint salePercentage = 1;
 
@@ -35,7 +36,7 @@ contract PurchaseRegistry is Secured, Syncable, Cacher, CachedByBytes32 {
   @param _gateKeeper     Address of the gatekeeper
   @param _token          Address of the token
   */
-  function PurchaseRegistry(
+  constructor(
     address _gateKeeper,
     address _token,
     address _sensorRegistry
@@ -44,7 +45,7 @@ contract PurchaseRegistry is Secured, Syncable, Cacher, CachedByBytes32 {
     CachedByBytes32("PurchaseRegistry", this)
     public
   {
-    token = DtxToken(_token);
+    token = LocalDTXToken(_token);
     sensorRegistry = SensorRegistry(_sensorRegistry);
   }
 
@@ -70,9 +71,9 @@ contract PurchaseRegistry is Secured, Syncable, Cacher, CachedByBytes32 {
     // Pay out:
     uint _salePercentage = _sensorPrice.mul(salePercentage.div(100));
     // Sensor owner
-    require(token.transferFrom(msg.sender, Sensor(_sensor).owner(), _sensorPrice.sub(_salePercentage)));
+    require(token.transferFrom(msg.sender, Sensor(_sensor).owner(), _sensorPrice.sub(_salePercentage)), "token transfer failed");
     // DBDAO
-    require(token.transferFrom(msg.sender, this, _salePercentage));
+    require(token.transferFrom(msg.sender, this, _salePercentage), "token transfer failed");
 
     // Create purchase
     Purchase _purchase = new Purchase(
@@ -99,7 +100,14 @@ contract PurchaseRegistry is Secured, Syncable, Cacher, CachedByBytes32 {
     purchases[address(_purchase)] = Purchase(address(_purchase));
     purchasesIndex.push(address(_purchase));
 
-    emit AccessPurchased(_sensor, msg.sender, _startTime, _endTime, _sensorPrice, address(_purchase));
+    emit AccessPurchased(
+      _sensor,
+      msg.sender,
+      _startTime,
+      _endTime,
+      _sensorPrice,
+      address(_purchase)
+    );
     invalidateCache(_purchase, "", 0);
   }
 
@@ -107,7 +115,7 @@ contract PurchaseRegistry is Secured, Syncable, Cacher, CachedByBytes32 {
   @notice                Sets the sale percentage
   @param _salePercentage salePercentage
   */
-  function setSalePercentage(uint _salePercentage) auth(CHANGE_SETTINGS_ROLE) public {
+  function setSalePercentage(uint _salePercentage) public auth(CHANGE_SETTINGS_ROLE) {
     salePercentage = _salePercentage;
     emit SalePercentageChanged(_salePercentage);
   }

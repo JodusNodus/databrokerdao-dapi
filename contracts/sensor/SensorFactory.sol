@@ -1,17 +1,25 @@
-pragma solidity ^0.4.20;
+pragma solidity ^0.4.24;
 
 import "./Sensor.sol";
 import "./SensorRegistry.sol";
 import "@settlemint/solidity-mint/contracts/marketplaces/tokencuratedregistry/ListingFactory.sol";
+
 
 /**
  * Creates new sensors
  */
 contract SensorFactory is ListingFactory {
 
-  function SensorFactory(address _gateKeeper) ListingFactory(_gateKeeper) public {}
+  constructor(address _gateKeeper) ListingFactory(_gateKeeper) public {}
 
-  function createListing(address _owner, uint _price, uint _stakeAmount, address _tcr, string _metadata) public {
+  function createListing(
+    address _owner,
+    uint _price,
+    uint _stakeAmount,
+    address _tcr,
+    string _metadata
+  ) public
+  {
     // Create listing
     Sensor _newSensor = new Sensor(_owner, _price, _stakeAmount, gateKeeper);
 

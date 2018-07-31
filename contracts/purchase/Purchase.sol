@@ -1,10 +1,11 @@
-pragma solidity ^0.4.20;
+pragma solidity ^0.4.24;
 
 import "@settlemint/solidity-mint/contracts/authentication/Secured.sol";
 import "@settlemint/solidity-mint/contracts/utility/syncing/Syncable.sol";
 import "@settlemint/solidity-mint/contracts/utility/caching/Cacher.sol";
 import "@settlemint/solidity-mint/contracts/utility/caching/CachedByAddress.sol";
 import "@settlemint/solidity-mint/contracts/utility/metadata/MetaDataContainer.sol";
+
 
 /**
  * Contains one sensor purchase entity
@@ -17,7 +18,7 @@ contract Purchase is Secured, Cacher, CachedByAddress, MetaDataContainer {
   address public purchaser; // address of the user
   address public sensor; // id of the sensor to which access was purchased
 
-  function Purchase(
+  constructor(
     uint _price,
     uint _startTime,
     uint _endTime,
