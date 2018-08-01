@@ -1,55 +1,55 @@
 {
-  "contractName": "IRoleRegistry",
+  "contractName": "ERC20Basic",
   "abi": [
     {
       "anonymous": false,
       "inputs": [
         {
-          "indexed": false,
-          "name": "_address",
+          "indexed": true,
+          "name": "from",
           "type": "address"
+        },
+        {
+          "indexed": true,
+          "name": "to",
+          "type": "address"
+        },
+        {
+          "indexed": false,
+          "name": "value",
+          "type": "uint256"
         }
       ],
-      "name": "Designated",
+      "name": "Transfer",
       "type": "event"
     },
     {
-      "anonymous": false,
-      "inputs": [
+      "constant": true,
+      "inputs": [],
+      "name": "totalSupply",
+      "outputs": [
         {
-          "indexed": false,
-          "name": "_address",
-          "type": "address"
+          "name": "",
+          "type": "uint256"
         }
       ],
-      "name": "Discharged",
-      "type": "event"
-    },
-    {
-      "anonymous": false,
-      "inputs": [
-        {
-          "indexed": false,
-          "name": "_address",
-          "type": "address"
-        }
-      ],
-      "name": "RoleRegistryCreated",
-      "type": "event"
+      "payable": false,
+      "stateMutability": "view",
+      "type": "function"
     },
     {
       "constant": true,
       "inputs": [
         {
-          "name": "_address",
+          "name": "who",
           "type": "address"
         }
       ],
-      "name": "hasRole",
+      "name": "balanceOf",
       "outputs": [
         {
-          "name": "hasTheRole",
-          "type": "bool"
+          "name": "",
+          "type": "uint256"
         }
       ],
       "payable": false,
@@ -60,26 +60,21 @@
       "constant": false,
       "inputs": [
         {
-          "name": "_address",
+          "name": "to",
           "type": "address"
-        }
-      ],
-      "name": "designate",
-      "outputs": [],
-      "payable": false,
-      "stateMutability": "nonpayable",
-      "type": "function"
-    },
-    {
-      "constant": false,
-      "inputs": [
+        },
         {
-          "name": "_address",
-          "type": "address"
+          "name": "value",
+          "type": "uint256"
         }
       ],
-      "name": "discharge",
-      "outputs": [],
+      "name": "transfer",
+      "outputs": [
+        {
+          "name": "",
+          "type": "bool"
+        }
+      ],
       "payable": false,
       "stateMutability": "nonpayable",
       "type": "function"
@@ -89,20 +84,20 @@
   "deployedBytecode": "0x",
   "sourceMap": "",
   "deployedSourceMap": "",
-  "source": "pragma solidity ^0.4.24;\n\n\n/**\n * @title RoleRegistry\n * @dev The RoleRegistry contract defines the methods and data structures to\n * record if addresses have certain roles or not.\n */\ncontract IRoleRegistry {\n\n  event Designated(address _address);\n  event Discharged(address _address);\n  event RoleRegistryCreated(address _address);\n\n\n  /**\n   * @dev Checks if an address has a certain role\n   * @param _address The address to check for the role.\n   * @return A boolean that is True if the address has the role.\n   */\n  function hasRole(address _address) public view returns (bool hasTheRole);\n\n  /**\n   * @dev Gives the role to an address\n   * @param _address The address to designate the role to.\n   */\n  function designate(address _address) public;\n\n  /**\n   * @dev Removes the role from an address\n   * @param _address The address to discharge fromn the role.\n   */\n  function discharge(address _address) public;\n\n}\n",
-  "sourcePath": "@settlemint/solidity-mint/contracts/authentication/interfaces/IRoleRegistry.sol",
+  "source": "pragma solidity ^0.4.24;\n\n\n/**\n * @title ERC20Basic\n * @dev Simpler version of ERC20 interface\n * See https://github.com/ethereum/EIPs/issues/179\n */\ncontract ERC20Basic {\n  function totalSupply() public view returns (uint256);\n  function balanceOf(address who) public view returns (uint256);\n  function transfer(address to, uint256 value) public returns (bool);\n  event Transfer(address indexed from, address indexed to, uint256 value);\n}\n",
+  "sourcePath": "openzeppelin-solidity/contracts/token/ERC20/ERC20Basic.sol",
   "ast": {
-    "absolutePath": "@settlemint/solidity-mint/contracts/authentication/interfaces/IRoleRegistry.sol",
+    "absolutePath": "openzeppelin-solidity/contracts/token/ERC20/ERC20Basic.sol",
     "exportedSymbols": {
-      "IRoleRegistry": [
-        2419
+      "ERC20Basic": [
+        5755
       ]
     },
-    "id": 2420,
+    "id": 5756,
     "nodeType": "SourceUnit",
     "nodes": [
       {
-        "id": 2389,
+        "id": 5725,
         "literals": [
           "solidity",
           "^",
@@ -110,168 +105,98 @@
           ".24"
         ],
         "nodeType": "PragmaDirective",
-        "src": "0:24:18"
+        "src": "0:24:43"
       },
       {
         "baseContracts": [],
         "contractDependencies": [],
         "contractKind": "contract",
-        "documentation": "@title RoleRegistry\n@dev The RoleRegistry contract defines the methods and data structures to\nrecord if addresses have certain roles or not.",
+        "documentation": "@title ERC20Basic\n@dev Simpler version of ERC20 interface\nSee https://github.com/ethereum/EIPs/issues/179",
         "fullyImplemented": false,
-        "id": 2419,
+        "id": 5755,
         "linearizedBaseContracts": [
-          2419
+          5755
         ],
-        "name": "IRoleRegistry",
+        "name": "ERC20Basic",
         "nodeType": "ContractDefinition",
         "nodes": [
           {
-            "anonymous": false,
-            "documentation": null,
-            "id": 2393,
-            "name": "Designated",
-            "nodeType": "EventDefinition",
-            "parameters": {
-              "id": 2392,
-              "nodeType": "ParameterList",
-              "parameters": [
-                {
-                  "constant": false,
-                  "id": 2391,
-                  "indexed": false,
-                  "name": "_address",
-                  "nodeType": "VariableDeclaration",
-                  "scope": 2393,
-                  "src": "230:16:18",
-                  "stateVariable": false,
-                  "storageLocation": "default",
-                  "typeDescriptions": {
-                    "typeIdentifier": "t_address",
-                    "typeString": "address"
-                  },
-                  "typeName": {
-                    "id": 2390,
-                    "name": "address",
-                    "nodeType": "ElementaryTypeName",
-                    "src": "230:7:18",
-                    "typeDescriptions": {
-                      "typeIdentifier": "t_address",
-                      "typeString": "address"
-                    }
-                  },
-                  "value": null,
-                  "visibility": "internal"
-                }
-              ],
-              "src": "229:18:18"
-            },
-            "src": "213:35:18"
-          },
-          {
-            "anonymous": false,
-            "documentation": null,
-            "id": 2397,
-            "name": "Discharged",
-            "nodeType": "EventDefinition",
-            "parameters": {
-              "id": 2396,
-              "nodeType": "ParameterList",
-              "parameters": [
-                {
-                  "constant": false,
-                  "id": 2395,
-                  "indexed": false,
-                  "name": "_address",
-                  "nodeType": "VariableDeclaration",
-                  "scope": 2397,
-                  "src": "268:16:18",
-                  "stateVariable": false,
-                  "storageLocation": "default",
-                  "typeDescriptions": {
-                    "typeIdentifier": "t_address",
-                    "typeString": "address"
-                  },
-                  "typeName": {
-                    "id": 2394,
-                    "name": "address",
-                    "nodeType": "ElementaryTypeName",
-                    "src": "268:7:18",
-                    "typeDescriptions": {
-                      "typeIdentifier": "t_address",
-                      "typeString": "address"
-                    }
-                  },
-                  "value": null,
-                  "visibility": "internal"
-                }
-              ],
-              "src": "267:18:18"
-            },
-            "src": "251:35:18"
-          },
-          {
-            "anonymous": false,
-            "documentation": null,
-            "id": 2401,
-            "name": "RoleRegistryCreated",
-            "nodeType": "EventDefinition",
-            "parameters": {
-              "id": 2400,
-              "nodeType": "ParameterList",
-              "parameters": [
-                {
-                  "constant": false,
-                  "id": 2399,
-                  "indexed": false,
-                  "name": "_address",
-                  "nodeType": "VariableDeclaration",
-                  "scope": 2401,
-                  "src": "315:16:18",
-                  "stateVariable": false,
-                  "storageLocation": "default",
-                  "typeDescriptions": {
-                    "typeIdentifier": "t_address",
-                    "typeString": "address"
-                  },
-                  "typeName": {
-                    "id": 2398,
-                    "name": "address",
-                    "nodeType": "ElementaryTypeName",
-                    "src": "315:7:18",
-                    "typeDescriptions": {
-                      "typeIdentifier": "t_address",
-                      "typeString": "address"
-                    }
-                  },
-                  "value": null,
-                  "visibility": "internal"
-                }
-              ],
-              "src": "314:18:18"
-            },
-            "src": "289:44:18"
-          },
-          {
             "body": null,
-            "documentation": "@dev Checks if an address has a certain role\n@param _address The address to check for the role.\n@return A boolean that is True if the address has the role.",
-            "id": 2408,
+            "documentation": null,
+            "id": 5730,
             "implemented": false,
             "isConstructor": false,
             "isDeclaredConst": true,
             "modifiers": [],
-            "name": "hasRole",
+            "name": "totalSupply",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 2404,
+              "id": 5726,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "194:2:43"
+            },
+            "payable": false,
+            "returnParameters": {
+              "id": 5729,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 2403,
-                  "name": "_address",
+                  "id": 5728,
+                  "name": "",
                   "nodeType": "VariableDeclaration",
-                  "scope": 2408,
-                  "src": "538:16:18",
+                  "scope": 5730,
+                  "src": "218:7:43",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 5727,
+                    "name": "uint256",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "218:7:43",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "217:9:43"
+            },
+            "scope": 5755,
+            "src": "174:53:43",
+            "stateMutability": "view",
+            "superFunction": null,
+            "visibility": "public"
+          },
+          {
+            "body": null,
+            "documentation": null,
+            "id": 5737,
+            "implemented": false,
+            "isConstructor": false,
+            "isDeclaredConst": true,
+            "modifiers": [],
+            "name": "balanceOf",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 5733,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 5732,
+                  "name": "who",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 5737,
+                  "src": "249:11:43",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
@@ -279,10 +204,10 @@
                     "typeString": "address"
                   },
                   "typeName": {
-                    "id": 2402,
+                    "id": 5731,
                     "name": "address",
                     "nodeType": "ElementaryTypeName",
-                    "src": "538:7:18",
+                    "src": "249:7:43",
                     "typeDescriptions": {
                       "typeIdentifier": "t_address",
                       "typeString": "address"
@@ -292,20 +217,129 @@
                   "visibility": "internal"
                 }
               ],
-              "src": "537:18:18"
+              "src": "248:13:43"
             },
             "payable": false,
             "returnParameters": {
-              "id": 2407,
+              "id": 5736,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 2406,
-                  "name": "hasTheRole",
+                  "id": 5735,
+                  "name": "",
                   "nodeType": "VariableDeclaration",
-                  "scope": 2408,
-                  "src": "577:15:18",
+                  "scope": 5737,
+                  "src": "283:7:43",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 5734,
+                    "name": "uint256",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "283:7:43",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "282:9:43"
+            },
+            "scope": 5755,
+            "src": "230:62:43",
+            "stateMutability": "view",
+            "superFunction": null,
+            "visibility": "public"
+          },
+          {
+            "body": null,
+            "documentation": null,
+            "id": 5746,
+            "implemented": false,
+            "isConstructor": false,
+            "isDeclaredConst": false,
+            "modifiers": [],
+            "name": "transfer",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 5742,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 5739,
+                  "name": "to",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 5746,
+                  "src": "313:10:43",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 5738,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "313:7:43",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 5741,
+                  "name": "value",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 5746,
+                  "src": "325:13:43",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 5740,
+                    "name": "uint256",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "325:7:43",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "312:27:43"
+            },
+            "payable": false,
+            "returnParameters": {
+              "id": 5745,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 5744,
+                  "name": "",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 5746,
+                  "src": "356:4:43",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
@@ -313,10 +347,10 @@
                     "typeString": "bool"
                   },
                   "typeName": {
-                    "id": 2405,
+                    "id": 5743,
                     "name": "bool",
                     "nodeType": "ElementaryTypeName",
-                    "src": "577:4:18",
+                    "src": "356:4:43",
                     "typeDescriptions": {
                       "typeIdentifier": "t_bool",
                       "typeString": "bool"
@@ -326,35 +360,32 @@
                   "visibility": "internal"
                 }
               ],
-              "src": "576:17:18"
+              "src": "355:6:43"
             },
-            "scope": 2419,
-            "src": "521:73:18",
-            "stateMutability": "view",
+            "scope": 5755,
+            "src": "295:67:43",
+            "stateMutability": "nonpayable",
             "superFunction": null,
             "visibility": "public"
           },
           {
-            "body": null,
-            "documentation": "@dev Gives the role to an address\n@param _address The address to designate the role to.",
-            "id": 2413,
-            "implemented": false,
-            "isConstructor": false,
-            "isDeclaredConst": false,
-            "modifiers": [],
-            "name": "designate",
-            "nodeType": "FunctionDefinition",
+            "anonymous": false,
+            "documentation": null,
+            "id": 5754,
+            "name": "Transfer",
+            "nodeType": "EventDefinition",
             "parameters": {
-              "id": 2411,
+              "id": 5753,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 2410,
-                  "name": "_address",
+                  "id": 5748,
+                  "indexed": true,
+                  "name": "from",
                   "nodeType": "VariableDeclaration",
-                  "scope": 2413,
-                  "src": "727:16:18",
+                  "scope": 5754,
+                  "src": "380:20:43",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
@@ -362,10 +393,10 @@
                     "typeString": "address"
                   },
                   "typeName": {
-                    "id": 2409,
+                    "id": 5747,
                     "name": "address",
                     "nodeType": "ElementaryTypeName",
-                    "src": "727:7:18",
+                    "src": "380:7:43",
                     "typeDescriptions": {
                       "typeIdentifier": "t_address",
                       "typeString": "address"
@@ -373,44 +404,15 @@
                   },
                   "value": null,
                   "visibility": "internal"
-                }
-              ],
-              "src": "726:18:18"
-            },
-            "payable": false,
-            "returnParameters": {
-              "id": 2412,
-              "nodeType": "ParameterList",
-              "parameters": [],
-              "src": "751:0:18"
-            },
-            "scope": 2419,
-            "src": "708:44:18",
-            "stateMutability": "nonpayable",
-            "superFunction": null,
-            "visibility": "public"
-          },
-          {
-            "body": null,
-            "documentation": "@dev Removes the role from an address\n@param _address The address to discharge fromn the role.",
-            "id": 2418,
-            "implemented": false,
-            "isConstructor": false,
-            "isDeclaredConst": false,
-            "modifiers": [],
-            "name": "discharge",
-            "nodeType": "FunctionDefinition",
-            "parameters": {
-              "id": 2416,
-              "nodeType": "ParameterList",
-              "parameters": [
+                },
                 {
                   "constant": false,
-                  "id": 2415,
-                  "name": "_address",
+                  "id": 5750,
+                  "indexed": true,
+                  "name": "to",
                   "nodeType": "VariableDeclaration",
-                  "scope": 2418,
-                  "src": "892:16:18",
+                  "scope": 5754,
+                  "src": "402:18:43",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
@@ -418,10 +420,10 @@
                     "typeString": "address"
                   },
                   "typeName": {
-                    "id": 2414,
+                    "id": 5749,
                     "name": "address",
                     "nodeType": "ElementaryTypeName",
-                    "src": "892:7:18",
+                    "src": "402:7:43",
                     "typeDescriptions": {
                       "typeIdentifier": "t_address",
                       "typeString": "address"
@@ -429,42 +431,58 @@
                   },
                   "value": null,
                   "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 5752,
+                  "indexed": false,
+                  "name": "value",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 5754,
+                  "src": "422:13:43",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 5751,
+                    "name": "uint256",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "422:7:43",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
                 }
               ],
-              "src": "891:18:18"
+              "src": "379:57:43"
             },
-            "payable": false,
-            "returnParameters": {
-              "id": 2417,
-              "nodeType": "ParameterList",
-              "parameters": [],
-              "src": "916:0:18"
-            },
-            "scope": 2419,
-            "src": "873:44:18",
-            "stateMutability": "nonpayable",
-            "superFunction": null,
-            "visibility": "public"
+            "src": "365:72:43"
           }
         ],
-        "scope": 2420,
-        "src": "185:735:18"
+        "scope": 5756,
+        "src": "150:289:43"
       }
     ],
-    "src": "0:921:18"
+    "src": "0:440:43"
   },
   "legacyAST": {
-    "absolutePath": "@settlemint/solidity-mint/contracts/authentication/interfaces/IRoleRegistry.sol",
+    "absolutePath": "openzeppelin-solidity/contracts/token/ERC20/ERC20Basic.sol",
     "exportedSymbols": {
-      "IRoleRegistry": [
-        2419
+      "ERC20Basic": [
+        5755
       ]
     },
-    "id": 2420,
+    "id": 5756,
     "nodeType": "SourceUnit",
     "nodes": [
       {
-        "id": 2389,
+        "id": 5725,
         "literals": [
           "solidity",
           "^",
@@ -472,168 +490,98 @@
           ".24"
         ],
         "nodeType": "PragmaDirective",
-        "src": "0:24:18"
+        "src": "0:24:43"
       },
       {
         "baseContracts": [],
         "contractDependencies": [],
         "contractKind": "contract",
-        "documentation": "@title RoleRegistry\n@dev The RoleRegistry contract defines the methods and data structures to\nrecord if addresses have certain roles or not.",
+        "documentation": "@title ERC20Basic\n@dev Simpler version of ERC20 interface\nSee https://github.com/ethereum/EIPs/issues/179",
         "fullyImplemented": false,
-        "id": 2419,
+        "id": 5755,
         "linearizedBaseContracts": [
-          2419
+          5755
         ],
-        "name": "IRoleRegistry",
+        "name": "ERC20Basic",
         "nodeType": "ContractDefinition",
         "nodes": [
           {
-            "anonymous": false,
-            "documentation": null,
-            "id": 2393,
-            "name": "Designated",
-            "nodeType": "EventDefinition",
-            "parameters": {
-              "id": 2392,
-              "nodeType": "ParameterList",
-              "parameters": [
-                {
-                  "constant": false,
-                  "id": 2391,
-                  "indexed": false,
-                  "name": "_address",
-                  "nodeType": "VariableDeclaration",
-                  "scope": 2393,
-                  "src": "230:16:18",
-                  "stateVariable": false,
-                  "storageLocation": "default",
-                  "typeDescriptions": {
-                    "typeIdentifier": "t_address",
-                    "typeString": "address"
-                  },
-                  "typeName": {
-                    "id": 2390,
-                    "name": "address",
-                    "nodeType": "ElementaryTypeName",
-                    "src": "230:7:18",
-                    "typeDescriptions": {
-                      "typeIdentifier": "t_address",
-                      "typeString": "address"
-                    }
-                  },
-                  "value": null,
-                  "visibility": "internal"
-                }
-              ],
-              "src": "229:18:18"
-            },
-            "src": "213:35:18"
-          },
-          {
-            "anonymous": false,
-            "documentation": null,
-            "id": 2397,
-            "name": "Discharged",
-            "nodeType": "EventDefinition",
-            "parameters": {
-              "id": 2396,
-              "nodeType": "ParameterList",
-              "parameters": [
-                {
-                  "constant": false,
-                  "id": 2395,
-                  "indexed": false,
-                  "name": "_address",
-                  "nodeType": "VariableDeclaration",
-                  "scope": 2397,
-                  "src": "268:16:18",
-                  "stateVariable": false,
-                  "storageLocation": "default",
-                  "typeDescriptions": {
-                    "typeIdentifier": "t_address",
-                    "typeString": "address"
-                  },
-                  "typeName": {
-                    "id": 2394,
-                    "name": "address",
-                    "nodeType": "ElementaryTypeName",
-                    "src": "268:7:18",
-                    "typeDescriptions": {
-                      "typeIdentifier": "t_address",
-                      "typeString": "address"
-                    }
-                  },
-                  "value": null,
-                  "visibility": "internal"
-                }
-              ],
-              "src": "267:18:18"
-            },
-            "src": "251:35:18"
-          },
-          {
-            "anonymous": false,
-            "documentation": null,
-            "id": 2401,
-            "name": "RoleRegistryCreated",
-            "nodeType": "EventDefinition",
-            "parameters": {
-              "id": 2400,
-              "nodeType": "ParameterList",
-              "parameters": [
-                {
-                  "constant": false,
-                  "id": 2399,
-                  "indexed": false,
-                  "name": "_address",
-                  "nodeType": "VariableDeclaration",
-                  "scope": 2401,
-                  "src": "315:16:18",
-                  "stateVariable": false,
-                  "storageLocation": "default",
-                  "typeDescriptions": {
-                    "typeIdentifier": "t_address",
-                    "typeString": "address"
-                  },
-                  "typeName": {
-                    "id": 2398,
-                    "name": "address",
-                    "nodeType": "ElementaryTypeName",
-                    "src": "315:7:18",
-                    "typeDescriptions": {
-                      "typeIdentifier": "t_address",
-                      "typeString": "address"
-                    }
-                  },
-                  "value": null,
-                  "visibility": "internal"
-                }
-              ],
-              "src": "314:18:18"
-            },
-            "src": "289:44:18"
-          },
-          {
             "body": null,
-            "documentation": "@dev Checks if an address has a certain role\n@param _address The address to check for the role.\n@return A boolean that is True if the address has the role.",
-            "id": 2408,
+            "documentation": null,
+            "id": 5730,
             "implemented": false,
             "isConstructor": false,
             "isDeclaredConst": true,
             "modifiers": [],
-            "name": "hasRole",
+            "name": "totalSupply",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 2404,
+              "id": 5726,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "194:2:43"
+            },
+            "payable": false,
+            "returnParameters": {
+              "id": 5729,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 2403,
-                  "name": "_address",
+                  "id": 5728,
+                  "name": "",
                   "nodeType": "VariableDeclaration",
-                  "scope": 2408,
-                  "src": "538:16:18",
+                  "scope": 5730,
+                  "src": "218:7:43",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 5727,
+                    "name": "uint256",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "218:7:43",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "217:9:43"
+            },
+            "scope": 5755,
+            "src": "174:53:43",
+            "stateMutability": "view",
+            "superFunction": null,
+            "visibility": "public"
+          },
+          {
+            "body": null,
+            "documentation": null,
+            "id": 5737,
+            "implemented": false,
+            "isConstructor": false,
+            "isDeclaredConst": true,
+            "modifiers": [],
+            "name": "balanceOf",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 5733,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 5732,
+                  "name": "who",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 5737,
+                  "src": "249:11:43",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
@@ -641,10 +589,10 @@
                     "typeString": "address"
                   },
                   "typeName": {
-                    "id": 2402,
+                    "id": 5731,
                     "name": "address",
                     "nodeType": "ElementaryTypeName",
-                    "src": "538:7:18",
+                    "src": "249:7:43",
                     "typeDescriptions": {
                       "typeIdentifier": "t_address",
                       "typeString": "address"
@@ -654,20 +602,129 @@
                   "visibility": "internal"
                 }
               ],
-              "src": "537:18:18"
+              "src": "248:13:43"
             },
             "payable": false,
             "returnParameters": {
-              "id": 2407,
+              "id": 5736,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 2406,
-                  "name": "hasTheRole",
+                  "id": 5735,
+                  "name": "",
                   "nodeType": "VariableDeclaration",
-                  "scope": 2408,
-                  "src": "577:15:18",
+                  "scope": 5737,
+                  "src": "283:7:43",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 5734,
+                    "name": "uint256",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "283:7:43",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "282:9:43"
+            },
+            "scope": 5755,
+            "src": "230:62:43",
+            "stateMutability": "view",
+            "superFunction": null,
+            "visibility": "public"
+          },
+          {
+            "body": null,
+            "documentation": null,
+            "id": 5746,
+            "implemented": false,
+            "isConstructor": false,
+            "isDeclaredConst": false,
+            "modifiers": [],
+            "name": "transfer",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 5742,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 5739,
+                  "name": "to",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 5746,
+                  "src": "313:10:43",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 5738,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "313:7:43",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 5741,
+                  "name": "value",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 5746,
+                  "src": "325:13:43",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 5740,
+                    "name": "uint256",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "325:7:43",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "312:27:43"
+            },
+            "payable": false,
+            "returnParameters": {
+              "id": 5745,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 5744,
+                  "name": "",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 5746,
+                  "src": "356:4:43",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
@@ -675,10 +732,10 @@
                     "typeString": "bool"
                   },
                   "typeName": {
-                    "id": 2405,
+                    "id": 5743,
                     "name": "bool",
                     "nodeType": "ElementaryTypeName",
-                    "src": "577:4:18",
+                    "src": "356:4:43",
                     "typeDescriptions": {
                       "typeIdentifier": "t_bool",
                       "typeString": "bool"
@@ -688,35 +745,32 @@
                   "visibility": "internal"
                 }
               ],
-              "src": "576:17:18"
+              "src": "355:6:43"
             },
-            "scope": 2419,
-            "src": "521:73:18",
-            "stateMutability": "view",
+            "scope": 5755,
+            "src": "295:67:43",
+            "stateMutability": "nonpayable",
             "superFunction": null,
             "visibility": "public"
           },
           {
-            "body": null,
-            "documentation": "@dev Gives the role to an address\n@param _address The address to designate the role to.",
-            "id": 2413,
-            "implemented": false,
-            "isConstructor": false,
-            "isDeclaredConst": false,
-            "modifiers": [],
-            "name": "designate",
-            "nodeType": "FunctionDefinition",
+            "anonymous": false,
+            "documentation": null,
+            "id": 5754,
+            "name": "Transfer",
+            "nodeType": "EventDefinition",
             "parameters": {
-              "id": 2411,
+              "id": 5753,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 2410,
-                  "name": "_address",
+                  "id": 5748,
+                  "indexed": true,
+                  "name": "from",
                   "nodeType": "VariableDeclaration",
-                  "scope": 2413,
-                  "src": "727:16:18",
+                  "scope": 5754,
+                  "src": "380:20:43",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
@@ -724,10 +778,10 @@
                     "typeString": "address"
                   },
                   "typeName": {
-                    "id": 2409,
+                    "id": 5747,
                     "name": "address",
                     "nodeType": "ElementaryTypeName",
-                    "src": "727:7:18",
+                    "src": "380:7:43",
                     "typeDescriptions": {
                       "typeIdentifier": "t_address",
                       "typeString": "address"
@@ -735,44 +789,15 @@
                   },
                   "value": null,
                   "visibility": "internal"
-                }
-              ],
-              "src": "726:18:18"
-            },
-            "payable": false,
-            "returnParameters": {
-              "id": 2412,
-              "nodeType": "ParameterList",
-              "parameters": [],
-              "src": "751:0:18"
-            },
-            "scope": 2419,
-            "src": "708:44:18",
-            "stateMutability": "nonpayable",
-            "superFunction": null,
-            "visibility": "public"
-          },
-          {
-            "body": null,
-            "documentation": "@dev Removes the role from an address\n@param _address The address to discharge fromn the role.",
-            "id": 2418,
-            "implemented": false,
-            "isConstructor": false,
-            "isDeclaredConst": false,
-            "modifiers": [],
-            "name": "discharge",
-            "nodeType": "FunctionDefinition",
-            "parameters": {
-              "id": 2416,
-              "nodeType": "ParameterList",
-              "parameters": [
+                },
                 {
                   "constant": false,
-                  "id": 2415,
-                  "name": "_address",
+                  "id": 5750,
+                  "indexed": true,
+                  "name": "to",
                   "nodeType": "VariableDeclaration",
-                  "scope": 2418,
-                  "src": "892:16:18",
+                  "scope": 5754,
+                  "src": "402:18:43",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
@@ -780,10 +805,10 @@
                     "typeString": "address"
                   },
                   "typeName": {
-                    "id": 2414,
+                    "id": 5749,
                     "name": "address",
                     "nodeType": "ElementaryTypeName",
-                    "src": "892:7:18",
+                    "src": "402:7:43",
                     "typeDescriptions": {
                       "typeIdentifier": "t_address",
                       "typeString": "address"
@@ -791,29 +816,45 @@
                   },
                   "value": null,
                   "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 5752,
+                  "indexed": false,
+                  "name": "value",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 5754,
+                  "src": "422:13:43",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 5751,
+                    "name": "uint256",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "422:7:43",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
                 }
               ],
-              "src": "891:18:18"
+              "src": "379:57:43"
             },
-            "payable": false,
-            "returnParameters": {
-              "id": 2417,
-              "nodeType": "ParameterList",
-              "parameters": [],
-              "src": "916:0:18"
-            },
-            "scope": 2419,
-            "src": "873:44:18",
-            "stateMutability": "nonpayable",
-            "superFunction": null,
-            "visibility": "public"
+            "src": "365:72:43"
           }
         ],
-        "scope": 2420,
-        "src": "185:735:18"
+        "scope": 5756,
+        "src": "150:289:43"
       }
     ],
-    "src": "0:921:18"
+    "src": "0:440:43"
   },
   "compiler": {
     "name": "solc",
@@ -821,5 +862,5 @@
   },
   "networks": {},
   "schemaVersion": "2.0.1",
-  "updatedAt": "2018-08-01T09:33:41.748Z"
+  "updatedAt": "2018-08-01T09:33:41.760Z"
 }

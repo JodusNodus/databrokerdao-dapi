@@ -31,6 +31,24 @@ async function performMigration(deployer, network, accounts) {
       dGateKeeper.address
     )
     await dTokenRegistry.addToken('DTX', Token.address)
+
+    const dToken = await Token.deployed()
+
+    await createPermission(
+      dGateKeeper,
+      accounts[0],
+      dToken,
+      'MINT_ROLE',
+      accounts[0]
+    )
+
+    await createPermission(
+      dGateKeeper,
+      accounts[0],
+      dToken,
+      'BURN_ROLE',
+      accounts[0]
+    )
   } catch (e) {
     console.log(e)
   }

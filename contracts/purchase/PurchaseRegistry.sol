@@ -3,7 +3,7 @@ pragma solidity ^0.4.24;
 import "./Purchase.sol";
 import "../sensor/Sensor.sol";
 import "../sensor/SensorRegistry.sol";
-import "../dtxtoken/LocalDTXToken.sol";
+import "../token/LocalDTXToken.sol";
 import "@settlemint/solidity-mint/contracts/authentication/Secured.sol";
 import "@settlemint/solidity-mint/contracts/authentication/GateKeeper.sol";
 import "@settlemint/solidity-mint/contracts/utility/syncing/Syncable.sol";

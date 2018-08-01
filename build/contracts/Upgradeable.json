@@ -54,14 +54,14 @@
     "absolutePath": "@settlemint/solidity-mint/contracts/utility/upgrading/Upgradeable.sol",
     "exportedSymbols": {
       "Upgradeable": [
-        4708
+        5333
       ]
     },
-    "id": 4709,
+    "id": 5334,
     "nodeType": "SourceUnit",
     "nodes": [
       {
-        "id": 4686,
+        "id": 5311,
         "literals": [
           "solidity",
           "^",
@@ -69,16 +69,16 @@
           ".20"
         ],
         "nodeType": "PragmaDirective",
-        "src": "0:24:36"
+        "src": "0:24:37"
       },
       {
         "absolutePath": "@settlemint/solidity-mint/contracts/authentication/Secured.sol",
         "file": "../../authentication/Secured.sol",
-        "id": 4687,
+        "id": 5312,
         "nodeType": "ImportDirective",
-        "scope": 4709,
-        "sourceUnit": 1763,
-        "src": "26:42:36",
+        "scope": 5334,
+        "sourceUnit": 2388,
+        "src": "26:42:37",
         "symbolAliases": [],
         "unitAlias": ""
       },
@@ -88,42 +88,42 @@
             "arguments": null,
             "baseName": {
               "contractScope": null,
-              "id": 4688,
+              "id": 5313,
               "name": "Secured",
               "nodeType": "UserDefinedTypeName",
-              "referencedDeclaration": 1762,
-              "src": "1129:7:36",
+              "referencedDeclaration": 2387,
+              "src": "1129:7:37",
               "typeDescriptions": {
-                "typeIdentifier": "t_contract$_Secured_$1762",
+                "typeIdentifier": "t_contract$_Secured_$2387",
                 "typeString": "contract Secured"
               }
             },
-            "id": 4689,
+            "id": 5314,
             "nodeType": "InheritanceSpecifier",
-            "src": "1129:7:36"
+            "src": "1129:7:37"
           }
         ],
         "contractDependencies": [
-          1762
+          2387
         ],
         "contractKind": "contract",
         "documentation": "Found at https://gist.github.com/Arachnid/4ca9da48d51e23e5cfe0f0e14dd6318f and https://github.com/maraoz/solidity-proxy/blob/master/contracts/Dispatcher.sol\n * Base contract that all upgradeable contracts should use\n * Contracts implementing this interface are all called using delegatecall from\na dispatcher. As a result, _dest variables are shared with the\ndispatcher contract, which allows the called contract to update these at will.\n * _dest is the address of the contract currently implementing all the\nfunctionality of the composite contract. Contracts should update this by\ncalling the internal function `replace`, which updates _dest.\n * When upgrading a contract, restrictions on permissible changes to the set of\nstorage variables must be observed. New variables may be added, but existing\nones may not be deleted or replaced. Changing variable names is acceptable.\nStructs in arrays may not be modified, but structs in maps can be, following\nthe same rules described above.",
         "fullyImplemented": false,
-        "id": 4708,
+        "id": 5333,
         "linearizedBaseContracts": [
-          4708,
-          1762
+          5333,
+          2387
         ],
         "name": "Upgradeable",
         "nodeType": "ContractDefinition",
         "nodes": [
           {
             "constant": true,
-            "id": 4692,
+            "id": 5317,
             "name": "UPGRADE_CONTRACT",
             "nodeType": "VariableDeclaration",
-            "scope": 4708,
-            "src": "1141:61:36",
+            "scope": 5333,
+            "src": "1141:61:37",
             "stateVariable": true,
             "storageLocation": "default",
             "typeDescriptions": {
@@ -131,10 +131,10 @@
               "typeString": "bytes32"
             },
             "typeName": {
-              "id": 4690,
+              "id": 5315,
               "name": "bytes32",
               "nodeType": "ElementaryTypeName",
-              "src": "1141:7:36",
+              "src": "1141:7:37",
               "typeDescriptions": {
                 "typeIdentifier": "t_bytes32",
                 "typeString": "bytes32"
@@ -143,14 +143,14 @@
             "value": {
               "argumentTypes": null,
               "hexValue": "555047524144455f434f4e5452414354",
-              "id": 4691,
+              "id": 5316,
               "isConstant": false,
               "isLValue": false,
               "isPure": true,
               "kind": "string",
               "lValueRequested": false,
               "nodeType": "Literal",
-              "src": "1184:18:36",
+              "src": "1184:18:37",
               "subdenomination": null,
               "typeDescriptions": {
                 "typeIdentifier": "t_stringliteral_aa137d80574c98e1e686020638a2a518494c1f33b92a3bd9731d019bfeef6de8",
@@ -162,11 +162,11 @@
           },
           {
             "constant": false,
-            "id": 4694,
+            "id": 5319,
             "name": "target",
             "nodeType": "VariableDeclaration",
-            "scope": 4708,
-            "src": "1207:21:36",
+            "scope": 5333,
+            "src": "1207:21:37",
             "stateVariable": true,
             "storageLocation": "default",
             "typeDescriptions": {
@@ -174,10 +174,10 @@
               "typeString": "address"
             },
             "typeName": {
-              "id": 4693,
+              "id": 5318,
               "name": "address",
               "nodeType": "ElementaryTypeName",
-              "src": "1207:7:36",
+              "src": "1207:7:37",
               "typeDescriptions": {
                 "typeIdentifier": "t_address",
                 "typeString": "address"
@@ -188,26 +188,26 @@
           },
           {
             "body": {
-              "id": 4706,
+              "id": 5331,
               "nodeType": "Block",
-              "src": "1370:27:36",
+              "src": "1370:27:37",
               "statements": [
                 {
                   "expression": {
                     "argumentTypes": null,
-                    "id": 4704,
+                    "id": 5329,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
                     "lValueRequested": false,
                     "leftHandSide": {
                       "argumentTypes": null,
-                      "id": 4702,
+                      "id": 5327,
                       "name": "target",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 4694,
-                      "src": "1376:6:36",
+                      "referencedDeclaration": 5319,
+                      "src": "1376:6:37",
                       "typeDescriptions": {
                         "typeIdentifier": "t_address",
                         "typeString": "address"
@@ -217,31 +217,31 @@
                     "operator": "=",
                     "rightHandSide": {
                       "argumentTypes": null,
-                      "id": 4703,
+                      "id": 5328,
                       "name": "_target",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 4696,
-                      "src": "1385:7:36",
+                      "referencedDeclaration": 5321,
+                      "src": "1385:7:37",
                       "typeDescriptions": {
                         "typeIdentifier": "t_address",
                         "typeString": "address"
                       }
                     },
-                    "src": "1376:16:36",
+                    "src": "1376:16:37",
                     "typeDescriptions": {
                       "typeIdentifier": "t_address",
                       "typeString": "address"
                     }
                   },
-                  "id": 4705,
+                  "id": 5330,
                   "nodeType": "ExpressionStatement",
-                  "src": "1376:16:36"
+                  "src": "1376:16:37"
                 }
               ]
             },
             "documentation": "Performs a handover to a new implementing contract.",
-            "id": 4707,
+            "id": 5332,
             "implemented": true,
             "isConstructor": false,
             "isDeclaredConst": false,
@@ -250,49 +250,49 @@
                 "arguments": [
                   {
                     "argumentTypes": null,
-                    "id": 4699,
+                    "id": 5324,
                     "name": "UPGRADE_CONTRACT",
                     "nodeType": "Identifier",
                     "overloadedDeclarations": [],
-                    "referencedDeclaration": 4692,
-                    "src": "1352:16:36",
+                    "referencedDeclaration": 5317,
+                    "src": "1352:16:37",
                     "typeDescriptions": {
                       "typeIdentifier": "t_bytes32",
                       "typeString": "bytes32"
                     }
                   }
                 ],
-                "id": 4700,
+                "id": 5325,
                 "modifierName": {
                   "argumentTypes": null,
-                  "id": 4698,
+                  "id": 5323,
                   "name": "auth",
                   "nodeType": "Identifier",
                   "overloadedDeclarations": [],
-                  "referencedDeclaration": 1724,
-                  "src": "1347:4:36",
+                  "referencedDeclaration": 2349,
+                  "src": "1347:4:37",
                   "typeDescriptions": {
                     "typeIdentifier": "t_modifier$_t_bytes32_$",
                     "typeString": "modifier (bytes32)"
                   }
                 },
                 "nodeType": "ModifierInvocation",
-                "src": "1347:22:36"
+                "src": "1347:22:37"
               }
             ],
             "name": "replace",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 4697,
+              "id": 5322,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 4696,
+                  "id": 5321,
                   "name": "_target",
                   "nodeType": "VariableDeclaration",
-                  "scope": 4707,
-                  "src": "1321:15:36",
+                  "scope": 5332,
+                  "src": "1321:15:37",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
@@ -300,10 +300,10 @@
                     "typeString": "address"
                   },
                   "typeName": {
-                    "id": 4695,
+                    "id": 5320,
                     "name": "address",
                     "nodeType": "ElementaryTypeName",
-                    "src": "1321:7:36",
+                    "src": "1321:7:37",
                     "typeDescriptions": {
                       "typeIdentifier": "t_address",
                       "typeString": "address"
@@ -313,40 +313,40 @@
                   "visibility": "internal"
                 }
               ],
-              "src": "1320:17:36"
+              "src": "1320:17:37"
             },
             "payable": false,
             "returnParameters": {
-              "id": 4701,
+              "id": 5326,
               "nodeType": "ParameterList",
               "parameters": [],
-              "src": "1370:0:36"
+              "src": "1370:0:37"
             },
-            "scope": 4708,
-            "src": "1304:93:36",
+            "scope": 5333,
+            "src": "1304:93:37",
             "stateMutability": "nonpayable",
             "superFunction": null,
             "visibility": "internal"
           }
         ],
-        "scope": 4709,
-        "src": "1105:294:36"
+        "scope": 5334,
+        "src": "1105:294:37"
       }
     ],
-    "src": "0:1400:36"
+    "src": "0:1400:37"
   },
   "legacyAST": {
     "absolutePath": "@settlemint/solidity-mint/contracts/utility/upgrading/Upgradeable.sol",
     "exportedSymbols": {
       "Upgradeable": [
-        4708
+        5333
       ]
     },
-    "id": 4709,
+    "id": 5334,
     "nodeType": "SourceUnit",
     "nodes": [
       {
-        "id": 4686,
+        "id": 5311,
         "literals": [
           "solidity",
           "^",
@@ -354,16 +354,16 @@
           ".20"
         ],
         "nodeType": "PragmaDirective",
-        "src": "0:24:36"
+        "src": "0:24:37"
       },
       {
         "absolutePath": "@settlemint/solidity-mint/contracts/authentication/Secured.sol",
         "file": "../../authentication/Secured.sol",
-        "id": 4687,
+        "id": 5312,
         "nodeType": "ImportDirective",
-        "scope": 4709,
-        "sourceUnit": 1763,
-        "src": "26:42:36",
+        "scope": 5334,
+        "sourceUnit": 2388,
+        "src": "26:42:37",
         "symbolAliases": [],
         "unitAlias": ""
       },
@@ -373,42 +373,42 @@
             "arguments": null,
             "baseName": {
               "contractScope": null,
-              "id": 4688,
+              "id": 5313,
               "name": "Secured",
               "nodeType": "UserDefinedTypeName",
-              "referencedDeclaration": 1762,
-              "src": "1129:7:36",
+              "referencedDeclaration": 2387,
+              "src": "1129:7:37",
               "typeDescriptions": {
-                "typeIdentifier": "t_contract$_Secured_$1762",
+                "typeIdentifier": "t_contract$_Secured_$2387",
                 "typeString": "contract Secured"
               }
             },
-            "id": 4689,
+            "id": 5314,
             "nodeType": "InheritanceSpecifier",
-            "src": "1129:7:36"
+            "src": "1129:7:37"
           }
         ],
         "contractDependencies": [
-          1762
+          2387
         ],
         "contractKind": "contract",
         "documentation": "Found at https://gist.github.com/Arachnid/4ca9da48d51e23e5cfe0f0e14dd6318f and https://github.com/maraoz/solidity-proxy/blob/master/contracts/Dispatcher.sol\n * Base contract that all upgradeable contracts should use\n * Contracts implementing this interface are all called using delegatecall from\na dispatcher. As a result, _dest variables are shared with the\ndispatcher contract, which allows the called contract to update these at will.\n * _dest is the address of the contract currently implementing all the\nfunctionality of the composite contract. Contracts should update this by\ncalling the internal function `replace`, which updates _dest.\n * When upgrading a contract, restrictions on permissible changes to the set of\nstorage variables must be observed. New variables may be added, but existing\nones may not be deleted or replaced. Changing variable names is acceptable.\nStructs in arrays may not be modified, but structs in maps can be, following\nthe same rules described above.",
         "fullyImplemented": false,
-        "id": 4708,
+        "id": 5333,
         "linearizedBaseContracts": [
-          4708,
-          1762
+          5333,
+          2387
         ],
         "name": "Upgradeable",
         "nodeType": "ContractDefinition",
         "nodes": [
           {
             "constant": true,
-            "id": 4692,
+            "id": 5317,
             "name": "UPGRADE_CONTRACT",
             "nodeType": "VariableDeclaration",
-            "scope": 4708,
-            "src": "1141:61:36",
+            "scope": 5333,
+            "src": "1141:61:37",
             "stateVariable": true,
             "storageLocation": "default",
             "typeDescriptions": {
@@ -416,10 +416,10 @@
               "typeString": "bytes32"
             },
             "typeName": {
-              "id": 4690,
+              "id": 5315,
               "name": "bytes32",
               "nodeType": "ElementaryTypeName",
-              "src": "1141:7:36",
+              "src": "1141:7:37",
               "typeDescriptions": {
                 "typeIdentifier": "t_bytes32",
                 "typeString": "bytes32"
@@ -428,14 +428,14 @@
             "value": {
               "argumentTypes": null,
               "hexValue": "555047524144455f434f4e5452414354",
-              "id": 4691,
+              "id": 5316,
               "isConstant": false,
               "isLValue": false,
               "isPure": true,
               "kind": "string",
               "lValueRequested": false,
               "nodeType": "Literal",
-              "src": "1184:18:36",
+              "src": "1184:18:37",
               "subdenomination": null,
               "typeDescriptions": {
                 "typeIdentifier": "t_stringliteral_aa137d80574c98e1e686020638a2a518494c1f33b92a3bd9731d019bfeef6de8",
@@ -447,11 +447,11 @@
           },
           {
             "constant": false,
-            "id": 4694,
+            "id": 5319,
             "name": "target",
             "nodeType": "VariableDeclaration",
-            "scope": 4708,
-            "src": "1207:21:36",
+            "scope": 5333,
+            "src": "1207:21:37",
             "stateVariable": true,
             "storageLocation": "default",
             "typeDescriptions": {
@@ -459,10 +459,10 @@
               "typeString": "address"
             },
             "typeName": {
-              "id": 4693,
+              "id": 5318,
               "name": "address",
               "nodeType": "ElementaryTypeName",
-              "src": "1207:7:36",
+              "src": "1207:7:37",
               "typeDescriptions": {
                 "typeIdentifier": "t_address",
                 "typeString": "address"
@@ -473,26 +473,26 @@
           },
           {
             "body": {
-              "id": 4706,
+              "id": 5331,
               "nodeType": "Block",
-              "src": "1370:27:36",
+              "src": "1370:27:37",
               "statements": [
                 {
                   "expression": {
                     "argumentTypes": null,
-                    "id": 4704,
+                    "id": 5329,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
                     "lValueRequested": false,
                     "leftHandSide": {
                       "argumentTypes": null,
-                      "id": 4702,
+                      "id": 5327,
                       "name": "target",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 4694,
-                      "src": "1376:6:36",
+                      "referencedDeclaration": 5319,
+                      "src": "1376:6:37",
                       "typeDescriptions": {
                         "typeIdentifier": "t_address",
                         "typeString": "address"
@@ -502,31 +502,31 @@
                     "operator": "=",
                     "rightHandSide": {
                       "argumentTypes": null,
-                      "id": 4703,
+                      "id": 5328,
                       "name": "_target",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 4696,
-                      "src": "1385:7:36",
+                      "referencedDeclaration": 5321,
+                      "src": "1385:7:37",
                       "typeDescriptions": {
                         "typeIdentifier": "t_address",
                         "typeString": "address"
                       }
                     },
-                    "src": "1376:16:36",
+                    "src": "1376:16:37",
                     "typeDescriptions": {
                       "typeIdentifier": "t_address",
                       "typeString": "address"
                     }
                   },
-                  "id": 4705,
+                  "id": 5330,
                   "nodeType": "ExpressionStatement",
-                  "src": "1376:16:36"
+                  "src": "1376:16:37"
                 }
               ]
             },
             "documentation": "Performs a handover to a new implementing contract.",
-            "id": 4707,
+            "id": 5332,
             "implemented": true,
             "isConstructor": false,
             "isDeclaredConst": false,
@@ -535,49 +535,49 @@
                 "arguments": [
                   {
                     "argumentTypes": null,
-                    "id": 4699,
+                    "id": 5324,
                     "name": "UPGRADE_CONTRACT",
                     "nodeType": "Identifier",
                     "overloadedDeclarations": [],
-                    "referencedDeclaration": 4692,
-                    "src": "1352:16:36",
+                    "referencedDeclaration": 5317,
+                    "src": "1352:16:37",
                     "typeDescriptions": {
                       "typeIdentifier": "t_bytes32",
                       "typeString": "bytes32"
                     }
                   }
                 ],
-                "id": 4700,
+                "id": 5325,
                 "modifierName": {
                   "argumentTypes": null,
-                  "id": 4698,
+                  "id": 5323,
                   "name": "auth",
                   "nodeType": "Identifier",
                   "overloadedDeclarations": [],
-                  "referencedDeclaration": 1724,
-                  "src": "1347:4:36",
+                  "referencedDeclaration": 2349,
+                  "src": "1347:4:37",
                   "typeDescriptions": {
                     "typeIdentifier": "t_modifier$_t_bytes32_$",
                     "typeString": "modifier (bytes32)"
                   }
                 },
                 "nodeType": "ModifierInvocation",
-                "src": "1347:22:36"
+                "src": "1347:22:37"
               }
             ],
             "name": "replace",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 4697,
+              "id": 5322,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 4696,
+                  "id": 5321,
                   "name": "_target",
                   "nodeType": "VariableDeclaration",
-                  "scope": 4707,
-                  "src": "1321:15:36",
+                  "scope": 5332,
+                  "src": "1321:15:37",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
@@ -585,10 +585,10 @@
                     "typeString": "address"
                   },
                   "typeName": {
-                    "id": 4695,
+                    "id": 5320,
                     "name": "address",
                     "nodeType": "ElementaryTypeName",
-                    "src": "1321:7:36",
+                    "src": "1321:7:37",
                     "typeDescriptions": {
                       "typeIdentifier": "t_address",
                       "typeString": "address"
@@ -598,27 +598,27 @@
                   "visibility": "internal"
                 }
               ],
-              "src": "1320:17:36"
+              "src": "1320:17:37"
             },
             "payable": false,
             "returnParameters": {
-              "id": 4701,
+              "id": 5326,
               "nodeType": "ParameterList",
               "parameters": [],
-              "src": "1370:0:36"
+              "src": "1370:0:37"
             },
-            "scope": 4708,
-            "src": "1304:93:36",
+            "scope": 5333,
+            "src": "1304:93:37",
             "stateMutability": "nonpayable",
             "superFunction": null,
             "visibility": "internal"
           }
         ],
-        "scope": 4709,
-        "src": "1105:294:36"
+        "scope": 5334,
+        "src": "1105:294:37"
       }
     ],
-    "src": "0:1400:36"
+    "src": "0:1400:37"
   },
   "compiler": {
     "name": "solc",
@@ -626,5 +626,5 @@
   },
   "networks": {},
   "schemaVersion": "2.0.1",
-  "updatedAt": "2018-07-31T14:48:31.533Z"
+  "updatedAt": "2018-08-01T09:33:41.759Z"
 }

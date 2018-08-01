@@ -4,7 +4,7 @@ import "@settlemint/solidity-mint/contracts/utility/upgrading/Dispatcher.sol";
 import "@settlemint/solidity-mint/contracts/utility/caching/CachedByAddress.sol";
 
 import "../sensor/SensorRegistry.sol";
-import "../dtxtoken/LocalDTXToken.sol";
+import "../token/LocalDTXToken.sol";
 import "./Purchase.sol";
 
 
